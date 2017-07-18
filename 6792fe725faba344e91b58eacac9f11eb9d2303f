@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a202591_958c6481",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2017-07-18T13:35:41Z",
+      "side": 1,
+      "message": "Apparently, it\u0027s supposed to be at the last line in the form of Issue: CLAMP-1",
+      "revId": "6792fe725faba344e91b58eacac9f11eb9d2303f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
