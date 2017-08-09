@@ -1,0 +1,9 @@
+Code-Review+1: Julien Bertozzi <jb379x@att.com>
+Code-Review-1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Christophe Closset <cc697w@intl.att.com>
+Verified+1: Christophe Closset <cc697w@intl.att.com>
+Submitted-by: Christophe Closset <cc697w@intl.att.com>
+Submitted-at: Wed, 09 Aug 2017 13:32:42 +0000
+Reviewed-on: http://gerrit.onap.org/r/7115
+Project: clamp
+Branch: refs/heads/master
