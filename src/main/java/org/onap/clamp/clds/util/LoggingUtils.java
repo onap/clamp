@@ -42,7 +42,7 @@ public class LoggingUtils {
      *            Partner name (client or user invoking API)
      */
     public static void setRequestContext(String service, String partner) {
-        MDC.put("RequestId", "clds-" + UUID.randomUUID().toString());
+    	MDC.put("RequestId",  UUID.randomUUID().toString());
         MDC.put("ServiceName", service);
         MDC.put("PartnerName", partner);
     }
