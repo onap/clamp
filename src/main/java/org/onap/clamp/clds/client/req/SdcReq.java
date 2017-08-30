@@ -288,7 +288,7 @@ public class SdcReq {
                 }
             }
         } catch (IOException e) {
-            throw new SdcCommunicationException("Exception occurred during the SDC communication",e)
+            throw new SdcCommunicationException("Exception occurred during the SDC communication", e);
         }
         return urlList;
     }
