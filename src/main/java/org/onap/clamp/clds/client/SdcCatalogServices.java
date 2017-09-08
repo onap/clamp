@@ -821,7 +821,7 @@ public class SdcCatalogServices {
      * @param cldsServiceData
      * @return
      */
-    public String createPropertiesObjectByUUID(String globalProps, CldsServiceData cldsServiceData) throws IOException {
+    public String createPropertiesObjectByUUID(String globalProps, CldsServiceData cldsServiceData) {
         String totalPropsStr;
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode globalPropsJson;
@@ -876,18 +876,27 @@ public class SdcCatalogServices {
 
             byIdObjectNode.putPOJO("byAlertDescription", alertDescObjectNodeByAlert);
 
-            globalPropsJson = (ObjectNode) mapper.readValue(globalProps, JsonNode.class);
+            globalPropsJson = decodeGlobalProp(globalProps, mapper);
 
             globalPropsJson.putPOJO("shared", byIdObjectNode);
-            logger.info("valuie of objNode:" + globalPropsJson);
+            logger.info("value of objNode:" + globalPropsJson);
         } else {
             /**
              * to create json with total properties when no serviceUUID passed
              */
-            globalPropsJson = (ObjectNode) mapper.readValue(globalProps, JsonNode.class);
+            globalPropsJson = decodeGlobalProp(globalProps, mapper);
         }
         totalPropsStr = globalPropsJson.toString();
         return totalPropsStr;
+    }
+
+    private ObjectNode decodeGlobalProp(String globalProps, ObjectMapper mapper) {
+        try {
+            return (ObjectNode) mapper.readValue(globalProps, JsonNode.class);
+        } catch (IOException e) {
+            logger.error("Exception occurred during decoding of the global props, returning an empty objectNode", e);
+            return mapper.createObjectNode();
+        }
     }
 
     /**

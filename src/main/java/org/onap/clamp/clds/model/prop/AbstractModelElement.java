@@ -36,8 +36,8 @@ import java.util.List;
  * for a ModelElement (such as, Collector, StringMatch, Policy, Tca, Holmes,
  * ...)
  */
-public abstract class ModelElement {
-    protected static final EELFLogger logger      = EELFManager.getInstance().getLogger(ModelElement.class);
+public abstract class AbstractModelElement {
+    protected static final EELFLogger logger      = EELFManager.getInstance().getLogger(AbstractModelElement.class);
     protected static final EELFLogger auditLogger = EELFManager.getInstance().getAuditLogger();
 
     private final String              type;
@@ -58,7 +58,7 @@ public abstract class ModelElement {
      * @param modelBpmn
      * @param modelJson
      */
-    protected ModelElement(String type, ModelProperties modelProp, ModelBpmn modelBpmn, JsonNode modelJson) {
+    protected AbstractModelElement(String type, ModelProperties modelProp, ModelBpmn modelBpmn, JsonNode modelJson) {
         this.type = type;
         this.modelProp = modelProp;
         this.modelBpmn = modelBpmn;
@@ -79,7 +79,7 @@ public abstract class ModelElement {
         // find the type of the from model element
         String fromType = modelBpmn.getType(fromId);
         // get the model element for the type
-        ModelElement me = modelProp.getModelElementByType(fromType);
+        AbstractModelElement me = modelProp.getModelElementByType(fromType);
         // get the topic publishes for the model element
         return me.topicPublishes;
     }
