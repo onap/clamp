@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.onap.policy.asdc.Resource;
-import org.onap.policy.asdc.ResourceType;
-import org.onap.policy.controlloop.policy.PolicyResult;
+import org.openecomp.policy.asdc.Resource;
+import org.openecomp.policy.asdc.ResourceType;
+import org.openecomp.policy.controlloop.policy.PolicyResult;
 
 public class SdcPolicyReqTest {
 

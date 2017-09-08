@@ -45,19 +45,19 @@ import org.onap.clamp.clds.model.prop.PolicyChain;
 import org.onap.clamp.clds.model.prop.PolicyItem;
 import org.onap.clamp.clds.model.prop.Tca;
 import org.onap.clamp.clds.model.refprop.RefProp;
-import org.onap.policy.api.AttributeType;
-import org.onap.policy.asdc.Resource;
-import org.onap.policy.asdc.ResourceType;
-import org.onap.policy.asdc.Service;
-import org.onap.policy.controlloop.policy.OperationsAccumulateParams;
-import org.onap.policy.controlloop.policy.Policy;
-import org.onap.policy.controlloop.policy.PolicyResult;
-import org.onap.policy.controlloop.policy.Target;
-import org.onap.policy.controlloop.policy.TargetType;
-import org.onap.policy.controlloop.policy.builder.BuilderException;
-import org.onap.policy.controlloop.policy.builder.ControlLoopPolicyBuilder;
-import org.onap.policy.controlloop.policy.builder.Message;
-import org.onap.policy.controlloop.policy.builder.Results;
+import org.openecomp.policy.api.AttributeType;
+import org.openecomp.policy.asdc.Resource;
+import org.openecomp.policy.asdc.ResourceType;
+import org.openecomp.policy.asdc.Service;
+import org.openecomp.policy.controlloop.policy.OperationsAccumulateParams;
+import org.openecomp.policy.controlloop.policy.Policy;
+import org.openecomp.policy.controlloop.policy.PolicyResult;
+import org.openecomp.policy.controlloop.policy.Target;
+import org.openecomp.policy.controlloop.policy.TargetType;
+import org.openecomp.policy.controlloop.policy.builder.BuilderException;
+import org.openecomp.policy.controlloop.policy.builder.ControlLoopPolicyBuilder;
+import org.openecomp.policy.controlloop.policy.builder.Message;
+import org.openecomp.policy.controlloop.policy.builder.Results;
 
 /**
  * Construct an Operational Policy request given CLDS objects.
@@ -85,8 +85,8 @@ public class OperationalPolicyReq {
         String operationTopic = "";
         String notificationTopic = "";
         String controller = "";
-        Tca tca = prop.getTca();
-        if (tca.isFound()) {
+        Tca tca = prop.getType(Tca.class);
+        if (tca != null && tca.isFound()) {
             if (!global.getActionSet().equalsIgnoreCase("enbRecipe")) {
                 throw new BadRequestException(
                         "Operation Policy validation problem: action set is not selected properly.");
@@ -108,9 +108,9 @@ public class OperationalPolicyReq {
         String recipeTopic = refProp.getStringValue("op.recipeTopic", global.getService());
 
         // ruleAttributes
-        Map<String, String> ruleAttributes = new HashMap<String, String>();
+        Map<String, String> ruleAttributes = new HashMap<>();
 
-        if (operationTopic == null || operationTopic.length() == 0) {
+        if (operationTopic == null || operationTopic.isEmpty()) {
             logger.info("templateName=" + templateName);
             logger.info("recipeTopic=" + recipeTopic);
             logger.info("notificationTopic=" + notificationTopic);
@@ -151,10 +151,10 @@ public class OperationalPolicyReq {
         }
 
         // matchingAttributes
-        Map<String, String> matchingAttributes = new HashMap<String, String>();
+        Map<String, String> matchingAttributes = new HashMap<>();
         matchingAttributes.put("controller", controller);
 
-        Map<AttributeType, Map<String, String>> attributes = new HashMap<AttributeType, Map<String, String>>();
+        Map<AttributeType, Map<String, String>> attributes = new HashMap<>();
         attributes.put(AttributeType.RULE, ruleAttributes);
         attributes.put(AttributeType.MATCHING, matchingAttributes);
 
@@ -189,13 +189,13 @@ public class OperationalPolicyReq {
         builder.addResource(vfcResources);
 
         // process each policy
-        HashMap<String, org.onap.policy.controlloop.policy.Policy> policyObjMap = new HashMap<String, org.onap.policy.controlloop.policy.Policy>();
+        HashMap<String, org.openecomp.policy.controlloop.policy.Policy> policyObjMap = new HashMap<>();
         List<PolicyItem> policyItemList = orderParentFirst(policyChain.getPolicyItems());
         Target target = new Target();
         target.setType(TargetType.VM);
         for (int i = 0; i < policyItemList.size(); i++) {
 
-            org.onap.policy.controlloop.policy.Policy policyObj;
+            org.openecomp.policy.controlloop.policy.Policy policyObj;
             PolicyItem policyItem = policyItemList.get(i);
             String policyName = policyItem.getRecipe() + " Policy";
             if (i == 0) {
@@ -205,7 +205,7 @@ public class OperationalPolicyReq {
                         refProp.getStringValue("op.policy.appc"), target, policyItem.getRecipe(), null,
                         policyItem.getMaxRetries(), policyItem.getRetryTimeLimit());
             } else {
-                org.onap.policy.controlloop.policy.Policy parentPolicyObj = policyObjMap
+                org.openecomp.policy.controlloop.policy.Policy parentPolicyObj = policyObjMap
                         .get(policyItem.getParentPolicy());
                 String policyDescription = policyItem.getRecipe() + " Policy - triggered conditionally by "
                         + parentPolicyObj.getName() + " - created by CLDS";
@@ -227,7 +227,7 @@ public class OperationalPolicyReq {
             logger.info("results.getSpecification()=" + results.getSpecification());
         } else {
             // throw exception with error info
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("Operation Policy validation problem: ControlLoopPolicyBuilder failed with following messages: ");
             for (Message message : results.getMessages()) {
                 sb.append(message.getMessage());
@@ -235,10 +235,7 @@ public class OperationalPolicyReq {
             }
             throw new BadRequestException(sb.toString());
         }
-
-        String encodedYaml = URLEncoder.encode(results.getSpecification(), "UTF-8");
-
-        return encodedYaml;
+        return URLEncoder.encode(results.getSpecification(), "UTF-8");
     }
 
     /**
@@ -269,19 +266,19 @@ public class OperationalPolicyReq {
         builder.addResource(vfcResources);
 
         // process each policy
-        HashMap<String, Policy> policyObjMap = new HashMap<String, Policy>();
+        HashMap<String, Policy> policyObjMap = new HashMap<>();
         List<PolicyItem> policyItemList = addAOTSActorRecipe(refProp, global.getService(),
                 policyChain.getPolicyItems());
         Target target = new Target();
         target.setType(TargetType.VM);
         Policy lastPolicyObj = new Policy();
         for (int i = 0; i < policyItemList.size(); i++) {
-            org.onap.policy.controlloop.policy.Policy policyObj;
+            org.openecomp.policy.controlloop.policy.Policy policyObj;
             PolicyItem policyItem = policyItemList.get(i);
             String policyName = policyItem.getRecipe() + " Policy";
             if (i == 0) {
                 // To set up time window payload for trigger policy
-                Map<String, String> payloadMap = new HashMap<String, String>();
+                Map<String, String> payloadMap = new HashMap<>();
                 payloadMap.put("timeWindow", refProp.getStringValue("op.eNodeB.timeWindow"));
                 String policyDescription = policyItem.getRecipe()
                         + " Policy - the trigger (no parent) policy - created by CLDS";
@@ -314,7 +311,7 @@ public class OperationalPolicyReq {
             logger.info("results.getSpecification()=" + results.getSpecification());
         } else {
             // throw exception with error info
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("Operation Policy validation problem: ControlLoopPolicyBuilder failed with following messages: ");
             for (Message message : results.getMessages()) {
                 sb.append(message.getMessage());
@@ -322,10 +319,7 @@ public class OperationalPolicyReq {
             }
             throw new BadRequestException(sb.toString());
         }
-
-        String encodedYaml = URLEncoder.encode(results.getSpecification(), "UTF-8");
-
-        return encodedYaml;
+        return URLEncoder.encode(results.getSpecification(), "UTF-8");
     }
 
     /**
@@ -335,7 +329,7 @@ public class OperationalPolicyReq {
      * @return
      */
     private static List<PolicyItem> addAOTSActorRecipe(RefProp refProp, String service, List<PolicyItem> inOrigList) {
-        List<PolicyItem> outList = new ArrayList<PolicyItem>();
+        List<PolicyItem> outList = new ArrayList<>();
         try {
             PolicyItem policyItem = inOrigList.get(0);
             ObjectNode rootNode = (ObjectNode) refProp.getJsonTemplate("op.eNodeB.recipe", service);
@@ -354,7 +348,7 @@ public class OperationalPolicyReq {
                     policyItemObj.setRetryTimeLimit(Integer.parseInt(recipeNode.path("TimeLimit").asText()));
                 }
                 if (!recipeNode.path("PPConditions").asText().isEmpty()) {
-                    List<String> parentPolicyConditions = new ArrayList<String>();
+                    List<String> parentPolicyConditions = new ArrayList<>();
                     for (String ppCondition : recipeNode.path("PPConditions").asText().split(",")) {
                         parentPolicyConditions.add(ppCondition);
                     }
@@ -395,7 +389,7 @@ public class OperationalPolicyReq {
                 // check for trigger policy (no parent)
                 String parent = inItem.getParentPolicy();
                 if (parent == null || parent.length() == 0) {
-                    if (outList.size() > 0) {
+                    if (!outList.isEmpty()) {
                         throw new BadRequestException(
                                 "Operation Policy validation problem: more than one trigger policy");
                     } else {
@@ -431,7 +425,7 @@ public class OperationalPolicyReq {
             return new Resource[0];
         }
         return stringList.stream().map(stringElem -> new Resource(stringElem, resourceType)).toArray(Resource[]::new);
-    }
+        }
 
     /**
      * Convert a List of policy result strings to an array of PolicyResult
