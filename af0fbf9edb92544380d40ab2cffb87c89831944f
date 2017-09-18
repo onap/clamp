@@ -1,0 +1,10 @@
+Code-Review-1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Julien Bertozzi <jb379x@att.com>
+Code-Review+1: Anaël Closson <ac2550@intl.att.com>
+Code-Review+2: Sébastien Determe <sd378r@intl.att.com>
+Verified+1: Sébastien Determe <sd378r@intl.att.com>
+Submitted-by: Sébastien Determe <sd378r@intl.att.com>
+Submitted-at: Mon, 18 Sep 2017 11:35:16 +0000
+Reviewed-on: http://gerrit.onap.org/r/13053
+Project: clamp
+Branch: refs/heads/master
