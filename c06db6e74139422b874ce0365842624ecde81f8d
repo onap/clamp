@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_310cfea4",
+        "filename": "pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2017-09-22T15:22:54Z",
+      "side": 1,
+      "message": "tabs and spaces, never cross the streams :)",
+      "revId": "c06db6e74139422b874ce0365842624ecde81f8d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
