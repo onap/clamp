@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9a437d4f_d1749269",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/OperationalPolicyReq.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-09-22T15:01:12Z",
+      "side": 1,
+      "message": "right",
+      "parentUuid": "9a437d4f_11569a06",
+      "range": {
+        "startLine": 200,
+        "startChar": 8,
+        "endLine": 200,
+        "endChar": 15
+      },
+      "revId": "8c5ffd0eb1269ceeb9b19a2c274577fae6240840",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a437d4f_71460651",
         "filename": "src/main/java/org/onap/clamp/clds/client/req/OperationalPolicyReq.java",
         "patchSetId": 1
@@ -36,6 +60,24 @@
       "writtenOn": "2017-09-22T14:49:54Z",
       "side": 1,
       "message": "That feels duplicated with the stuff around line 200",
+      "revId": "8c5ffd0eb1269ceeb9b19a2c274577fae6240840",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_f15b16f4",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/OperationalPolicyReq.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-09-22T15:01:12Z",
+      "side": 1,
+      "message": "Yeah it looks similar but it\u0027s not :-(",
+      "parentUuid": "9a437d4f_71460651",
       "revId": "8c5ffd0eb1269ceeb9b19a2c274577fae6240840",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
