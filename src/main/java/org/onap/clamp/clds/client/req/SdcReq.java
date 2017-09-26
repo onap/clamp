@@ -49,6 +49,7 @@ import org.onap.clamp.clds.client.SdcCatalogServices;
 import org.onap.clamp.clds.model.CldsSdcResource;
 import org.onap.clamp.clds.model.CldsSdcServiceDetail;
 import org.onap.clamp.clds.model.prop.Global;
+import org.onap.clamp.clds.model.prop.Holmes;
 import org.onap.clamp.clds.model.prop.ModelProperties;
 import org.onap.clamp.clds.model.prop.StringMatch;
 import org.onap.clamp.clds.model.prop.Tca;
@@ -90,6 +91,7 @@ public class SdcReq {
         String updatedBlueprint = "";
         StringMatch stringMatch = prop.getType(StringMatch.class);
         Tca tca = prop.getType(Tca.class);
+        Holmes holmes = prop.getType(Holmes.class);
         if (stringMatch.isFound()) {
             prop.setCurrentModelElementId(stringMatch.getId());
             ObjectMapper objectMapper = new ObjectMapper();
@@ -115,6 +117,18 @@ public class SdcReq {
             // get updated blueprint by attaching service Conf from
             // globalProperties
             updatedBlueprint = getUpdatedBlueprintWithConfiguration(refProp, prop, yamlvalue, content);
+        } else if (holmes.isFound()) {
+        	prop.setCurrentModelElementId(holmes.getId());
+        	ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode holmesConfigurations = objectMapper.createObjectNode();
+            HolmesPolicyReq.appendHolmesConfigurations(refProp, holmesConfigurations, holmes, prop);
+            logger.info("Value of content:" + holmesConfigurations);
+            ObjectNode holmesConfNode = (ObjectNode) holmesConfigurations.get("holmesConfigurations");
+
+
+            // get updated blueprint by attaching service Conf from
+            // globalProperties
+            updatedBlueprint = getUpdatedBlueprintWithHolmesConfiguration(refProp, prop, yamlvalue, holmesConfNode);
         }
 
         logger.info("value of blueprint:" + updatedBlueprint);
@@ -194,6 +208,36 @@ public class SdcReq {
 
         deployJsonNode.set("configuration", serviceConf);
         propsObject.put("deployment_JSON", deployJsonNode.toString());
+        blueprint = yaml.dump(loadedYaml);
+        logger.info("value of updated Yaml File:" + blueprint);
+
+        return blueprint;
+    }
+
+    private static String getUpdatedBlueprintWithHolmesConfiguration(RefProp refProp, ModelProperties prop, String yamlValue,
+            ObjectNode serviceConf) throws JsonProcessingException, IOException {
+        String blueprint = "";
+        Yaml yaml = new Yaml();
+        // Serialiaze Yaml file
+        Map<String, Map> loadedYaml = (Map<String, Map>) yaml.load(yamlValue);
+        // Get node templates information from Yaml
+        Map<String, Map> nodeTemplates = loadedYaml.get("node_templates");
+        logger.info("value of NodeTemplates:" + nodeTemplates);
+        // Get Tca Object information from node templates of Yaml
+        Map<String, Map> holmesObject = nodeTemplates.get("homes-rule_homes-rule");
+        logger.info("value of holmes:" + holmesObject);
+        // Get Properties Object information from holmes of Yaml
+        Map<String, Map> propsObject = holmesObject.get("properties");
+        logger.info("value of PropsObject:" + propsObject);
+        Map<String, String>  appConfigObject = propsObject.get("application_config");
+        logger.info("value of applicationConfiguration:" + appConfigObject);
+        
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> result = mapper.convertValue(serviceConf, Map.class);
+        
+        appConfigObject.putAll(result);
+        
+
         blueprint = yaml.dump(loadedYaml);
         logger.info("value of updated Yaml File:" + blueprint);
 
