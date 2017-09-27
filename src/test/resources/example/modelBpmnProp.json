@@ -1,25 +1,9 @@
 {
-    "collector": 
-    [
-        {
-            "id": "Collector_",
-            "from": "StartEvent_1"
-        }
-    ],
-
-    "stringMatch": 
-    [
-        {
-            "id": "StringMatch_",
-            "from": "Collector_"
-        }
-    ],
-
     "policy": 
     [
         {
             "id": "Policy_",
-            "from": "StringMatch_"
+            "from": "StartEvent_1"
         }
     ],
 
