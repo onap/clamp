@@ -30,24 +30,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.ws.rs.BadRequestException;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
@@ -69,6 +51,22 @@ import org.onap.clamp.clds.model.prop.ModelProperties;
 import org.onap.clamp.clds.model.refprop.RefProp;
 import org.onap.clamp.clds.util.LoggingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.ws.rs.BadRequestException;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 public class SdcCatalogServices {
     protected static final EELFLogger logger            = EELFManager.getInstance().getLogger(SdcCatalogServices.class);
@@ -111,7 +109,7 @@ public class SdcCatalogServices {
 
             String resp = getResponse(conn);
             if (resp != null) {
-                logger.info(resp.toString());
+                logger.info(resp);
                 // metrics log
                 LoggingUtils.setResponseContext("0", "Get sdc services success", this.getClass().getName());
                 return resp;
@@ -318,18 +316,18 @@ public class SdcCatalogServices {
      * @param prop
      * @param userid
      * @param url
-     * @param formattedSdcReq
+     * @param formatedSdcReq
      * @return
      */
-    public String uploadArtifactToSdc(ModelProperties prop, String userid, String url, String formatttedSdcReq) {
+    public String uploadArtifactToSdc(ModelProperties prop, String userid, String url, String formatedSdcReq) {
         // Verify whether it is triggered by Validation Test button from UI
         if (prop.isTest()) {
             return "sdc artifact upload not executed for test action";
         }
         try {
             logger.info("userid=" + userid);
-            String md5Text = SdcReq.calculateMD5ByString(formatttedSdcReq);
-            byte[] postData = SdcReq.stringToByteArray(formatttedSdcReq);
+            String md5Text = SdcReq.calculateMD5ByString(formatedSdcReq);
+            byte[] postData = SdcReq.stringToByteArray(formatedSdcReq);
             int postDataLength = postData.length;
             HttpURLConnection conn = getSdcHttpUrlConnection(userid, postDataLength, url, md5Text);
             try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
@@ -682,8 +680,7 @@ public class SdcCatalogServices {
                     artifactName = artifactNameNode.textValue();
                     artifactName = artifactName.substring(artifactName.lastIndexOf('.') + 1);
                 }
-                if (artifactUrlNode != null && artifactName != null && !artifactName.isEmpty()
-                        && artifactName.equalsIgnoreCase("csv")) {
+                if (artifactUrlNode != null && "csv".equalsIgnoreCase(artifactName)) {
                     String responsesFromArtifactUrl = getResponsesFromArtifactUrl(artifactUrlNode.textValue());
                     cldsVfKPIDataList.addAll(parseCsvToGetFieldPath(responsesFromArtifactUrl));
                     logger.info(responsesFromArtifactUrl);
@@ -1053,7 +1050,7 @@ public class SdcCatalogServices {
                         for (CldsAlarmCondition currCldsAlarmCondition : currCldsVfcData.getCldsAlarmConditions()) {
                             alarmCondNode.put(currCldsAlarmCondition.getAlarmConditionKey(),
                                     currCldsAlarmCondition.getAlarmConditionKey());
-                            if (currCldsAlarmCondition.getEventName().equalsIgnoreCase("alarmCondition")) {
+                            if ("alarmCondition".equalsIgnoreCase(currCldsAlarmCondition.getEventName())) {
                                 alarmCondNode.put(currCldsAlarmCondition.getAlarmConditionKey(),
                                         currCldsAlarmCondition.getAlarmConditionKey());
                             } else {
