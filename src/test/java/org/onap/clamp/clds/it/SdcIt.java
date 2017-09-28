@@ -27,7 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.onap.clamp.clds.AbstractIT;
+import org.onap.clamp.clds.AbstractIt;
 import org.onap.clamp.clds.client.SdcCatalogServices;
 import org.onap.clamp.clds.client.req.SdcReq;
 import org.onap.clamp.clds.model.CldsEvent;
@@ -45,7 +45,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-no-camunda.properties")
-public class SdcIT extends AbstractIT {
+public class SdcIt extends AbstractIt {
     @Autowired
     private RefProp refProp;
 

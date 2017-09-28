@@ -34,7 +34,7 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.onap.clamp.clds.AbstractIT;
+import org.onap.clamp.clds.AbstractIt;
 import org.onap.clamp.clds.client.req.SdcReq;
 import org.onap.clamp.clds.model.CldsSdcServiceDetail;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,7 +51,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:application-no-camunda.properties")
-public class PropJsonBuilderIT extends AbstractIT {
+public class PropJsonBuilderIt extends AbstractIt {
 
     private String       globalPropsPartial;
     private ObjectMapper mapper;
@@ -307,7 +307,7 @@ public class PropJsonBuilderIT extends AbstractIT {
         return readTree.toString();
     }
 
-    private String createCldsSharedObject(CldsSdcServiceDetail CldsSdcServiceDetail) throws IOException {
+    private String createCldsSharedObject(CldsSdcServiceDetail cldsSdcServiceDetail) throws IOException {
         /**
          * Object initialization. "": { "vf": { "": "" }, "location": { "": ""
          * }, "alarmCondition": { "": "" } }

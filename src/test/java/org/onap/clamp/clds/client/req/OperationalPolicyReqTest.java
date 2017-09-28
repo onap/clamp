@@ -31,9 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.onap.policy.controlloop.policy.PolicyResult;
 import org.onap.policy.sdc.Resource;
 import org.onap.policy.sdc.ResourceType;
-import org.onap.policy.controlloop.policy.PolicyResult;
+
 
 public class OperationalPolicyReqTest {
 

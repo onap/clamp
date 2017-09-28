@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.onap.clamp.clds.AbstractIT;
+import org.onap.clamp.clds.AbstractIt;
 import org.onap.clamp.clds.client.req.OperationalPolicyReq;
 import org.onap.clamp.clds.client.req.TcaMPolicyReq;
 import org.onap.clamp.clds.model.CldsEvent;
@@ -55,7 +55,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-no-camunda.properties")
-public class PolicyClientIT extends AbstractIT {
+public class PolicyClientIt extends AbstractIt {
     String modelProp;
     String modelBpmnProp;
     String modelName;
