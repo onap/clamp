@@ -1,0 +1,9 @@
+Code-Review+1: Eddy Hautot <eh552t@intl.att.com>
+Code-Review-1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Sébastien Determe <sd378r@intl.att.com>
+Verified+1: Sébastien Determe <sd378r@intl.att.com>
+Submitted-by: Sébastien Determe <sd378r@intl.att.com>
+Submitted-at: Thu, 28 Sep 2017 13:55:20 +0000
+Reviewed-on: http://gerrit.onap.org/r/15977
+Project: clamp
+Branch: refs/heads/master
