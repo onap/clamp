@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_27537ce3",
+        "filename": "src/main/java/org/onap/clamp/clds/client/SdcCatalogServices.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-09-29T07:05:04Z",
+      "side": 1,
+      "message": "I think it\u0027s spelled wrong, it requires 2 t",
+      "revId": "86b8eefa62e39d9dc930e4a88447532ab57110f6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_075078d2",
+        "filename": "src/main/java/org/onap/clamp/clds/client/SdcCatalogServices.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-09-29T07:05:04Z",
+      "side": 1,
+      "message": "Same comment it requires 2t",
+      "revId": "86b8eefa62e39d9dc930e4a88447532ab57110f6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
