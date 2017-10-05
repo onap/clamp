@@ -61,12 +61,15 @@ public class HolmesPolicyDelegate implements JavaDelegate {
         ModelProperties prop = ModelProperties.create(execution);
         Holmes holmes = prop.getType(Holmes.class);
         if (holmes.isFound()) {
-            String responseMessage = policyClient.sendBasePolicyInOther(holmes.getCorrelationLogic(), prop,
+            String responseMessage = policyClient.sendBasePolicyInOther(formatHolmesConfigBody(prop, holmes), holmes.getConfigPolicyName(), prop,
                     holmesPolicyRequestUuid);
             if (responseMessage != null) {
                 execution.setVariable("holmesPolicyResponseMessage", responseMessage.getBytes());
             }
         }
     }
-
+    
+    public static String formatHolmesConfigBody (ModelProperties prop, Holmes holmes) {
+        return prop.getControlName() + "$$$" + holmes.getCorrelationLogic();
+    }
 }
