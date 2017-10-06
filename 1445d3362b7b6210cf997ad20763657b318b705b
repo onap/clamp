@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "9a437d4f_aa339af4",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/SdcReq.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2017-10-06T09:13:26Z",
+      "side": 1,
+      "message": "Format",
+      "parentUuid": "9a437d4f_ca113e53",
+      "revId": "1445d3362b7b6210cf997ad20763657b318b705b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a437d4f_aa1cba6a",
         "filename": "src/test/java/org/onap/clamp/clds/it/HolmesPolicyDelegateItCase.java",
         "patchSetId": 2
