@@ -37,6 +37,7 @@ import java.util.UUID;
 
 import javax.ws.rs.BadRequestException;
 
+import org.onap.clamp.clds.client.req.TcaRequestFormatter;
 import org.onap.clamp.clds.exception.policy.PolicyClientException;
 import org.onap.clamp.clds.model.prop.ModelProperties;
 import org.onap.clamp.clds.model.refprop.RefProp;
@@ -62,8 +63,7 @@ import org.springframework.context.ApplicationContext;
  * Policy utility methods - specifically, send the policy.
  */
 public class PolicyClient {
-
-    protected static final String     POLICY_PREFIX_BASE         = "Config_";
+	protected static final String     POLICY_PREFIX_BASE         = "Config_";
     protected static final String     POLICY_PREFIX_BRMS_PARAM   = "Config_BRMS_Param_";
     protected static final String     POLICY_PREFIX_MICROSERVICE = "Config_MS_";
 
@@ -111,7 +111,11 @@ public class PolicyClient {
         policyParameters.setPolicyDescription(refProp.getStringValue("op.policyDescription"));
 
         policyParameters.setAttributes(attributes);
-
+        logger.info("policyParameters attributes:");
+        for (Map.Entry entry : attributes.entrySet()) {
+        	logger.info(entry.getKey() + ", " + entry.getValue());
+        }
+        
         // Set a random UUID(Mandatory)
         policyParameters.setRequestID(UUID.fromString(policyRequestUuid));
         String policyNamePrefix = refProp.getStringValue("policy.op.policyNamePrefix");
@@ -212,17 +216,23 @@ public class PolicyClient {
      */
     public String sendMicroServiceInOther(String configBody, ModelProperties prop, String policyRequestUuid) {
 
-        PolicyParameters policyParameters = new PolicyParameters();
+    	PolicyParameters policyParameters = new PolicyParameters();
+                // Set Policy Type 
+        policyParameters.setPolicyConfigType(PolicyConfigType.MicroService);
+
+        policyParameters.setOnapName("DCAE");
+        //policyParameters.setConfigBody("{ \"service\": \"policy_tosca_tca\", \"location\": \"SampleServiceLocation\", \"uuid\": \"test\", \"policyName\": \"MicroServicevCPE\", \"description\": \"MicroService vCPE Policy\", \"configName\": \"SampleConfigName\", \"templateVersion\": \"OpenSource.version.1\", \"version\": \"1.0.0\", \"priority\": \"1\", \"policyScope\": \"resource=SampleResource,service=SampleService,type=SampleType,closedLoopControlName=ControlLoop-vCPE-48f0c2c3-a172-4192-9ae3-052274181b6e\", \"riskType\": \"SampleRiskType\", \"riskLevel\": \"1\", \"guard\": \"False\", \"content\": { \"policyVersion\": \"v0.0.1\", \"threshholds\": [{ \"severity\": \"MAJOR\", \"fieldPath\": \"$.event.measurementsForVfScalingFields.additionalMeasurements[*].arrayOfFields[0].value\", \"thresholdValue\": \"0\", \"closedLoopEventStatus\": \"ABATED\", \"closedLoopControlName\": \"ControlLoop-vCPE-48f0c2c3-a172-4192-9ae3-052274181b6e\", \"version\": \"1.0.2\", \"direction\": \"EQUAL\" }, { \"severity\": \"CRITICAL\", \"fieldPath\": \"$.event.measurementsForVfScalingFields.additionalMeasurements[*].arrayOfFields[0].value\", \"thresholdValue\": \"0\", \"closedLoopEventStatus\": \"ONSET\", \"closedLoopControlName\": \"ControlLoop-vCPE-48f0c2c3-a172-4192-9ae3-052274181b6e\", \"version\": \"1.0.2\", \"direction\": \"GREATER\" }], \"policyName\": \"DCAE.Config_tca-hi-lo\", \"controlLoopSchemaType\": \"VNF\", \"policyScope\": \"DCAE\", \"eventName\": \"Measurement_vGMUX\" } }");
+
 
         // Set Policy Type
-        policyParameters.setPolicyConfigType(PolicyConfigType.MicroService);
         policyParameters.setEcompName(refProp.getStringValue("policy.onap.name"));
         policyParameters.setPolicyName(prop.getCurrentPolicyScopeAndPolicyName());
 
+        logger.info("finalConfigBody=" + configBody);
         policyParameters.setConfigBody(configBody);
-        policyParameters.setConfigBodyType(PolicyType.OTHER);
+        //policyParameters.setConfigBodyType(PolicyType.OTHER);
 
-        policyParameters.setRequestID(UUID.fromString(policyRequestUuid));
+        //policyParameters.setRequestID(UUID.fromString(policyRequestUuid));
         String policyNamePrefix = refProp.getStringValue("policy.ms.policyNamePrefix");
 
         // Adding this line to clear the policy id from policy name while
