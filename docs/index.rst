@@ -1,48 +1,48 @@
-
-
-
-
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
 .. http://creativecommons.org/licenses/by/4.0
 .. Copyright © 2017 AT&T Intellectual Property. All rights reserved.
 
 CLAMP - Closed Loop Automation Management Platform
 ==================================================
-.. High level architecture, design, and packaging information for release planning and delivery.
-
-CLAMP is a platform for designing and managing control loops. It is used to design a closed loop, configure it with specific parameters for a particular network service, then deploying and undeploying it.  Once deployed, the user can also update the loop with new parameters during runtime, as well as suspending and restarting it.
-
-It interacts with other systems to deploy and execute the closed loop. For example, it pushes the control loop design to the SDC catalog, associating it with the VF resource.  It requests from DCAE the instantiation of microservices to manage the closed loop flow.  Further, it creates and updates multiple policies in the Policy Engine that define the closed loop flow.
-
-The ONAP CLAMP platform abstracts the details of these systems under the concept of a control loop model.  The design of a control loop and its management is represented by a workflow in which all relevant system interactions take place.  This is essential for a self-service model of creating and managing control loops, where no low-level user interaction with other components is required.
-
-At a higher level, CLAMP is about supporting and managing the broad operational life cycle of VNFs/VMs and ultimately ONAP components itself. It will offer the ability to design, test, deploy and update control loop automation - both closed and open. Automating these functions would represent a significant saving on operational costs compared to traditional methods.
+.. High level architecture, design, and packaging information
+   for release planning and delivery.
 
 
-
-.. toctree::
-:maxdepth: 1
+.. include:: architecture.rst
 
 Offered APIs
 ------------
 CLAMP offers the following API's:
--) HealthCheck
-    URL: http://<host>:8080/restservices/clds/v1/clds/healthcheck
-        if in good health it will return OK: "HTTP/1.1 200", and the following json string content:{"healthCheckComponent":"CLDS-APP","healthCheckStatus":"UP","description":"OK"}
+
+
+.. line-block::
+
+    HealthCheck
+      URL: http://<host>:8080/restservices/clds/v1/clds/healthcheck
+      Result: If in good health it will return
+         OK: "HTTP/1.1 200", and the following json string
+         content:{"healthCheckComponent":"CLDS-APP","healthCheckStatus":"UP","description":"OK"}
 
 
 Consumed APIs
 -------------
 CLAMP uses the API's exposed by the following ONAP components:
--) SDC : Rest based interface exposed by the SDC, Distribution of service to DCAE
--) DCAE: Rest based interface exposed by DCAE, Common Controller Framework, DCAE microservices onboarded (TCA, Stringmatch, Holmes (optional))
--) Policy: Rest based interface (the Policy team provide a "jar" to handle the communication), both XACML and Drools PDP, APIs to App-C/VF-C/SDN-C
+
+* SDC : Rest based interface exposed by the SDC, Distribution of service
+  to DCAE
+
+* DCAE: Rest based interface exposed by DCAE, Common Controller Framework,
+  DCAE microservices onboarded (TCA, Stringmatch, Holmes (optional))
+
+* Policy: Rest based interface (the Policy team provide a "jar" to handle
+  the communication), both XACML and Drools PDP, APIs to App-C/VF-C/SDN-C
 
 
 Delivery
 --------
-CLAMP component is composed of a UI layer and a BackEND layer and packaged into a single container.
-CLAMP also requires a database instance with 2 DB, it uses MariaDB.
+CLAMP component is composed of a UI layer and a BackEND layer and packaged
+into a single container.  CLAMP also requires a database instance with 2 DB,
+it uses MariaDB.
 
 .. blockdiag::
 
@@ -67,17 +67,27 @@ CLAMP also requires a database instance with 2 DB, it uses MariaDB.
 
 Logging & Diagnostic Information
 --------------------------------
-Clamp uses logback framework to generate logs. The logback.xml file cand be found under the [src/main/resources/ folder](src/main/resources).
+Clamp uses logback framework to generate logs. The logback.xml file can
+be found under the [src/main/resources/ folder](src/main/resources).
 
-With the default log settings, all logs will be generated into console and into root.log file under the Clamp root folder. The root.log file is not allowed to be appended, thus restarting the clamp will result in cleaning of the old log files.
+With the default log settings, all logs will be generated into console and
+into root.log file under the Clamp root folder. The root.log file is not
+allowed to be appended, thus restarting the clamp will result in cleaning
+of the old log files.
 
 
 
 Installation
 ------------
-A [docker-compose example file](extra/docker/clamp/docker-compose.yml) can be found under the [extra/docker/clamp/ folder](extra/docker/).
+A [docker-compose example file](extra/docker/clamp/docker-compose.yml)
+can be found under the [extra/docker/clamp/ folder](extra/docker/).
 
-Once the image has been built and is available locally, you can use the `docker-compose up` command to deploy a prepopullated database and a clamp instance available on [http://localhost:8080/designer/index.html](http://localhost:8080/designer/index.html).
+Once the image has been built and is available locally, you can use
+the `docker-compose up` command to deploy a prepopullated database and a
+clamp instance available on
+
+.. line-block::
+   http://localhost:8080/designer/index.html
 
 Configuration
 -------------
@@ -85,12 +95,19 @@ Configuration
 .. What are parameters and values?
 
 
-Currently, the clamp docker image can be deployed with small configuration needs. Though, you might need to make small adjustments to the configuration. As clamp is spring based, you can use the SPRING_APPLICATION_JSON environment variable to update its parameters.
+Currently, the clamp docker image can be deployed with small configuration
+needs. Though, you might need to make small adjustments to the configuration.
+As clamp is spring based, you can use the SPRING_APPLICATION_JSON environment
+variable to update its parameters.
 
 .. TODO detail config parameters and the usage
 
 
-There are two needed datasource for Clamp. By default, both will try to connect to the localhost server using the credentials available in the example SQL files. If you need to change the default database host and/or credentials, you can do it by using the following json as SPRING_APPLICATION_JSON environment variable :
+There are two needed datasource for Clamp. By default, both will try to
+connect to the localhost server using the credentials available in the
+example SQL files. If you need to change the default database host and/or
+credentials, you can do it by using the following json as
+SPRING_APPLICATION_JSON environment variable :
 
 .. code-block:: json
 
@@ -131,10 +148,17 @@ OR
 
 Administration
 --------------
+A user can access CLAMP UI at the following URL:
 
-A user can access CLAMP UI at the following URL : http://localhost:8080/designer/index.html.
-(in this URL 'localhost' must be replaced by the actual host where CLAMP has been installed if it is not your current localhost)
+.. line-block::
+
+   http://localhost:8080/designer/index.html
+
+In this URL 'localhost' must be replaced by the actual host where CLAMP
+has been installed if it is not your current localhost).
+
 Default username : admin
+
 Default password : password
 
 
@@ -145,16 +169,25 @@ Human Interfaces
 User Interface (CLAMP Designer) - serve to configure control loop
 The following actions are done using the UI:
 
-•	Design a control loop flow by selecting a predefined template from a list
-     (a template is an orchestration chain of Micro-services, so the template defines how the micro-services of the control loop are chained together)
-•	Give value to the configuration the parameters of each micro-service of the control loop
-•	Select the service and VNF(of that service) to which the control loop will be attached
-•	Configure the operational policy(the actual operation resulting from the control loop)
-•	Generate the “TOSCA” blueprint that will be used by DCAE to start the control loop
-	(The blueprint will be sent first to SDC and SDC will publish it to DCAE)
-•	Trigger the deployment of the Control loop in DCAE
-•	Control (start/stop) the operation of the control loop in DCAE
+* Design a control loop flow by selecting a predefined template from a list
+  (a template is an orchestration chain of Micro-services, so the template
+  defines how the micro-services of the control loop are chained together)
 
+* Give value to the configuration the parameters of each micro-service of
+  the control loop
 
+* Select the service and VNF(of that service) to which the control loop will
+  be attached
 
-HealthCheck API - serve to verify CLAMP status (see offered API's section)
+* Configure the operational policy(the actual operation resulting from the
+  control loop)
+
+• Generate the “TOSCA” blueprint that will be used by DCAE to start the
+  control loop (The blueprint will be sent first to SDC and SDC will publish
+  it to DCAE)
+
+* Trigger the deployment of the Control loop in DCAE
+
+* Control (start/stop) the operation of the control loop in DCAE
+
+* HealthCheck API - serve to verify CLAMP status (see offered API's section)
