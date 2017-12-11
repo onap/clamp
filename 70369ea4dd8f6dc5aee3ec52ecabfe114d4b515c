@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_57410138",
+        "filename": "src/main/java/org/onap/clamp/clds/client/OperationalPolicyDelegate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-12-11T17:04:44Z",
+      "side": 1,
+      "message": "Remove the PolicyEngineException javadoc",
+      "revId": "70369ea4dd8f6dc5aee3ec52ecabfe114d4b515c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
