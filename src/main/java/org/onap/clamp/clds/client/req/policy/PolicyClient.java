@@ -62,10 +62,7 @@ import org.springframework.context.ApplicationContext;
  * Policy utility methods - specifically, send the policy.
  */
 public class PolicyClient {
-
     protected static final String POLICY_PREFIX_BASE = "Config_";
-    protected static final String POLICY_PREFIX_BRMS_PARAM = "Config_BRMS_Param_";
-    protected static final String POLICY_PREFIX_MICROSERVICE = "Config_MS_";
     protected static final String LOG_POLICY_PREFIX = "Response is ";
     protected static final EELFLogger logger = EELFManager.getInstance().getLogger(PolicyClient.class);
     protected static final EELFLogger metricsLogger = EELFManager.getInstance().getMetricsLogger();
@@ -187,7 +184,6 @@ public class PolicyClient {
         PolicyParameters policyParameters = new PolicyParameters();
         // Set Policy Type
         policyParameters.setPolicyConfigType(PolicyConfigType.MicroService);
-        // policyParameters.setOnapName(refProp.getStringValue(POLICY_ONAPNAME_PROPERTY_NAME));
         policyParameters.setEcompName(refProp.getStringValue(POLICY_ONAPNAME_PROPERTY_NAME));
         policyParameters.setPolicyName(prop.getCurrentPolicyScopeAndPolicyName());
         policyParameters.setConfigBody(configBody);
@@ -201,16 +197,8 @@ public class PolicyClient {
         return rtnMsg;
     }
 
-    /**
-     * Perform send of policy.
-     *
-     * @param policyParameters
-     *            The PolicyParameters
-     * @param prop
-     *            The ModelProperties
-     * @return The response message of Policy
-     */
-    protected String send(PolicyParameters policyParameters, ModelProperties prop, String policyNamePrefix) {
+    // Perform send of policy. Return the response message of Policy.
+    private String send(PolicyParameters policyParameters, ModelProperties prop, String policyNamePrefix) {
         // Verify whether it is triggered by Validation Test button from UI
         if (prop.isTestOnly()) {
             return "send not executed for test action";
@@ -249,16 +237,8 @@ public class PolicyClient {
         return responseMessage;
     }
 
-    /**
-     * Format and send push of policy.
-     *
-     * @param policyType
-     *            The policy Type
-     * @param prop
-     *            The ModelProperties
-     * @return The response message of policy
-     */
-    protected String push(String policyType, ModelProperties prop) {
+    // Format and send push of policy. Returns the response message of policy.
+    private String push(String policyType, ModelProperties prop) {
         // Verify whether it is triggered by Validation Test button from UI
         if (prop.isTestOnly()) {
             return "push not executed for test action";
@@ -297,22 +277,12 @@ public class PolicyClient {
         return responseMessage;
     }
 
-    /**
-     * Use Get Config Policy API to retrieve the versions for a policy. Return
-     * versions in sorted order. Return empty list if none found.
-     *
-     * @param policyNamePrefix
-     *            The Policy Name Prefix
-     * @param prop
-     *            The ModelProperties
-     * @return The response message from policy
-     * @throws PolicyConfigException
-     *             In case of issues with policy engine
-     */
-    protected List<Integer> getVersions(String policyNamePrefix, ModelProperties prop) throws PolicyConfigException {
+    // Use Get Config Policy API to retrieve the versions for a policy. Returns versions in sorted order.
+    // Return empty list if none found.
+    private List<Integer> getVersions(String policyNamePrefix, ModelProperties prop) {
         ArrayList<Integer> versions = new ArrayList<>();
         ConfigRequestParameters configRequestParameters = new ConfigRequestParameters();
-        String policyName = "";
+        String policyName;
         if (prop.getPolicyUniqueId() != null && !prop.getPolicyUniqueId().isEmpty()) {
             policyName = prop.getCurrentPolicyScopeAndFullPolicyName(policyNamePrefix) + "_" + prop.getPolicyUniqueId();
         } else {
@@ -335,11 +305,6 @@ public class PolicyClient {
         return versions;
     }
 
-    /**
-     * This method create a new policy engine.
-     * 
-     * @return A new policy engine
-     */
     private PolicyEngine getPolicyEngine() {
         PolicyEngine policyEngine;
         try {
@@ -387,14 +352,8 @@ public class PolicyClient {
         return deletePolicy(prop, policyType);
     }
 
-    /**
-     * Format and send delete PAP and PDP requests to Policy.
-     *
-     * @param prop
-     *            The ModelProperties
-     * @return The response message from policy
-     */
-    protected String deletePolicy(ModelProperties prop, String policyType) {
+    // Format and send delete PAP and PDP requests to Policy. Return the response message from policy.
+    private String deletePolicy(ModelProperties prop, String policyType) {
         DeletePolicyParameters deletePolicyParameters = new DeletePolicyParameters();
         if (prop.getPolicyUniqueId() != null && !prop.getPolicyUniqueId().isEmpty()) {
             deletePolicyParameters.setPolicyName(prop.getPolicyScopeAndNameWithUniqueId());
@@ -416,16 +375,7 @@ public class PolicyClient {
         return responseMessage.toString();
     }
 
-    /**
-     * Send delete request to Policy.
-     *
-     * @param deletePolicyParameters
-     *            The DeletePolicyParameters
-     * @param prop
-     *            The ModelProperties
-     * @return The response message from policy
-     */
-    protected String sendDeletePolicy(DeletePolicyParameters deletePolicyParameters, ModelProperties prop) {
+    private String sendDeletePolicy(DeletePolicyParameters deletePolicyParameters, ModelProperties prop) {
         // Verify whether it is triggered by Validation Test button from UI
         if (prop.isTestOnly()) {
             return "delete not executed for test action";
