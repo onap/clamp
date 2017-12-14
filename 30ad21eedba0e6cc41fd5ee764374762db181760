@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_7e26526a",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyReq.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-12-14T12:54:15Z",
+      "side": 1,
+      "message": "This can\u0027t be private as this class can be extended, so we want to keep the attributes protected",
+      "revId": "30ad21eedba0e6cc41fd5ee764374762db181760",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_5e1d960e",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-12-14T12:54:15Z",
+      "side": 1,
+      "message": "Same comment, this class could be extended so those methods cannot be private",
+      "revId": "30ad21eedba0e6cc41fd5ee764374762db181760",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_fe190223",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-12-14T12:54:15Z",
+      "side": 1,
+      "message": "Same comment as before",
+      "revId": "30ad21eedba0e6cc41fd5ee764374762db181760",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_1e170eef",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-12-14T12:54:15Z",
+      "side": 1,
+      "message": "Again",
+      "revId": "30ad21eedba0e6cc41fd5ee764374762db181760",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_bed37a37",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-12-14T12:54:15Z",
+      "side": 1,
+      "message": "I don\u0027t see why the javadoc even for a private method is removed ...",
+      "revId": "30ad21eedba0e6cc41fd5ee764374762db181760",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_ded8c655",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-12-14T12:54:15Z",
+      "side": 1,
+      "message": "Cannot be private",
+      "revId": "30ad21eedba0e6cc41fd5ee764374762db181760",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_7eddf241",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-12-14T12:54:15Z",
+      "side": 1,
+      "message": "Again cannot be private",
+      "revId": "30ad21eedba0e6cc41fd5ee764374762db181760",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_7eb412f2",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-12-14T12:54:15Z",
+      "side": 1,
+      "message": "keep that one",
+      "revId": "30ad21eedba0e6cc41fd5ee764374762db181760",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
