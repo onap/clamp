@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_59fff034",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2017-12-15T10:58:15Z",
+      "side": 1,
+      "message": "please revert all changes done to the method scope, if it\u0027s protected it MUST stay protected.",
+      "revId": "46a923a7fc9bb612f99831e07148bd92a6b87364",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
