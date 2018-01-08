@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_aca3349d",
+        "filename": "src/main/java/org/onap/clamp/clds/model/CldsModel.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-01-08T17:10:38Z",
+      "side": 1,
+      "message": "Keep that one please, as it\u0027s useful to keep track of the user rights",
+      "revId": "36f192b978d3cd3bb11e524b80174eb6711eeb0a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
