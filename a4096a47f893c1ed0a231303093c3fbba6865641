@@ -16,6 +16,24 @@
       "revId": "a4096a47f893c1ed0a231303093c3fbba6865641",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_91e2159e",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 2789
+      },
+      "writtenOn": "2018-01-08T14:28:41Z",
+      "side": 0,
+      "message": "These fields that I removed from CldsModel class have getters and setters, however they are not used anywhere in ONAP project. Therefore, for me it is dead, not used code, which should be deleted according to the clean code rules.",
+      "parentUuid": "5a93c517_b1263115",
+      "revId": "a4096a47f893c1ed0a231303093c3fbba6865641",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
