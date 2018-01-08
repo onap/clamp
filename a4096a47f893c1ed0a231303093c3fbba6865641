@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_b1263115",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-01-08T09:28:09Z",
+      "side": 0,
+      "message": "Why are you removing that ?\nI believe those fields are always null right ?",
+      "revId": "a4096a47f893c1ed0a231303093c3fbba6865641",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
