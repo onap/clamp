@@ -21,34 +21,29 @@
  * ECOMP is a trademark and service mark of AT&T Intellectual Property.
  */
 
-package org.onap.clamp.clds.service;
+package org.onap.clamp.clds.service.swagger;
 
-import io.swagger.jaxrs.config.BeanConfig;
-import java.util.HashSet;
-import java.util.Set;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
-import org.springframework.stereotype.Component;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.jaxrs.Reader;
+import io.swagger.jaxrs.config.DefaultReaderConfig;
+import io.swagger.jaxrs.config.ReaderListener;
+import io.swagger.models.Swagger;
 
-@Component
-@ApplicationPath("/restservices/clds/v1")
-public class JaxrsApplication extends Application {
+import java.util.Map;
+import java.util.stream.Collectors;
 
-    public JaxrsApplication() {
-        BeanConfig beanConfig = new BeanConfig();
-        beanConfig.setSchemes(new String[]{"http"});
-        beanConfig.setHost("localhost:8080");
-        beanConfig.setBasePath("/");
-        beanConfig.setResourcePackage("org.onap.clamp.clds");
-        beanConfig.setScan(true);
+@SwaggerDefinition
+public class BasePathModifier implements ReaderListener {
+
+    @Override
+    public void beforeScan(Reader reader, Swagger swagger) {
+        // needed to avoid to have to add @Api on every api
+        ((DefaultReaderConfig)reader.getConfig()).setScanAllResources(true);
     }
 
     @Override
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> resources = new HashSet();
-        resources.add(io.swagger.jaxrs.listing.ApiListingResource.class);
-        resources.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
-        return resources;
+    public void afterScan(Reader reader, Swagger swagger) {
+        swagger.setPaths(swagger.getPaths().entrySet().stream().collect(Collectors.toMap(e -> "/restservices/clds/v1" + e.getKey(), Map.Entry::getValue)));
     }
 
 }
