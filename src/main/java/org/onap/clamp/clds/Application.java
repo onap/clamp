@@ -88,6 +88,7 @@ public class Application extends SpringBootServletInitializer {
 
     private static void initializeComponents() {
         ModelProperties.registerModelElement(Holmes.class, Holmes.getType());
+
     }
 
     /**
