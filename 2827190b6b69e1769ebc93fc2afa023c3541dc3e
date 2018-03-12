@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_7d5773ca",
+        "filename": "pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-03-12T16:25:17Z",
+      "side": 1,
+      "message": "Duplicate import, please remove",
+      "revId": "2827190b6b69e1769ebc93fc2afa023c3541dc3e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
