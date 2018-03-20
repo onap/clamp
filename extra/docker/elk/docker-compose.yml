@@ -9,7 +9,7 @@ services:
       es_net:
         aliases:
           - elasticsearch
-    
+
   logstash:
     image: logstash
     volumes:
@@ -29,7 +29,7 @@ services:
       - elasticsearch
     networks:
       es_net:
-        
+
   backup:
     image: taskrabbit/elasticsearch-dump
     depends_on:
@@ -37,7 +37,7 @@ services:
     command:
       - --input=http://elasticsearch:9200/.kibana
       - --output=/backups/backup.json
-      - --type=data      
+      - --type=data
     volumes:
       - ./es_backup/:/backups/
     networks:
@@ -68,8 +68,7 @@ services:
       - ./es_backup/:/backups/
     networks:
       es_net:
-    
-        
+
+
 networks:
   es_net:
-    

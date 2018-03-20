@@ -30,10 +30,3 @@ It reads a json file as a query for Elasticsearch, pushes it on the ES server, a
 ### DMaaP Service Mocker
 
 Script that simulates control loop DMaaP services to provide sample data to logstash through DMaaP.
-
-
-
-
-
-
-
