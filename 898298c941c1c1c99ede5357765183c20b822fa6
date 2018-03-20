@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_7ce8b016",
+        "filename": "extra/docker/elk/docker-compose.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2018-03-20T11:51:26Z",
+      "side": 1,
+      "message": "Dangling whitespace :p",
+      "revId": "898298c941c1c1c99ede5357765183c20b822fa6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
