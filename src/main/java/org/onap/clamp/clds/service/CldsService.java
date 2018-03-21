@@ -408,10 +408,8 @@ public class CldsService extends SecureServiceBase {
         isAuthorizedForVf(model);
         String userId = getUserId();
         String actionStateCd = CldsEvent.ACTION_STATE_INITIATED;
-        String processDefinitionKey = "clds-process-action-wf";
         logger.info("PUT actionCd={}", actionCd);
         logger.info("PUT actionStateCd={}", actionStateCd);
-        logger.info("PUT processDefinitionKey={}", processDefinitionKey);
         logger.info("PUT modelName={}", modelName);
         logger.info("PUT test={}", test);
         logger.info("PUT bpmnText={}", model.getBpmnText());
@@ -794,8 +792,7 @@ public class CldsService extends SecureServiceBase {
     @Path("/deploy/{modelName}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public CldsModel deployModel(@PathParam("modelName") String modelName, @QueryParam("test") String test,
-            CldsModel model) {
+    public CldsModel deployModel(@PathParam("modelName") String modelName, CldsModel model) {
         Date startTime = new Date();
         LoggingUtils.setRequestContext("CldsService: Deploy model", getPrincipalName());
         try {
@@ -852,8 +849,7 @@ public class CldsService extends SecureServiceBase {
     @Path("/undeploy/{modelName}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public CldsModel unDeployModel(@PathParam("modelName") String modelName, @QueryParam("test") String test,
-            CldsModel model) {
+    public CldsModel unDeployModel(@PathParam("modelName") String modelName, CldsModel model) {
         Date startTime = new Date();
         LoggingUtils.setRequestContext("CldsService: Undeploy model", getPrincipalName());
         String operationStatusUndeployUrl = dcaeDispatcherServices.deleteExistingDeployment(model.getDeploymentId(),
