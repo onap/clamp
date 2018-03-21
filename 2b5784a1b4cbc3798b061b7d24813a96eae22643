@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_cb1c937a",
+        "filename": "src/main/resources/META-INF/resources/designer/css/dataTables.bootstrap.css",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-03-21T08:20:15Z",
+      "side": 1,
+      "message": "It\u0027s an html page under .css ????",
+      "revId": "2b5784a1b4cbc3798b061b7d24813a96eae22643",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
