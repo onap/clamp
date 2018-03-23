@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_a4ab68d5",
+        "filename": "src/main/java/org/onap/clamp/clds/config/spring/CldsSecurityConfigUsers.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-03-23T08:35:38Z",
+      "side": 1,
+      "message": "YOu are relying on new parameters that are defined in the application.properties but they are not present (same for Unit test in /src/test/resources)",
+      "revId": "0539c7e68266057b24e436a0345a81b039435e36",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_448f0476",
+        "filename": "src/main/java/org/onap/clamp/clds/config/spring/CldsSecurityConfigUsers.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-03-23T08:35:38Z",
+      "side": 1,
+      "message": "Could you also check the unit tests and see if you could not add something to validate your impl ?",
+      "revId": "0539c7e68266057b24e436a0345a81b039435e36",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
