@@ -1,6 +1,6 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
 .. http://creativecommons.org/licenses/by/4.0
-.. Copyright © 2017 AT&T Intellectual Property. All rights reserved.
+.. Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
 
 CLAMP - Closed Loop Automation Management Platform
 ==================================================
@@ -40,7 +40,8 @@ CLAMP uses the API's exposed by the following ONAP components:
 Delivery
 --------
 CLAMP component is composed of a UI layer and a BackEnd layer and packaged into a single container.
-CLAMP also requires a database instance with 2 DB, it uses MariaDB.
+CLAMP also requires a database instance with 1 DB, it uses MariaDB.
+CLAMP also uses an ELK stack (Elastic Search, Logstash and Kibana) for the Dashboard.
 
 .. blockdiag::
 
@@ -48,8 +49,9 @@ CLAMP also requires a database instance with 2 DB, it uses MariaDB.
    blockdiag layers {
    orientation = portrait
    CLAMP_UI -> CLAMP_BACKEND;
-   CLAMP_BACKEND -> CAMUNDADB;
    CLAMP_BACKEND -> CLDSDB;
+   CLAMP_KIBANA -> CLAMP_ELASTICSEARCH;
+   CLAMP_LOGSTASH -> CLAMP_ELASTICSEARCH;
    group l1 {
    color = blue;
    label = "CLAMP container";
@@ -58,10 +60,24 @@ CLAMP also requires a database instance with 2 DB, it uses MariaDB.
    group l3 {
    color = orange;
    label = "MariaDB container";
-   CAMUNDADB; CLDSDB;
+   CLDSDB;
+   }
+   group l4 {
+   color = green;
+   label = "E_Search container";
+   CLAMP_ELASTICSEARCH;
+   }
+   group l5 {
+      color = green;
+      label = "Kibana container";
+      CLAMP_KIBANA;
+   }
+   group l6 {
+      color = green;
+      label = "LogStash container";
+      CLAMP_LOGSTASH;
    }
    }
-
 
 Logging & Diagnostic Information
 --------------------------------
