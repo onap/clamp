@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_87a12a96",
+        "filename": "src/main/java/org/onap/clamp/clds/client/DcaeInventoryServices.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-04-11T15:45:51Z",
+      "side": 1,
+      "message": "Could we put that code in a separated method please :-) ?",
+      "revId": "e88b86ed55f5708d2f9ed1f114aeb0cc6d21c7dc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_27aa9671",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/SdcSingleController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-04-11T15:45:51Z",
+      "side": 1,
+      "message": "Here it\u0027s not thread, it\u0027s for different Clamp.\nWe don\u0027t want that multiple clamp treats the info at the same time",
+      "revId": "e88b86ed55f5708d2f9ed1f114aeb0cc6d21c7dc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_47a7a2a7",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/SdcSingleController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-04-11T15:45:51Z",
+      "side": 1,
+      "message": "Not Unexpected exception, it\u0027s a InterruptedException. Just replace the comment in the log please",
+      "revId": "e88b86ed55f5708d2f9ed1f114aeb0cc6d21c7dc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_c7b2d2e4",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/CsarInstallerImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-04-11T15:45:51Z",
+      "side": 1,
+      "message": "Can we replace that by a single catch with | operator please ?",
+      "revId": "e88b86ed55f5708d2f9ed1f114aeb0cc6d21c7dc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
