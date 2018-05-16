@@ -62,11 +62,6 @@ public class CldsSdcControllerConfiguration {
         sdcControllersConfig.getAllDefinedControllers().forEach((k, v) -> {
             logger.info("Instantiating controller :" + k);
             SdcSingleController sdcController = new SdcSingleController(clampProp, csarInstaller, v, true);
-            try {
-                sdcController.initSdc();
-            } catch (SdcControllerException e) {
-                logger.error("Exception caught when starting sdc controller", e);
-            }
             sdcControllersList.add(sdcController);
         });
     }
