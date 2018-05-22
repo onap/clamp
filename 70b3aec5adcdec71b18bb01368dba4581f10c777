@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_579cb45d",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2018-05-22T09:45:07Z",
+      "side": 1,
+      "message": "it is needed to download nl.jworks.markdown_to_asciidoc:markdown_to_asciidoc:jar:1.0, ch.netzwerg:paleo-core:jar:0.10.1 which is needed by the maven plugins",
+      "parentUuid": "5a93c517_d799a47a",
+      "revId": "70b3aec5adcdec71b18bb01368dba4581f10c777",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_779f7066",
         "filename": "src/main/java/org/onap/clamp/clds/service/JaxrsApplication.java",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2018-05-22T09:21:03Z",
       "side": 1,
       "message": "Do we still need that code ?",
+      "revId": "70b3aec5adcdec71b18bb01368dba4581f10c777",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_97b9dccd",
+        "filename": "src/main/java/org/onap/clamp/clds/service/JaxrsApplication.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2018-05-22T09:45:07Z",
+      "side": 1,
+      "message": "indeed, probably we don\u0027t need it any more, I will remove it",
+      "parentUuid": "5a93c517_779f7066",
       "revId": "70b3aec5adcdec71b18bb01368dba4581f10c777",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
