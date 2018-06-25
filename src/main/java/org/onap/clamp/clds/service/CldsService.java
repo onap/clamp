@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -121,6 +122,26 @@ public class CldsService extends SecureServiceBase {
     private SecureServicePermission permissionReadTemplate;
     private SecureServicePermission permissionUpdateTemplate;
 
+    private final CldsDao cldsDao;
+    private final XslTransformer cldsBpmnTransformer;
+    private final ClampProperties refProp;
+    private final SdcCatalogServices sdcCatalogServices;
+    private final DcaeDispatcherServices dcaeDispatcherServices;
+    private final DcaeInventoryServices dcaeInventoryServices;
+
+    @Autowired
+    public CldsService(CldsDao cldsDao, XslTransformer cldsBpmnTransformer,
+        ClampProperties refProp, SdcCatalogServices sdcCatalogServices,
+        DcaeDispatcherServices dcaeDispatcherServices,
+        DcaeInventoryServices dcaeInventoryServices) {
+        this.cldsDao = cldsDao;
+        this.cldsBpmnTransformer = cldsBpmnTransformer;
+        this.refProp = refProp;
+        this.sdcCatalogServices = sdcCatalogServices;
+        this.dcaeDispatcherServices = dcaeDispatcherServices;
+        this.dcaeInventoryServices = dcaeInventoryServices;
+    }
+
     @PostConstruct
     private final void afterConstruction() {
         permissionReadCl = SecureServicePermission.create(cldsPersmissionTypeCl, cldsPermissionInstance, "read");
@@ -130,19 +151,6 @@ public class CldsService extends SecureServiceBase {
         permissionUpdateTemplate = SecureServicePermission.create(cldsPermissionTypeTemplate, cldsPermissionInstance,
                 "update");
     }
-
-    @Autowired
-    private CldsDao cldsDao;
-    @Autowired
-    private XslTransformer cldsBpmnTransformer;
-    @Autowired
-    private ClampProperties refProp;
-    @Autowired
-    private SdcCatalogServices sdcCatalogServices;
-    @Autowired
-    private DcaeDispatcherServices dcaeDispatcherServices;
-    @Autowired
-    private DcaeInventoryServices dcaeInventoryServices;
 
     /*
      * @return list of CLDS-Monitoring-Details: CLOSELOOP_NAME | Close loop name
@@ -343,16 +351,7 @@ public class CldsService extends SecureServiceBase {
         logger.info("PUT propText={}", cldsModel.getPropText());
         logger.info("PUT imageText={}", cldsModel.getImageText());
         cldsModel.setName(modelName);
-        if (cldsModel.getTemplateName() != null) {
-            CldsTemplate template = cldsDao.getTemplate(cldsModel.getTemplateName());
-            if (template != null) {
-                cldsModel.setTemplateId(template.getId());
-                cldsModel.setDocText(template.getPropText());
-                // This is to provide the Bpmn XML when Template part in UI is
-                // disabled
-                cldsModel.setBpmnText(template.getBpmnText());
-            }
-        }
+        fillInCldsModel(cldsModel);
         updateAndInsertNewEvent(cldsModel.getName(), cldsModel.getControlNamePrefix(), cldsModel.getEvent(),
                 CldsEvent.ACTION_MODIFY);
         cldsModel.save(cldsDao, getUserId());
@@ -456,23 +455,20 @@ public class CldsService extends SecureServiceBase {
             // Flag indicates whether it is triggered by Validation Test button
             // from
             // UI
-            boolean isTest = false;
-            if (test != null && test.equalsIgnoreCase("true")) {
-                isTest = true;
-            } else {
+            boolean isTest = Boolean.getBoolean(test);
+
+            if (!isTest){
                 String actionTestOverride = refProp.getStringValue("action.test.override");
-                if (actionTestOverride != null && actionTestOverride.equalsIgnoreCase("true")) {
+                if (Boolean.getBoolean(actionTestOverride)) {
                     logger.info("PUT actionTestOverride={}", actionTestOverride);
                     logger.info("PUT override test indicator and setting it to true");
                     isTest = true;
                 }
             }
             logger.info("PUT isTest={}", isTest);
-            boolean isInsertTestEvent = false;
             String insertTestEvent = refProp.getStringValue("action.insert.test.event");
-            if (insertTestEvent != null && insertTestEvent.equalsIgnoreCase("true")) {
-                isInsertTestEvent = true;
-            }
+            boolean isInsertTestEvent = Boolean.getBoolean(insertTestEvent);
+
             logger.info("PUT isInsertTestEvent={}", isInsertTestEvent);
             // determine if requested action is permitted
             model.validateAction(actionCd);
@@ -548,10 +544,7 @@ public class CldsService extends SecureServiceBase {
         }
         // Flag indicates whether it is triggered by Validation Test button from
         // UI
-        boolean isTest = false;
-        if (test != null && test.equalsIgnoreCase("true")) {
-            isTest = true;
-        }
+        boolean isTest = Boolean.valueOf(test);
         int instanceCount = 0;
         if (dcaeEvent.getInstances() != null) {
             instanceCount = dcaeEvent.getInstances().size();
