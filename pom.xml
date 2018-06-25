@@ -62,7 +62,7 @@
 				<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 				<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-				<docker.mariadb.port.host>3306</docker.mariadb.port.host>
+				<docker.mariadb.port.host>3307</docker.mariadb.port.host>
 				<docker.http-cache.port.host>8085</docker.http-cache.port.host>
 				<project.scm.id>git-server</project.scm.id>
 				<java.version>1.8</java.version>
@@ -86,7 +86,7 @@
 				<docker.skip.push>true</docker.skip.push>
 				<docker.skip.tag>true</docker.skip.tag>
 				<skip.staging.artifacts>false</skip.staging.artifacts>
-				<python.http.proxy.param></python.http.proxy.param>
+				<python.http.proxy.param>10.144.1.10</python.http.proxy.param>
 				<tomcat.version>8.5.28</tomcat.version>
 		</properties>
 
@@ -543,6 +543,13 @@
 						<version>1.2.0</version>
 						<scope>test</scope>
 				</dependency>
+        <!-- TESTING -->
+        <dependency>
+          <groupId>org.assertj</groupId>
+          <artifactId>assertj-core</artifactId>
+          <version>3.8.0</version>
+          <scope>test</scope>
+        </dependency>
 		</dependencies>
 		<pluginRepositories>
 				<pluginRepository>
@@ -598,7 +605,7 @@
 				</resources>
 
 				<plugins>
-						<!-- Scan Clamp code and generate the swagger.json file with all the 
+						<!-- Scan Clamp code and generate the swagger.json file with all the
 								APIs -->
 						<plugin>
 								<groupId>com.sebastian-daschner</groupId>
@@ -618,8 +625,8 @@
 								</executions>
 						</plugin>
 
-						<!-- Read the swagger.json file and the definition from SwaggerConfig.java; 
-								generate a list of .adoc files containing the APIs info in more structured 
+						<!-- Read the swagger.json file and the definition from SwaggerConfig.java;
+								generate a list of .adoc files containing the APIs info in more structured
 								way -->
 						<plugin>
 								<groupId>io.github.swagger2markup</groupId>
@@ -654,7 +661,7 @@
 								</executions>
 						</plugin>
 
-						<!-- Run the generated asciidoc through Asciidoctor to generate other 
+						<!-- Run the generated asciidoc through Asciidoctor to generate other
 								documentation types, such as PDFs or HTML5 -->
 						<plugin>
 								<groupId>org.asciidoctor</groupId>
@@ -838,58 +845,45 @@
 										<verbose>true</verbose>
 										<apiVersion>1.23</apiVersion>
 										<images>
-												<image>
-														<name>mariadb:10.1.11</name>
-														<alias>mariadb</alias>
-														<run>
-																<env>
-																		<MYSQL_ROOT_PASSWORD>strong_pitchou</MYSQL_ROOT_PASSWORD>
-																</env>
-																<hostname>mariadb</hostname>
-																<volumes>
-																		<bind>
-																				<volume>${project.basedir}/extra/sql/:/docker-entrypoint-initdb.d</volume>
-																				<volume>${project.basedir}/extra/docker/mariadb/conf1:/etc/mysql/conf.d</volume>
-																		</bind>
-																</volumes>
-																<wait>
-																		<log>socket: '/var/run/mysqld/mysqld.sock'  port: 3306  mariadb.org binary distribution</log>
-																		<time>600000</time>
-																</wait>
-																<ports>
-																		<port>${docker.mariadb.port.host}:3306</port>
-																</ports>
-														</run>
-												</image>
-												<image>
-														<name>python:2-slim</name>
-														<alias>python</alias>
-														<run>
-																<hostname>python</hostname>
-																<volumes>
-																		<bind>
-																				<volume>${project.basedir}/src/test/resources/http-cache/:/usr/src/http-cache-app</volume>
-																				<volume>${project.basedir}/src/test/resources/http-cache/example/:/usr/src/http-cache-app/data-cache</volume>
-																		</bind>
-																</volumes>
-																<wait>
-																		<tcp>
-																				<ports>
-																						<port>8080</port>
-																				</ports>
-																				<mode>direct</mode>
-																		</tcp>
-																		<time>120000</time>
-																</wait>
-																<ports>
-																		<port>${docker.http-cache.port.host}:8080</port>
-																</ports>
-																<workingDir>/usr/src/http-cache-app</workingDir>
-																<cmd>
-																		<shell>./start_http_cache.sh ${python.http.proxy.param} --python_proxyaddress=localhost:${docker.http-cache.port.host}</shell>
-																</cmd>
-														</run>
-												</image>
+												<!--<image>-->
+														<!--<name>mariadb:10.1.11</name>-->
+														<!--<alias>mariadb</alias>-->
+														<!--<run>-->
+																<!--<env>-->
+																		<!--<MYSQL_ROOT_PASSWORD>strong_pitchou</MYSQL_ROOT_PASSWORD>-->
+																<!--</env>-->
+																<!--<hostname>root</hostname>-->
+																<!--<volumes>-->
+																		<!--<bind>-->
+																				<!--<volume>${project.basedir}/extra/sql/:/docker-entrypoint-initdb.d</volume>-->
+																				<!--<volume>${project.basedir}/extra/docker/mariadb/conf1:/etc/mysql/conf.d</volume>-->
+																		<!--</bind>-->
+																<!--</volumes>-->
+																<!--<ports>-->
+																		<!--<port>${docker.mariadb.port.host}:3306</port>-->
+																<!--</ports>-->
+														<!--</run>-->
+												<!--</image>-->
+												<!--<image>-->
+														<!--<name>python:2-slim</name>-->
+														<!--<alias>python</alias>-->
+														<!--<run>-->
+																<!--<hostname>python</hostname>-->
+																<!--<volumes>-->
+																		<!--<bind>-->
+																				<!--<volume>${project.basedir}/src/test/resources/http-cache/:/usr/src/http-cache-app</volume>-->
+																				<!--<volume>${project.basedir}/src/test/resources/http-cache/example/:/usr/src/http-cache-app/data-cache</volume>-->
+																		<!--</bind>-->
+																<!--</volumes>-->
+																<!--<ports>-->
+																		<!--<port>${docker.http-cache.port.host}:8080</port>-->
+																<!--</ports>-->
+																<!--<workingDir>/usr/src/http-cache-app</workingDir>-->
+																<!--<cmd>-->
+																		<!--<shell>./start_http_cache.sh ${python.http.proxy.param} &#45;&#45;python_proxyaddress=localhost:${docker.http-cache.port.host}</shell>-->
+																<!--</cmd>-->
+														<!--</run>-->
+												<!--</image>-->
 												<image>
 														<name>onap/clamp</name>
 														<alias>onap-clamp</alias>
