@@ -320,6 +320,6 @@ public class OperationalPolicyReq {
         if (prList == null || prList.isEmpty()) {
             return new PolicyResult[0];
         }
-        return prList.stream().map(stringElem -> PolicyResult.toResult(stringElem)).toArray(PolicyResult[]::new);
+        return prList.stream().map(PolicyResult::toResult).toArray(PolicyResult[]::new);
     }
 }
