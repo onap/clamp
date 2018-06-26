@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_a006b983",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsInfoProvider.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-06-26T07:14:07Z",
+      "side": 1,
+      "message": "maybe add notice about Nokia?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 40
+      },
+      "revId": "5394f76c822891215a0265a679930e1c25c3c0d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_20f2a99b",
+        "filename": "src/test/java/org/onap/clamp/clds/service/CldsInfoProviderTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-06-26T07:14:07Z",
+      "side": 1,
+      "message": "replace those asserts by assertThat(..).isTrue()",
+      "range": {
+        "startLine": 56,
+        "startChar": 7,
+        "endLine": 56,
+        "endChar": 74
+      },
+      "revId": "5394f76c822891215a0265a679930e1c25c3c0d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
