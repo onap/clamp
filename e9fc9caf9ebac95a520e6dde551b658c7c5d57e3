@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_fca46909",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsInfoProvider.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3885
+      },
+      "writtenOn": "2018-06-28T12:22:04Z",
+      "side": 1,
+      "message": "do we need clds prefix in private members?",
+      "revId": "e9fc9caf9ebac95a520e6dde551b658c7c5d57e3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
