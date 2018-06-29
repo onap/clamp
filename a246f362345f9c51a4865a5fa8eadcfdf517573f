@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_bf39f3d9",
+        "filename": "pom.xml",
+        "patchSetId": 10
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-06-29T08:03:46Z",
+      "side": 1,
+      "message": "From what i have seen in the tests, this library is not really required.",
+      "revId": "a246f362345f9c51a4865a5fa8eadcfdf517573f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_df34ffe0",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsInfoProvider.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-06-29T08:03:46Z",
+      "side": 1,
+      "message": "2018 only",
+      "revId": "a246f362345f9c51a4865a5fa8eadcfdf517573f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_5f778f9f",
+        "filename": "src/test/java/org/onap/clamp/clds/service/CldsInfoProviderTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-06-29T08:03:46Z",
+      "side": 1,
+      "message": "2018",
+      "revId": "a246f362345f9c51a4865a5fa8eadcfdf517573f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_ff6d3bcd",
+        "filename": "src/test/java/org/onap/clamp/clds/service/CldsInfoProviderTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-06-29T08:03:46Z",
+      "side": 1,
+      "message": "Not a big problem here :-) but there is no need to use assertJ to do that, simple junit framework is enough.",
+      "revId": "a246f362345f9c51a4865a5fa8eadcfdf517573f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
