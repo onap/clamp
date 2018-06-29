@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_9f6677ba",
+        "filename": "pom.xml",
+        "patchSetId": 11
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-06-29T11:16:49Z",
+      "side": 1,
+      "message": "Ok looks cool indeed, can we go to the latest version ?\nI saw 3.10.0 ?",
+      "revId": "dc242a0476f768d480902f30153c73197e7bab31",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
