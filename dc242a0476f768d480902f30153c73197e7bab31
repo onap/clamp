@@ -16,6 +16,41 @@
       "revId": "dc242a0476f768d480902f30153c73197e7bab31",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_bff813c5",
+        "filename": "pom.xml",
+        "patchSetId": 11
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-06-29T11:54:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a93c517_9f6677ba",
+      "revId": "dc242a0476f768d480902f30153c73197e7bab31",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_5f08efd8",
+        "filename": "src/test/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyReqTest.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-06-29T11:54:57Z",
+      "side": 1,
+      "message": "This is not new file. I\u0027ve just moved it to proper package. This has let me to get rid of reflection.",
+      "revId": "dc242a0476f768d480902f30153c73197e7bab31",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
