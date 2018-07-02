@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_adb3094c",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyReq.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-07-02T12:10:54Z",
+      "side": 1,
+      "message": "You have modified it\nso you must add:\n\"Modifications copyright (c) 2018 Nokia\" AFTER the \"...\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dLICENSE_END\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d...\"",
+      "revId": "ca268a5e8e61ff8f46bf48e9c776bf13049d301f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_4d828553",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/SdcSingleController.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-07-02T12:10:54Z",
+      "side": 1,
+      "message": "You have modified it\nso you must add:\n\"Modifications copyright (c) 2018 Nokia\" AFTER the \"...\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dLICENSE_END\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d...\"",
+      "revId": "ca268a5e8e61ff8f46bf48e9c776bf13049d301f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_8db88d2b",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsInfoProvider.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-07-02T12:10:54Z",
+      "side": 1,
+      "message": "There is license problem here.\nThis code has been licensed under AT\u0026T, even if you reworked it, you cannot tag it with Nokia copyright.\nIt must be licensed under At\u0026T, then you must add:\n\"Modifications copyright (c) 2018 Nokia\" after the \"...\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dLICENSE_END\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d...\"",
+      "revId": "ca268a5e8e61ff8f46bf48e9c776bf13049d301f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_6d850158",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsService.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-07-02T12:10:54Z",
+      "side": 1,
+      "message": "You have modified it\nso you must add:\n\"Modifications copyright (c) 2018 Nokia\" AFTER the \"...\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dLICENSE_END\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d...\"",
+      "revId": "ca268a5e8e61ff8f46bf48e9c776bf13049d301f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_0d7c7d71",
+        "filename": "src/test/java/org/onap/clamp/clds/config/CldsUserJsonDecoderTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-07-02T12:10:54Z",
+      "side": 1,
+      "message": "You have modified it\nso you must add:\n\"Modifications copyright (c) 2018 Nokia\" AFTER the \"...\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dLICENSE_END\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d...\"",
+      "revId": "ca268a5e8e61ff8f46bf48e9c776bf13049d301f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_2d7ff967",
+        "filename": "src/test/java/org/onap/clamp/clds/config/sdc/SdcSingleControllerConfigurationTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-07-02T12:10:54Z",
+      "side": 1,
+      "message": "You have modified it\nso you must add:\n\"Modifications copyright (c) 2018 Nokia\" AFTER the \"...\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dLICENSE_END\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d...\"",
+      "revId": "ca268a5e8e61ff8f46bf48e9c776bf13049d301f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_cd953589",
+        "filename": "src/test/java/org/onap/clamp/clds/model/CldsDbServiceCacheTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-07-02T12:10:54Z",
+      "side": 1,
+      "message": "You have modified it\nso you must add:\n\"Modifications copyright (c) 2018 Nokia\" AFTER the \"...\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dLICENSE_END\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d...\"",
+      "revId": "ca268a5e8e61ff8f46bf48e9c776bf13049d301f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
