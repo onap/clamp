@@ -16,6 +16,24 @@
       "revId": "19f3f866bf66345e02be278a13ee5fbdac721e0e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_e8bedfff",
+        "filename": "src/test/java/org/onap/clamp/clds/service/CldsInfoProviderTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-07-03T05:57:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a93c517_4d05a5c0",
+      "revId": "19f3f866bf66345e02be278a13ee5fbdac721e0e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
