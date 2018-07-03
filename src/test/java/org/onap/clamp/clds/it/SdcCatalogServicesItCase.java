@@ -17,14 +17,18 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  * ============LICENSE_END============================================
+ * Modifications copyright (c) 2018 Nokia
  * ===================================================================
  * 
  */
 
 package org.onap.clamp.clds.it;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -168,6 +172,24 @@ public class SdcCatalogServicesItCase {
         assertTrue("1.2".equals(res1.getVersion()));
         assertTrue("resource2".equals(res2.getName()));
         assertTrue("1.0".equals(res2.getVersion()));
+    }
+
+
+    @Test
+    public void removeDuplicateSdcFunctionShouldNotReturnNull(){
+        // given
+        SdcCatalogServices catalogServices = new SdcCatalogServices();
+        ArrayList<SdcResourceBasicInfo> emptyList = new ArrayList<>();
+
+        // when
+        List<SdcResourceBasicInfo> firstResult = catalogServices
+            .removeDuplicateSdcResourceBasicInfo(null);
+        List<SdcResourceBasicInfo> secondResult = catalogServices
+            .removeDuplicateSdcResourceBasicInfo(new ArrayList<>());
+
+        // then
+        assertEquals(firstResult, emptyList);
+        assertEquals(secondResult, emptyList);
     }
 
     @Test
