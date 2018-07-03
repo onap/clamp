@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Wojciech Sliwka <wojciech.sliwka@nokia.com>
+Code-Review+2: Sébastien Determe <sd378r@intl.att.com>
+Submitted-by: Sébastien Determe <sd378r@intl.att.com>
+Submitted-at: Tue, 03 Jul 2018 08:36:38 +0000
+Reviewed-on: https://gerrit.onap.org/r/55307
+Project: clamp
+Branch: refs/heads/master
