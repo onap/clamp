@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2018 AT&T Intellectual Property. All rights
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); 
@@ -18,22 +18,44 @@
  * limitations under the License.
  * ============LICENSE_END============================================
  * ===================================================================
+ * 
  */
 
-package org.onap.clamp.clds.swagger;
+package org.onap.clamp.clds.exception;
 
-import org.springframework.context.annotation.Configuration;
+/**
+ * New exception to request errors.
+ *
+ */
+public class NotAuthorizedException extends RuntimeException {
 
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5738167530541646123L;
 
-@EnableSwagger2
-@Configuration
-public class SwaggerConfig {
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("Clamp").description("Clamp API Description").license("Apache 2.0")
-                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0").build();
+	/**
+     * This constructor can be used to create a new CldsConfigException.
+     * 
+     * @param message
+     *            A string message detailing the problem
+     * @param e
+     *            The exception sent by the code
+     */
+    public NotAuthorizedException(String message, Throwable e) {
+        super(message, e);
     }
+
+    /**
+     * This constructor can be used to create a new CldsConfigException. Use
+     * this constructor only if you are creating a new exception stack, not if
+     * an exception was already raised by another code.
+     *
+     * @param message
+     *            A string message detailing the problem
+     */
+    public NotAuthorizedException(String message) {
+        super(message);
+    }
+
 }
