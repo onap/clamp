@@ -198,7 +198,7 @@ function loadSharedPropertyByServiceProperties(callBack) {
   $.ajax({
     async: false,
     dataType: "json",
-    url: '/restservices/clds/v1/clds/properties/',
+    url: '/restservices/clds/v1/clds/properties',
     success: function(data) {
       vf_Services = data;
       setASDCFields();

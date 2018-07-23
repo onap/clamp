@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2018 AT&T Intellectual Property. All rights
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); 
@@ -18,30 +18,44 @@
  * limitations under the License.
  * ============LICENSE_END============================================
  * ===================================================================
+ * 
  */
 
-package org.onap.clamp.clds.swagger;
+package org.onap.clamp.clds.exception;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+/**
+ * New exception to request errors.
+ *
+ */
+public class BadRequestException extends RuntimeException {
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.onap.clamp.clds.Application;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5738167530541646123L;
 
-import io.github.swagger2markup.Swagger2MarkupConverter;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = {
-        Application.class, SwaggerConfig.class
-})
-public class SwaggerGenerationTest {
-
-    @Test
-    public void convertRemoteSwaggerToAsciiDoc() {
-        Path localSwaggerFile = Paths.get("docs/swagger/swagger.json");
-        Swagger2MarkupConverter.from(localSwaggerFile).build();
+	/**
+     * This constructor can be used to create a new CldsConfigException.
+     * 
+     * @param message
+     *            A string message detailing the problem
+     * @param e
+     *            The exception sent by the code
+     */
+    public BadRequestException(String message, Throwable e) {
+        super(message, e);
     }
+
+    /**
+     * This constructor can be used to create a new CldsConfigException. Use
+     * this constructor only if you are creating a new exception stack, not if
+     * an exception was already raised by another code.
+     *
+     * @param message
+     *            A string message detailing the problem
+     */
+    public BadRequestException(String message) {
+        super(message);
+    }
+
 }
