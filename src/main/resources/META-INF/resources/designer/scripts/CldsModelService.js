@@ -389,8 +389,8 @@ app.service('cldsModelService', ['alertService', '$http', '$q', function(alertSe
 
 
   this.getASDCServices().then(function(pars) {
-
-    var services = pars.service;
+	var obj = JSON.parse(pars);
+    var services = obj.service;
     asdc_Services = services
   });
 
