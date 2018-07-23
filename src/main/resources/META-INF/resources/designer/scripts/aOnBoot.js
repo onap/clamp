@@ -158,7 +158,7 @@ function loadSharedPropertyByService(onChangeUUID, refresh, callBack) {
     dataType: "json",
     url: serviceUrl,
     success: function(data) {
-      vf_Services = data;
+      vf_Services = JSON.parse(data);
       setASDCFields()
       if (refresh) {
         $("#paramsWarnrefresh").hide();
