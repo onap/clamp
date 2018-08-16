@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2017 AT&T Intellectual Property. All rights
+ * Copyright (C) 2018 Nokia Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,52 +18,54 @@
  * limitations under the License.
  * ============LICENSE_END============================================
  * ===================================================================
- * 
+ *
  */
 
 package org.onap.clamp.clds.client.req.policy;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.Test;
 import org.onap.policy.controlloop.policy.PolicyResult;
 import org.onap.policy.sdc.Resource;
 import org.onap.policy.sdc.ResourceType;
 
-public class OperationalPolicyReqTest {
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class OperationalPolicyYamlFormatterTest {
+
+    private OperationalPolicyYamlFormatter policyYamlFormatter = new OperationalPolicyYamlFormatter();
 
     @Test
     public void shouldConvertGivenStringsToResourceObjects()
-        throws NoSuchMethodException, SecurityException, IllegalAccessException,
-        IllegalArgumentException, InvocationTargetException {
+            throws SecurityException,
+            IllegalArgumentException {
 
         //given
         List<String> stringList = Arrays.asList("test1", "test2", "test3", "test4");
 
         //when
-        Resource[] resources = OperationalPolicyReq.convertToResource(stringList, ResourceType.VF);
+        Resource[] resources = policyYamlFormatter.convertToResources(stringList, ResourceType.VF);
 
         //then
         assertThat(resources).extracting(Resource::getResourceName)
-            .containsExactly("test1", "test2", "test3", "test4");
+                .containsExactly("test1", "test2", "test3", "test4");
     }
 
     @Test
     public void shouldConvertGivenStringsToPolicyResults()
-        throws NoSuchMethodException, SecurityException, IllegalAccessException,
-        IllegalArgumentException, InvocationTargetException {
+            throws SecurityException,
+            IllegalArgumentException {
         //given
         List<String> stringList = Arrays.asList("FAILURE", "SUCCESS", "FAILURE_GUARD", "FAILURE_TIMEOUT");
 
         //when
-        PolicyResult[] policyResults = OperationalPolicyReq.convertToPolicyResult(stringList);
+        PolicyResult[] policyResults = policyYamlFormatter.convertToPolicyResults(stringList);
 
         //then
         assertThat(policyResults)
-            .containsExactly(PolicyResult.FAILURE, PolicyResult.SUCCESS,
-                PolicyResult.FAILURE_GUARD, PolicyResult.FAILURE_TIMEOUT);
+                .containsExactly(PolicyResult.FAILURE, PolicyResult.SUCCESS,
+                        PolicyResult.FAILURE_GUARD, PolicyResult.FAILURE_TIMEOUT);
     }
 }
