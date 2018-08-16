@@ -18,27 +18,62 @@
  * limitations under the License.
  * ============LICENSE_END============================================
  * ===================================================================
- * 
+ *
  */
 
 package org.onap.clamp.clds.client.req.policy;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
+import org.junit.Before;
 import org.junit.Test;
+import org.onap.clamp.clds.config.ClampProperties;
+import org.onap.clamp.clds.model.properties.ModelProperties;
+import org.onap.clamp.clds.model.properties.PolicyChain;
+import org.onap.clamp.clds.util.ResourceFileUtil;
+import org.onap.policy.api.AttributeType;
+import org.onap.policy.controlloop.policy.ControlLoopPolicy;
+import org.onap.policy.controlloop.policy.Policy;
 import org.onap.policy.controlloop.policy.PolicyResult;
+import org.onap.policy.controlloop.policy.Target;
+import org.onap.policy.controlloop.policy.TargetType;
+import org.onap.policy.controlloop.policy.builder.BuilderException;
 import org.onap.policy.sdc.Resource;
 import org.onap.policy.sdc.ResourceType;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.matches;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class OperationalPolicyReqTest {
 
+    private static final String CONTROL_NAME = "ClosedLoop-d4629aee-970f-11e8-86c9-02552dda865e";
+    private ModelProperties modelProperties;
+    private PolicyChain policyChain;
+
+    @Before
+    public void setUp() throws Exception {
+        String modelProp = ResourceFileUtil.getResourceAsString("example/model-properties/policy/modelBpmnProperties.json");
+        modelProperties = new ModelProperties("CLAMPDemoVFW_v1_0_3af8daec-6f10-4027-a3540",
+                CONTROL_NAME, "PUT", false, "{}", modelProp);
+        policyChain = readPolicyChainFromResources();
+    }
+
     @Test
     public void shouldConvertGivenStringsToResourceObjects()
-        throws NoSuchMethodException, SecurityException, IllegalAccessException,
-        IllegalArgumentException, InvocationTargetException {
+            throws SecurityException,
+            IllegalArgumentException {
 
         //given
         List<String> stringList = Arrays.asList("test1", "test2", "test3", "test4");
@@ -48,13 +83,13 @@ public class OperationalPolicyReqTest {
 
         //then
         assertThat(resources).extracting(Resource::getResourceName)
-            .containsExactly("test1", "test2", "test3", "test4");
+                .containsExactly("test1", "test2", "test3", "test4");
     }
 
     @Test
     public void shouldConvertGivenStringsToPolicyResults()
-        throws NoSuchMethodException, SecurityException, IllegalAccessException,
-        IllegalArgumentException, InvocationTargetException {
+            throws SecurityException,
+            IllegalArgumentException {
         //given
         List<String> stringList = Arrays.asList("FAILURE", "SUCCESS", "FAILURE_GUARD", "FAILURE_TIMEOUT");
 
@@ -63,7 +98,94 @@ public class OperationalPolicyReqTest {
 
         //then
         assertThat(policyResults)
-            .containsExactly(PolicyResult.FAILURE, PolicyResult.SUCCESS,
-                PolicyResult.FAILURE_GUARD, PolicyResult.FAILURE_TIMEOUT);
+                .containsExactly(PolicyResult.FAILURE, PolicyResult.SUCCESS,
+                        PolicyResult.FAILURE_GUARD, PolicyResult.FAILURE_TIMEOUT);
+    }
+
+    @Test
+    public void shouldFormatRequestAttributes() throws IOException, BuilderException {
+        // given
+        ClampProperties mockClampProperties = createMockClampProperties(ImmutableMap.<String, String>builder()
+                .put("op.templateName", "ClosedLoopControlName")
+                .put("op.notificationTopic", "POLICY-CL-MGT")
+                .put("op.controller", "amsterdam")
+                .put("op.recipeTopic", "APPC")
+                .build());
+
+        //when
+        Map<AttributeType, Map<String, String>> requestAttributes
+                = OperationalPolicyReq.formatAttributes(mockClampProperties, modelProperties,
+                "789875c1-e788-432f-9a76-eac8ed889734", policyChain);
+        //then
+        assertThat(requestAttributes).containsKeys(AttributeType.MATCHING, AttributeType.RULE);
+        assertThat(requestAttributes.get(AttributeType.MATCHING)).contains(entry(OperationalPolicyReq.CONTROLLER, "amsterdam"));
+
+        Map<String, String> ruleParameters = requestAttributes.get(AttributeType.RULE);
+        assertThat(ruleParameters).containsExactly(
+                entry(OperationalPolicyReq.MAX_RETRIES, "3"),
+                entry(OperationalPolicyReq.TEMPLATE_NAME, "ClosedLoopControlName"),
+                entry(OperationalPolicyReq.NOTIFICATION_TOPIC, "POLICY-CL-MGT"),
+                entry(OperationalPolicyReq.RECIPE_TOPIC, "APPC"),
+                entry(OperationalPolicyReq.RECIPE, "healthCheck"),
+                entry(OperationalPolicyReq.RESOURCE_ID, "cdb69724-57d5-4a22-b96c-4c345150fd0e"),
+                entry(OperationalPolicyReq.RETRY_TIME_LIMIT, "180"),
+                entry(OperationalPolicyReq.CLOSED_LOOP_CONTROL_NAME, CONTROL_NAME + "_1")
+        );
+    }
+
+    @Test
+    public void shouldFormatRequestAttributesWithProperControlLoopYaml() throws IOException, BuilderException {
+        //given
+        ClampProperties mockClampProperties = createMockClampProperties(ImmutableMap.<String, String>builder()
+                .put("op.templateName", "ClosedLoopControlName")
+                .put("op.operationTopic", "APPP-CL")
+                .put("op.notificationTopic", "POLICY-CL-MGT")
+                .put("op.controller", "amsterdam")
+                .put("op.recipeTopic", "APPC")
+                .build());
+
+        Policy expectedPolicy = new Policy("6f76ad0b-ea9d-4a92-8d7d-6a6367ce2c77", "healthCheck Policy",
+                "healthCheck Policy - the trigger (no parent) policy - created by CLDS", "APPC",
+                null, new Target(TargetType.VM, "cdb69724-57d5-4a22-b96c-4c345150fd0e"),
+                "healthCheck", 3, 180);
+
+        //when
+        Map<AttributeType, Map<String, String>> requestAttributes = OperationalPolicyReq.formatAttributes(mockClampProperties, modelProperties,
+                "789875c1-e788-432f-9a76-eac8ed889734", policyChain);
+
+        //then
+        assertThat(requestAttributes).containsKeys(AttributeType.MATCHING, AttributeType.RULE);
+        assertThat(requestAttributes.get(AttributeType.MATCHING)).contains(entry("controller", "amsterdam"));
+
+        Map<String, String> ruleParameters = requestAttributes.get(AttributeType.RULE);
+        assertThat(ruleParameters).contains(
+                entry(OperationalPolicyReq.OPERATION_TOPIC, "APPP-CL"),
+                entry(OperationalPolicyReq.TEMPLATE_NAME, "ClosedLoopControlName"),
+                entry(OperationalPolicyReq.NOTIFICATION_TOPIC, "POLICY-CL-MGT"),
+                entry(OperationalPolicyReq.CLOSED_LOOP_CONTROL_NAME, CONTROL_NAME + "_1")
+        );
+
+        String controlLoopYaml = URLDecoder.decode(ruleParameters.get(OperationalPolicyReq.CONTROL_LOOP_YAML), "UTF-8");
+        ControlLoopPolicy controlLoopPolicy = new Yaml().load(controlLoopYaml);
+
+        assertThat(controlLoopPolicy.getControlLoop().getControlLoopName()).isEqualTo(CONTROL_NAME);
+        assertThat(controlLoopPolicy.getPolicies())
+                .usingElementComparatorIgnoringFields("id")
+                .containsExactly(expectedPolicy);
+    }
+
+
+    private ClampProperties createMockClampProperties(ImmutableMap<String, String> propertiesMap) {
+        ClampProperties props = mock(ClampProperties.class);
+        propertiesMap.forEach((property, value) ->
+                when(props.getStringValue(matches(property), any())).thenReturn(value)
+        );
+        return props;
+    }
+
+    private PolicyChain readPolicyChainFromResources() throws IOException {
+        String policyChainText = ResourceFileUtil.getResourceAsString("example/operational-policy/json-policy-chain.json");
+        JsonNode policyChainNode = new ObjectMapper().readTree(policyChainText);
+        return new PolicyChain(policyChainNode);
     }
 }

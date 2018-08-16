@@ -26,17 +26,6 @@ package org.onap.clamp.clds.client.req.policy;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.BadRequestException;
-
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.model.properties.Global;
 import org.onap.clamp.clds.model.properties.ModelProperties;
@@ -55,12 +44,32 @@ import org.onap.policy.sdc.Resource;
 import org.onap.policy.sdc.ResourceType;
 import org.onap.policy.sdc.Service;
 
+import javax.ws.rs.BadRequestException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Construct an Operational Policy request given CLDS objects.
  */
 public class OperationalPolicyReq {
 
     private static final EELFLogger logger = EELFManager.getInstance().getLogger(OperationalPolicyReq.class);
+    static final String TEMPLATE_NAME = "templateName";
+    static final String CLOSED_LOOP_CONTROL_NAME = "closedLoopControlName";
+    static final String NOTIFICATION_TOPIC = "notificationTopic";
+    static final String OPERATION_TOPIC = "operationTopic";
+    static final String CONTROL_LOOP_YAML = "controlLoopYaml";
+    static final String CONTROLLER = "controller";
+    static final String RECIPE = "Recipe";
+    static final String MAX_RETRIES = "MaxRetries";
+    static final String RETRY_TIME_LIMIT = "RetryTimeLimit";
+    static final String RESOURCE_ID = "ResourceId";
+    static final String RECIPE_TOPIC = "RecipeTopic";
 
     protected OperationalPolicyReq() {
     }
@@ -69,7 +78,7 @@ public class OperationalPolicyReq {
      * Format Operational Policy attributes.
      *
      * @param refProp
-     * @param prop
+     * @param modelProperties
      * @param modelElementId
      * @param policyChain
      * @return
@@ -77,55 +86,74 @@ public class OperationalPolicyReq {
      * @throws UnsupportedEncodingException
      */
     public static Map<AttributeType, Map<String, String>> formatAttributes(ClampProperties refProp,
-        ModelProperties prop, String modelElementId, PolicyChain policyChain)
+                                                                           ModelProperties modelProperties, String modelElementId, PolicyChain policyChain)
             throws BuilderException, UnsupportedEncodingException {
-        Global global = prop.getGlobal();
-        prop.setCurrentModelElementId(modelElementId);
-        prop.setPolicyUniqueId(policyChain.getPolicyId());
-        String templateName = refProp.getStringValue("op.templateName", global.getService());
-        String operationTopic = refProp.getStringValue("op.operationTopic", global.getService());
-        String notificationTopic = refProp.getStringValue("op.notificationTopic", global.getService());
-        String controller = refProp.getStringValue("op.controller", global.getService());
-        String recipeTopic = refProp.getStringValue("op.recipeTopic", global.getService());
-        // ruleAttributes
-        logger.info("templateName=" + templateName);
-        logger.info("notificationTopic=" + notificationTopic);
+        modelProperties.setCurrentModelElementId(modelElementId);
+        modelProperties.setPolicyUniqueId(policyChain.getPolicyId());
+
+        String globalService = modelProperties.getGlobal().getService();
+
+        Map<String, String> ruleAttributes = prepareRuleAttributes(refProp, modelProperties, modelElementId, policyChain, globalService);
+        Map<String, String> matchingAttributes = prepareMatchingAttributes(refProp, globalService);
+
+        return createAttributesMap(matchingAttributes, ruleAttributes);
+    }
+
+    private static Map<String, String> prepareRuleAttributes(ClampProperties refProp, ModelProperties modelProperties,
+                                                             String modelElementId, PolicyChain policyChain, String globalService) throws BuilderException, UnsupportedEncodingException {
+        logger.info("Preparing rule attributes...");
+        String templateName = refProp.getStringValue("op.templateName", globalService);
+        String operationTopic = refProp.getStringValue("op.operationTopic", globalService);
+        String notificationTopic = refProp.getStringValue("op.notificationTopic", globalService);
+
         Map<String, String> ruleAttributes = new HashMap<>();
-        ruleAttributes.put("templateName", templateName);
-        ruleAttributes.put("closedLoopControlName", prop.getControlNameAndPolicyUniqueId());
-        ruleAttributes.put("notificationTopic", notificationTopic);
+        ruleAttributes.put(TEMPLATE_NAME, templateName);
+        ruleAttributes.put(CLOSED_LOOP_CONTROL_NAME, modelProperties.getControlNameAndPolicyUniqueId());
+        ruleAttributes.put(NOTIFICATION_TOPIC, notificationTopic);
+
         if (operationTopic == null || operationTopic.isEmpty()) {
-            logger.info("recipeTopic=" + recipeTopic);
             // if no operationTopic, then don't format yaml - use first policy
-            // from list
-            PolicyItem policyItem = policyChain.getPolicyItems().get(0);
-            ruleAttributes.put("RecipeTopic", recipeTopic);
-            String recipe = policyItem.getRecipe();
-            String maxRetries = String.valueOf(policyItem.getMaxRetries());
-            String retryTimeLimit = String.valueOf(policyItem.getRetryTimeLimit());
-            String targetResourceId = String.valueOf(policyItem.getTargetResourceId());
-            logger.info("recipe=" + recipe);
-            logger.info("maxRetries=" + maxRetries);
-            logger.info("retryTimeLimit=" + retryTimeLimit);
-            logger.info("targetResourceId=" + targetResourceId);
-            ruleAttributes.put("Recipe", recipe);
-            ruleAttributes.put("MaxRetries", maxRetries);
-            ruleAttributes.put("RetryTimeLimit", retryTimeLimit);
-            ruleAttributes.put("ResourceId", targetResourceId);
+            String recipeTopic = refProp.getStringValue("op.recipeTopic", globalService);
+            fillRuleAttributesFromPolicyItem(ruleAttributes, policyChain.getPolicyItems().get(0), recipeTopic);
         } else {
-            logger.info("operationTopic=" + operationTopic);
-            // format yaml
-            String yaml = formatYaml(refProp, prop, modelElementId, policyChain);
-            ruleAttributes.put("operationTopic", operationTopic);
-            ruleAttributes.put("controlLoopYaml", yaml);
+            fillRuleAttributesFromPolicyChain(ruleAttributes, policyChain, modelProperties, modelElementId, operationTopic);
         }
-        // matchingAttributes
+        logger.info("Prepared: " + ruleAttributes);
+        return ruleAttributes;
+    }
+
+    private static Map<String, String> prepareMatchingAttributes(ClampProperties refProp, String globalService) {
+        logger.info("Preparing matching attributes...");
+        String controller = refProp.getStringValue("op.controller", globalService);
         Map<String, String> matchingAttributes = new HashMap<>();
-        matchingAttributes.put("controller", controller);
+        matchingAttributes.put(CONTROLLER, controller);
+        logger.info("Prepared: " + matchingAttributes);
+        return matchingAttributes;
+    }
+
+    private static Map<AttributeType, Map<String, String>> createAttributesMap(Map<String, String> matchingAttributes, Map<String, String> ruleAttributes) {
         Map<AttributeType, Map<String, String>> attributes = new HashMap<>();
         attributes.put(AttributeType.RULE, ruleAttributes);
         attributes.put(AttributeType.MATCHING, matchingAttributes);
         return attributes;
+    }
+
+    private static void fillRuleAttributesFromPolicyItem(Map<String, String> ruleAttributes, PolicyItem policyItem, String recipeTopic) {
+        logger.info("recipeTopic=" + recipeTopic);
+        ruleAttributes.put(RECIPE_TOPIC, recipeTopic);
+        ruleAttributes.put(RECIPE, policyItem.getRecipe());
+        ruleAttributes.put(MAX_RETRIES, String.valueOf(policyItem.getMaxRetries()));
+        ruleAttributes.put(RETRY_TIME_LIMIT, String.valueOf(policyItem.getRetryTimeLimit()));
+        ruleAttributes.put(RESOURCE_ID, String.valueOf(policyItem.getTargetResourceId()));
+    }
+
+    private static void fillRuleAttributesFromPolicyChain(Map<String, String> ruleAttributes, PolicyChain policyChain,
+                                                          ModelProperties modelProperties, String modelElementId, String operationTopic)
+            throws BuilderException, UnsupportedEncodingException {
+        logger.info("operationTopic=" + operationTopic);
+        String yaml = formatYaml(modelProperties, modelElementId, policyChain);
+        ruleAttributes.put(OPERATION_TOPIC, operationTopic);
+        ruleAttributes.put(CONTROL_LOOP_YAML, yaml);
     }
 
     /**
@@ -140,7 +168,7 @@ public class OperationalPolicyReq {
      * @throws UnsupportedEncodingException
      */
     protected static String formatOpenLoopYaml(ClampProperties refProp, ModelProperties prop, String modelElementId,
-        PolicyChain policyChain) throws BuilderException, UnsupportedEncodingException {
+                                               PolicyChain policyChain) throws BuilderException, UnsupportedEncodingException {
         // get property objects
         Global global = prop.getGlobal();
         prop.setCurrentModelElementId(modelElementId);
@@ -150,7 +178,7 @@ public class OperationalPolicyReq {
         Resource[] vfResources = convertToResource(global.getResourceVf(), ResourceType.VF);
         // create builder
         ControlLoopPolicyBuilder builder = ControlLoopPolicyBuilder.Factory.buildControlLoop(prop.getControlName(),
-            policyChain.getTimeout(), service, vfResources);
+                policyChain.getTimeout(), service, vfResources);
         // builder.setTriggerPolicy(refProp.getStringValue("op.openloop.policy"));
         // Build the specification
         Results results = builder.buildSpecification();
@@ -161,7 +189,6 @@ public class OperationalPolicyReq {
     /**
      * Format Operational Policy yaml.
      *
-     * @param refProp
      * @param prop
      * @param modelElementId
      * @param policyChain
@@ -169,8 +196,8 @@ public class OperationalPolicyReq {
      * @throws BuilderException
      * @throws UnsupportedEncodingException
      */
-    protected static String formatYaml(ClampProperties refProp, ModelProperties prop, String modelElementId,
-        PolicyChain policyChain) throws BuilderException, UnsupportedEncodingException {
+    private static String formatYaml(ModelProperties prop, String modelElementId,
+                                     PolicyChain policyChain) throws BuilderException, UnsupportedEncodingException {
         // get property objects
         Global global = prop.getGlobal();
         prop.setCurrentModelElementId(modelElementId);
@@ -181,7 +208,7 @@ public class OperationalPolicyReq {
         Resource[] vfcResources = convertToResource(global.getResourceVfc(), ResourceType.VFC);
         // create builder
         ControlLoopPolicyBuilder builder = ControlLoopPolicyBuilder.Factory.buildControlLoop(prop.getControlName(),
-            policyChain.getTimeout(), service, vfResources);
+                policyChain.getTimeout(), service, vfResources);
         builder.addResource(vfcResources);
         // process each policy
         Map<String, Policy> policyObjMap = new HashMap<>();
@@ -200,16 +227,16 @@ public class OperationalPolicyReq {
             Policy policyObj;
             if (policyItemList.indexOf(policyItem) == 0) {
                 String policyDescription = policyItem.getRecipe()
-                    + " Policy - the trigger (no parent) policy - created by CLDS";
+                        + " Policy - the trigger (no parent) policy - created by CLDS";
                 policyObj = builder.setTriggerPolicy(policyName, policyDescription, actor, target,
-                    policyItem.getRecipe(), payloadMap, policyItem.getMaxRetries(), policyItem.getRetryTimeLimit());
+                        policyItem.getRecipe(), payloadMap, policyItem.getMaxRetries(), policyItem.getRetryTimeLimit());
             } else {
                 Policy parentPolicyObj = policyObjMap.get(policyItem.getParentPolicy());
                 String policyDescription = policyItem.getRecipe() + " Policy - triggered conditionally by "
-                    + parentPolicyObj.getName() + " - created by CLDS";
+                        + parentPolicyObj.getName() + " - created by CLDS";
                 policyObj = builder.setPolicyForPolicyResult(policyName, policyDescription, actor, target,
-                    policyItem.getRecipe(), payloadMap, policyItem.getMaxRetries(), policyItem.getRetryTimeLimit(),
-                    parentPolicyObj.getId(), convertToPolicyResult(policyItem.getParentPolicyConditions()));
+                        policyItem.getRecipe(), payloadMap, policyItem.getMaxRetries(), policyItem.getRetryTimeLimit(),
+                        parentPolicyObj.getId(), convertToPolicyResult(policyItem.getParentPolicyConditions()));
                 logger.info("policyObj.id=" + policyObj.getId() + "; parentPolicyObj.id=" + parentPolicyObj.getId());
             }
             policyObjMap.put(policyItem.getId(), policyObj);
@@ -220,7 +247,7 @@ public class OperationalPolicyReq {
         return URLEncoder.encode(results.getSpecification(), "UTF-8");
     }
 
-    protected static void validate(Results results) {
+    private static void validate(Results results) {
         if (results.isValid()) {
             logger.info("results.getSpecification()=" + results.getSpecification());
         } else {
@@ -264,7 +291,7 @@ public class OperationalPolicyReq {
                 if (parent == null || parent.length() == 0) {
                     if (!outList.isEmpty()) {
                         throw new BadRequestException(
-                            "Operation Policy validation problem: more than one trigger policy");
+                                "Operation Policy validation problem: more than one trigger policy");
                     } else {
                         outList.add(inItem);
                         inListItr.remove();
@@ -293,7 +320,7 @@ public class OperationalPolicyReq {
      * @param resourceType
      * @return
      */
-    protected static Resource[] convertToResource(List<String> stringList, ResourceType resourceType) {
+    static Resource[] convertToResource(List<String> stringList, ResourceType resourceType) {
         if (stringList == null || stringList.isEmpty()) {
             return new Resource[0];
         }
@@ -307,7 +334,7 @@ public class OperationalPolicyReq {
      * @param prList
      * @return
      */
-    protected static PolicyResult[] convertToPolicyResult(List<String> prList) {
+    static PolicyResult[] convertToPolicyResult(List<String> prList) {
         if (prList == null || prList.isEmpty()) {
             return new PolicyResult[0];
         }

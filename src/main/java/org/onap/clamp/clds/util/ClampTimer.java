@@ -39,7 +39,7 @@ public class ClampTimer {
 
     public ClampTimer(int seconds) {
         timer = new Timer();
-        timer.schedule(new CleanupTask(), seconds*1000);
+        timer.schedule(new CleanupTask(), seconds*1000L);
     }
 
     class CleanupTask extends TimerTask {
