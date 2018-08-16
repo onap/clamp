@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.onap.clamp.clds.client.req.policy.OperationalPolicyReq;
+import org.onap.clamp.clds.client.req.policy.OperationalPolicyRequestAttributesConstructor;
 import org.onap.clamp.clds.client.req.policy.PolicyClient;
 import org.onap.clamp.clds.client.req.tca.TcaRequestFormatter;
 import org.onap.clamp.clds.config.ClampProperties;
@@ -64,7 +64,10 @@ public class PolicyClientItCase {
     @Autowired
     private ClampProperties refProp;
     @Autowired
-    protected PolicyClient policyClient;
+    private PolicyClient policyClient;
+    @Autowired
+    private OperationalPolicyRequestAttributesConstructor operationalPolicyRequestAttributesConstructor;
+
     String modelProp;
     String modelBpmnProp;
     String modelName;
@@ -87,8 +90,8 @@ public class PolicyClientItCase {
         if (policy.isFound()) {
             for (PolicyChain policyChain : policy.getPolicyChains()) {
                 String operationalPolicyRequestUuid = UUID.randomUUID().toString();
-                Map<AttributeType, Map<String, String>> attributes = OperationalPolicyReq.formatAttributes(refProp,
-                        prop, policy.getId(), policyChain);
+                Map<AttributeType, Map<String, String>> attributes = operationalPolicyRequestAttributesConstructor
+                        .formatAttributes(refProp, prop, policy.getId(), policyChain);
                 policyClient.sendBrmsPolicy(attributes, prop, operationalPolicyRequestUuid);
             }
         }
