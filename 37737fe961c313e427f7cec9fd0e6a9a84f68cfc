@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_84364f51",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyYamlFormatter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-08-17T16:27:47Z",
+      "side": 1,
+      "message": "Not sure why this must be a Spring component, there is no SPring call or whatever, right ? Or i\u0027m missing something ?",
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
