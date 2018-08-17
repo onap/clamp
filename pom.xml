@@ -630,6 +630,16 @@
 						<resource>
 								<directory>src/main/resources</directory>
 								<filtering>true</filtering>
+								<excludes>
+									<exclude>clds/aaf/**</exclude>
+								</excludes>
+						</resource>
+						<resource>
+								<directory>src/main/resources</directory>
+								<filtering>false</filtering>
+								<includes>
+									<include>clds/aaf/**</include>
+								</includes>
 						</resource>
 						<resource>
 								<directory>src/main/docker</directory>
