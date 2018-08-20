@@ -72,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_385e7813",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyAttributesConstructor.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-20T08:37:45Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "1a76adc5_7d84e2d3",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 90
+      },
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_3d6e6a30",
         "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyAttributesConstructor.java",
         "patchSetId": 7
@@ -83,6 +107,30 @@
       "writtenOn": "2018-08-20T07:03:21Z",
       "side": 1,
       "message": "the same here - passed argument is modyfied",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 52
+      },
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_d89c24c3",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyAttributesConstructor.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-20T08:37:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_3d6e6a30",
       "range": {
         "startLine": 139,
         "startChar": 0,
