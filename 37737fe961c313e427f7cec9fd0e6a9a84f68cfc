@@ -2,6 +2,75 @@
   "comments": [
     {
       "key": {
+        "uuid": "1a76adc5_bd135ab7",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyAttributesConstructor.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-08-20T07:03:21Z",
+      "side": 1,
+      "message": "why not public/private?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 53
+      },
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_7d84e2d3",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyAttributesConstructor.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-08-20T07:03:21Z",
+      "side": 1,
+      "message": "I really don\u0027t like when argument that is passed to method is modyfied in it.\nPlease create new map here(using for example immutable map builder),return it and remove unnecessary argument",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 90
+      },
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_3d6e6a30",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyAttributesConstructor.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-08-20T07:03:21Z",
+      "side": 1,
+      "message": "the same here - passed argument is modyfied",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 52
+      },
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_84364f51",
         "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyYamlFormatter.java",
         "patchSetId": 7
@@ -31,6 +100,75 @@
       "side": 1,
       "message": "I wanted this class to be injected into OperationalPolicyAttributesConstructor. Life-cycle of OperationalPolicyAttributesConstructor is managed by spring so life-cycle of this object also has to be.\nI\u0027ve injected it in constructor not on fields so you can easily create it by yourself without starting spring context. I\u0027ve done it in tests to to speed them up. However I don\u0027t recommend this in production code since someone looking at this class expects that it\u0027s lifecycle is managed by framework and will be surprised seeing his objects are not injected automatically.",
       "parentUuid": "1a76adc5_84364f51",
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_3ddc2ae4",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyYamlFormatter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-08-20T07:03:21Z",
+      "side": 1,
+      "message": "please check whether CollectionUtils.isEmpty() can be used use (check if Apache Commons collections is available in dependencies)",
+      "range": {
+        "startLine": 171,
+        "startChar": 3,
+        "endLine": 171,
+        "endChar": 57
+      },
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_5dd7a6bf",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyYamlFormatter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-08-20T07:03:21Z",
+      "side": 1,
+      "message": "check CollectionUtils.isEmpty",
+      "range": {
+        "startLine": 178,
+        "startChar": 3,
+        "endLine": 178,
+        "endChar": 49
+      },
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_5dfec639",
+        "filename": "src/test/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyAttributesConstructorTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-08-20T07:03:21Z",
+      "side": 1,
+      "message": "i think that static imports will increase readability here",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 118
+      },
       "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
