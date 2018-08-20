@@ -16,6 +16,24 @@
       "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_dd2f36f5",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyYamlFormatter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-08-20T06:34:43Z",
+      "side": 1,
+      "message": "I wanted this class to be injected into OperationalPolicyAttributesConstructor. Life-cycle of OperationalPolicyAttributesConstructor is managed by spring so life-cycle of this object also has to be.\nI\u0027ve injected it in constructor not on fields so you can easily create it by yourself without starting spring context. I\u0027ve done it in tests to to speed them up. However I don\u0027t recommend this in production code since someone looking at this class expects that it\u0027s lifecycle is managed by framework and will be surprised seeing his objects are not injected automatically.",
+      "parentUuid": "1a76adc5_84364f51",
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
