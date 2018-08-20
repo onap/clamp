@@ -177,6 +177,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_5869f4bc",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyYamlFormatter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2018-08-20T08:30:44Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "1a76adc5_783dd0ba",
+      "range": {
+        "startLine": 171,
+        "startChar": 3,
+        "endLine": 171,
+        "endChar": 57
+      },
+      "revId": "37737fe961c313e427f7cec9fd0e6a9a84f68cfc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_5dd7a6bf",
         "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/OperationalPolicyYamlFormatter.java",
         "patchSetId": 7
