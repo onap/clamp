@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_a3409807",
+        "filename": "src/main/java/org/onap/clamp/clds/client/DcaeDispatcherServices.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-09-14T12:42:46Z",
+      "side": 0,
+      "message": "This function seems to be unused",
+      "revId": "3aec59e72323d6b04640061ad8d1cd57f6f31e11",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
