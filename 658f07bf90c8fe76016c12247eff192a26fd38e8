@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_103e39b9",
+        "filename": "src/main/java/org/onap/clamp/clds/client/GuardPolicyDelegate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-10-03T11:52:34Z",
+      "side": 1,
+      "message": "Please extract function for extracting guard policy from chain. And only if it returns something send createGuardPolicy request. It will ease writing unit tests to this code.",
+      "revId": "658f07bf90c8fe76016c12247eff192a26fd38e8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_7074659c",
+        "filename": "src/main/java/org/onap/clamp/clds/client/GuardPolicyDeleteDelegate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-10-03T11:52:34Z",
+      "side": 1,
+      "message": "Something is missing here. Either there is no need to call this function or variable assignment is missing.",
+      "revId": "658f07bf90c8fe76016c12247eff192a26fd38e8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_cd025e0b",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/GuardPolicyAttributesConstructor.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-10-03T11:52:34Z",
+      "side": 1,
+      "message": "There is no need to pass whole policyChain and policyItem to this function. It would be enough to pass just policyChainId and policyItemId.",
+      "revId": "658f07bf90c8fe76016c12247eff192a26fd38e8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_f067f5e8",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-10-03T11:52:34Z",
+      "side": 1,
+      "message": "please split into small testable functions.",
+      "revId": "658f07bf90c8fe76016c12247eff192a26fd38e8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_30a57d04",
+        "filename": "src/main/java/org/onap/clamp/clds/model/properties/ModelProperties.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-10-03T11:52:34Z",
+      "side": 1,
+      "message": "It would me more readable if you split condition and move second part to other filter.",
+      "revId": "658f07bf90c8fe76016c12247eff192a26fd38e8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
