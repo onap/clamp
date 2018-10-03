@@ -45,8 +45,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Send Guard Policy info to policy API. It uses the policy code to define
- * the model and communicate with it. See also the PolicyClient class.
+ * Send Guard Policy info to policy API. It uses the policy code to define the
+ * model and communicate with it. See also the PolicyClient class.
  */
 @Component
 public class GuardPolicyDelegate {
@@ -79,9 +79,9 @@ public class GuardPolicyDelegate {
         Policy policy = prop.getType(Policy.class);
         if (policy.isFound()) {
             for (PolicyChain policyChain : prop.getType(Policy.class).getPolicyChains()) {
-                for(PolicyItem policyItem:policyChain.getPolicyItems()) {
+                for (PolicyItem policyItem : policyChain.getPolicyItems()) {
                     if ("on".equals(policyItem.getEnableGuardPolicy()))
-                        responseMessageGuard = createGuardPolicy(prop, policyItem);
+                        responseMessageGuard = createGuardPolicy(prop, policyChain, policyItem);
                 }
             }
             if (responseMessageGuard != null) {
@@ -90,9 +90,9 @@ public class GuardPolicyDelegate {
         }
     }
 
-    private String createGuardPolicy(ModelProperties prop, PolicyItem policyItem) {
-        Map<AttributeType, Map<String, String>> attributes = GuardPolicyAttributesConstructor
-            .formatAttributes(refProp, prop, prop.getType(Policy.class).getId(), policyItem);
-        return policyClient.sendGuardPolicy(attributes, prop, LoggingUtils.getRequestId());
+    private String createGuardPolicy(ModelProperties prop, PolicyChain policyChain, PolicyItem policyItem) {
+        Map<AttributeType, Map<String, String>> attributes = GuardPolicyAttributesConstructor.formatAttributes(refProp,
+            prop, prop.getType(Policy.class).getId(), policyChain, policyItem);
+        return policyClient.sendGuardPolicy(attributes, prop, LoggingUtils.getRequestId(), policyItem);
     }
 }

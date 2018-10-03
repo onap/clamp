@@ -31,8 +31,10 @@ import java.util.Map;
 
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.model.properties.ModelProperties;
+import org.onap.clamp.clds.model.properties.PolicyChain;
 import org.onap.clamp.clds.model.properties.PolicyItem;
 import org.onap.policy.api.AttributeType;
+import org.onap.policy.api.RuleProvider;
 
 public class GuardPolicyAttributesConstructor {
     private static final EELFLogger logger = EELFManager.getInstance()
@@ -42,7 +44,11 @@ public class GuardPolicyAttributesConstructor {
     }
 
     public static Map<AttributeType, Map<String, String>> formatAttributes(ClampProperties refProp,
-        ModelProperties modelProperties, String modelElementId, PolicyItem policyItem) {
+        ModelProperties modelProperties, String modelElementId, PolicyChain policyChain, PolicyItem policyItem) {
+        modelProperties.setCurrentModelElementId(modelElementId);
+        modelProperties.setPolicyUniqueId(policyChain.getPolicyId());
+        modelProperties.setGuardUniqueId(policyItem.getId());
+
         Map<String, String> matchingAttributes = prepareMatchingAttributes(refProp, policyItem, modelProperties);
         return createAttributesMap(matchingAttributes);
     }
@@ -55,10 +61,10 @@ public class GuardPolicyAttributesConstructor {
         matchingAttributes.put("recipe",policyItem.getRecipe());
         matchingAttributes.put("targets",policyItem.getGuardTargets());
         matchingAttributes.put("clname",modelProp.getControlNameAndPolicyUniqueId());
-        if ("MinMax".equals(policyItem.getGuardPolicyType())) {
+        if (RuleProvider.GUARD_MIN_MAX.equals(RuleProvider.valueOf(policyItem.getGuardPolicyType()))) {
             matchingAttributes.put("min",policyItem.getMinGuard());
             matchingAttributes.put("max",policyItem.getMaxGuard());
-        } else if ("FrequencyLimiter".equals(policyItem.getGuardPolicyType())) {
+        } else if (RuleProvider.GUARD_YAML.equals(RuleProvider.valueOf(policyItem.getGuardPolicyType()))) {
             matchingAttributes.put("limit",policyItem.getLimitGuard());
             matchingAttributes.put("timeWindow",policyItem.getTimeWindowGuard());
             matchingAttributes.put("timeUnits",policyItem.getTimeUnitsGuard());
