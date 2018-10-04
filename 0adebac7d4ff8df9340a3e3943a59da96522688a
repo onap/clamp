@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_01ceed83",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/GuardPolicyAttributesConstructor.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-10-04T06:37:22Z",
+      "side": 1,
+      "message": "You could use java streams.\nreturn policyChain.getPolicyItems()`\n                  .stream()\n                  .filter(p -\u003e\"on\".equals(p.getEnableGuardPolicy()))\n                  .collect(Collectors.toList());",
+      "revId": "0adebac7d4ff8df9340a3e3943a59da96522688a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
