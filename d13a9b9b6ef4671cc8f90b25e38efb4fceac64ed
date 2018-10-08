@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_8c3beaea",
+        "filename": "src/main/docker/kibana/Dockerfile.kibana",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-10-08T12:52:18Z",
+      "side": 1,
+      "message": "Don\u0027t we need a License ?",
+      "revId": "d13a9b9b6ef4671cc8f90b25e38efb4fceac64ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
