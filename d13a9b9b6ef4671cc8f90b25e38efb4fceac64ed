@@ -16,6 +16,24 @@
       "revId": "d13a9b9b6ef4671cc8f90b25e38efb4fceac64ed",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_7f41860a",
+        "filename": "src/main/docker/kibana/Dockerfile.kibana",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11
+      },
+      "writtenOn": "2018-10-08T13:41:47Z",
+      "side": 1,
+      "message": "Thanks for noticing this. I\u0027m not sure it\u0027s a requirement as LICENSE.txt covers it, but as I can\u0027t find the source...",
+      "parentUuid": "bada0100_8c3beaea",
+      "revId": "d13a9b9b6ef4671cc8f90b25e38efb4fceac64ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
