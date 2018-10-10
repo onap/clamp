@@ -660,13 +660,14 @@ function($scope, $rootScope, $timeout, dialogs, $location, MenuService,
 		cldsModelService.toggleDeploy(uiAction, modelName, controlNamePrefix,
 		bpmnText, propText, svgXml, templateName, typeID, controlNameUuid,
 		modelEventService, deploymentId).then(function(pars) {
-			typeID = pars.typeId;
-			controlNameUuid = pars.controlNameUuid;
-			selected_template = pars.templateName;
-			modelEventService = pars.event;
-			actionStateCd = pars.event.actionStateCd;
-			deploymentId = pars.deploymentId;
-			cldsModelService.processActionResponse(modelName, pars);
+			var cldsObject = pars.body;
+			typeID = cldsObject.typeId;
+			controlNameUuid = cldsObject.controlNameUuid;
+			selected_template = cldsObject.templateName;
+			modelEventService = cldsObject.event;
+			actionStateCd = cldsObject.event.actionStateCd;
+			deploymentId = cldsObject.deploymentId;
+			cldsModelService.processActionResponse(modelName, cldsObject);
 		}, function(data) {
 		});
 	}
