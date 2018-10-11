@@ -33,6 +33,16 @@ WAIT_TIME=2
 
 if [ -n "$(ls -A ${SAVED_OBJECTS_PATH})" ];
 then
+    echo "---- Waiting for elasticsearch to be up..."
+    RES=-1
+    PING_TIMEOUT=60
+    while [ ! "$RES" -eq "0" ] && [ "$PING_TIMEOUT" -gt "0" ];
+    do
+        curl $elasticsearch_host
+        RES=$?
+        let PING_TIMEOUT=$PING_TIMEOUT-$WAIT_TIME
+    done
+
     echo "---- Saved objects found, restoring files."
 
     $KIBANA_LOAD_CMD &
