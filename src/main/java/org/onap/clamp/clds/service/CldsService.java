@@ -737,10 +737,9 @@ public class CldsService extends SecureServiceBase {
                 modelProp.getGlobal().getDeployParameters()));
             CldsEvent.insEvent(cldsDao, model.getControlName(), getUserId(), CldsEvent.ACTION_DEPLOY,
                 CldsEvent.ACTION_STATE_INITIATED, null);
+            model.save(cldsDao, getUserId());
             // This is a blocking call
             checkDcaeDeploymentStatus(model, CldsEvent.ACTION_DEPLOY, true);
-
-            model.save(cldsDao, getUserId());
             // audit log
             LoggingUtils.setTimeContext(startTime, new Date());
             auditLogger.info("Deploy model completed");
@@ -772,11 +771,11 @@ public class CldsService extends SecureServiceBase {
                 dcaeDispatcherServices.deleteExistingDeployment(model.getDeploymentId(), model.getTypeId()));
             CldsEvent.insEvent(cldsDao, model.getControlName(), getUserId(), CldsEvent.ACTION_UNDEPLOY,
                 CldsEvent.ACTION_STATE_INITIATED, null);
-            // This is a blocking call
-            checkDcaeDeploymentStatus(model, CldsEvent.ACTION_UNDEPLOY, true);
             // clean the deployment ID
             model.setDeploymentId(null);
             model.save(cldsDao, getUserId());
+            // This is a blocking call
+            checkDcaeDeploymentStatus(model, CldsEvent.ACTION_UNDEPLOY, true);
             // audit log
             LoggingUtils.setTimeContext(startTime, new Date());
             auditLogger.info("Undeploy model completed");
