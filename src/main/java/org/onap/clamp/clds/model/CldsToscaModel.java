@@ -25,106 +25,119 @@ package org.onap.clamp.clds.model;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.onap.clamp.clds.client.req.policy.PolicyClient;
+import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.dao.CldsDao;
+import org.onap.clamp.clds.tosca.ToscaYamltoJsonConvertor;
 
 public class CldsToscaModel extends CldsToscaModelRevision {
 
-    private String id;
-    private String policyType;
-    private String toscaModelName;
-    private String toscaModelYaml;
+	private String id;
+	private String policyType;
+	private String toscaModelName;
+	private String toscaModelYaml;
 
-    /**
-     * Creates or updates Tosca Model to DB
-     *
-     * @param cldsDao
-     * @param userId
-     */
-    public CldsToscaModel save(CldsDao cldsDao, String userId) {
-        CldsToscaModel cldsToscaModel = null;
-        // TODO tosca parsing logic
-        this.setToscaModelJson("{}");
-        this.setPolicyType("Aging");// TODO update with subString or node_type from the model name
-        List<CldsToscaModel> toscaModels = cldsDao.getToscaModelByName(this.getToscaModelName());
-        if (toscaModels != null && !toscaModels.isEmpty()) {
-            CldsToscaModel toscaModel = toscaModels.stream().findFirst().get();
-            // CldsToscaModelRevision modelRevision =
-            // revisions.stream().max(Comparator.comparingDouble(CldsToscaModelRevision::getVersion)).get();
-            this.setVersion(incrementVersion(toscaModel.getVersion()));
-            this.setId(toscaModel.getId());
-            this.setUserId(userId);
-            cldsToscaModel = cldsDao.updateToscaModelWithNewVersion(this, userId);
-        } else {
-            this.setVersion(1);
-            cldsToscaModel = cldsDao.insToscaModel(this, userId);
-        }
-        return cldsToscaModel;
-    }
+	/**
+	 * Creates or updates Tosca Model to DB
+	 * 
+	 * @param cldsDao
+	 * @param userId
+	 */
+	public CldsToscaModel save(CldsDao cldsDao, ClampProperties refProp, PolicyClient policyClient,
+			String userId) {
+		CldsToscaModel cldsToscaModel = null;
+		
+		refProp.getStringList(ClampProperties.TOSCA_POLICY_TYPES_CONFIG, ",").stream().forEach(policyType -> {
+			if(StringUtils.containsIgnoreCase(this.getToscaModelName(), policyType)) {
+				this.setPolicyType(policyType);
+			}
+		});
+		
+		ToscaYamltoJsonConvertor convertor = new ToscaYamltoJsonConvertor(cldsDao);
+		this.setToscaModelJson(convertor.parseToscaYaml(this.getToscaModelYaml()));
+		List<CldsToscaModel> toscaModels = cldsDao.getToscaModelByName(this.getToscaModelName());
+		if (toscaModels != null && toscaModels.size() > 0) {
+			CldsToscaModel toscaModel = toscaModels.stream().findFirst().get();
+			this.setVersion(incrementVersion(toscaModel.getVersion()));
+			this.setId(toscaModel.getId());
+			this.setUserId(userId);
+			if(refProp.getStringValue(ClampProperties.IMPORT_TOSCA_POLICY).equalsIgnoreCase("true")) {
+			    policyClient.importToscaModel(this);
+			}
+			cldsToscaModel = cldsDao.updateToscaModelWithNewVersion(this, userId);
+		} else {
+			this.setVersion(1);
+			if(refProp.getStringValue(ClampProperties.IMPORT_TOSCA_POLICY).equalsIgnoreCase("true")) {
+                            policyClient.importToscaModel(this);
+                        }
+			cldsToscaModel = cldsDao.insToscaModel(this, userId);
+		}
+		return cldsToscaModel;
+	}
 
-    private double incrementVersion(double curVersion) {
-        return curVersion + 1;
-    }
+	private double incrementVersion(double curVersion) {
+		return curVersion + 1;
+	}
 
-    /**
-     * @return the id
-     */
-    public String getId() {
-        return id;
-    }
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
 
-    /**
-     * @param id
-     *        the id to set
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    /**
-     * @return the policyType
-     */
-    public String getPolicyType() {
-        return policyType;
-    }
+	/**
+	 * @return the policyType
+	 */
+	public String getPolicyType() {
+		return policyType;
+	}
 
-    /**
-     * @param policyType
-     *        the policyType to set
-     */
-    public void setPolicyType(String policyType) {
-        this.policyType = policyType;
-    }
+	/**
+	 * @param policyType
+	 *            the policyType to set
+	 */
+	public void setPolicyType(String policyType) {
+		this.policyType = policyType;
+	}
 
-    /**
-     * @return the toscaModelName
-     */
-    public String getToscaModelName() {
-        return toscaModelName;
-    }
+	/**
+	 * @return the toscaModelName
+	 */
+	public String getToscaModelName() {
+		return toscaModelName;
+	}
 
-    /**
-     * @param toscaModelName
-     *        the toscaModelName to set
-     */
-    public void setToscaModelName(String toscaModelName) {
-        this.toscaModelName = toscaModelName;
-    }
+	/**
+	 * @param toscaModelName
+	 *            the toscaModelName to set
+	 */
+	public void setToscaModelName(String toscaModelName) {
+		this.toscaModelName = toscaModelName;
+	}
 
-    /**
-     * @return the toscaModelYaml
-     */
-    @Override
-    public String getToscaModelYaml() {
-        return toscaModelYaml;
-    }
+	/**
+	 * @return the toscaModelYaml
+	 */
+	public String getToscaModelYaml() {
+		return toscaModelYaml;
+	}
 
-    /**
-     * @param toscaModelYaml
-     *        the toscaModelYaml to set
-     */
-    @Override
-    public void setToscaModelYaml(String toscaModelYaml) {
-        this.toscaModelYaml = toscaModelYaml;
-    }
+	/**
+	 * @param toscaModelYaml
+	 *            the toscaModelYaml to set
+	 */
+	public void setToscaModelYaml(String toscaModelYaml) {
+		this.toscaModelYaml = toscaModelYaml;
+	}
 
 }
