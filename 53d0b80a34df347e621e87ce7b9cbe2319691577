@@ -104,6 +104,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_5847a34b",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/ToscaYamltoJsonConvertor.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T15:31:38Z",
+      "side": 1,
+      "message": "I see that this problem can be solved using jackson.\nPlease take a look:\n\nstackoverflow.com/questions/23744216/how-do-i-convert-from-yaml-to-json-in-java/23774617",
+      "parentUuid": "9adffdf1_d516fe54",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_f800d702",
         "filename": "src/main/java/org/onap/clamp/clds/tosca/ToscaYamltoJsonConvertor.java",
         "patchSetId": 1
