@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_f596a2ef",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T14:47:09Z",
+      "side": 1,
+      "message": "This error may be misleading. It suggest error when communicating with Policy. Biggest risk here is IOException.",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_156806f4",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T14:47:09Z",
+      "side": 1,
+      "message": "This code is vulnerable on SQL injection.",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_d5711ee1",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T14:47:09Z",
+      "side": 1,
+      "message": "please use Collections.isEmpty",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_3582ea94",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T14:47:09Z",
+      "side": 1,
+      "message": "There is no need to convert it into stream.\nAlso checking size is not needed if calling forEach",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_f519c288",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T14:47:09Z",
+      "side": 1,
+      "message": "Remove if not needed",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_d516fe54",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/ToscaYamltoJsonConvertor.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T14:47:09Z",
+      "side": 1,
+      "message": "typo ToscaYamlToJsonConverter",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_f800d702",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/ToscaYamltoJsonConvertor.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T14:47:09Z",
+      "side": 1,
+      "message": "This is way too complicated. Also there is only one test. Please refactor this class",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_b80a4f1f",
+        "filename": "src/test/java/org/onap/clamp/clds/tosca/ToscaYamltoJsonConvertorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T14:47:09Z",
+      "side": 1,
+      "message": "please extract to file",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
