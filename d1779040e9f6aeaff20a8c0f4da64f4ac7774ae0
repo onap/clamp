@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_554a0ead",
+        "filename": "src/main/java/org/onap/clamp/clds/config/ClampProperties.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T13:56:35Z",
+      "side": 1,
+      "message": "please add tests to this function",
+      "revId": "d1779040e9f6aeaff20a8c0f4da64f4ac7774ae0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_b5d25ad0",
+        "filename": "src/main/java/org/onap/clamp/clds/model/properties/ModelProperties.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2018-12-03T13:56:35Z",
+      "side": 1,
+      "message": "please use string.format",
+      "revId": "d1779040e9f6aeaff20a8c0f4da64f4ac7774ae0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
