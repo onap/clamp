@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_c913c70b",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-12-04T16:01:52Z",
+      "side": 1,
+      "message": "Indeed, this is not good. It\u0027s a copy paste error i believe",
+      "parentUuid": "9adffdf1_f596a2ef",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_156806f4",
         "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2018-12-03T14:47:09Z",
       "side": 1,
       "message": "This code is vulnerable on SQL injection.",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_29305300",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-12-04T16:01:52Z",
+      "side": 1,
+      "message": "Looking at the DAO, different queries may be SQL injected\nI would suggest we keep track of that in JIRA and rework it later (CLAMP-254)",
+      "parentUuid": "9adffdf1_156806f4",
       "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_04d8d651",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-12-04T16:01:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_d5711ee1",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_3582ea94",
         "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_64e8c2e2",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-12-04T16:01:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_3582ea94",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_f519c288",
         "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2018-12-03T14:47:09Z",
       "side": 1,
       "message": "Remove if not needed",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_84e36604",
+        "filename": "src/main/java/org/onap/clamp/clds/dao/CldsDao.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-12-04T16:01:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_f519c288",
       "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -122,6 +212,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_6421a24c",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/ToscaYamltoJsonConvertor.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-12-04T16:01:52Z",
+      "side": 1,
+      "message": "We want to replace Jackson so probably a bad idea to use it.\nI\u0027ll keep that code as it is for now, as it\u0027s not an obvious yamltoJson converter. The mapping is differnet than the Yaml defintion",
+      "parentUuid": "9adffdf1_5847a34b",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_f800d702",
         "filename": "src/main/java/org/onap/clamp/clds/tosca/ToscaYamltoJsonConvertor.java",
         "patchSetId": 1
@@ -139,6 +247,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_84912654",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/ToscaYamltoJsonConvertor.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-12-04T16:01:52Z",
+      "side": 1,
+      "message": "Agreed, this must be reworked.\nI created a CLAMP-253 jira ticket to track the reworking.",
+      "parentUuid": "9adffdf1_f800d702",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_b80a4f1f",
         "filename": "src/test/java/org/onap/clamp/clds/tosca/ToscaYamltoJsonConvertorTest.java",
         "patchSetId": 1
@@ -150,6 +276,24 @@
       "writtenOn": "2018-12-03T14:47:09Z",
       "side": 1,
       "message": "please extract to file",
+      "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_e4d4b221",
+        "filename": "src/test/java/org/onap/clamp/clds/tosca/ToscaYamltoJsonConvertorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2018-12-04T16:01:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_b80a4f1f",
       "revId": "53d0b80a34df347e621e87ce7b9cbe2319691577",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
