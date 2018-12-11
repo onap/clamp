@@ -24,6 +24,8 @@
 
 package org.onap.clamp.clds.it;
 
+import com.sun.xml.bind.v2.schemagen.xmlschema.AttributeType;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -48,10 +50,9 @@ import org.onap.clamp.clds.transform.XslTransformer;
 import org.onap.clamp.clds.util.JacksonUtils;
 import org.onap.clamp.clds.util.LoggingUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
-import org.onap.policy.api.AttributeType;
 import org.onap.policy.api.PolicyConfigType;
-import org.onap.policy.api.PolicyType;
 import org.onap.policy.controlloop.policy.builder.BuilderException;
+import org.onap.sdc.toscaparser.api.elements.PolicyType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -78,11 +79,6 @@ public class PolicyClientItCase {
     String modelBpmnPropJson;
     ModelProperties prop;
 
-    /**
-     * Initialize Test.
-     *
-     * @throws TransformerException
-     */
     @Before
     public void setUp() throws IOException, TransformerException {
         modelProp = ResourceFileUtil.getResourceAsString("example/model-properties/tca_new/model-properties.json");
