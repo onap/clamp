@@ -24,12 +24,12 @@
 package org.onap.clamp.clds.tosca;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -86,14 +86,14 @@ public class ToscaYamlToJsonConvertor {
     public String parseToscaYaml(String yamlString) {
 
         Yaml yaml = new Yaml();
-        LinkedHashMap<String, Object> loadedYaml = (LinkedHashMap<String, Object>) yaml.load(yamlString);
-        LinkedHashMap<String, Object> nodeTypes = new LinkedHashMap<String, Object>();
-        LinkedHashMap<String, Object> dataNodes = new LinkedHashMap<String, Object>();
+        LinkedHashMap<String, Object> loadedYaml =  yaml.load(yamlString);
+        LinkedHashMap<String, Object> nodeTypes = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> dataNodes = new LinkedHashMap<>();
         JSONObject jsonEditorObject = new JSONObject();
         JSONObject jsonParentObject = new JSONObject();
         JSONObject jsonTempObject = new JSONObject();
         parseNodeAndDataType(loadedYaml, nodeTypes, dataNodes);
-        populateJsonEditorObject(loadedYaml, nodeTypes, dataNodes, jsonParentObject, jsonTempObject);
+        populateJsonEditorObject(nodeTypes, dataNodes, jsonParentObject, jsonTempObject);
         if (jsonTempObject.length() > 0) {
             jsonParentObject = jsonTempObject;
         }
@@ -105,219 +105,220 @@ public class ToscaYamlToJsonConvertor {
     @SuppressWarnings("unchecked")
     private void parseNodeAndDataType(LinkedHashMap<String, Object> map, LinkedHashMap<String, Object> nodeTypes,
         LinkedHashMap<String, Object> dataNodes) {
-        map.entrySet().stream().forEach(n -> {
-            if (n.getKey().contains(ToscaSchemaConstants.NODE_TYPES) && n.getValue() instanceof Map) {
+        map.entrySet().stream().forEach(node -> parseNodeBasedOnType(nodeTypes, dataNodes, node));
+    }
 
-                parseNodeAndDataType((LinkedHashMap<String, Object>) n.getValue(), nodeTypes, dataNodes);
-
-            } else if (n.getKey().contains(ToscaSchemaConstants.DATA_TYPES) && n.getValue() instanceof Map) {
-
-                parseNodeAndDataType((LinkedHashMap<String, Object>) n.getValue(), nodeTypes, dataNodes);
-
-            } else if (n.getKey().contains(ToscaSchemaConstants.POLICY_NODE)) {
-
-                nodeTypes.put(n.getKey(), n.getValue());
-
-            } else if (n.getKey().contains(ToscaSchemaConstants.POLICY_DATA)) {
-
-                dataNodes.put(n.getKey(), n.getValue());
-            }
-
-        });
+    private void parseNodeBasedOnType(LinkedHashMap<String, Object> nodeTypes, LinkedHashMap<String, Object> dataNodes, Map.Entry<String, Object> n) {
+        String nodeName = n.getKey();
+        if (nodeName.contains(ToscaSchemaConstants.NODE_TYPES) || nodeName.contains(ToscaSchemaConstants.DATA_TYPES)) {
+            parseNodeAndDataType((LinkedHashMap<String, Object>) n.getValue(), nodeTypes, dataNodes);
+        }
+        else if (nodeName.contains(ToscaSchemaConstants.POLICY_NODE)) {
+            nodeTypes.put(nodeName, n.getValue());
+        } else if (isPolicyDataComposedType(nodeName)) {
+            dataNodes.put(nodeName, n.getValue());
+        }
     }
 
     @SuppressWarnings("unchecked")
-    private void populateJsonEditorObject(LinkedHashMap<String, Object> map, LinkedHashMap<String, Object> nodeTypes,
+    private void populateJsonEditorObject(LinkedHashMap<String, Object> nodeTypes,
         LinkedHashMap<String, Object> dataNodes, JSONObject jsonParentObject, JSONObject jsonTempObject) {
 
         Map<String, JSONObject> jsonEntrySchema = new HashMap();
         jsonParentObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_OBJECT);
-        nodeTypes.entrySet().stream().forEach(nt -> {
-            if (nt.getValue() instanceof Map) {
-                ((LinkedHashMap<String, Object>) nt.getValue()).entrySet().forEach(ntElement -> {
-                    if (ntElement.getKey().equalsIgnoreCase(ToscaSchemaConstants.PROPERTIES)) {
-                        JSONArray rootNodeArray = new JSONArray();
-                        if (ntElement.getValue() instanceof Map) {
-                            ((LinkedHashMap<String, Object>) ntElement.getValue()).entrySet()
-                                .forEach((ntPropertiesElement) -> {
-                                    boolean isListNode = false;
-                                    parseDescription((LinkedHashMap<String, Object>) ntPropertiesElement.getValue(),
-                                        jsonParentObject);
-                                    LinkedHashMap<String, Object> parentPropertiesMap = (LinkedHashMap<String, Object>) ntPropertiesElement
-                                        .getValue();
-                                    if (parentPropertiesMap.containsKey(ToscaSchemaConstants.TYPE)
-                                        && ((String) parentPropertiesMap.get(ToscaSchemaConstants.TYPE))
-                                            .contains(ToscaSchemaConstants.TYPE_LIST)
-                                        && parentPropertiesMap.containsKey(ToscaSchemaConstants.ENTRY_SCHEMA)) {
-                                        parentPropertiesMap = (LinkedHashMap<String, Object>) parentPropertiesMap
-                                            .get(ToscaSchemaConstants.ENTRY_SCHEMA);
-                                        isListNode = true;
-                                    }
-                                    if (parentPropertiesMap.containsKey(ToscaSchemaConstants.TYPE)
-                                        && ((String) parentPropertiesMap.get(ToscaSchemaConstants.TYPE))
-                                            .contains(ToscaSchemaConstants.POLICY_DATA)) {
-                                        ((LinkedHashMap<String, Object>) dataNodes
-                                            .get(parentPropertiesMap.get(ToscaSchemaConstants.TYPE))).entrySet()
-                                                .stream().forEach(pmap -> {
-                                                    if (pmap.getKey()
-                                                        .equalsIgnoreCase(ToscaSchemaConstants.PROPERTIES)) {
-                                                        parseToscaProperties(ToscaSchemaConstants.POLICY_NODE,
-                                                            (LinkedHashMap<String, Object>) pmap.getValue(),
-                                                            jsonParentObject, rootNodeArray, jsonEntrySchema, dataNodes,
-                                                            incrementSimpleTypeOrder());
-                                                    }
 
-                                                });
+        nodeTypes.entrySet()
+                .stream()
+                .filter(this::hasMapAsValue)
+                .map(el -> ((LinkedHashMap<String, Object>) el.getValue()).entrySet())
+                .flatMap(Collection::stream)
+                .filter(entry -> isPropertiesNode(entry) && hasMapAsValue(entry))
+                .forEach(propertyElement ->
+                        parseNodeTypeProperties(propertyElement, dataNodes, jsonParentObject, jsonTempObject, jsonEntrySchema));
+    }
 
-                                    }
-                                    if (isListNode) {
-                                        jsonTempObject.put(JsonEditorSchemaConstants.TYPE,
-                                            JsonEditorSchemaConstants.TYPE_ARRAY);
-                                        parseDescription((LinkedHashMap<String, Object>) ntPropertiesElement.getValue(),
-                                            jsonTempObject);
-                                        jsonTempObject.put(JsonEditorSchemaConstants.ITEMS, jsonParentObject);
-                                        jsonTempObject.put(JsonEditorSchemaConstants.FORMAT,
-                                            JsonEditorSchemaConstants.CUSTOM_KEY_FORMAT_TABS_TOP);
-                                        jsonTempObject.put(JsonEditorSchemaConstants.UNIQUE_ITEMS,
-                                            JsonEditorSchemaConstants.TRUE);
-                                    }
-                                });
-                        }
+    @SuppressWarnings("unchecked")
+    private void parseNodeTypeProperties(Map.Entry<String, Object> ntElement, LinkedHashMap<String, Object> dataNodes, JSONObject jsonParentObject, JSONObject jsonTempObject, Map<String, JSONObject> jsonEntrySchema) {
+        JSONArray rootNodeArray = new JSONArray();
+        ((LinkedHashMap<String, Object>) ntElement.getValue()).entrySet()
+
+                .forEach((ntPropertiesElement) -> {
+                    parseDescription((LinkedHashMap<String, Object>) ntPropertiesElement.getValue(), jsonParentObject);
+                    LinkedHashMap<String, Object> parentPropertiesMap = (LinkedHashMap<String, Object>) ntPropertiesElement.getValue();
+                    if (isTypeOfListAndHasEntrySchema(parentPropertiesMap)) {
+                        parentPropertiesMap = (LinkedHashMap<String, Object>) parentPropertiesMap.get(ToscaSchemaConstants.ENTRY_SCHEMA);
+                        populatePropertiesOfListNode(jsonParentObject, jsonTempObject, ntPropertiesElement);
+                    }
+                    if (isTypeOfPolicyData(parentPropertiesMap)) {
+                        populateDataNodes(dataNodes, jsonParentObject, jsonEntrySchema, rootNodeArray, parentPropertiesMap);
                     }
                 });
-            }
-        });
+    }
+
+    private boolean isTypeOfListAndHasEntrySchema(Map<String, Object> parentPropertiesMap) {
+        return parentPropertiesMap.containsKey(ToscaSchemaConstants.TYPE) && ((String) parentPropertiesMap.get(ToscaSchemaConstants.TYPE)).contains(ToscaSchemaConstants.TYPE_LIST)
+                && parentPropertiesMap.containsKey(ToscaSchemaConstants.ENTRY_SCHEMA);
+    }
+
+    private boolean isTypeOfPolicyData(Map<String, Object> parentPropertiesMap) {
+        return parentPropertiesMap.containsKey(ToscaSchemaConstants.TYPE)
+                && isPolicyDataComposedType((String) parentPropertiesMap.get(ToscaSchemaConstants.TYPE));
     }
 
     @SuppressWarnings("unchecked")
-    private void parseToscaProperties(String parentKey, LinkedHashMap<String, Object> propertiesMap,
-        JSONObject jsonDataNode, JSONArray array, Map<String, JSONObject> jsonEntrySchema,
-        LinkedHashMap<String, Object> dataNodes, final int order) {
-        JSONObject jsonPropertyNode = new JSONObject();
-        propertiesMap.entrySet().stream().forEach(p -> {
-            // Populate JSON Array for "required" key
-
-            if (p.getValue() instanceof Map) {
-                LinkedHashMap<String, Object> nodeMap = (LinkedHashMap<String, Object>) p.getValue();
-                if (nodeMap.containsKey(ToscaSchemaConstants.REQUIRED)
-                    && ((boolean) nodeMap.get(ToscaSchemaConstants.REQUIRED))) {
-                    array.put(p.getKey());
-                }
-                // if(nodeMap.containsKey(ToscaSchemaConstants.CONSTRAINTS))
-                parseToscaChildNodeMap(p.getKey(), nodeMap, jsonPropertyNode, jsonEntrySchema, dataNodes, array,
-                    incrementSimpleTypeOrder());
-            }
-        });
-        jsonDataNode.put(JsonEditorSchemaConstants.REQUIRED, array);
-        jsonDataNode.put(JsonEditorSchemaConstants.PROPERTIES, jsonPropertyNode);
+    private void populatePropertiesOfListNode(JSONObject jsonParentObject, JSONObject jsonTempObject, Map.Entry<String, Object> ntPropertiesElement) {
+        jsonTempObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_ARRAY);
+        parseDescription((LinkedHashMap<String, Object>) ntPropertiesElement.getValue(), jsonTempObject);
+        jsonTempObject.put(JsonEditorSchemaConstants.ITEMS, jsonParentObject);
+        jsonTempObject.put(JsonEditorSchemaConstants.FORMAT, JsonEditorSchemaConstants.CUSTOM_KEY_FORMAT_TABS_TOP);
+        jsonTempObject.put(JsonEditorSchemaConstants.UNIQUE_ITEMS, JsonEditorSchemaConstants.TRUE);
     }
 
     @SuppressWarnings("unchecked")
-    private void parseToscaPropertiesForType(String parentKey, LinkedHashMap<String, Object> propertiesMap,
-        JSONObject jsonDataNode, JSONArray array, Map<String, JSONObject> jsonEntrySchema,
-        LinkedHashMap<String, Object> dataNodes, boolean isType, int order) {
-        JSONObject jsonPropertyNode = new JSONObject();
+    private void populateDataNodes(LinkedHashMap<String, Object> dataNodes, JSONObject jsonParentObject,
+                                   Map<String, JSONObject> jsonEntrySchema, JSONArray rootNodeArray,
+                                   Map<String, Object> parentPropertiesMap) {
+        ((LinkedHashMap<String, Object>) dataNodes.get(parentPropertiesMap.get(ToscaSchemaConstants.TYPE)))
+                .entrySet()
+                .stream()
+                .filter(this::isPropertiesNode)
+                .map(entry -> (LinkedHashMap<String, Object>) entry.getValue())
+                .forEach(map -> {
+                    incrementSimpleTypeOrder();
+                    parseToscaProperties(map, jsonParentObject, rootNodeArray, jsonEntrySchema, dataNodes);});
 
-        propertiesMap.entrySet().stream().forEach(p -> {
-            // array.put(p.getKey());
-            boolean overWriteArray = false;
-            if (p.getValue() instanceof Map) {
-                LinkedHashMap<String, Object> nodeMap = (LinkedHashMap<String, Object>) p.getValue();
-                if (!(parentKey.contains(ToscaSchemaConstants.ENTRY_SCHEMA)
-                    || parentKey.contains(ToscaSchemaConstants.POLICY_NODE))
-                    && nodeMap.containsKey(ToscaSchemaConstants.TYPE)
-                    && (((String) nodeMap.get(ToscaSchemaConstants.TYPE)).contains(ToscaSchemaConstants.POLICY_DATA))) {
-                    overWriteArray = true;
-                }
-                if (nodeMap.containsKey(ToscaSchemaConstants.REQUIRED)
-                    && ((boolean) nodeMap.get(ToscaSchemaConstants.REQUIRED))) {
-                    array.put(p.getKey());
-                }
-                parseToscaChildNodeMap(p.getKey(), nodeMap, jsonPropertyNode, jsonEntrySchema, dataNodes, array, order);
-            }
-        });
-        jsonDataNode.put(JsonEditorSchemaConstants.REQUIRED, array);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void parseToscaProperties(LinkedHashMap<String, Object> propertiesMap,
+        JSONObject jsonDataNode, JSONArray requiredPropertyNames, Map<String, JSONObject> jsonEntrySchema,
+        LinkedHashMap<String, Object> dataNodes) {
+        JSONObject jsonPropertyNode = new JSONObject();
+        propertiesMap.entrySet()
+                .stream()
+                .filter(this::hasMapAsValue)
+                .forEach(entry -> {
+                    LinkedHashMap<String, Object> nodeMap = (LinkedHashMap<String, Object>) entry.getValue();
+                    parseToscaChildNodeMap(entry.getKey(), entry.getValue(), jsonPropertyNode, jsonEntrySchema, dataNodes, incrementSimpleTypeOrder());
+                    if (isPropertyRequired(nodeMap)) {
+                        requiredPropertyNames.put(entry.getKey());
+                    }
+                });
+        addRequiredPropertiesToDataNode(jsonDataNode, requiredPropertyNames, jsonPropertyNode);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void parseToscaPropertiesForType(LinkedHashMap<String, Object> propertiesMap,
+        JSONObject jsonDataNode, JSONArray requiredPropertyNames, Map<String, JSONObject> jsonEntrySchema,
+        LinkedHashMap<String, Object> dataNodes, int order) {
+        JSONObject jsonPropertyNode = new JSONObject();
+        propertiesMap.entrySet()
+                .stream()
+                .filter(this::hasMapAsValue)
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> (LinkedHashMap<String, Object>) e.getValue()))
+                .entrySet()
+                .forEach(el -> {
+                    parseToscaChildNodeMap(el.getKey(), el.getValue(), jsonPropertyNode, jsonEntrySchema, dataNodes, order);
+                    if (isPropertyRequired(el.getValue())) {
+                        requiredPropertyNames.put(el.getKey());
+                    }
+                });
+        addRequiredPropertiesToDataNode(jsonDataNode, requiredPropertyNames, jsonPropertyNode);
+    }
+    private boolean isPropertyRequired(LinkedHashMap<String, Object> nodeMap) {
+        return nodeMap.containsKey(ToscaSchemaConstants.REQUIRED) && ((boolean) nodeMap.get(ToscaSchemaConstants.REQUIRED));
+    }
+
+    private void addRequiredPropertiesToDataNode(JSONObject jsonDataNode, JSONArray requiredPropertyNames, JSONObject jsonPropertyNode){
+        jsonDataNode.put(JsonEditorSchemaConstants.REQUIRED, requiredPropertyNames);
         jsonDataNode.put(JsonEditorSchemaConstants.PROPERTIES, jsonPropertyNode);
     }
 
-    private void parseToscaChildNodeMap(String childObjectKey, LinkedHashMap<String, Object> childNodeMap,
-        JSONObject jsonPropertyNode, Map<String, JSONObject> jsonEntrySchema, LinkedHashMap<String, Object> dataNodes,
-        JSONArray array, int order) {
+    private void parseToscaChildNodeMap(String childObjectKey, Object childNodeMap,
+        JSONObject jsonPropertyNode, Map<String, JSONObject> jsonEntrySchema, LinkedHashMap<String, Object> dataNodes, int order) {
         JSONObject childObject = new JSONObject();
-        // JSONArray childArray = new JSONArray();
-        parseDescription(childNodeMap, childObject);
-        parseTypes(childObjectKey, childNodeMap, childObject, jsonEntrySchema, dataNodes, array, order);
-        parseConstraints(childNodeMap, childObject);
-        parseEntrySchema(childNodeMap, childObject, jsonPropertyNode, jsonEntrySchema, dataNodes);
+        LinkedHashMap<String, Object> childNodeHashMap = (LinkedHashMap<String, Object>) childNodeMap;
+        parseDescription(childNodeHashMap, childObject);
+        parseTypes(childNodeHashMap, childObject, jsonEntrySchema, dataNodes, order);
+        parseConstraints(childNodeHashMap, childObject);
+        parseEntrySchema(childNodeHashMap, childObject, jsonEntrySchema, dataNodes);
 
         jsonPropertyNode.put(childObjectKey, childObject);
-        order++;
-
     }
 
-    private void parseEntrySchema(LinkedHashMap<String, Object> childNodeMap, JSONObject childObject,
-        JSONObject jsonPropertyNode, Map<String, JSONObject> jsonEntrySchema, LinkedHashMap<String, Object> dataNodes) {
-        if (childNodeMap.get(ToscaSchemaConstants.ENTRY_SCHEMA) != null) {
-            if (childNodeMap.get(ToscaSchemaConstants.ENTRY_SCHEMA) instanceof Map) {
-                LinkedHashMap<String, Object> entrySchemaMap = (LinkedHashMap<String, Object>) childNodeMap
-                    .get(ToscaSchemaConstants.ENTRY_SCHEMA);
-                entrySchemaMap.entrySet().stream().forEach(entry -> {
-                    if (entry.getKey().equalsIgnoreCase(ToscaSchemaConstants.TYPE) && entry.getValue() != null) {
-                        String entrySchemaType = (String) entry.getValue();
-                        if (entrySchemaType.contains(ToscaSchemaConstants.POLICY_DATA)) {
-                            JSONArray array = new JSONArray();
+    private void parseEntrySchema(LinkedHashMap<String, Object> childNodeMap, JSONObject childObject, Map<String, JSONObject> jsonEntrySchema, LinkedHashMap<String, Object> dataNodes) {
+            Object entrySchema = childNodeMap.get(ToscaSchemaConstants.ENTRY_SCHEMA);
+            if (entrySchema instanceof Map) {
+                Map<String, Object>  entrySchemaWithDefinedType = ((LinkedHashMap<String, Object>) entrySchema).entrySet()
+                        .stream()
+                        .filter(this::hasPropertyDefinedType).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+                entrySchemaWithDefinedType.entrySet()
+                        .stream()
+                        .filter(entry -> isPolicyDataComposedType((String) entry.getValue()))
+                        .map(entry -> (String) entry.getValue())
+                        .forEach(entrySchemaType -> {
                             if (jsonEntrySchema.get(entrySchemaType) != null) {
                                 // Already traversed
-                                JSONObject entrySchemaObject = jsonEntrySchema.get(entrySchemaType);
-                                attachEntrySchemaJsonObject(childObject, entrySchemaObject,
-                                    JsonEditorSchemaConstants.TYPE_OBJECT);
-                            } else if (dataNodes.containsKey(entrySchemaType)) {
-
-                                JSONObject entrySchemaObject = new JSONObject();
+                                attachEntrySchemaJsonObject(childObject, jsonEntrySchema.get(entrySchemaType), JsonEditorSchemaConstants.TYPE_OBJECT);
+                            }
+                            else if (dataNodes.containsKey(entrySchemaType)) {
                                 // Need to traverse
-                                ((LinkedHashMap<String, Object>) dataNodes.get(entrySchemaType)).entrySet().stream()
-                                    .forEach(pmap -> {
-                                        if (pmap.getKey().equalsIgnoreCase(ToscaSchemaConstants.PROPERTIES)) {
-                                            parseToscaProperties(ToscaSchemaConstants.ENTRY_SCHEMA,
-                                                (LinkedHashMap<String, Object>) pmap.getValue(), entrySchemaObject,
-                                                array, jsonEntrySchema, dataNodes, incrementComplexTypeOrder());
-                                            jsonEntrySchema.put(entrySchemaType, entrySchemaObject);
-                                            dataNodes.remove(entrySchemaType);
-                                            attachEntrySchemaJsonObject(childObject, entrySchemaObject,
-                                                JsonEditorSchemaConstants.TYPE_OBJECT);
-                                        }
+                                ((LinkedHashMap<String, Object>) dataNodes.get(entrySchemaType)).entrySet()
+                                        .stream()
+                                        .filter(this::isPropertiesNode)
+                                        .map(el -> (LinkedHashMap<String, Object>) el.getValue())
+                                        .forEach(propertyMap -> processDataTypeProperty(childObject, jsonEntrySchema, dataNodes, entrySchemaType, propertyMap));
+                            }
+                        });
 
-                                    });
-                            }
-                        } else if (entrySchemaType.equalsIgnoreCase(ToscaSchemaConstants.TYPE_STRING)
-                            || entrySchemaType.equalsIgnoreCase(ToscaSchemaConstants.TYPE_INTEGER)
-                            || entrySchemaType.equalsIgnoreCase(ToscaSchemaConstants.TYPE_FLOAT)) {
+                entrySchemaWithDefinedType.entrySet()
+                        .stream()
+                        .map(Map.Entry::getValue)
+                        .filter(this::isPrimitiveType)
+                        .map(el -> indicatesNumericType(el) ? JsonEditorSchemaConstants.TYPE_INTEGER: JsonEditorSchemaConstants.TYPE_STRING)
+                        .forEach(jsonType -> {
                             JSONObject entrySchemaObject = new JSONObject();
-                            parseConstraints(entrySchemaMap, entrySchemaObject);
-                            String jsontype = JsonEditorSchemaConstants.TYPE_STRING;
-                            if (entrySchemaType.equalsIgnoreCase(ToscaSchemaConstants.TYPE_INTEGER)
-                                || entrySchemaType.equalsIgnoreCase(ToscaSchemaConstants.TYPE_FLOAT)) {
-                                jsontype = JsonEditorSchemaConstants.TYPE_INTEGER;
+                            parseConstraints(entrySchemaWithDefinedType, entrySchemaObject);
+                            if (hasNodeListType(childNodeMap)) {
+                                // Only known value of type is String for now// Custom key for JSON Editor and UI rendering
+                                childObject.put(JsonEditorSchemaConstants.CUSTOM_KEY_FORMAT, JsonEditorSchemaConstants.FORMAT_SELECT);
                             }
-                            if (childNodeMap.get(ToscaSchemaConstants.TYPE) != null) {
-                                // Only known value of type is String for now
-                                if (childNodeMap.get(ToscaSchemaConstants.TYPE) instanceof String) {
-                                    String typeValue = (String) childNodeMap.get(ToscaSchemaConstants.TYPE);
-                                    if (typeValue.equalsIgnoreCase(ToscaSchemaConstants.TYPE_LIST)) {
-                                        // Custom key for JSON Editor and UI rendering
-                                        childObject.put(JsonEditorSchemaConstants.CUSTOM_KEY_FORMAT,
-                                            JsonEditorSchemaConstants.FORMAT_SELECT);
-                                        // childObject.put(JsonEditorSchemaConstants.UNIQUE_ITEMS,
-                                        // JsonEditorSchemaConstants.TRUE);
-                                    }
-                                }
-                            }
-                            attachEntrySchemaJsonObject(childObject, entrySchemaObject, jsontype);
-                        }
-                    }
-                });
+                            attachEntrySchemaJsonObject(childObject, entrySchemaObject, jsonType);
+                        });
             }
+    }
+
+
+    private boolean hasPropertyDefinedType(Map.Entry<String, Object> entry) {
+        return entry.getKey().equalsIgnoreCase(ToscaSchemaConstants.TYPE) && entry.getValue() != null;
+    }
+
+    private boolean isPrimitiveType(Object entrySchemaType) {
+        return indicatesNumericType(entrySchemaType) || ((String) entrySchemaType).equalsIgnoreCase(ToscaSchemaConstants.TYPE_STRING);
+    }
+
+    private boolean hasNodeListType(Map<String, Object> childNodeMap) {
+        Object type = childNodeMap.get(ToscaSchemaConstants.TYPE);
+        return type instanceof String && isListType((String) type);
+    }
+
+    private boolean indicatesNumericType(Object entrySchemaType) {
+        if(!(entrySchemaType instanceof String)){
+            return false;
         }
+        String entrySchemaTypeStr = (String) entrySchemaType;
+        return entrySchemaTypeStr.equalsIgnoreCase(ToscaSchemaConstants.TYPE_INTEGER)
+                || entrySchemaTypeStr.equalsIgnoreCase(ToscaSchemaConstants.TYPE_FLOAT);
+    }
+
+    private void processDataTypeProperty(JSONObject childObject, Map<String, JSONObject> jsonEntrySchema, LinkedHashMap<String, Object> dataNodes, String entrySchemaType, LinkedHashMap<String, Object> propertyMap) {
+        JSONObject entrySchemaObject = new JSONObject();
+        incrementComplexTypeOrder();
+        parseToscaProperties(propertyMap, entrySchemaObject, new JSONArray(), jsonEntrySchema, dataNodes);
+        jsonEntrySchema.put(entrySchemaType, entrySchemaObject);
+        dataNodes.remove(entrySchemaType);
+        attachEntrySchemaJsonObject(childObject, entrySchemaObject, JsonEditorSchemaConstants.TYPE_OBJECT);
     }
 
     private void attachEntrySchemaJsonObject(JSONObject childObject, JSONObject entrySchemaObject, String dataType) {
@@ -335,253 +336,300 @@ public class ToscaYamlToJsonConvertor {
         }
     }
 
-    /*
-     * private String parseKey(String toscaKey, String lookupString) { return
-     * toscaKey.substring(toscaKey.indexOf(lookupString) + lookupString.length(),
-     * toscaKey.length()); }
-     */
-
     private void parseDescription(LinkedHashMap<String, Object> childNodeMap, JSONObject childObject) {
         if (childNodeMap.get(ToscaSchemaConstants.DESCRIPTION) != null) {
             childObject.put(JsonEditorSchemaConstants.TITLE, childNodeMap.get(ToscaSchemaConstants.DESCRIPTION));
         }
     }
 
-    private void parseTypes(String childObjectKey, LinkedHashMap<String, Object> childNodeMap, JSONObject childObject,
-        Map<String, JSONObject> jsonEntrySchema, LinkedHashMap<String, Object> dataNodes, JSONArray array, int order) {
-        if (childNodeMap.get(ToscaSchemaConstants.TYPE) != null) {
+    private void parseTypes(LinkedHashMap<String, Object> childNodeMap, JSONObject childObject,
+        Map<String, JSONObject> jsonEntrySchema, LinkedHashMap<String, Object> dataNodes, int order) {
             // Only known value of type is String for now
-            if (childNodeMap.get(ToscaSchemaConstants.TYPE) instanceof String) {
+            if (isTypeInYamlProperlyDefined(childNodeMap)) {
                 childObject.put(JsonEditorSchemaConstants.PROPERTY_ORDER, order);
                 String typeValue = (String) childNodeMap.get(ToscaSchemaConstants.TYPE);
-                if (typeValue.equalsIgnoreCase(ToscaSchemaConstants.TYPE_INTEGER)) {
-                    childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_INTEGER);
-
-                } else if (typeValue.equalsIgnoreCase(ToscaSchemaConstants.TYPE_FLOAT)) {
-                    childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_INTEGER);
-                } else if (typeValue.equalsIgnoreCase(ToscaSchemaConstants.TYPE_LIST)) {
-                    childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_ARRAY);
-                    // Custom key for JSON Editor and UI rendering
-                    childObject.put(JsonEditorSchemaConstants.CUSTOM_KEY_FORMAT,
-                        JsonEditorSchemaConstants.CUSTOM_KEY_FORMAT_TABS_TOP);
-                    childObject.put(JsonEditorSchemaConstants.UNIQUE_ITEMS, JsonEditorSchemaConstants.TRUE);
-                } else if (typeValue.equalsIgnoreCase(ToscaSchemaConstants.TYPE_MAP)) {
-                    childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_OBJECT);
-                } else if (typeValue.contains(ToscaSchemaConstants.POLICY_DATA)) {
-                    JSONArray childArray = new JSONArray();
-
-                    if (jsonEntrySchema.get(typeValue) != null) {
-                        // Already traversed
-                        JSONObject entrySchemaObject = jsonEntrySchema.get(typeValue);
-                        attachTypeJsonObject(childObject, entrySchemaObject);
-                    } else if (dataNodes.containsKey(typeValue)) {
-                        JSONObject entrySchemaObject = new JSONObject();
-                        // Need to traverse
-                        JSONArray jsonArray = new JSONArray();
-                        ((LinkedHashMap<String, Object>) dataNodes.get(typeValue)).entrySet().stream().forEach(pmap -> {
-                            if (pmap.getKey().equalsIgnoreCase(ToscaSchemaConstants.PROPERTIES)) {
-
-                                ((LinkedHashMap<String, Object>) pmap.getValue()).entrySet().stream().forEach(p -> {
-                                    if (p.getValue() instanceof Map) {
-                                        LinkedHashMap<String, Object> childNodeMap2 = (LinkedHashMap<String, Object>) p
-                                            .getValue();
-                                        if (childNodeMap2.containsKey(ToscaSchemaConstants.TYPE)
-                                            && (((String) childNodeMap2.get(ToscaSchemaConstants.TYPE))
-                                                .contains(ToscaSchemaConstants.POLICY_DATA))) {
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                        ((LinkedHashMap<String, Object>) dataNodes.get(typeValue)).entrySet().stream().forEach(pmap -> {
-                            if (pmap.getKey().equalsIgnoreCase(ToscaSchemaConstants.PROPERTIES)) {
-                                parseToscaPropertiesForType(childObjectKey,
-                                    (LinkedHashMap<String, Object>) pmap.getValue(), entrySchemaObject, childArray,
-                                    jsonEntrySchema, dataNodes, true, incrementComplexSimpleTypeOrder());
-                                jsonEntrySchema.put(typeValue, entrySchemaObject);
-                                dataNodes.remove(typeValue);
-                                attachTypeJsonObject(childObject, entrySchemaObject);
-                            }
-                        });
-                    }
-                } else {
-                    childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_STRING);
-                }
+                addTypeBasedOnValue(typeValue, childObject, jsonEntrySchema, dataNodes);
             }
-            if (childNodeMap.get(ToscaSchemaConstants.DEFAULT) != null) {
-                childObject.put(JsonEditorSchemaConstants.DEFAULT, childNodeMap.get(ToscaSchemaConstants.DEFAULT));
-            }
+            addDefaultValueIfPresent(childNodeMap, childObject);
+    }
+
+    private void addTypeBasedOnValue(String typeValue, JSONObject childObject, Map<String, JSONObject> jsonEntrySchema, LinkedHashMap<String, Object> dataNodes) {
+        if (isNumberType(typeValue)) {
+            childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_INTEGER);
+        } else if (isListType(typeValue)) {
+            childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_ARRAY);
+            // Custom key for JSON Editor and UI rendering
+            childObject.put(JsonEditorSchemaConstants.CUSTOM_KEY_FORMAT,
+                JsonEditorSchemaConstants.CUSTOM_KEY_FORMAT_TABS_TOP);
+            childObject.put(JsonEditorSchemaConstants.UNIQUE_ITEMS, JsonEditorSchemaConstants.TRUE);
+        } else if (isMapType(typeValue)) {
+            childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_OBJECT);
+        } else if (isPolicyDataComposedType(typeValue)) {
+            processComposedDataType(childObject, jsonEntrySchema, dataNodes, typeValue);
+        } else {
+            addDefaultTypeIfNotRecognized(childObject);
         }
     }
 
-    private void parseConstraints(LinkedHashMap<String, Object> childNodeMap, JSONObject childObject) {
-        if (childNodeMap.containsKey(ToscaSchemaConstants.CONSTRAINTS)
-            && childNodeMap.get(ToscaSchemaConstants.CONSTRAINTS) != null) {
+    private boolean isPropertiesNode(Map.Entry<String, Object> el) {
+        return el.getKey().equalsIgnoreCase(ToscaSchemaConstants.PROPERTIES);
+    }
+
+    private void processComposedDataType(JSONObject childObject, Map<String, JSONObject> jsonEntrySchema, LinkedHashMap<String, Object> dataNodes, String typeValue) {
+        JSONArray childArray = new JSONArray();
+
+        if (jsonEntrySchema.get(typeValue) != null) {
+            // Already traversed
+            attachTypeJsonObject(childObject, jsonEntrySchema.get(typeValue));
+        } else if (dataNodes.containsKey(typeValue)) {
+            JSONObject entrySchemaObject = new JSONObject();
+            ((LinkedHashMap<String, Object>) dataNodes.get(typeValue)).entrySet()
+                    .stream()
+                    .filter(this::isPropertiesNode)
+                    .map(entry -> (LinkedHashMap<String, Object>) entry.getValue())
+                    .forEach(propertiesMap -> {
+                        parseToscaPropertiesForType(propertiesMap, entrySchemaObject, childArray,
+                                jsonEntrySchema, dataNodes, incrementComplexSimpleTypeOrder());
+                        jsonEntrySchema.put(typeValue, entrySchemaObject);
+                        dataNodes.remove(typeValue);
+                        attachTypeJsonObject(childObject, entrySchemaObject);
+                    });
+        }
+    }
+
+    private void processConstraint(Map<String, Object> childNodeMap, JSONObject childObject, String constraintName, Object constraintValue) {
+        if (isMinLengthOrEqOrGtConstraint(constraintName)) {
+            // For String min_lenghth is minimum length whereas for number, it will be
+            // minimum or greater than to the defined value
+            if (hasStringType(childNodeMap)) {
+                childObject.put(JsonEditorSchemaConstants.MIN_LENGTH, constraintValue);
+            } else {
+                childObject.put(JsonEditorSchemaConstants.MINIMUM, constraintValue);
+            }
+        }
+        else if (isMaxLengthOrLtOrEqConstraint(constraintName)) {
+            // For String max_lenghth is maximum length whereas for number, it will be
+            // maximum or less than the defined value
+            if (hasStringType(childNodeMap)) {
+                childObject.put(JsonEditorSchemaConstants.MAX_LENGTH, constraintValue);
+            } else {
+                childObject.put(JsonEditorSchemaConstants.MAXIMUM, constraintValue);
+            }
+        }
+        else if (is(constraintName,ToscaSchemaConstants.LESS_THAN)) {
+            childObject.put(JsonEditorSchemaConstants.EXCLUSIVE_MAXIMUM, constraintValue);
+        }
+        else if (is(constraintName, ToscaSchemaConstants.GREATER_THAN)) {
+            childObject.put(JsonEditorSchemaConstants.EXCLUSIVE_MINIMUM, constraintValue);
+        }
+        else if (isInRangeConstraint(constraintName, constraintValue)) {
+            processInRangeConstraint(childNodeMap, childObject, (ArrayList<?>) constraintValue);
+        }
+        else if (isValidValuesConstraint(constraintName, constraintValue)) {
+            processValidValuesConstraint(childObject, (ArrayList<?>)constraintValue);
+        }
+    }
+
+    private void processValidValuesConstraint(JSONObject childObject, ArrayList<?> constraintValue) {
+        JSONArray validValuesArray = new JSONArray();
+        boolean noDictionaryToProcess =  constraintValue
+                .stream()
+                .noneMatch(value -> (value instanceof String && ((String) value).contains(ToscaSchemaConstants.DICTIONARY)));
+        if (noDictionaryToProcess) {
+            constraintValue.stream().forEach(validValuesArray::put);
+            childObject.put(JsonEditorSchemaConstants.ENUM, validValuesArray);
+        }
+        else {
+            constraintValue
+                    .stream()
+                    .filter(value -> value instanceof String)
+                    .map(value -> (String) value)
+                    .filter(value -> value.contains(ToscaSchemaConstants.DICTIONARY))
+                    .forEach(value -> processDictionaryElements(childObject, value));
+        }
+    }
+
+    private void processInRangeConstraint(Map<String, Object> childNodeMap, JSONObject childObject, ArrayList<?> constraintValue) {
+        if (hasStringType(childNodeMap)) {
+            childObject.put(JsonEditorSchemaConstants.MIN_LENGTH,
+                    constraintValue.get(0));
+            childObject.put(JsonEditorSchemaConstants.MAX_LENGTH,
+                    constraintValue.get(1));
+        }
+        else {
+            childObject.put(JsonEditorSchemaConstants.MINIMUM,
+                    constraintValue.get(0));
+            childObject.put(JsonEditorSchemaConstants.MAXIMUM,
+                    constraintValue.get(1));
+        }
+    }
+
+    private void parseConstraints(Map<String, Object> childNodeMap, JSONObject childObject) {
+        if (hasConstraints(childNodeMap)) {
             List<LinkedHashMap<String, Object>> constraintsList = (List<LinkedHashMap<String, Object>>) childNodeMap
                 .get(ToscaSchemaConstants.CONSTRAINTS);
-            constraintsList.stream().forEach(c -> {
-                if (c instanceof Map) {
-                    c.entrySet().stream().forEach(constraint -> {
-                        if (constraint.getKey().equalsIgnoreCase(ToscaSchemaConstants.MIN_LENGTH)
-                            || constraint.getKey().equalsIgnoreCase(ToscaSchemaConstants.GREATER_OR_EQUAL)) {
-                            // For String min_lenghth is minimum length whereas for number, it will be
-                            // minimum or greater than to the defined value
-                            if (childNodeMap.containsKey(ToscaSchemaConstants.TYPE)
-                                && (childNodeMap.get(ToscaSchemaConstants.TYPE) instanceof String)
-                                && ((String) childNodeMap.get(ToscaSchemaConstants.TYPE))
-                                    .equalsIgnoreCase(ToscaSchemaConstants.TYPE_STRING)) {
-                                childObject.put(JsonEditorSchemaConstants.MIN_LENGTH, constraint.getValue());
-                            } else {
-                                childObject.put(JsonEditorSchemaConstants.MINIMUM, constraint.getValue());
-                            }
-                        } else if (constraint.getKey().equalsIgnoreCase(ToscaSchemaConstants.MAX_LENGTH)
-                            || constraint.getKey().equalsIgnoreCase(ToscaSchemaConstants.LESS_OR_EQUAL)) {
-                            // For String max_lenghth is maximum length whereas for number, it will be
-                            // maximum or less than the defined value
-                            if (childNodeMap.containsKey(ToscaSchemaConstants.TYPE)
-                                && (childNodeMap.get(ToscaSchemaConstants.TYPE) instanceof String)
-                                && ((String) childNodeMap.get(ToscaSchemaConstants.TYPE))
-                                    .equalsIgnoreCase(ToscaSchemaConstants.TYPE_STRING)) {
-                                childObject.put(JsonEditorSchemaConstants.MAX_LENGTH, constraint.getValue());
-                            } else {
-                                childObject.put(JsonEditorSchemaConstants.MAXIMUM, constraint.getValue());
-                            }
-                        } else if (constraint.getKey().equalsIgnoreCase(ToscaSchemaConstants.LESS_THAN)) {
-                            childObject.put(JsonEditorSchemaConstants.EXCLUSIVE_MAXIMUM, constraint.getValue());
-                        } else if (constraint.getKey().equalsIgnoreCase(ToscaSchemaConstants.GREATER_THAN)) {
-                            childObject.put(JsonEditorSchemaConstants.EXCLUSIVE_MINIMUM, constraint.getValue());
-                        } else if (constraint.getKey().equalsIgnoreCase(ToscaSchemaConstants.IN_RANGE)) {
-                            if (constraint.getValue() instanceof ArrayList<?>) {
-                                if (childNodeMap.containsKey(ToscaSchemaConstants.TYPE)
-                                    && (childNodeMap.get(ToscaSchemaConstants.TYPE) instanceof String)
-                                    && ((String) childNodeMap.get(ToscaSchemaConstants.TYPE))
-                                        .equalsIgnoreCase(ToscaSchemaConstants.TYPE_STRING)) {
-                                    childObject.put(JsonEditorSchemaConstants.MIN_LENGTH,
-                                        ((ArrayList) constraint.getValue()).get(0));
-                                    childObject.put(JsonEditorSchemaConstants.MAX_LENGTH,
-                                        ((ArrayList) constraint.getValue()).get(1));
-                                } else {
-                                    childObject.put(JsonEditorSchemaConstants.MINIMUM,
-                                        ((ArrayList) constraint.getValue()).get(0));
-                                    childObject.put(JsonEditorSchemaConstants.MAXIMUM,
-                                        ((ArrayList) constraint.getValue()).get(1));
-                                }
-
-                            }
-                        } else if (constraint.getKey().equalsIgnoreCase(ToscaSchemaConstants.VALID_VALUES)) {
-                            JSONArray validValuesArray = new JSONArray();
-
-                            if (constraint.getValue() instanceof ArrayList<?>) {
-                                boolean processDictionary = ((ArrayList<?>) constraint.getValue()).stream()
-                                    .anyMatch(value -> (value instanceof String
-                                        && ((String) value).contains(ToscaSchemaConstants.DICTIONARY)));
-                                if (!processDictionary) {
-                                    ((ArrayList<?>) constraint.getValue()).stream().forEach(value -> {
-                                        validValuesArray.put(value);
-                                    });
-                                    childObject.put(JsonEditorSchemaConstants.ENUM, validValuesArray);
-                                } else {
-                                    ((ArrayList<?>) constraint.getValue()).stream().forEach(value -> {
-                                        if ((value instanceof String
-                                            && ((String) value).contains(ToscaSchemaConstants.DICTIONARY))) {
-                                            processDictionaryElements(childObject, (String) value);
-                                        }
-
-                                    });
-
-                                }
-                            }
-
-                        }
-                    });
-                }
-            });
+            constraintsList.stream()
+                    .map(LinkedHashMap::entrySet)
+                    .flatMap(Collection::stream)
+                    .forEach(constraint -> processConstraint(childNodeMap, childObject, constraint.getKey(), constraint.getValue()));
         }
+    }
+
+    private boolean hasConstraints(Map<String, Object> childNodeMap) {
+        return childNodeMap.containsKey(ToscaSchemaConstants.CONSTRAINTS)
+            && childNodeMap.get(ToscaSchemaConstants.CONSTRAINTS) != null;
+    }
+
+    private void addDefaultTypeIfNotRecognized(JSONObject childObject) {
+        childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_STRING);
+    }
+
+    private boolean isPolicyDataComposedType(String typeValue) {
+        return typeValue.contains(ToscaSchemaConstants.POLICY_DATA);
+    }
+
+    private boolean isMapType(String typeValue) {
+        return typeValue.equalsIgnoreCase(ToscaSchemaConstants.TYPE_MAP);
+    }
+
+    private boolean isListType(String typeValue) {
+        return typeValue.equalsIgnoreCase(ToscaSchemaConstants.TYPE_LIST);
+    }
+
+    private boolean isTypeInYamlProperlyDefined(LinkedHashMap<String, Object> childNodeMap) {
+        return childNodeMap.get(ToscaSchemaConstants.TYPE) instanceof String;
+    }
+
+    private boolean isIntegerType(String typeValue) {
+        return typeValue.equalsIgnoreCase(ToscaSchemaConstants.TYPE_INTEGER);
+    }
+
+    private boolean isNumberType(String typeValue) {
+        return typeValue.equalsIgnoreCase(ToscaSchemaConstants.TYPE_INTEGER) || typeValue.equalsIgnoreCase(ToscaSchemaConstants.TYPE_FLOAT);
+    }
+
+    private void addDefaultValueIfPresent(LinkedHashMap<String, Object> childNodeMap, JSONObject childObject) {
+        if (childNodeMap.get(ToscaSchemaConstants.DEFAULT) != null) {
+            childObject.put(JsonEditorSchemaConstants.DEFAULT, childNodeMap.get(ToscaSchemaConstants.DEFAULT));
+        }
+    }
+
+    private boolean hasMapAsValue(Map.Entry<String,Object> obj){
+        return obj.getValue() instanceof Map;
+    }
+
+    private boolean isInRangeConstraint(String constraintName, Object constraintValue) {
+        return is(constraintName, ToscaSchemaConstants.IN_RANGE) && constraintValue instanceof ArrayList<?>;
+    }
+
+    private boolean isValidValuesConstraint(String constraintName, Object constraintValue) {
+        return constraintName.equalsIgnoreCase(ToscaSchemaConstants.VALID_VALUES) && constraintValue instanceof ArrayList<?>;
+    }
+
+    private boolean is(String propertyName, String keyword) {
+        return propertyName.equalsIgnoreCase(keyword);
+    }
+
+    private boolean isMaxLengthOrLtOrEqConstraint(String constraintNameInYaml) {
+        return constraintNameInYaml.equalsIgnoreCase(ToscaSchemaConstants.MAX_LENGTH) || constraintNameInYaml.equalsIgnoreCase(ToscaSchemaConstants.LESS_OR_EQUAL);
+    }
+
+    private boolean hasStringType(Map<String, Object> childNodeMap) {
+        return childNodeMap.containsKey(ToscaSchemaConstants.TYPE) && (childNodeMap.get(ToscaSchemaConstants.TYPE) instanceof String) && ((String) childNodeMap.get(ToscaSchemaConstants.TYPE)).equalsIgnoreCase(ToscaSchemaConstants.TYPE_STRING);
+    }
+
+    private boolean isMinLengthOrEqOrGtConstraint(String constraintNameInYaml) {
+        return constraintNameInYaml.equalsIgnoreCase(ToscaSchemaConstants.MIN_LENGTH) || constraintNameInYaml.equalsIgnoreCase(ToscaSchemaConstants.GREATER_OR_EQUAL);
     }
 
     private void processDictionaryElements(JSONObject childObject, String dictionaryReference) {
-
-        if (dictionaryReference.contains("#")) {
+        if (dictionaryReference.contains("#")) {// We support only one # as of now.
             String[] dictionaryKeyArray = dictionaryReference
-                .substring(dictionaryReference.indexOf(ToscaSchemaConstants.DICTIONARY) + 11,
-                    dictionaryReference.length())
-                .split("#");
-            // We support only one # as of now.
-            List<CldsDictionaryItem> cldsDictionaryElements = null;
-            List<CldsDictionaryItem> subDictionaryElements = null;
-            if (dictionaryKeyArray != null && dictionaryKeyArray.length == 2) {
-                cldsDictionaryElements = getCldsDao().getDictionaryElements(dictionaryKeyArray[0], null, null);
-                subDictionaryElements = getCldsDao().getDictionaryElements(dictionaryKeyArray[1], null, null);
-
-                if (cldsDictionaryElements != null) {
-                    List<String> subCldsDictionaryNames = subDictionaryElements.stream()
-                        .map(CldsDictionaryItem::getDictElementShortName).collect(Collectors.toList());
-                    JSONArray jsonArray = new JSONArray();
-
-                    Optional.ofNullable(cldsDictionaryElements).get().stream().forEach(c -> {
-                        JSONObject jsonObject = new JSONObject();
-                        jsonObject.put(JsonEditorSchemaConstants.TYPE, getJsonType(c.getDictElementType()));
-                        if (c.getDictElementType() != null
-                            && c.getDictElementType().equalsIgnoreCase(ToscaSchemaConstants.TYPE_STRING)) {
-                            jsonObject.put(JsonEditorSchemaConstants.MIN_LENGTH, 1);
-                        }
-                        jsonObject.put(JsonEditorSchemaConstants.ID, c.getDictElementName());
-                        jsonObject.put(JsonEditorSchemaConstants.LABEL, c.getDictElementShortName());
-                        jsonObject.put(JsonEditorSchemaConstants.OPERATORS, subCldsDictionaryNames);
-                        jsonArray.put(jsonObject);
-                    });
-                    ;
-                    JSONObject filterObject = new JSONObject();
-                    filterObject.put(JsonEditorSchemaConstants.FILTERS, jsonArray);
-
-                    childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_QBLDR);
-                    // TO invoke validation on such parameters
-                    childObject.put(JsonEditorSchemaConstants.MIN_LENGTH, 1);
-                    childObject.put(JsonEditorSchemaConstants.QSSCHEMA, filterObject);
-
-                }
-            }
+                    .substring(dictionaryReference.indexOf(ToscaSchemaConstants.DICTIONARY) + 11).split("#");
+            processDictionaryElementsWithHashInReference(childObject, dictionaryKeyArray);
         } else {
-            String dictionaryKey = dictionaryReference.substring(
-                dictionaryReference.indexOf(ToscaSchemaConstants.DICTIONARY) + 11, dictionaryReference.length());
-            if (dictionaryKey != null) {
-                List<CldsDictionaryItem> cldsDictionaryElements = getCldsDao().getDictionaryElements(dictionaryKey,
-                    null, null);
-                if (cldsDictionaryElements != null) {
-                    List<String> cldsDictionaryNames = new ArrayList<>();
-                    List<String> cldsDictionaryFullNames = new ArrayList<>();
-                    cldsDictionaryElements.stream().forEach(c -> {
-                        // Json type will be translated before Policy creation
-                        if (c.getDictElementType() != null && !c.getDictElementType().equalsIgnoreCase("json")) {
-                            cldsDictionaryFullNames.add(c.getDictElementName());
-                        }
-                        cldsDictionaryNames.add(c.getDictElementShortName());
-                    });
+            String dictionaryKey = dictionaryReference.substring(dictionaryReference.indexOf(ToscaSchemaConstants.DICTIONARY) + 11);
+            processDictionaryElementsWithoutHashInReference(childObject, dictionaryKey);
+        }
+    }
 
-                    if (cldsDictionaryFullNames.size() > 0) {
-                        childObject.put(JsonEditorSchemaConstants.ENUM, cldsDictionaryFullNames);
-                        // Add Enum titles for generated translated values during JSON instance
-                        // generation
-                        JSONObject enumTitles = new JSONObject();
-                        enumTitles.put(JsonEditorSchemaConstants.ENUM_TITLES, cldsDictionaryNames);
-                        childObject.put(JsonEditorSchemaConstants.OPTIONS, enumTitles);
-                    } else {
-                        childObject.put(JsonEditorSchemaConstants.ENUM, cldsDictionaryNames);
-                    }
+    private void processDictionaryElementsWithHashInReference(JSONObject childObject, String[] dictionaryKeyArray ) {
+        if (dictionaryKeyArray != null && dictionaryKeyArray.length == 2) {
+            List<CldsDictionaryItem> cldsDictionaryElements =  getCldsDao().getDictionaryElements(dictionaryKeyArray[0], null, null);
+            List<CldsDictionaryItem> subDictionaryElements = getCldsDao().getDictionaryElements(dictionaryKeyArray[1], null, null);
 
-                }
+            if (cldsDictionaryElements != null) {
+                List<String> subCldsDictionaryNames = subDictionaryElements.stream()
+                    .map(CldsDictionaryItem::getDictElementShortName).collect(Collectors.toList());
+                JSONArray jsonArray = new JSONArray();
+
+                cldsDictionaryElements.stream()
+                        .forEach(c -> {
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put(JsonEditorSchemaConstants.TYPE, getJsonType(c.getDictElementType()));
+                            if (c.getDictElementType() != null && c.getDictElementType().equalsIgnoreCase(ToscaSchemaConstants.TYPE_STRING)) {
+                                jsonObject.put(JsonEditorSchemaConstants.MIN_LENGTH, 1);
+                            }
+                            jsonObject.put(JsonEditorSchemaConstants.ID, c.getDictElementName());
+                            jsonObject.put(JsonEditorSchemaConstants.LABEL, c.getDictElementShortName());
+                            jsonObject.put(JsonEditorSchemaConstants.OPERATORS, subCldsDictionaryNames);
+                            jsonArray.put(jsonObject);
+                        });
+                JSONObject filterObject = new JSONObject();
+                filterObject.put(JsonEditorSchemaConstants.FILTERS, jsonArray);
+
+                childObject.put(JsonEditorSchemaConstants.TYPE, JsonEditorSchemaConstants.TYPE_QBLDR);
+                // TO invoke validation on such parameters
+                childObject.put(JsonEditorSchemaConstants.MIN_LENGTH, 1);
+                childObject.put(JsonEditorSchemaConstants.QSSCHEMA, filterObject);
+
             }
         }
     }
 
+    private void processDictionaryElementsWithoutHashInReference(JSONObject childObject, String dictionaryKey) {
+        if (dictionaryKey != null) {
+            List<CldsDictionaryItem> cldsDictionaryElements = getCldsDao().getDictionaryElements(dictionaryKey,
+                null, null);
+            if (cldsDictionaryElements != null) {
+                List<String> cldsDictionaryNames = getDictionaryNames(cldsDictionaryElements);
+                List<String> cldsDictionaryFullNames = getDictionaryFullNames(cldsDictionaryElements);
+                if(cldsDictionaryFullNames.isEmpty()){
+                    childObject.put(JsonEditorSchemaConstants.ENUM, cldsDictionaryNames);
+                }
+                else{
+                    childObject.put(JsonEditorSchemaConstants.ENUM, cldsDictionaryFullNames);
+                    // Add Enum titles for generated translated values during JSON instance generation
+                    JSONObject enumTitles = new JSONObject();
+                    enumTitles.put(JsonEditorSchemaConstants.ENUM_TITLES, cldsDictionaryNames);
+                    childObject.put(JsonEditorSchemaConstants.OPTIONS, enumTitles);
+                }
+
+            }
+        }
+    }
+
+    List<String> getDictionaryNames(List<CldsDictionaryItem> cldsDictionaryElements){
+        return cldsDictionaryElements
+                .stream()
+                .map(CldsDictionaryItem::getDictElementShortName)
+                .collect(Collectors.toList());
+    }
+
+    List<String> getDictionaryFullNames(List<CldsDictionaryItem> cldsDictionaryElements){
+        return cldsDictionaryElements
+                .stream()
+                .filter(el -> el.getDictElementType() != null && !el.getDictElementType().equalsIgnoreCase("json"))
+                .map(CldsDictionaryItem::getDictElementName)
+                .collect(Collectors.toList());
+    }
+
     private String getJsonType(String toscaType) {
-        String jsonType = null;
-        if (toscaType.equalsIgnoreCase(ToscaSchemaConstants.TYPE_INTEGER)) {
+        String jsonType = JsonEditorSchemaConstants.TYPE_STRING;
+        if (isIntegerType(toscaType)) {
             jsonType = JsonEditorSchemaConstants.TYPE_INTEGER;
-        } else if (toscaType.equalsIgnoreCase(ToscaSchemaConstants.TYPE_LIST)) {
+        } else if (isListType(toscaType)) {
             jsonType = JsonEditorSchemaConstants.TYPE_ARRAY;
-        } else {
-            jsonType = JsonEditorSchemaConstants.TYPE_STRING;
         }
         return jsonType;
     }
