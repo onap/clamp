@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Map;
@@ -39,6 +40,7 @@ import org.mockito.Mockito;
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.model.properties.ModelProperties;
 import org.onap.clamp.clds.model.properties.PolicyChain;
+import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.onap.policy.api.AttributeType;
 import org.onap.policy.controlloop.policy.ControlLoopPolicy;
@@ -140,7 +142,7 @@ public class OperationalPolicyAttributesConstructorTest {
     private PolicyChain readPolicyChainFromResources() throws IOException {
         String policyChainText = ResourceFileUtil
             .getResourceAsString("example/operational-policy/json-policy-chain.json");
-        JsonNode policyChainNode = new ObjectMapper().readTree(policyChainText);
+        JsonObject policyChainNode = JsonUtils.GSON.fromJson(policyChainText, JsonObject.class);
         return new PolicyChain(policyChainNode);
     }
 }

@@ -27,9 +27,13 @@ import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.onap.clamp.clds.util.JsonUtils;
 
 /**
  * Parse ONAP Tca Item json properties.
@@ -50,21 +54,23 @@ public class TcaItem {
     /**
      * Parse Tca Item given json node
      *
-     * @param node
+     * @param tcaJson
      */
-    public TcaItem(JsonNode node) {
+    public TcaItem(JsonElement tcaJson) {
 
-        tcaName = AbstractModelElement.getValueByName(node, "tname");
-        tcaUuId = AbstractModelElement.getValueByName(node, "tuuid");
-        policyId = AbstractModelElement.getValueByName(node, "tcaPolId");
-        eventName = AbstractModelElement.getValueByName(node, "eventName");
-        controlLoopSchemaType = AbstractModelElement.getValueByName(node, "controlLoopSchemaType");
+        tcaName = JsonUtils.getValueByName(tcaJson, "tname");
+        tcaUuId = JsonUtils.getValueByName(tcaJson, "tuuid");
+        policyId = JsonUtils.getValueByName(tcaJson, "tcaPolId");
+        eventName = JsonUtils.getValueByName(tcaJson, "eventName");
+        controlLoopSchemaType = JsonUtils.getValueByName(tcaJson, "controlLoopSchemaType");
         // process service Configurations
-        JsonNode serviceConfigurationsNode = node.get(node.size() - 1).get("serviceConfigurations");
-        Iterator<JsonNode> itr = serviceConfigurationsNode.elements();
+        JsonArray tcaConfigurationArray = tcaJson.getAsJsonArray();
+        JsonArray serviceConfigurationsNode = tcaConfigurationArray.get(tcaConfigurationArray.size() - 1)
+            .getAsJsonObject().get("serviceConfigurations").getAsJsonArray();
+        Iterator<JsonElement> itr = serviceConfigurationsNode.iterator();
         tcaThresholds = new ArrayList<>();
         while (itr.hasNext()) {
-            tcaThresholds.add(new TcaThreshold(itr.next()));
+            tcaThresholds.add(new TcaThreshold(itr.next().getAsJsonArray()));
         }
     }
 

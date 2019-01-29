@@ -47,7 +47,7 @@ import org.onap.clamp.clds.model.properties.Policy;
 import org.onap.clamp.clds.model.properties.PolicyItem;
 import org.onap.clamp.clds.model.properties.Tca;
 import org.onap.clamp.clds.transform.XslTransformer;
-import org.onap.clamp.clds.util.JacksonUtils;
+import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.LoggingUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.onap.policy.api.AttributeType;
@@ -105,8 +105,8 @@ public class PolicyClientItCase {
         String response = policyClient.sendGuardPolicy(
             GuardPolicyAttributesConstructor.formatAttributes(prop, policyItem), prop, LoggingUtils.getRequestId(),
             policyItem);
-        Map<String, Object> mapNodes = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree(response), Map.class);
+        Map<String, Object> mapNodes = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree(response), Map.class);
         Assertions.assertThat(mapNodes).contains(Assertions.entry("policyClass", "Decision"),
             Assertions.entry("policyName",
                 modelName.replace("-", "_") + "." + controlName + "_Policy_12lup3h_0_Guard_6TtHGPq"),
@@ -130,8 +130,8 @@ public class PolicyClientItCase {
             refProp, prop, prop.getType(Policy.class).getId(), prop.getType(Policy.class).getPolicyChains().get(0));
         String response = policyClient.sendBrmsPolicy(attributes, prop, LoggingUtils.getRequestId());
 
-        Map<String, Object> mapNodes = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree(response), Map.class);
+        Map<String, Object> mapNodes = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree(response), Map.class);
         Assertions.assertThat(mapNodes).contains(Assertions.entry("policyClass", "Config"),
             Assertions.entry("policyName", modelName.replace("-", "_") + "." + controlName + "_Policy_12lup3h_0"),
             Assertions.entry("policyConfigType", PolicyConfigType.BRMS_PARAM.name()),
@@ -150,8 +150,8 @@ public class PolicyClientItCase {
         String jsonToSend = "{\"test\":\"test\"}";
         String response = policyClient.sendMicroServiceInJson(jsonToSend, prop, LoggingUtils.getRequestId());
 
-        Map<String, Object> mapNodes = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree(response), Map.class);
+        Map<String, Object> mapNodes = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree(response), Map.class);
         Assertions.assertThat(mapNodes).contains(Assertions.entry("policyClass", "Config"),
             Assertions.entry("policyName", modelName.replace("-", "_") + "." + controlName + "_Policy_12lup3h"),
             Assertions.entry("policyConfigType", PolicyConfigType.MicroService.name()),
@@ -165,8 +165,8 @@ public class PolicyClientItCase {
     public void testSendBasePolicyInOther() throws IllegalArgumentException, IOException {
         String body = "test";
         String response = policyClient.sendBasePolicyInOther(body, "myPolicy", prop, LoggingUtils.getRequestId());
-        Map<String, Object> mapNodes = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree(response), Map.class);
+        Map<String, Object> mapNodes = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree(response), Map.class);
         Assertions.assertThat(mapNodes).contains(Assertions.entry("policyClass", "Config"),
             Assertions.entry("policyName", "myPolicy"),
             Assertions.entry("policyConfigType", PolicyConfigType.Base.name()),
@@ -181,8 +181,8 @@ public class PolicyClientItCase {
         String tcaJson = TcaRequestFormatter.createPolicyJson(refProp, prop);
         String response = policyClient.sendMicroServiceInOther(tcaJson, prop);
 
-        Map<String, Object> mapNodes = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree(response), Map.class);
+        Map<String, Object> mapNodes = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree(response), Map.class);
         Assertions.assertThat(mapNodes).contains(Assertions.entry("policyClass", "Config"),
             Assertions.entry("policyName", modelName.replace("-", "_") + "." + controlName + "_TCA_1d13unw"),
             Assertions.entry("policyConfigType", PolicyConfigType.MicroService.name()),
@@ -196,10 +196,10 @@ public class PolicyClientItCase {
         String[] responses = policyClient.deleteMicrosService(prop).split("\\}\\{");
 
         // There are 2 responses appended to the result, one for PDP one for PAP !
-        Map<String, Object> mapNodesPdp = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree(responses[0] + "}"), Map.class);
-        Map<String, Object> mapNodesPap = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree("{" + responses[1]), Map.class);
+        Map<String, Object> mapNodesPdp = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree(responses[0] + "}"), Map.class);
+        Map<String, Object> mapNodesPap = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree("{" + responses[1]), Map.class);
 
         Assertions.assertThat(mapNodesPdp).contains(
             Assertions.entry("policyName", modelName.replace("-", "_") + "." + controlName + "_TCA_1d13unw"),
@@ -222,10 +222,10 @@ public class PolicyClientItCase {
         String[] responses = policyClient.deleteGuard(prop).split("\\}\\{");
 
         // There are 2 responses appended to the result, one for PDP one for PAP !
-        Map<String, Object> mapNodesPdp = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree(responses[0] + "}"), Map.class);
-        Map<String, Object> mapNodesPap = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree("{" + responses[1]), Map.class);
+        Map<String, Object> mapNodesPdp = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree(responses[0] + "}"), Map.class);
+        Map<String, Object> mapNodesPap = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree("{" + responses[1]), Map.class);
 
         Assertions.assertThat(mapNodesPdp).contains(
             Assertions.entry("policyName",
@@ -246,10 +246,10 @@ public class PolicyClientItCase {
         String[] responses = policyClient.deleteBrms(prop).split("\\}\\{");
 
         // There are 2 responses appended to the result, one for PDP one for PAP !
-        Map<String, Object> mapNodesPdp = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree(responses[0] + "}"), Map.class);
-        Map<String, Object> mapNodesPap = JacksonUtils.getObjectMapperInstance()
-            .convertValue(JacksonUtils.getObjectMapperInstance().readTree("{" + responses[1]), Map.class);
+        Map<String, Object> mapNodesPdp = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree(responses[0] + "}"), Map.class);
+        Map<String, Object> mapNodesPap = JsonUtils.getObjectMapperInstance()
+            .convertValue(JsonUtils.getObjectMapperInstance().readTree("{" + responses[1]), Map.class);
 
         Assertions.assertThat(mapNodesPdp).contains(
             Assertions.entry("policyName", modelName.replace("-", "_") + "." + controlName + "_Policy_12lup3h_0"),

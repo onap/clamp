@@ -39,7 +39,7 @@ import java.util.Map.Entry;
 
 import org.onap.clamp.clds.exception.ModelBpmnException;
 import org.onap.clamp.clds.service.CldsService;
-import org.onap.clamp.clds.util.JacksonUtils;
+import org.onap.clamp.clds.util.JsonUtils;
 
 /**
  * Parse Model BPMN properties.
@@ -66,7 +66,7 @@ public class ModelBpmn {
     public static ModelBpmn create(String modelBpmnPropText) {
         try {
             ModelBpmn modelBpmn = new ModelBpmn();
-            ObjectNode root = JacksonUtils.getObjectMapperInstance().readValue(modelBpmnPropText, ObjectNode.class);
+            ObjectNode root = JsonUtils.GSON.fromJson(modelBpmnPropText, ObjectNode.class);
             // iterate over each entry like:
             // "Policy":[{"id":"Policy","from":"StartEvent_1"}]
             Iterator<Entry<String, JsonNode>> entryItr = root.fields();

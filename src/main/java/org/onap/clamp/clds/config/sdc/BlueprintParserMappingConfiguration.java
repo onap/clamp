@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.onap.clamp.clds.util.JacksonUtils;
+import org.onap.clamp.clds.util.JsonUtils;
 
 /**
  * This class is used to decode the configuration found in
@@ -66,6 +66,6 @@ public class BlueprintParserMappingConfiguration {
     public static List<BlueprintParserMappingConfiguration> createFromJson(InputStream json) throws IOException {
         TypeReference<List<BlueprintParserMappingConfiguration>> mapType = new TypeReference<List<BlueprintParserMappingConfiguration>>() {
         };
-        return JacksonUtils.getObjectMapperInstance().readValue(json, mapType);
+        return JsonUtils.GSON.fromJson(json, mapType);
     }
 }
