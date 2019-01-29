@@ -91,8 +91,8 @@ public class ModelPropertiesTest {
             prop.getGlobal().getResourceVf().toArray()));
         assertTrue(Arrays.equals(new String[] { "SNDGCA64", "ALPRGAED", "LSLEILAA", "MDTWNJC1" },
             prop.getGlobal().getLocation().toArray()));
-        assertEquals("value1", prop.getGlobal().getDeployParameters().get("input1").asText());
-        assertEquals("value2", prop.getGlobal().getDeployParameters().get("input2").asText());
+        assertEquals("value1", prop.getGlobal().getDeployParameters().get("input1").getAsString());
+        assertEquals("value2", prop.getGlobal().getDeployParameters().get("input2").getAsString());
     }
 
     @Test
@@ -124,8 +124,8 @@ public class ModelPropertiesTest {
             prop.getGlobal().getResourceVf().toArray()));
         assertTrue(Arrays.equals(new String[] { "SNDGCA64", "ALPRGAED", "LSLEILAA", "MDTWNJC1" },
             prop.getGlobal().getLocation().toArray()));
-        assertEquals("value1", prop.getGlobal().getDeployParameters().get("input1").asText());
-        assertEquals("value2", prop.getGlobal().getDeployParameters().get("input2").asText());
+        assertEquals("value1", prop.getGlobal().getDeployParameters().get("input1").getAsString());
+        assertEquals("value2", prop.getGlobal().getDeployParameters().get("input2").getAsString());
     }
 
     @Test

@@ -26,6 +26,7 @@ package org.onap.clamp.clds.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -129,7 +130,7 @@ public class DcaeDispatcherServicesTest {
         String deploymentID = "closedLoop_152367c8-b172-47b3-9e58-c53add75d869_deploymentId";
         String serviceTypeId = "e2ba40f7-bf42-41e7-acd7-48fd07586d90";
         Mockito.when(clampProperties.getJsonTemplate("dcae.deployment.template"))
-                .thenReturn(new ObjectMapper().readTree("{}"));
+                .thenReturn(new JsonObject());
 
         Mockito.when(dcaeHttpConnectionManager
                 .doDcaeHttpQuery(DCAE_URL
@@ -138,7 +139,7 @@ public class DcaeDispatcherServicesTest {
                         "{\"serviceTypeId\":\"e2ba40f7-bf42-41e7-acd7-48fd07586d90\",\"inputs\":{}}",
                         "application/json"))
                 .thenReturn(DEPLOY_RESPONSE_STRING);
-        JsonNode blueprintInputJson = new ObjectMapper().readTree("{}");
+        JsonObject blueprintInputJson = new JsonObject();
 
         //when
         String operationStatus = dcaeDispatcherServices
