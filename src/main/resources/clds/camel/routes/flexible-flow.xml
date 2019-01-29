@@ -1,6 +1,9 @@
 <routes xmlns="http://camel.apache.org/schema/spring">
 		<route id="submit">
 				<from uri="direct:processSubmit" />
+        <marshal>
+            <json library="Gson"/>
+        </marshal>
 				<choice>
 						<when>
 								<simple> ${exchangeProperty.actionCd} == 'SUBMIT' || ${exchangeProperty.actionCd} == 'RESUBMIT'</simple>

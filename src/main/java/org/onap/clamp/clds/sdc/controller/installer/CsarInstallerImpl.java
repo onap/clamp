@@ -51,7 +51,7 @@ import org.onap.clamp.clds.model.properties.ModelProperties;
 import org.onap.clamp.clds.service.CldsService;
 import org.onap.clamp.clds.service.CldsTemplateService;
 import org.onap.clamp.clds.transform.XslTransformer;
-import org.onap.clamp.clds.util.JacksonUtils;
+import org.onap.clamp.clds.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -166,7 +166,7 @@ public class CsarInstallerImpl implements CsarInstaller {
     }
 
     private static String getAllBlueprintParametersInJson(BlueprintArtifact blueprintArtifact) {
-        ObjectNode node = JacksonUtils.getObjectMapperInstance().createObjectNode();
+        ObjectNode node = JsonUtils.getObjectMapperInstance().createObjectNode();
         Yaml yaml = new Yaml();
         Map<String, Object> inputsNodes = ((Map<String, Object>) ((Map<String, Object>) yaml
             .load(blueprintArtifact.getDcaeBlueprint())).get("inputs"));

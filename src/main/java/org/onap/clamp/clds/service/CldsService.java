@@ -30,6 +30,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Date;
@@ -37,6 +39,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.json.Json;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotAuthorizedException;
@@ -64,12 +67,11 @@ import org.onap.clamp.clds.model.CldsServiceData;
 import org.onap.clamp.clds.model.CldsTemplate;
 import org.onap.clamp.clds.model.DcaeEvent;
 import org.onap.clamp.clds.model.ValueItem;
-import org.onap.clamp.clds.model.properties.AbstractModelElement;
 import org.onap.clamp.clds.model.properties.ModelProperties;
 import org.onap.clamp.clds.model.sdc.SdcServiceInfo;
 import org.onap.clamp.clds.sdc.controller.installer.CsarInstallerImpl;
 import org.onap.clamp.clds.transform.XslTransformer;
-import org.onap.clamp.clds.util.JacksonUtils;
+import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.LoggingUtils;
 import org.onap.clamp.clds.util.ONAPLogConstants;
 import org.slf4j.event.Level;
@@ -581,7 +583,7 @@ public class CldsService extends SecureServiceBase {
         if (StringUtils.isBlank(responseStr)) {
             return "";
         }
-        ObjectMapper objectMapper = JacksonUtils.getObjectMapperInstance();
+        ObjectMapper objectMapper = JsonUtils.getObjectMapperInstance();
         List<SdcServiceInfo> rawList = objectMapper.readValue(responseStr,
             objectMapper.getTypeFactory().constructCollectionType(List.class, SdcServiceInfo.class));
         ObjectNode invariantIdServiceNode = objectMapper.createObjectNode();
@@ -710,16 +712,17 @@ public class CldsService extends SecureServiceBase {
     }
 
     private void checkForDuplicateServiceVf(String modelName, String modelPropText) throws IOException {
-        JsonNode globalNode = JacksonUtils.getObjectMapperInstance().readTree(modelPropText).get("global");
-        String service = AbstractModelElement.getValueByName(globalNode, "service");
-        List<String> resourceVf = AbstractModelElement.getValuesByName(globalNode, "vf");
+        JsonElement globalNode = JsonUtils.GSON.fromJson(modelPropText, JsonObject.class).get("global");
+        String service = JsonUtils.getValueByName(globalNode, "service");
+        List<String> resourceVf = JsonUtils.getValuesByName(globalNode, "vf");
         if (service != null && resourceVf != null && !resourceVf.isEmpty()) {
             List<CldsModelProp> cldsModelPropList = cldsDao.getDeployedModelProperties();
             for (CldsModelProp cldsModelProp : cldsModelPropList) {
-                JsonNode currentNode = JacksonUtils.getObjectMapperInstance().readTree(cldsModelProp.getPropText())
+                JsonElement currentNode = JsonUtils.GSON
+                    .fromJson(cldsModelProp.getPropText(), JsonObject.class)
                     .get("global");
-                String currentService = AbstractModelElement.getValueByName(currentNode, "service");
-                List<String> currentVf = AbstractModelElement.getValuesByName(currentNode, "vf");
+                String currentService = JsonUtils.getValueByName(currentNode, "service");
+                List<String> currentVf = JsonUtils.getValuesByName(currentNode, "vf");
                 if (currentVf != null && !currentVf.isEmpty()) {
                     if (!modelName.equalsIgnoreCase(cldsModelProp.getName()) && service.equalsIgnoreCase(currentService)
                         && resourceVf.get(0).equalsIgnoreCase(currentVf.get(0))) {

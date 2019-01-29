@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ws.rs.ext.ContextResolver;
 
-import org.onap.clamp.clds.util.JacksonUtils;
+import org.onap.clamp.clds.util.JsonUtils;
 
 /**
  * This class is to restrcit the class type that can be de-serialized.
@@ -46,6 +46,6 @@ public class JacksonObjectMapperProvider implements ContextResolver<ObjectMapper
     }
 
     private static ObjectMapper createDefaultMapper() {
-        return JacksonUtils.getObjectMapperInstance();
+        return JsonUtils.getObjectMapperInstance();
     }
 }

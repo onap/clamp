@@ -25,23 +25,21 @@ package org.onap.clamp.clds.model.properties;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
-import com.fasterxml.jackson.databind.JsonNode;
-
-import java.io.IOException;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.camel.Exchange;
 import org.onap.clamp.clds.client.req.policy.PolicyClient;
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.exception.ModelBpmnException;
 import org.onap.clamp.clds.model.CldsModel;
 import org.onap.clamp.clds.service.CldsService;
-import org.onap.clamp.clds.util.JacksonUtils;
+import org.onap.clamp.clds.util.JsonUtils;
 
 /**
  * Parse model properties.
@@ -51,7 +49,7 @@ public class ModelProperties {
     protected static final EELFLogger logger = EELFManager.getInstance().getLogger(CldsService.class);
     protected static final EELFLogger auditLogger = EELFManager.getInstance().getAuditLogger();
     private ModelBpmn modelBpmn;
-    private JsonNode modelJson;
+    private JsonObject modelJson;
     private final String modelName;
     private final String controlName;
     private final String actionCd;
@@ -65,6 +63,7 @@ public class ModelProperties {
     public static final String POLICY_GUARD_SUFFIX = "_Guard_";
     private static final Object lock = new Object();
     private static Map<Class<? extends AbstractModelElement>, String> modelElementClasses = new ConcurrentHashMap<>();
+
     static {
         synchronized (lock) {
             modelElementClasses.put(Policy.class, Policy.getType());
@@ -74,22 +73,15 @@ public class ModelProperties {
     }
 
     /**
-     * Retain data required to parse the ModelElement objects. (Rather than parse
-     * them all - parse them on demand if requested.)
+     * Retain data required to parse the ModelElement objects. (Rather than parse them all - parse them on demand if
+     * requested.)
      *
-     * @param modelName
-     *        The model name coming form the UI
-     * @param controlName
-     *        The closed loop name coming from the UI
-     * @param actionCd
-     *        Type of operation PUT,UPDATE,DELETE
-     * @param isATest
-     *        The test flag coming from the UI (for validation only, no query are
-     *        physically executed)
-     * @param modelBpmnText
-     *        The BPMN flow in JSON from the UI
-     * @param modelPropText
-     *        The BPMN parameters for all boxes defined in modelBpmnTest
+     * @param modelName The model name coming form the UI
+     * @param controlName The closed loop name coming from the UI
+     * @param actionCd Type of operation PUT,UPDATE,DELETE
+     * @param isATest The test flag coming from the UI (for validation only, no query are physically executed)
+     * @param modelBpmnText The BPMN flow in JSON from the UI
+     * @param modelPropText The BPMN parameters for all boxes defined in modelBpmnTest
      */
     public ModelProperties(String modelName, String controlName, String actionCd, boolean isATest, String modelBpmnText,
         String modelPropText) {
@@ -99,18 +91,17 @@ public class ModelProperties {
             this.actionCd = actionCd;
             this.testOnly = isATest;
             modelBpmn = ModelBpmn.create(modelBpmnText);
-            modelJson = JacksonUtils.getObjectMapperInstance().readTree(modelPropText);
+            modelJson = JsonUtils.GSON.fromJson(modelPropText, JsonObject.class);
             instantiateMissingModelElements();
-        } catch (IOException e) {
+        } catch (JsonSyntaxException e) {
             throw new ModelBpmnException("Exception occurred when trying to decode the BPMN Properties JSON", e);
         }
     }
 
     /**
-     * This method is meant to ensure that one ModelElement instance exists for each
-     * ModelElement class. As new ModelElement classes could have been registered
-     * after instantiation of this ModelProperties, we need to build the missing
-     * ModelElement instances.
+     * This method is meant to ensure that one ModelElement instance exists for each ModelElement class. As new
+     * ModelElement classes could have been registered after instantiation of this ModelProperties, we need to build the
+     * missing ModelElement instances.
      */
     private final void instantiateMissingModelElements() {
         if (modelElementClasses.size() != modelElements.size()) {
@@ -124,7 +115,7 @@ public class ModelProperties {
                 .forEach(entry -> {
                     try {
                         modelElements.put(entry.getValue(),
-                            (entry.getKey().getConstructor(ModelProperties.class, ModelBpmn.class, JsonNode.class)
+                            (entry.getKey().getConstructor(ModelProperties.class, ModelBpmn.class, JsonObject.class)
                                 .newInstance(this, modelBpmn, modelJson)));
                     } catch (InstantiationException | NoSuchMethodException | IllegalAccessException
                         | InvocationTargetException e) {
@@ -136,17 +127,14 @@ public class ModelProperties {
 
     /**
      * Get the VF for a model. If return null if there is no VF.
-     *
-     * @param model
-     * @return
      */
     public static String getVf(CldsModel model) {
         List<String> vfs = null;
         try {
-            JsonNode modelJson = JacksonUtils.getObjectMapperInstance().readTree(model.getPropText());
+            JsonObject modelJson = JsonUtils.GSON.fromJson(model.getPropText(), JsonObject.class);
             Global global = new Global(modelJson);
             vfs = global.getResourceVf();
-        } catch (IOException e) {
+        } catch (JsonSyntaxException e) {
             logger.warn("no VF found", e);
         }
         String vf = null;
@@ -159,10 +147,8 @@ public class ModelProperties {
     /**
      * Create ModelProperties extracted from a CamelExchange.
      *
-     * @param camelExchange
-     *        The camel Exchange object that contains all info provided to the flow
-     * @return A model Properties created from the parameters found in camelExchange
-     *         object
+     * @param camelExchange The camel Exchange object that contains all info provided to the flow
+     * @return A model Properties created from the parameters found in camelExchange object
      */
     public static ModelProperties create(Exchange camelExchange) {
         String modelProp = (String) camelExchange.getProperty("modelProp");
@@ -265,9 +251,6 @@ public class ModelProperties {
 
     /**
      * Replace all '-' with '_' within policy scope and name.
-     *
-     * @param inName
-     * @return
      */
     private String normalizePolicyScopeName(String inName) {
         return inName.replaceAll("-", "_");
@@ -281,11 +264,10 @@ public class ModelProperties {
     }
 
     /**
-     * When generating a policy request for a model element, must set the id of that
-     * model element using this method. Used to generate the policy name.
+     * When generating a policy request for a model element, must set the id of that model element using this method.
+     * Used to generate the policy name.
      *
-     * @param currentModelElementId
-     *        the currentModelElementId to set
+     * @param currentModelElementId the currentModelElementId to set
      */
     public void setCurrentModelElementId(String currentModelElementId) {
         this.currentModelElementId = currentModelElementId;
@@ -307,11 +289,10 @@ public class ModelProperties {
     }
 
     /**
-     * When generating a policy request for a model element, must set the unique id
-     * of that policy using this method. Used to generate the policy name.
+     * When generating a policy request for a model element, must set the unique id of that policy using this method.
+     * Used to generate the policy name.
      *
-     * @param policyUniqueId
-     *        the policyUniqueId to set
+     * @param policyUniqueId the policyUniqueId to set
      */
     public void setPolicyUniqueId(String policyUniqueId) {
         this.policyUniqueId = policyUniqueId;
@@ -336,7 +317,7 @@ public class ModelProperties {
      */
     public Global getGlobal() {
         if (global == null) {
-            global = new Global(modelJson);
+//            global = new Global(modelJson);
         }
         return global;
     }

@@ -32,7 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.onap.clamp.clds.util.JacksonUtils;
+import org.onap.clamp.clds.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
@@ -92,7 +92,7 @@ public class ClampProperties {
     public JsonNode getJsonTemplate(String key) throws IOException {
         String fileReference = getStringValue(key);
         return (fileReference != null)
-            ? JacksonUtils.getObjectMapperInstance().readValue(getFileContentFromPath(fileReference), JsonNode.class)
+            ? JsonUtils.getObjectMapperInstance().readValue(getFileContentFromPath(fileReference), JsonNode.class)
             : null;
     }
 
@@ -112,7 +112,7 @@ public class ClampProperties {
     public JsonNode getJsonTemplate(String key1, String key2) throws IOException {
         String fileReference = getStringValue(key1, key2);
         return (fileReference != null)
-            ? JacksonUtils.getObjectMapperInstance().readValue(getFileContentFromPath(fileReference), JsonNode.class)
+            ? JsonUtils.getObjectMapperInstance().readValue(getFileContentFromPath(fileReference), JsonNode.class)
             : null;
     }
 

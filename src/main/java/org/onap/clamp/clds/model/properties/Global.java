@@ -27,7 +27,10 @@ import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.util.List;
+import org.onap.clamp.clds.util.JsonUtils;
 
 /**
  * Parse global json properties.
@@ -54,15 +57,15 @@ public class Global {
      *
      * @param modelJson
      */
-    public Global(JsonNode modelJson) {
-        JsonNode globalNode = modelJson.get("global");
-        service = AbstractModelElement.getValueByName(globalNode, "service");
-        actionSet = AbstractModelElement.getValueByName(globalNode, "actionSet");
-        resourceVf = AbstractModelElement.getValuesByName(globalNode, "vf");
-        resourceVfc = AbstractModelElement.getValuesByName(globalNode, "vfc");
-        deployParameters = AbstractModelElement.getJsonNodeByName(globalNode, "deployParameters");
-        location = AbstractModelElement.getValuesByName(globalNode, "location");
-        vnfScope = AbstractModelElement.getValueByName(globalNode, "vnf");
+    public Global(JsonObject modelJson) {
+        JsonElement globalNode = modelJson.get("global");
+        service = JsonUtils.getValueByName(globalNode, "service");
+        actionSet = JsonUtils.getValueByName(globalNode, "actionSet");
+        resourceVf = JsonUtils.getValuesByName(globalNode, "vf");
+        resourceVfc = JsonUtils.getValuesByName(globalNode, "vfc");
+        deployParameters = JsonUtils.getJsonObjectByName(globalNode, "deployParameters");
+        location = JsonUtils.getValuesByName(globalNode, "location");
+        vnfScope = JsonUtils.getValueByName(globalNode, "vnf");
     }
 
     /**

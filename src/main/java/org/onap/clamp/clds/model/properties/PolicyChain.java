@@ -26,11 +26,14 @@ package org.onap.clamp.clds.model.properties;
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
 import com.fasterxml.jackson.databind.JsonNode;
-
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.onap.clamp.clds.util.JsonUtils;
 
 /**
  * Parse Policy json properties.
@@ -66,20 +69,21 @@ public class PolicyChain {
     private List<PolicyItem>          policyItems;
     private String                    policyType;
 
-    public PolicyChain(JsonNode node) throws IOException {
+    public PolicyChain(JsonElement node) throws IOException {
+        if (node != null && node.isJsonArray() && node.getAsJsonArray().size() > 0) {
+            JsonArray operationalPolicyParameters = node.getAsJsonArray();
+            policyId = JsonUtils.getValueByName(node, "pid");
+            timeout = JsonUtils.getIntValueByName(node, "timeout");
+            policyType = JsonUtils.getValueByName(node, "policyType");
 
-        policyId = AbstractModelElement.getValueByName(node, "pid");
-        timeout = AbstractModelElement.getIntValueByName(node, "timeout");
-        policyType = AbstractModelElement.getValueByName(node, "policyType");
-
-        if(node != null && node.size() > 0) {
-            JsonNode policyNode = node.get(node.size() - 1).get("policyConfigurations");
-            if(policyNode != null) {
-                Iterator<JsonNode> itr = policyNode.elements();
-                policyItems = new ArrayList<>();
-                while (itr.hasNext()) {
-                    policyItems.add(new PolicyItem(itr.next()));
-                }
+            JsonArray policyConfigurations = operationalPolicyParameters.get(operationalPolicyParameters.size() - 1)
+                .getAsJsonObject()
+                .get("policyConfigurations")
+                .getAsJsonArray();
+            Iterator<JsonElement> itr = policyConfigurations.iterator();
+            policyItems = new ArrayList<>();
+            while (itr.hasNext()) {
+                policyItems.add(new PolicyItem(itr.next()));
 
             }
         }

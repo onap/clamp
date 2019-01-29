@@ -30,7 +30,7 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 import org.onap.clamp.clds.exception.CldsUsersException;
 import org.onap.clamp.clds.service.CldsUser;
-import org.onap.clamp.clds.util.JacksonUtils;
+import org.onap.clamp.clds.util.JsonUtils;
 
 public class CldsUserJsonDecoder {
 
@@ -55,7 +55,7 @@ public class CldsUserJsonDecoder {
         try {
             // the ObjectMapper readValue method closes the stream no need to do
             // it
-            return JacksonUtils.getObjectMapperInstance().readValue(cldsUsersString, CldsUser[].class);
+            return JsonUtils.getObjectMapperInstance().readValue(cldsUsersString, CldsUser[].class);
         } catch (IOException e) {
             throw new CldsUsersException("Exception occurred during the decoding of the clds-users.json", e);
         }
