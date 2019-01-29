@@ -27,6 +27,7 @@ import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ import org.onap.clamp.clds.model.properties.ModelProperties;
 import org.onap.clamp.clds.service.CldsService;
 import org.onap.clamp.clds.service.CldsTemplateService;
 import org.onap.clamp.clds.transform.XslTransformer;
-import org.onap.clamp.clds.util.JacksonUtils;
+import org.onap.clamp.clds.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -165,22 +166,22 @@ public class CsarInstallerImpl implements CsarInstaller {
         return listConfig.get(0);
     }
 
-    private static String getAllBlueprintParametersInJson(BlueprintArtifact blueprintArtifact) {
-        ObjectNode node = JacksonUtils.getObjectMapperInstance().createObjectNode();
+    String getAllBlueprintParametersInJson(BlueprintArtifact blueprintArtifact) {
+        JsonObject node = new JsonObject();
         Yaml yaml = new Yaml();
         Map<String, Object> inputsNodes = ((Map<String, Object>) ((Map<String, Object>) yaml
             .load(blueprintArtifact.getDcaeBlueprint())).get("inputs"));
         inputsNodes.entrySet().stream().filter(e -> !e.getKey().contains("policy_id")).forEach(elem -> {
             Object defaultNode = ((Map<String, Object>) elem.getValue()).get("default");
             if (defaultNode != null && defaultNode instanceof String) {
-                node.put(elem.getKey(), (String) defaultNode);
+                node.addProperty(elem.getKey(), (String) defaultNode);
             } else if (defaultNode != null) {
-                node.putPOJO(elem.getKey(), defaultNode);
+                node.addProperty(elem.getKey(), JsonUtils.GSON.toJson(defaultNode));
             } else {
-                node.put(elem.getKey(), "");
+                node.addProperty(elem.getKey(), "");
             }
         });
-        node.put("policy_id", "AUTO_GENERATED_POLICY_ID_AT_SUBMIT");
+        node.addProperty("policy_id", "AUTO_GENERATED_POLICY_ID_AT_SUBMIT");
         return node.toString();
     }
 
