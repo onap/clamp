@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "47e408c0_addf4e20",
+        "filename": "src/main/java/org/onap/clamp/clds/model/properties/AbstractModelElement.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-02-05T09:57:42Z",
+      "side": 0,
+      "message": "This is moved to JsonUtils class",
+      "revId": "3e118724141917299ad3e2f535544500b5c459b0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

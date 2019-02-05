@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ed3ade4_ad0fcd5d",
+        "filename": "src/test/java/org/onap/clamp/clds/it/CldsServiceItCase.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-02-05T09:57:42Z",
+      "side": 1,
+      "message": "checkstyle fix",
+      "revId": "7d45ced659823a17448a4044a3be4a75847882cb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
