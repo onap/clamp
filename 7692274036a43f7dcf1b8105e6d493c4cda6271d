@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "479bba1f_e3b378c7",
+        "filename": "src/test/java/org/onap/clamp/clds/it/config/CldsReferencePropertiesItCase.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-02-06T15:48:46Z",
+      "side": 1,
+      "message": "I want to keep convention and won\u0027t inline it",
+      "parentUuid": "132358ea_425dd4a1",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 25
+      },
+      "revId": "7692274036a43f7dcf1b8105e6d493c4cda6271d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "98466b1b_4d4d8316",
         "filename": "src/test/java/org/onap/clamp/clds/it/sdc/controller/SdcSingleControllerItCase.java",
         "patchSetId": 9
@@ -36,6 +60,30 @@
       "writtenOn": "2019-02-05T12:39:13Z",
       "side": 1,
       "message": "redundant comment",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 7
+      },
+      "revId": "7692274036a43f7dcf1b8105e6d493c4cda6271d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1b034bb6_df19930f",
+        "filename": "src/test/java/org/onap/clamp/clds/it/sdc/controller/SdcSingleControllerItCase.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-02-06T15:48:46Z",
+      "side": 1,
+      "message": "Not by checkstyle :p",
+      "parentUuid": "98466b1b_4d4d8316",
       "range": {
         "startLine": 90,
         "startChar": 0,
