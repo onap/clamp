@@ -24,14 +24,9 @@
 package org.onap.clamp.clds.it;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.List;
 
-import org.apache.commons.codec.DecoderException;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,14 +88,5 @@ public class SdcReqItCase {
         JSONAssert.assertEquals("{\"payloadData\" : \"cGF5bG9hZA==\",\"artifactLabel\" : \"artifactLabel\","
             + "\"artifactName\" :\"artifactName\",\"artifactType\" : \"artifactType\","
             + "\"artifactGroupType\" : \"DEPLOYMENT\",\"description\" : \"from CLAMP Cockpit\"}", jsonResult, true);
-    }
-
-    @Test
-    public void getSdcReqUrlsListTest() throws GeneralSecurityException, DecoderException {
-        List<String> listUrls = sdcReq.getSdcReqUrlsList(modelProperties);
-        assertNotNull(listUrls);
-        assertTrue(listUrls.size() == 1);
-        assertTrue(listUrls.get(0).contains(
-            "/sdc/v1/catalog/services/56441b4b-0467-41dc-9a0e-e68613838219/resourceInstances/vpacketgen0/artifacts"));
     }
 }

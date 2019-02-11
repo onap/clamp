@@ -31,21 +31,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.commons.codec.DecoderException;
 import org.onap.clamp.clds.client.req.tca.TcaRequestFormatter;
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.model.properties.Global;
 import org.onap.clamp.clds.model.properties.ModelProperties;
 import org.onap.clamp.clds.model.properties.Tca;
-import org.onap.clamp.clds.model.sdc.SdcResource;
-import org.onap.clamp.clds.model.sdc.SdcServiceDetail;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -60,8 +55,7 @@ public class SdcRequests {
 
     protected static final EELFLogger logger = EELFManager.getInstance().getLogger(SdcRequests.class);
     protected static final EELFLogger metricsLogger = EELFManager.getInstance().getMetricsLogger();
-    @Autowired
-    private SdcCatalogServices sdcCatalogServices;
+
     @Autowired
     protected ClampProperties refProp;
 
@@ -131,55 +125,6 @@ public class SdcRequests {
                 + "\",\n" + "\"artifactName\" :\"" + artifactName + "\",\n" + "\"artifactType\" : \"" + artifactType
                 + "\",\n" + "\"artifactGroupType\" : \"DEPLOYMENT\",\n" + "\"description\" : \"from CLAMP Cockpit\"\n"
                 + "} \n";
-    }
-
-    private List<String> filterVfResourceList(String serviceUuid, List<SdcResource> sdcResourcesList,
-            List<String> cldsResourceVfList) {
-        List<String> urlList = new ArrayList<>();
-        for (SdcResource cldsSdcResource : sdcResourcesList) {
-            if (cldsSdcResource != null && cldsSdcResource.getResoucreType() != null
-                    && cldsSdcResource.getResoucreType().equalsIgnoreCase("VF")
-                    && cldsResourceVfList.contains(cldsSdcResource.getResourceInvariantUUID())) {
-                String normalizedResourceInstanceName = normalizeResourceInstanceName(
-                        cldsSdcResource.getResourceInstanceName());
-                String svcUrl = createUrlForResource(normalizedResourceInstanceName, serviceUuid);
-                urlList.add(svcUrl);
-            }
-        }
-        return urlList;
-    }
-
-    private String createUrlForResource(String normalizedResourceInstanceName, String serviceUuid) {
-        return refProp.getStringValue("sdc.serviceUrl") + "/" + serviceUuid + "/resourceInstances/"
-                + normalizedResourceInstanceName + "/artifacts";
-    }
-
-    /**
-     * To get List of urls for all vfresources
-     *
-     * @param prop
-     *            The model properties JSON describing the closed loop flow
-     * @return A list of Service URL
-     * @throws GeneralSecurityException
-     *             In case of issues when decrypting the password
-     * @throws DecoderException
-     *             In case of issues when decoding the Hex String
-     */
-    public List<String> getSdcReqUrlsList(ModelProperties prop) throws GeneralSecurityException, DecoderException {
-        List<String> urlList = new ArrayList<>();
-        Global globalProps = prop.getGlobal();
-        if (globalProps != null && globalProps.getService() != null && globalProps.getResourceVf() != null) {
-            String serviceUuid = sdcCatalogServices.getServiceUuidFromServiceInvariantId(globalProps.getService());
-            SdcServiceDetail sdcServiceDetail = sdcCatalogServices
-                    .decodeCldsSdcServiceDetailFromJson(sdcCatalogServices.getSdcServicesInformation(serviceUuid));
-            if (sdcServiceDetail != null) {
-                urlList = filterVfResourceList(serviceUuid, sdcServiceDetail.getResources(),
-                        globalProps.getResourceVf());
-            }
-        } else {
-            logger.warn("GlobalProperties json is empty, skipping getSdcReqUrlsList and returning empty list");
-        }
-        return urlList;
     }
 
     /**
