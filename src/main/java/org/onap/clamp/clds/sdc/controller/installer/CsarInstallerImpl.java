@@ -25,8 +25,8 @@ package org.onap.clamp.clds.sdc.controller.installer;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
-
 import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,8 +59,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * This class will be instantiated by spring config, and used by Sdc Controller. There is no state kept by the bean.
- * It's used to deploy the csar/notification received from SDC in DB.
+ * This class will be instantiated by spring config, and used by Sdc Controller.
+ * There is no state kept by the bean. It's used to deploy the csar/notification
+ * received from SDC in DB.
  */
 public class CsarInstallerImpl implements CsarInstaller {
 
@@ -100,16 +101,17 @@ public class CsarInstallerImpl implements CsarInstaller {
     public boolean isCsarAlreadyDeployed(CsarHandler csar) throws SdcArtifactInstallerException {
         boolean alreadyInstalled = true;
         for (Entry<String, BlueprintArtifact> blueprint : csar.getMapOfBlueprints().entrySet()) {
-            alreadyInstalled = alreadyInstalled
-                && (CldsModel.retrieve(cldsDao, buildModelName(csar, blueprint.getKey()), true).getId() != null) ? true
-                : false;
+            alreadyInstalled = alreadyInstalled && CldsModel.retrieve(cldsDao,
+                buildModelName(csar, blueprint.getValue().getResourceAttached().getResourceInstanceName(),
+                    blueprint.getValue().getBlueprintArtifactName()),
+                true).getId() != null;
         }
         return alreadyInstalled;
     }
 
-    public static String buildModelName(CsarHandler csar, String resourceInstanceName)
+    public static String buildModelName(CsarHandler csar, String resourceInstanceName, String artifactName)
         throws SdcArtifactInstallerException {
-        String policyScopePrefix = searchForPolicyScopePrefix(csar.getMapOfBlueprints().get(resourceInstanceName));
+        String policyScopePrefix = searchForPolicyScopePrefix(csar.getMapOfBlueprints().get(artifactName));
         if (policyScopePrefix.contains("*")) {
             // This is policy_filter type
             policyScopePrefix = policyScopePrefix.replaceAll("\\*", "");
@@ -117,9 +119,9 @@ public class CsarInstallerImpl implements CsarInstaller {
             // This is normally the get_input case
             policyScopePrefix = MODEL_NAME_PREFIX;
         }
-        return policyScopePrefix + csar.getSdcCsarHelper().getServiceMetadata().getValue("name") + "_v"
-            + csar.getSdcNotification().getServiceVersion().replace('.', '_') + "_"
-            + resourceInstanceName.replaceAll(" ", "");
+        return (policyScopePrefix + "_" + csar.getSdcCsarHelper().getServiceMetadata().getValue("name") + "_v"
+            + csar.getSdcNotification().getServiceVersion() + "_" + resourceInstanceName.replaceAll(" ", "") + "_"
+            + artifactName.replace(".yaml", "")).replace('.', '_');
     }
 
     @Override
@@ -214,8 +216,8 @@ public class CsarInstallerImpl implements CsarInstaller {
     }
 
     /**
-     * This call must be done when deploying the SDC notification as this call get the latest version of the artifact
-     * (version can be specified to DCAE call)
+     * This call must be done when deploying the SDC notification as this call get
+     * the latest version of the artifact (version can be specified to DCAE call)
      *
      * @return The DcaeInventoryResponse object containing the dcae values
      */
@@ -237,7 +239,8 @@ public class CsarInstallerImpl implements CsarInstaller {
         template
             .setImageText(IOUtils.toString(appContext.getResource(configFiles.getSvgXmlFilePath()).getInputStream()));
         template.setName(TEMPLATE_NAME_PREFIX
-            + buildModelName(csar, blueprintArtifact.getResourceAttached().getResourceInstanceName()));
+            + buildModelName(csar, blueprintArtifact.getResourceAttached().getResourceInstanceName(),
+                blueprintArtifact.getBlueprintArtifactName()));
         template.save(cldsDao, null);
         logger.info("Fake Clds Template created for blueprint " + blueprintArtifact.getBlueprintArtifactName()
             + " with name " + template.getName());
@@ -246,14 +249,15 @@ public class CsarInstallerImpl implements CsarInstaller {
 
     private CldsModel createFakeCldsModel(CsarHandler csar, BlueprintArtifact blueprintArtifact,
         CldsTemplate cldsTemplate, DcaeInventoryResponse dcaeInventoryResponse) throws SdcArtifactInstallerException {
-        
+
         if (dcaeInventoryResponse == null) {
             throw new SdcArtifactInstallerException(
                 "DCAE inventory response is NULL, query to DCAE fail to be answered properly, this is required to deploy CSAR properly !!!");
         }
         try {
             CldsModel cldsModel = new CldsModel();
-            cldsModel.setName(buildModelName(csar, blueprintArtifact.getResourceAttached().getResourceInstanceName()));
+            cldsModel.setName(buildModelName(csar, blueprintArtifact.getResourceAttached().getResourceInstanceName(),
+                blueprintArtifact.getBlueprintArtifactName()));
             cldsModel.setBlueprintText(blueprintArtifact.getDcaeBlueprint());
             cldsModel.setTemplateName(cldsTemplate.getName());
             cldsModel.setTemplateId(cldsTemplate.getId());
