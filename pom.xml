@@ -89,6 +89,8 @@
 				<skip.staging.artifacts>false</skip.staging.artifacts>
 				<python.http.proxy.param/>
 				<tomcat.version>8.5.34</tomcat.version>
+				<docker.mariadb.port.host>3306</docker.mariadb.port.host>
+				<docker.http-cache.port.host>8085</docker.http-cache.port.host>
 		</properties>
 
 		<profiles>
@@ -265,8 +267,8 @@
 						<artifactId>camel-servlet-starter</artifactId>
 				</dependency>
 				<dependency>
-					<groupId>org.apache.camel</groupId>
-					<artifactId>camel-jackson-starter</artifactId>
+						<groupId>org.apache.camel</groupId>
+						<artifactId>camel-gson-starter</artifactId>
 				</dependency>
 				<dependency>
 					<groupId>org.apache.camel</groupId>
@@ -279,6 +281,10 @@
 						<exclusion>
 							<groupId>org.slf4j</groupId>
 							<artifactId>slf4j-ext</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>com.fasterxml.jackson.core</groupId>
+							<artifactId>jackson-databind</artifactId>
 						</exclusion>
 					</exclusions>
 				</dependency>
@@ -576,13 +582,7 @@
 				<dependency>
 						<groupId>org.onap.sdc.sdc-tosca</groupId>
 						<artifactId>sdc-tosca</artifactId>
-						<version>1.4.1</version>
-						<exclusions>
-							<exclusion>
-								<groupId>com.fasterxml.jackson.core</groupId>
-								<artifactId>jackson-databind</artifactId>
-							</exclusion>
-						</exclusions>
+						<version>1.5.0</version>
 				</dependency>
 				<!-- TESTING -->
 				<dependency>
@@ -685,38 +685,38 @@
 				</resources>
 
 				<plugins>
-						<plugin>
-							<groupId>org.sonatype.plugins</groupId>
-							<artifactId>port-allocator-maven-plugin</artifactId>
-							<version>1.2</version>
-							<executions>
-								<execution>
-									<phase>validate</phase>
-									<goals>
-										<goal>allocate-ports</goal>
-									</goals>
-									<configuration>
-										<ports>
-											<port>
-												<name>docker.mariadb.port.host</name>
-											</port>
-											<port>
-												<name>docker.http-cache.port.host</name>
-											</port>
-											<port>
-												<name>clamp.it.tests.http-redirected</name>
-											</port>
-											<port>
-												<name>clamp.it.tests.https</name>
-											</port>
-											<port>
-												<name>clamp.it.tests.http</name>
-											</port>
-										</ports>
-									</configuration>
-								</execution>
-							</executions>
-						</plugin>
+<!-- 						<plugin> -->
+<!-- 							<groupId>org.sonatype.plugins</groupId> -->
+<!-- 							<artifactId>port-allocator-maven-plugin</artifactId> -->
+<!-- 							<version>1.2</version> -->
+<!-- 							<executions> -->
+<!-- 								<execution> -->
+<!-- 									<phase>validate</phase> -->
+<!-- 									<goals> -->
+<!-- 										<goal>allocate-ports</goal> -->
+<!-- 									</goals> -->
+<!-- 									<configuration> -->
+<!-- 										<ports> -->
+<!-- 											<port> -->
+<!-- 												<name>docker.mariadb.port.host</name> -->
+<!-- 											</port> -->
+<!-- 											<port> -->
+<!-- 												<name>docker.http-cache.port.host</name> -->
+<!-- 											</port> -->
+<!-- 											<port> -->
+<!-- 												<name>clamp.it.tests.http-redirected</name> -->
+<!-- 											</port> -->
+<!-- 											<port> -->
+<!-- 												<name>clamp.it.tests.https</name> -->
+<!-- 											</port> -->
+<!-- 											<port> -->
+<!-- 												<name>clamp.it.tests.http</name> -->
+<!-- 											</port> -->
+<!-- 										</ports> -->
+<!-- 									</configuration> -->
+<!-- 								</execution> -->
+<!-- 							</executions> -->
+<!-- 						</plugin> -->
 						<!-- Read the swagger.json file and the definition from SwaggerConfig.java;
 							generate a list of .adoc files containing the APIs info in more structured
 							way -->
