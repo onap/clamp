@@ -394,7 +394,7 @@ public class CldsService extends SecureServiceBase {
             errorMessage = e.getMessage();
         }
 
-        if (!errorMessage.isEmpty()) {
+        if (null != errorMessage && !errorMessage.isEmpty()) {
             CldsEvent.insEvent(cldsDao, model.getControlName(), getUserId(), actionCd, CldsEvent.ACTION_STATE_ERROR,
                 null);
             // Need a refresh as new events have been inserted
