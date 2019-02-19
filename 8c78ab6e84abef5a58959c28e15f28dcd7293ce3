@@ -16,6 +16,24 @@
       "revId": "8c78ab6e84abef5a58959c28e15f28dcd7293ce3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "202d448f_94c6ed5c",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-02-19T12:30:47Z",
+      "side": 1,
+      "message": "I have encountered situation where errorMessage is null in my test. I see it is initialized earlier, but it is probably assigned to null later, e.g on line 394. \nBut anyway, in case errorMessage is null, it means there\u0027s still some exceptions. I will update the logic, to return error in case of null.",
+      "parentUuid": "14b64980_5737b27f",
+      "revId": "8c78ab6e84abef5a58959c28e15f28dcd7293ce3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
