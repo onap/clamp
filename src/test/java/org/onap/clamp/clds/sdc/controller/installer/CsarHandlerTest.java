@@ -115,6 +115,13 @@ public class CsarHandlerTest {
         return resultArtifact;
     }
 
+    private IDistributionClientDownloadResult buildFakeSdcResultWithoutPolicyModel() throws IOException {
+        IDistributionClientDownloadResult resultArtifact = Mockito.mock(IDistributionClientDownloadResult.class);
+        Mockito.when(resultArtifact.getArtifactPayload()).thenReturn(
+            IOUtils.toByteArray(ResourceFileUtil.getResourceAsStream("example/sdc/service-without-policy.csar")));
+        return resultArtifact;
+    }
+
     @Test
     public void testSave()
         throws SdcArtifactInstallerException, SdcToscaParserException, CsarHandlerException, IOException {
@@ -145,6 +152,23 @@ public class CsarHandlerTest {
         Path path = Paths.get(SDC_FOLDER + "/test-controller/" + CSAR_ARTIFACT_NAME);
         Files.deleteIfExists(path);
 
+    }
+
+    @Test
+    public void testLoadingOfPolicyModelFromCsar()
+        throws CsarHandlerException, IOException, SdcArtifactInstallerException, SdcToscaParserException {
+        CsarHandler csar = new CsarHandler(buildFakeSdcNotification(), "test-controller", "/tmp/csar-handler-tests");
+        csar.save(buildFakeSdcResut());
+        String policyModelYaml = csar.getPolicyModelYaml();
+        assertTrue(policyModelYaml.contains("tosca_simple_yaml_1_1"));
+    }
+
+    @Test(expected = IOException.class)
+    public void testLoadingOfNonexistentPolicyModelFromCsar()
+        throws CsarHandlerException, IOException, SdcArtifactInstallerException, SdcToscaParserException {
+        CsarHandler csar = new CsarHandler(buildFakeSdcNotification(), "test-controller", "/tmp/csar-handler-tests");
+        csar.save(buildFakeSdcResultWithoutPolicyModel());
+        csar.getPolicyModelYaml();
     }
 
     @Test
