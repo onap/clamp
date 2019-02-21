@@ -68,6 +68,7 @@ public class CsarHandler {
     private INotificationData sdcNotification;
     public static final String RESOURCE_INSTANCE_NAME_PREFIX = "/Artifacts/Resources/";
     public static final String RESOURCE_INSTANCE_NAME_SUFFIX = "/Deployment/";
+    public static final String POLICY_DEFINITION_NAME_SUFFIX = "Definitions/policies.yml";
 
     public CsarHandler(INotificationData iNotif, String controller, String clampCsarPath) throws CsarHandlerException {
         this.sdcNotification = iNotif;
@@ -166,5 +167,15 @@ public class CsarHandler {
 
     public Map<String, BlueprintArtifact> getMapOfBlueprints() {
         return mapOfBlueprints;
+    }
+
+    String getPolicyModelYaml() throws IOException {
+        try (ZipFile zipFile = new ZipFile(csarFilePath)) {
+            ZipEntry entry = zipFile.getEntry(POLICY_DEFINITION_NAME_SUFFIX);
+            if (entry == null) {
+                throw new IOException("Policy model not found inside the CSAR file");
+            }
+            return IOUtils.toString(zipFile.getInputStream(entry));
+        }
     }
 }

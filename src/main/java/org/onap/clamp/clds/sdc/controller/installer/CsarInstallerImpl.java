@@ -43,6 +43,7 @@ import org.onap.clamp.clds.client.DcaeInventoryServices;
 import org.onap.clamp.clds.config.sdc.BlueprintParserFilesConfiguration;
 import org.onap.clamp.clds.config.sdc.BlueprintParserMappingConfiguration;
 import org.onap.clamp.clds.dao.CldsDao;
+import org.onap.clamp.clds.exception.policy.PolicyModelException;
 import org.onap.clamp.clds.exception.sdc.controller.SdcArtifactInstallerException;
 import org.onap.clamp.clds.model.CldsModel;
 import org.onap.clamp.clds.model.CldsTemplate;
@@ -125,7 +126,8 @@ public class CsarInstallerImpl implements CsarInstaller {
 
     @Override
     @Transactional
-    public void installTheCsar(CsarHandler csar) throws SdcArtifactInstallerException, InterruptedException {
+    public void installTheCsar(CsarHandler csar)
+        throws SdcArtifactInstallerException, InterruptedException, PolicyModelException {
         try {
             logger.info("Installing the CSAR " + csar.getFilePath());
             for (Entry<String, BlueprintArtifact> blueprint : csar.getMapOfBlueprints().entrySet()) {
@@ -135,11 +137,21 @@ public class CsarInstallerImpl implements CsarInstaller {
                         this.searchForRightMapping(blueprint.getValue())),
                     queryDcaeToGetServiceTypeId(blueprint.getValue()));
             }
+            createPolicyModel(csar);
             logger.info("Successfully installed the CSAR " + csar.getFilePath());
         } catch (IOException e) {
             throw new SdcArtifactInstallerException("Exception caught during the Csar installation in database", e);
         } catch (ParseException e) {
             throw new SdcArtifactInstallerException("Exception caught during the Dcae query to get ServiceTypeId", e);
+        }
+    }
+
+    private void createPolicyModel(CsarHandler csar) throws PolicyModelException {
+        try{
+            String policyModelYaml = csar.getPolicyModelYaml();
+            // save policy model into the database
+        } catch (IOException e) {
+            throw new PolicyModelException("TransformerException when decoding the YamlText", e);
         }
     }
 
