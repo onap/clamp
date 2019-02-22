@@ -223,3 +223,15 @@ ALTER TABLE event
     ADD CONSTRAINT model_id_fkey03
     FOREIGN KEY (model_id)
     REFERENCES model (model_id);
+    
+    
+    
+    
+# New model for Clamp
+CREATE DATABASE `clampdb`;
+USE `clampdb`;
+DROP USER 'clamp';
+CREATE USER 'clamp';
+GRANT ALL on clampdb.* to 'clamp' identified by 'sidnnd83K' with GRANT OPTION;
+FLUSH PRIVILEGES;
+
