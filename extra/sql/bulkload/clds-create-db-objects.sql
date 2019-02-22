@@ -223,3 +223,66 @@ ALTER TABLE event
     ADD CONSTRAINT model_id_fkey03
     FOREIGN KEY (model_id)
     REFERENCES model (model_id);
+    
+    
+    
+    
+# New model for Clamp
+CREATE DATABASE `clampdb`;
+USE `clampdb`;
+DROP USER 'clamp';
+CREATE USER 'clamp';
+GRANT ALL on clampdb.* to 'clamp' identified by 'sidnnd83K' with GRANT OPTION;
+FLUSH PRIVILEGES;
+
+CREATE TABLE loops (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(250) NOT NULL,
+  dcae_deployment_id VARCHAR(80) NULL,
+  dcae_deployment_status_url VARCHAR(300) NULL,
+  svg_representation MEDIUMTEXT NOT NULL,
+  blueprint MEDIUMTEXT NOT NULL,
+  last_computed_state ENUM('DESIGN','SUBMITTED','DEPLOYED','RUNNING','STOPPED','IN_ERROR','WAITING') NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
+
+CREATE TABLE global_properties (
+  id INT NOT NULL AUTO_INCREMENT,
+  loop_id INT NOT NULL,
+  param_name varchar(100) NOT NULL, 
+  param_value MEDIUMTEXT NOT NULL,
+  PRIMARY KEY (id),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
+
+CREATE TABLE operational_policies (
+  id INT NOT NULL AUTO_INCREMENT,
+  loop_id INT NOT NULL,
+  properties MEDIUMTEXT NOT NULL, 
+  PRIMARY KEY (id),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
+
+
+CREATE TABLE loop_micro_services_policies_links (
+  loop_id INT NOT NULL,
+  micro_services_policy_id INT NOT NULL, 
+  KEY `loop_micro_services_policies_links_ibfk_1` (`loop_id`,`micro_services_policy_id`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
+
+CREATE TABLE micro_service_policies (
+  id INT NOT NULL AUTO_INCREMENT,
+  loop_id INT NOT NULL,
+  properties MEDIUMTEXT NOT NULL,
+  shared BIT(1) NOT NULL,
+  policy_tosca MEDIUMTEXT NOT NULL,
+  json_representation MEDIUMTEXT NOT NULL,
+  PRIMARY KEY (id),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
+
+CREATE TABLE logs (
+  id INT NOT NULL AUTO_INCREMENT,
+  loop_id INT NOT NULL,
+  message_type ENUM('INFO','WARNING','ERROR') NOT NULL, 
+  message MEDIUMTEXT NOT NULL,
+  PRIMARY KEY (id),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;

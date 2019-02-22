@@ -334,6 +334,10 @@
 								</exclusion>
 						</exclusions>
 				</dependency>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-data-jpa</artifactId>
+				</dependency>
 				<!-- Others dependencies -->
 				<dependency>
 					<groupId>org.onap.aaf.authz</groupId>
@@ -683,6 +687,53 @@
 				</resources>
 
 				<plugins>
+<!-- 						<plugin> -->
+<!-- 							<groupId>org.codehaus.mojo</groupId> -->
+<!-- 							<artifactId>hibernate3-maven-plugin</artifactId> -->
+<!-- 							<version>3.0</version> -->
+<!-- 							<dependencies> -->
+<!-- 								<dependency> -->
+<!-- 									<groupId>org.hibernate</groupId> -->
+<!-- 									<artifactId>hibernate-core</artifactId> -->
+<!-- 									<version>3.3.0.GA</version> -->
+<!-- 								</dependency> -->
+<!-- 								<dependency> -->
+<!-- 									<groupId>org.hibernate</groupId> -->
+<!-- 									<artifactId>hibernate-entitymanager</artifactId> -->
+<!-- 									<version>3.3.2.GA</version> -->
+									
+<!-- 								</dependency> -->
+<!-- 							</dependencies> -->
+<!-- 							<executions> -->
+<!-- 								<execution> -->
+<!-- 									<phase>generate-resources</phase> -->
+<!-- 									<goals> -->
+<!-- 										<goal>hbm2ddl</goal> -->
+<!-- 									</goals> -->
+<!-- 									<configuration> -->
+<!-- 										<hibernatetool> -->
+<!-- 											<classpath> -->
+<!-- 												<path location="${project.build.directory}/classes" /> -->
+<!-- 												<path -->
+<!-- 													location="${project.basedir}/src/main/resources/META-INF/" /> -->
+<!-- 											</classpath> -->
+					
+<!-- 											<jpaconfiguration -->
+<!-- 												persistenceunit="clamp-persistence-unit" /> -->
+<!-- 											<hbm2ddl -->
+<!-- 												create="true" -->
+<!-- 												export="false" -->
+<!-- 												destdir="${project.basedir}/target" -->
+<!-- 												drop="true" -->
+<!-- 												outputfilename="mysql.sql" -->
+<!-- 												format="true" -->
+<!-- 												console="true" /> -->
+<!-- 										</hibernatetool> -->
+<!-- 									</configuration> -->
+<!-- 								</execution> -->
+<!-- 							</executions> -->
+					
+<!-- 						</plugin> -->
 						<plugin>
 							<groupId>org.sonatype.plugins</groupId>
 							<artifactId>port-allocator-maven-plugin</artifactId>
