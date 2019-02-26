@@ -32,37 +32,26 @@ import org.onap.clamp.clds.dao.CldsDao;
 import org.onap.clamp.clds.model.CldsDictionary;
 import org.onap.clamp.clds.model.CldsDictionaryItem;
 import org.onap.clamp.clds.util.LoggingUtils;
+import org.onap.clamp.clds.util.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import com.att.eelf.configuration.EELFLogger;
+import com.att.eelf.configuration.EELFManager;
 
 /**
  * REST services to manage dictionary and dictionary items for Tosca Model
  */
 @Component
-public class CldsDictionaryService extends SecureServiceBase {
-
-    @Value("${clamp.config.security.permission.type.tosca:permission-type-tosca}")
-    private String                  cldsPermissionTypeTosca;
-    @Value("${clamp.config.security.permission.instance:dev}")
-    private String                  cldsPermissionInstance;
-    private SecureServicePermission permissionReadTosca;
-    private SecureServicePermission permissionUpdateTosca;
+public class CldsDictionaryService {
 
     @Autowired
     private CldsDao                 cldsDao;
-    
+    private static final EELFLogger auditLogger = EELFManager.getInstance().getAuditLogger();
+    private static final EELFLogger logger = EELFManager.getInstance().getLogger(CldsDictionaryService.class);
     private LoggingUtils util = new LoggingUtils(logger);
-    
-
-    @PostConstruct
-    private final void initConstruct() {
-        permissionReadTosca = SecureServicePermission.create(cldsPermissionTypeTosca, cldsPermissionInstance, "read");
-        permissionUpdateTosca = SecureServicePermission.create(cldsPermissionTypeTosca, cldsPermissionInstance,
-                "update");
-    }
 
     /**
      * REST Service that creates or Updates a Dictionary
@@ -74,14 +63,12 @@ public class CldsDictionaryService extends SecureServiceBase {
     public ResponseEntity<CldsDictionary> createOrUpdateDictionary(String dictionaryName,
             CldsDictionary cldsDictionary) {
         Date startTime = new Date();
-        LoggingUtils.setRequestContext("CldsDictionaryService: createOrUpdateDictionary", getPrincipalName());
-        // TODO revisit based on new permissions
-        isAuthorized(permissionUpdateTosca);
+        LoggingUtils.setRequestContext("CldsDictionaryService: createOrUpdateDictionary", PrincipalUtils.getPrincipalName());
         if (cldsDictionary == null) {
             cldsDictionary = new CldsDictionary();
             cldsDictionary.setDictionaryName(dictionaryName);
         }
-        cldsDictionary.save(dictionaryName, cldsDao, getUserId());
+        cldsDictionary.save(dictionaryName, cldsDao, PrincipalUtils.getUserId());
         LoggingUtils.setTimeContext(startTime, new Date());
         LoggingUtils.setResponseContext("0", "createOrUpdateDictionary success", this.getClass().getName());
         auditLogger.info("createOrUpdateDictionary completed");
@@ -100,10 +87,8 @@ public class CldsDictionaryService extends SecureServiceBase {
     public ResponseEntity<CldsDictionaryItem> createOrUpdateDictionaryElements(String dictionaryName,
             CldsDictionaryItem dictionaryItem) {
         Date startTime = new Date();
-        LoggingUtils.setRequestContext("CldsDictionaryService: createOrUpdateDictionaryElements", getPrincipalName());
-        // TODO revisit based on new permissions
-        isAuthorized(permissionUpdateTosca);
-        dictionaryItem.save(dictionaryName, cldsDao, getUserId());
+        LoggingUtils.setRequestContext("CldsDictionaryService: createOrUpdateDictionaryElements", PrincipalUtils.getPrincipalName());
+        dictionaryItem.save(dictionaryName, cldsDao, PrincipalUtils.getUserId());
         LoggingUtils.setTimeContext(startTime, new Date());
         LoggingUtils.setResponseContext("0", "createOrUpdateDictionaryElements success", this.getClass().getName());
         auditLogger.info("createOrUpdateDictionaryElements completed");
@@ -117,9 +102,7 @@ public class CldsDictionaryService extends SecureServiceBase {
      */
     public ResponseEntity<List<CldsDictionary>> getAllDictionaryNames() {
         Date startTime = new Date();
-        LoggingUtils.setRequestContext("CldsDictionaryService: getAllDictionaryNames", getPrincipalName());
-        // TODO revisit based on new permissions
-        isAuthorized(permissionReadTosca);
+        LoggingUtils.setRequestContext("CldsDictionaryService: getAllDictionaryNames", PrincipalUtils.getPrincipalName());
         List<CldsDictionary> dictionaries = cldsDao.getDictionary(null, null);
         LoggingUtils.setTimeContext(startTime, new Date());
         LoggingUtils.setResponseContext("0", "getAllDictionaryNames success", this.getClass().getName());
@@ -137,9 +120,7 @@ public class CldsDictionaryService extends SecureServiceBase {
      */
     public ResponseEntity<List<CldsDictionaryItem>> getDictionaryElementsByName(String dictionaryName) {
         Date startTime = new Date();
-        LoggingUtils.setRequestContext("CldsDictionaryService: getDictionaryElementsByName", getPrincipalName());
-        // TODO revisit based on new permissions
-        isAuthorized(permissionReadTosca);
+        LoggingUtils.setRequestContext("CldsDictionaryService: getDictionaryElementsByName", PrincipalUtils.getPrincipalName());
         List<CldsDictionaryItem> dictionaryItems = cldsDao.getDictionaryElements(dictionaryName, null, null);
         LoggingUtils.setTimeContext(startTime, new Date());
         LoggingUtils.setResponseContext("0", "getAllDictionaryNames success", this.getClass().getName());

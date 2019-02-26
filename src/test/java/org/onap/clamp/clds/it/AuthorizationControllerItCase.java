@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2018 Nokia Intellectual Property. All rights
+ * Copyright (C) 2019 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,12 +21,12 @@
  *
  */
 
-package org.onap.clamp.clds.service;
+package org.onap.clamp.clds.it;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import com.att.eelf.configuration.EELFLogger;
+import com.att.eelf.configuration.EELFManager;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -34,22 +34,32 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.onap.clamp.authorization.AuthorizationController;
-import org.onap.clamp.clds.model.CldsInfo;
+import org.onap.clamp.clds.service.SecureServicePermission;
 import org.onap.clamp.clds.util.PrincipalUtils;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.test.context.junit4.SpringRunner;
 
+/**
+ * Test CldsDAO calls through CldsModel and CldsEvent. This really test the DB
+ * and stored procedures.
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class AuthorizationControllerItCase {
 
-public class CldsInfoProviderTest {
+    protected static final EELFLogger logger = EELFManager.getInstance().getLogger(AuthorizationControllerItCase.class);
     private Authentication authentication;
     private List<GrantedAuthority> authList = new LinkedList<GrantedAuthority>();
-    private static final String TEST_USERNAME = "admin";
+
     /**
      * Setup the variable before the tests execution.
      *
@@ -65,26 +75,20 @@ public class CldsInfoProviderTest {
         authList.add(new SimpleGrantedAuthority("permission-type-template|dev|update"));
         authList.add(new SimpleGrantedAuthority("permission-type-filter-vf|dev|*"));
         authList.add(new SimpleGrantedAuthority("permission-type-cl-event|dev|*"));
+
         authentication = new UsernamePasswordAuthenticationToken(new User("admin", "", authList), "", authList);
     }
+
     @Test
-    public void shouldProvideCldsInfoFromContext() throws Exception {
+    public void testIsUserPermittedNoException() {
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         PrincipalUtils.setSecurityContext(securityContext);
-        AuthorizationController auth = mock(AuthorizationController.class);
-        when(auth.isUserPermittedNoException(any())).thenReturn(true);
 
-        CldsInfoProvider cldsInfoProvider = new CldsInfoProvider();
-        cldsInfoProvider.setAuthorizationDelegate(auth);
-        // when
-        CldsInfo cldsInfo = cldsInfoProvider.getCldsInfo();
-
-        // then
-        assertThat(cldsInfo.getUserName()).isEqualTo(TEST_USERNAME);
-        assertThat(cldsInfo.isPermissionReadCl()).isTrue();
-        assertThat(cldsInfo.isPermissionReadTemplate()).isTrue();
-        assertThat(cldsInfo.isPermissionUpdateCl()).isTrue();
-        assertThat(cldsInfo.isPermissionUpdateTemplate()).isTrue();
+        AuthorizationController auth = new AuthorizationController ();
+        assertTrue(auth.isUserPermittedNoException(new SecureServicePermission("permission-type-cl","dev","read")));
+        assertTrue(auth.isUserPermittedNoException(new SecureServicePermission("permission-type-cl-manage","dev","DEPLOY")));
+        assertTrue(auth.isUserPermittedNoException(new SecureServicePermission("permission-type-filter-vf","dev","12345-55555-55555-5555")));
+        assertFalse(auth.isUserPermittedNoException(new SecureServicePermission("permission-type-cl","test","read")));
     }
 }

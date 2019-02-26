@@ -30,11 +30,11 @@ import java.util.Date;
 import javax.ws.rs.NotAuthorizedException;
 
 import org.onap.clamp.clds.util.LoggingUtils;
+import org.onap.clamp.clds.util.PrincipalUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * Base/abstract Service class. Implements shared security methods.
@@ -49,44 +49,6 @@ public abstract class SecureServiceBase {
 
 
     private SecurityContext           securityContext = SecurityContextHolder.getContext();
-
-    /**
-     * Get the userId from AAF/CSP.
-     *
-     * @return
-     */
-    public String getUserId() {
-        return getUserName();
-    }
-
-    /**
-     * Get the Full name.
-     *
-     * @return
-     */
-    public String getUserName() {
-        String name = userNameHandler.retrieveUserName(securityContext);
-        Date startTime = new Date();
-        LoggingUtils.setTargetContext("CLDS", "getUserName");
-        LoggingUtils.setTimeContext(startTime, new Date());
-        securityLogger.debug("User logged into the CLDS system={}", name);
-        return name;
-    }
-
-    /**
-     * Get the principal name.
-     *
-     * @return
-     */
-    public String getPrincipalName() {
-        String principal = ((UserDetails)securityContext.getAuthentication().getPrincipal()).getUsername();
-        String name = "Not found";
-        if (principal != null) {
-            name = principal;
-        }
-        logger.debug("userPrincipal.getName()={}", name);
-        return name;
-    }
 
     /**
      * Check if user is authorized for the given the permission. Allow matches
@@ -105,14 +67,15 @@ public abstract class SecureServiceBase {
      *             in this exception
      */
     public boolean isAuthorized(SecureServicePermission inPermission) throws NotAuthorizedException {
+        String principalName = PrincipalUtils.getPrincipalName();
         Date startTime = new Date();
         LoggingUtils.setTargetContext("CLDS", "isAuthorized");
         LoggingUtils.setTimeContext(startTime, new Date());
-        securityLogger.debug("checking if {} has permission: {}", getPrincipalName(), inPermission);
+        securityLogger.debug("checking if {} has permission: {}", principalName, inPermission);
         try {
             return isUserPermitted(inPermission);
         } catch (NotAuthorizedException nae) {
-            String msg = getPrincipalName() + " does not have permission: " + inPermission;
+            String msg = principalName + " does not have permission: " + inPermission;
             LoggingUtils.setErrorContext("100", "Authorization Error");
             securityLogger.warn(msg);
             throw new NotAuthorizedException(msg);
@@ -133,14 +96,15 @@ public abstract class SecureServiceBase {
      *         execute the inPermission
      */
     public boolean isAuthorizedNoException(SecureServicePermission inPermission) {
-        securityLogger.debug("checking if {} has permission: {}", getPrincipalName(), inPermission);
+        String principalName = PrincipalUtils.getPrincipalName();
+        securityLogger.debug("checking if {} has permission: {}", principalName, inPermission);
         Date startTime = new Date();
         LoggingUtils.setTargetContext("CLDS", "isAuthorizedNoException");
         LoggingUtils.setTimeContext(startTime, new Date());
         try {
             return isUserPermitted(inPermission);
         } catch (NotAuthorizedException nae) {
-            String msg = getPrincipalName() + " does not have permission: " + inPermission;
+            String msg = principalName + " does not have permission: " + inPermission;
             LoggingUtils.setErrorContext("100", "Authorization Error");
             securityLogger.warn(msg);
         }
@@ -166,22 +130,23 @@ public abstract class SecureServiceBase {
     }
 
     private boolean isUserPermitted(SecureServicePermission inPermission) {
+        String principalName = PrincipalUtils.getPrincipalName();
         boolean authorized = false;
         // check if the user has the permission key or the permission key with a
         // combination of  all instance and/or all action.
         if (hasRole(inPermission.getKey())) {
-            securityLogger.info("{} authorized for permission: {}", getPrincipalName(), inPermission.getKey());
+            securityLogger.info("{} authorized for permission: {}", principalName, inPermission.getKey());
             authorized = true;
             // the rest of these don't seem to be required - isUserInRole method
             // appears to take * as a wildcard
         } else if (hasRole(inPermission.getKeyAllInstance())) {
-            securityLogger.info("{} authorized because user has permission with * for instance: {}", getPrincipalName(), inPermission.getKey());
+            securityLogger.info("{} authorized because user has permission with * for instance: {}", principalName, inPermission.getKey());
             authorized = true;
         } else if (hasRole(inPermission.getKeyAllInstanceAction())) {
-            securityLogger.info("{} authorized because user has permission with * for instance and * for action: {}", getPrincipalName(), inPermission.getKey());
+            securityLogger.info("{} authorized because user has permission with * for instance and * for action: {}", principalName, inPermission.getKey());
             authorized = true;
         } else if (hasRole(inPermission.getKeyAllAction())) {
-            securityLogger.info("{} authorized because user has permission with * for action: {}", getPrincipalName(), inPermission.getKey());
+            securityLogger.info("{} authorized because user has permission with * for action: {}", principalName, inPermission.getKey());
             authorized = true;
         } else {
             throw new NotAuthorizedException("");
