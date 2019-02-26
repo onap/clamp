@@ -31,7 +31,6 @@ import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,6 +46,7 @@ import org.onap.clamp.clds.model.CldsTemplate;
 import org.onap.clamp.clds.model.ValueItem;
 import org.onap.clamp.clds.service.CldsTemplateService;
 import org.onap.clamp.clds.util.LoggingUtils;
+import org.onap.clamp.clds.util.PrincipalUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,7 +56,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -79,7 +78,6 @@ public class CldsTemplateServiceItCase {
     private Authentication authentication;
     private List<GrantedAuthority> authList =  new LinkedList<GrantedAuthority>();
     private LoggingUtils util;
-
     /**
      * Setup the variable before the tests execution.
      * 
@@ -101,8 +99,8 @@ public class CldsTemplateServiceItCase {
         util = Mockito.mock(LoggingUtils.class);
         Mockito.doNothing().when(util).entering(Matchers.any(HttpServletRequest.class), Matchers.any(String.class));
         cldsTemplateService.setLoggingUtil(util);
+        PrincipalUtils.setSecurityContext(securityContext);
 
-        cldsTemplateService.setSecurityContext(securityContext);
         bpmnText = ResourceFileUtil.getResourceAsString("example/dao/bpmn-template.xml");
         imageText = ResourceFileUtil.getResourceAsString("example/dao/image-template.xml");
         bpmnPropText = ResourceFileUtil.getResourceAsString("example/dao/bpmn-prop.json");

@@ -27,32 +27,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
 import org.onap.clamp.clds.client.req.policy.PolicyClient;
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.dao.CldsDao;
 import org.onap.clamp.clds.model.CldsToscaModel;
 import org.onap.clamp.clds.util.LoggingUtils;
+import org.onap.clamp.clds.util.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import com.att.eelf.configuration.EELFLogger;
+import com.att.eelf.configuration.EELFManager;
 
 /**
  * REST services to manage Tosca Model
  */
 @Component
-public class CldsToscaService extends SecureServiceBase {
-
-    @Value("${clamp.config.security.permission.type.tosca:permission-type-tosca}")
-    private String                  cldsPermissionTypeTosca;
-    @Value("${clamp.config.security.permission.instance:dev}")
-    private String                  cldsPermissionInstance;
-    private SecureServicePermission permissionReadTosca;
-    private SecureServicePermission permissionUpdateTosca;
-
+public class CldsToscaService {
     @Autowired
     private CldsDao                 cldsDao;
 
@@ -61,14 +54,10 @@ public class CldsToscaService extends SecureServiceBase {
 
     @Autowired
     private PolicyClient            policyClient;
-    private LoggingUtils util = new LoggingUtils(logger);
 
-    @PostConstruct
-    private final void initConstruct() {
-        permissionReadTosca = SecureServicePermission.create(cldsPermissionTypeTosca, cldsPermissionInstance, "read");
-        permissionUpdateTosca = SecureServicePermission.create(cldsPermissionTypeTosca, cldsPermissionInstance,
-                "update");
-    }
+    private static final EELFLogger logger = EELFManager.getInstance().getLogger(CldsToscaService.class);
+    private static final EELFLogger auditLogger = EELFManager.getInstance().getAuditLogger();
+    private LoggingUtils util = new LoggingUtils(logger);
 
     /**
      * REST service to upload a new Tosca Model or update an existing Tosca
@@ -85,11 +74,9 @@ public class CldsToscaService extends SecureServiceBase {
      */
     public ResponseEntity<?> parseToscaModelAndSave(String toscaModelName, CldsToscaModel cldsToscaModel) {
         Date startTime = new Date();
-        LoggingUtils.setRequestContext("CldsToscaService: Parse Tosca model and save", getPrincipalName());
-        // TODO revisit based on new permissions
-        isAuthorized(permissionUpdateTosca);
+        LoggingUtils.setRequestContext("CldsToscaService: Parse Tosca model and save", PrincipalUtils.getPrincipalName());
         cldsToscaModel.setToscaModelName(toscaModelName);
-        cldsToscaModel = cldsToscaModel.save(cldsDao, refProp, policyClient, getUserId());
+        cldsToscaModel = cldsToscaModel.save(cldsDao, refProp, policyClient, PrincipalUtils.getUserId());
         LoggingUtils.setTimeContext(startTime, new Date());
         LoggingUtils.setResponseContext("0", "Parse Tosca model and save success", this.getClass().getName());
         auditLogger.info("Parse Tosca model and save completed");
@@ -104,9 +91,7 @@ public class CldsToscaService extends SecureServiceBase {
     public List<CldsToscaModel> getAllToscaModels() {
 
         Date startTime = new Date();
-        LoggingUtils.setRequestContext("CldsToscaService: Get All tosca models", getPrincipalName());
-        // TODO revisit based on new permissions
-        isAuthorized(permissionReadTosca);
+        LoggingUtils.setRequestContext("CldsToscaService: Get All tosca models", PrincipalUtils.getPrincipalName());
         List<CldsToscaModel> cldsToscaModels = Optional.ofNullable(cldsDao.getAllToscaModels()).get();
         LoggingUtils.setTimeContext(startTime, new Date());
         LoggingUtils.setResponseContext("0", "Get All tosca models success", this.getClass().getName());
@@ -125,9 +110,7 @@ public class CldsToscaService extends SecureServiceBase {
      */
     public CldsToscaModel getToscaModel(String toscaModelName) {
         Date startTime = new Date();
-        LoggingUtils.setRequestContext("CldsToscaService: Get tosca models by model name", getPrincipalName());
-        // TODO revisit based on new permissions
-        isAuthorized(permissionReadTosca);
+        LoggingUtils.setRequestContext("CldsToscaService: Get tosca models by model name", PrincipalUtils.getPrincipalName());
         List<CldsToscaModel> cldsToscaModels = Optional.ofNullable(cldsDao.getToscaModelByName(toscaModelName)).get();
         LoggingUtils.setTimeContext(startTime, new Date());
         LoggingUtils.setResponseContext("0", "Get tosca models by model name success", this.getClass().getName());
@@ -144,9 +127,7 @@ public class CldsToscaService extends SecureServiceBase {
      */
     public CldsToscaModel getToscaModelsByPolicyType(String policyType) {
         Date startTime = new Date();
-        LoggingUtils.setRequestContext("CldsToscaService: Get tosca models by policyType", getPrincipalName());
-        // TODO revisit based on new permissions
-        isAuthorized(permissionReadTosca);
+        LoggingUtils.setRequestContext("CldsToscaService: Get tosca models by policyType", PrincipalUtils.getPrincipalName());
         List<CldsToscaModel> cldsToscaModels = Optional.ofNullable(cldsDao.getToscaModelByPolicyType(policyType)).get();
         LoggingUtils.setTimeContext(startTime, new Date());
         LoggingUtils.setResponseContext("0", "Get tosca models by policyType success", this.getClass().getName());
@@ -154,11 +135,6 @@ public class CldsToscaService extends SecureServiceBase {
         return cldsToscaModels.get(0);
     }
 
-    public ResponseEntity<?> deleteToscaModelById(String toscaModeId) {
-        // TODO
-        return null;
-    }
-    
     // Created for the integration test
     public void setLoggingUtil(LoggingUtils utilP) {
         util = utilP;

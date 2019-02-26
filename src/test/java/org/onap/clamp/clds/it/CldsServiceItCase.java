@@ -27,6 +27,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +48,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
+import org.onap.clamp.authorization.AuthorizationController;
 import org.onap.clamp.clds.dao.CldsDao;
 import org.onap.clamp.clds.model.CldsEvent;
 import org.onap.clamp.clds.model.CldsInfo;
@@ -52,8 +56,10 @@ import org.onap.clamp.clds.model.CldsModel;
 import org.onap.clamp.clds.model.CldsMonitoringDetails;
 import org.onap.clamp.clds.model.CldsTemplate;
 import org.onap.clamp.clds.model.DcaeEvent;
+import org.onap.clamp.clds.service.CldsInfoProvider;
 import org.onap.clamp.clds.service.CldsService;
 import org.onap.clamp.clds.util.LoggingUtils;
+import org.onap.clamp.clds.util.PrincipalUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +95,6 @@ public class CldsServiceItCase {
     private Authentication authentication;
     private List<GrantedAuthority> authList = new LinkedList<GrantedAuthority>();
     private LoggingUtils util;
-
     /**
      * Setup the variable before the tests execution.
      *
@@ -110,6 +115,7 @@ public class CldsServiceItCase {
         authList.add(new SimpleGrantedAuthority("permission-type-template|dev|update"));
         authList.add(new SimpleGrantedAuthority("permission-type-filter-vf|dev|*"));
         authList.add(new SimpleGrantedAuthority("permission-type-cl-event|dev|*"));
+
         authentication = new UsernamePasswordAuthenticationToken(new User("admin", "", authList), "", authList);
 
         util = Mockito.mock(LoggingUtils.class);
@@ -126,8 +132,8 @@ public class CldsServiceItCase {
         Mockito.when(userDetails.getUsername()).thenReturn("admin");
         Mockito.when(securityContext.getAuthentication()).thenReturn(localAuth);
         Mockito.when(localAuth.getPrincipal()).thenReturn(userDetails);
+        PrincipalUtils.setSecurityContext(securityContext);
 
-        cldsService.setSecurityContext(securityContext);
         CldsInfo cldsInfo = cldsService.getCldsInfo();
         assertFalse(cldsInfo.isPermissionReadCl());
         assertFalse(cldsInfo.isPermissionReadTemplate());
@@ -139,9 +145,14 @@ public class CldsServiceItCase {
     public void testCldsInfoAuthorized() throws Exception {
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        PrincipalUtils.setSecurityContext(securityContext);
 
-        cldsService.setSecurityContext(securityContext);
-        CldsInfo cldsInfo = cldsService.getCldsInfo();
+        AuthorizationController auth = mock(AuthorizationController.class);
+        when(auth.isUserPermittedNoException(any())).thenReturn(true);
+        CldsInfoProvider cldsInfoProvider = new CldsInfoProvider();
+        cldsInfoProvider.setAuthorizationDelegate(auth);
+
+        CldsInfo cldsInfo = cldsService.getCldsInfo(cldsInfoProvider);
         assertTrue(cldsInfo.isPermissionReadCl());
         assertTrue(cldsInfo.isPermissionReadTemplate());
         assertTrue(cldsInfo.isPermissionUpdateCl());
@@ -164,8 +175,9 @@ public class CldsServiceItCase {
     public void testCompleteFlow() throws TransformerException, ParseException {
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-
         cldsService.setSecurityContext(securityContext);
+        PrincipalUtils.setSecurityContext(securityContext);
+
         // Add the template first
         CldsTemplate newTemplate = new CldsTemplate();
         String randomNameTemplate = RandomStringUtils.randomAlphanumeric(5);

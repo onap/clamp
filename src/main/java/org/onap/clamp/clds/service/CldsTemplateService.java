@@ -29,6 +29,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import org.onap.clamp.authorization.AuthorizationController;
 import org.onap.clamp.clds.dao.CldsDao;
 import org.onap.clamp.clds.model.CldsTemplate;
 import org.onap.clamp.clds.model.ValueItem;
@@ -39,33 +40,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.att.eelf.configuration.EELFLogger;
+import com.att.eelf.configuration.EELFManager;
+
 /**
  * Service to save and retrieve the CLDS model attributes.
  */
 @Component
-public class CldsTemplateService extends SecureServiceBase {
+public class CldsTemplateService {
 
+    @Autowired
+	private HttpServletRequest request;
     @Value("${clamp.config.security.permission.type.template:permission-type-template}")
     private String cldsPermissionTypeTemplate;
     @Value("${clamp.config.security.permission.instance:dev}")
     private String cldsPermissionInstance;
-    private SecureServicePermission permissionReadTemplate;
     private SecureServicePermission permissionUpdateTemplate;
-    @Autowired
-	private HttpServletRequest request;
-
-    @PostConstruct
-    private final void afterConstruction() {
-        permissionReadTemplate = SecureServicePermission.create(cldsPermissionTypeTemplate, cldsPermissionInstance,
-            "read");
-        permissionUpdateTemplate = SecureServicePermission.create(cldsPermissionTypeTemplate, cldsPermissionInstance,
-            "update");
-    }
-
+    private static final EELFLogger auditLogger = EELFManager.getInstance().getAuditLogger();
+    private static final EELFLogger logger = EELFManager.getInstance().getLogger(CldsTemplateService.class);
     @Autowired
     private CldsDao cldsDao;
     private LoggingUtils util = new LoggingUtils(logger);
 
+    @PostConstruct
+    private final void afterConstruction() {
+        permissionUpdateTemplate = SecureServicePermission.create(cldsPermissionTypeTemplate, cldsPermissionInstance,
+            "update");
+    }
     /**
      * REST service that retrieves BPMN for a CLDS template name from the
      * database. This is subset of the json getModel. This is only expected to
@@ -77,7 +78,6 @@ public class CldsTemplateService extends SecureServiceBase {
     public String getBpmnTemplate(String templateName) {
     	util.entering(request, "CldsTemplateService: GET template bpmn");
         Date startTime = new Date();
-        isAuthorized(permissionReadTemplate);
         logger.info("GET bpmnText for templateName=" + templateName);
         CldsTemplate template = CldsTemplate.retrieve(cldsDao, templateName, false);
         // audit log
@@ -98,7 +98,6 @@ public class CldsTemplateService extends SecureServiceBase {
     public String getImageXml(String templateName) {
     	util.entering(request, "CldsTemplateService: GET template image");
         Date startTime = new Date();
-        isAuthorized(permissionReadTemplate);
         logger.info("GET imageText for templateName=" + templateName);
         CldsTemplate template = CldsTemplate.retrieve(cldsDao, templateName, false);
         // audit log
@@ -117,10 +116,10 @@ public class CldsTemplateService extends SecureServiceBase {
     public CldsTemplate getTemplate(String templateName) {
     	util.entering(request, "CldsTemplateService: GET template");
         Date startTime = new Date();
-        isAuthorized(permissionReadTemplate);
         logger.info("GET model for  templateName=" + templateName);
         CldsTemplate template = CldsTemplate.retrieve(cldsDao, templateName, false);
-        template.setUserAuthorizedToUpdate(isAuthorizedNoException(permissionUpdateTemplate));
+        AuthorizationController auth = new AuthorizationController();
+        template.setUserAuthorizedToUpdate(auth.isUserPermittedNoException(permissionUpdateTemplate));
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET template completed");
@@ -138,7 +137,6 @@ public class CldsTemplateService extends SecureServiceBase {
     public CldsTemplate putTemplate(String templateName, CldsTemplate cldsTemplate) {
     	util.entering(request, "CldsTemplateService: PUT template");
         Date startTime = new Date();
-        isAuthorized(permissionUpdateTemplate);
         logger.info("PUT Template for  templateName=" + templateName);
         logger.info("PUT bpmnText=" + cldsTemplate.getBpmnText());
         logger.info("PUT propText=" + cldsTemplate.getPropText());
@@ -160,7 +158,6 @@ public class CldsTemplateService extends SecureServiceBase {
     public List<ValueItem> getTemplateNames() {
     	util.entering(request, "CldsTemplateService: GET template names");
         Date startTime = new Date();
-        isAuthorized(permissionReadTemplate);
         logger.info("GET list of template names");
         List<ValueItem> names = cldsDao.getTemplateNames();
         // audit log
