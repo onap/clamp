@@ -57,5 +57,9 @@
 						</when>
 				</choice>
 		</route>
-
+		<!-- <route>
+			<from uri="rest:get:user/getUser"/>
+			<to uri="bean:org.onap.clamp.authorization.AuthorizationDelegate?method=authorize(*,'security.permission.type.cl','dev','read')" />
+			<to uri="bean:org.onap.clamp.clds.service.UserService?method=getUser()" />
+		</route> -->
 </routes>

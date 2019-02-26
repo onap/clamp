@@ -39,7 +39,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BadRequestException;
-import javax.ws.rs.NotAuthorizedException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.camel.Produce;
@@ -67,6 +66,7 @@ import org.onap.clamp.clds.transform.XslTransformer;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.LoggingUtils;
 import org.onap.clamp.clds.util.ONAPLogConstants;
+import org.onap.clamp.clds.util.PrincipalUtils;
 import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -87,19 +87,11 @@ public class CldsService extends SecureServiceBase {
     private CamelProxy camelProxy;
     protected static final EELFLogger securityLogger = EELFManager.getInstance().getSecurityLogger();
     protected static final EELFLogger logger = EELFManager.getInstance().getLogger(CldsService.class);
+    protected static final EELFLogger auditLogger     = EELFManager.getInstance().getAuditLogger();
 
     public static final String GLOBAL_PROPERTIES_KEY = "files.globalProperties";
-    private final String cldsPermissionTypeClManage;
-    private final String cldsPermissionTypeClEvent;
     private final String cldsPermissionTypeFilterVf;
     private final String cldsPermissionInstance;
-    final SecureServicePermission permissionReadCl;
-    final SecureServicePermission permissionUpdateCl;
-    final SecureServicePermission permissionReadTemplate;
-    final SecureServicePermission permissionUpdateTemplate;
-    final SecureServicePermission permissionReadTosca;
-    final SecureServicePermission permissionUpdateTosca;
-
     private final CldsDao cldsDao;
     private final XslTransformer cldsBpmnTransformer;
     private final ClampProperties refProp;
@@ -114,31 +106,15 @@ public class CldsService extends SecureServiceBase {
     public CldsService(CldsDao cldsDao, XslTransformer cldsBpmnTransformer, ClampProperties refProp,
         DcaeDispatcherServices dcaeDispatcherServices,
         DcaeInventoryServices dcaeInventoryServices,
-        @Value("${clamp.config.security.permission.type.cl:permission-type-cl}") String cldsPersmissionTypeCl,
-        @Value("${clamp.config.security.permission.type.cl.manage:permission-type-cl-manage}") String cldsPermissionTypeClManage,
-        @Value("${clamp.config.security.permission.type.cl.event:permission-type-cl-event}") String cldsPermissionTypeClEvent,
         @Value("${clamp.config.security.permission.type.filter.vf:permission-type-filter-vf}") String cldsPermissionTypeFilterVf,
-        @Value("${clamp.config.security.permission.type.template:permission-type-template}") String cldsPermissionTypeTemplate,
-        @Value("${clamp.config.security.permission.type.tosca:permission-type-tosca}") String cldsPermissionTypeTosca,
-        @Value("${clamp.config.security.permission.instance:dev}") String cldsPermissionInstance) {
+        @Value("${clamp.config.security.permission.instance:dev}") String cldsPermissionInstance){
         this.cldsDao = cldsDao;
         this.cldsBpmnTransformer = cldsBpmnTransformer;
         this.refProp = refProp;
         this.dcaeDispatcherServices = dcaeDispatcherServices;
         this.dcaeInventoryServices = dcaeInventoryServices;
-        this.cldsPermissionTypeClManage = cldsPermissionTypeClManage;
-        this.cldsPermissionTypeClEvent = cldsPermissionTypeClEvent;
         this.cldsPermissionTypeFilterVf = cldsPermissionTypeFilterVf;
         this.cldsPermissionInstance = cldsPermissionInstance;
-        permissionReadCl = SecureServicePermission.create(cldsPersmissionTypeCl, cldsPermissionInstance, "read");
-        permissionUpdateCl = SecureServicePermission.create(cldsPersmissionTypeCl, cldsPermissionInstance, "update");
-        permissionReadTemplate = SecureServicePermission.create(cldsPermissionTypeTemplate, cldsPermissionInstance,
-            "read");
-        permissionUpdateTemplate = SecureServicePermission.create(cldsPermissionTypeTemplate, cldsPermissionInstance,
-            "update");
-        permissionReadTosca = SecureServicePermission.create(cldsPermissionTypeTosca, cldsPermissionInstance, "read");
-        permissionUpdateTosca = SecureServicePermission.create(cldsPermissionTypeTosca, cldsPermissionInstance,
-            "update");
     }
 
     /*
@@ -171,7 +147,25 @@ public class CldsService extends SecureServiceBase {
         Date startTime = new Date();
         LoggingUtils.setTimeContext(startTime, new Date());
 
-        CldsInfoProvider cldsInfoProvider = new CldsInfoProvider(this);
+        CldsInfoProvider cldsInfoProvider = new CldsInfoProvider();
+        CldsInfo cldsInfo = cldsInfoProvider.getCldsInfo();
+
+        // audit log
+        LoggingUtils.setTimeContext(startTime, new Date());
+        securityLogger.info("GET cldsInfo completed");
+        util.exiting("200", "Get cldsInfo success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        return cldsInfo;
+    }
+
+    /*
+     * CLDS IFO service will return 3 things 1. User Name 2. CLDS code version that
+     * is currently installed from pom.xml file 3. User permissions
+     */
+    public CldsInfo getCldsInfo(CldsInfoProvider cldsInfoProvider) {
+        util.entering(request, "CldsService: GET cldsInfo");
+        Date startTime = new Date();
+        LoggingUtils.setTimeContext(startTime, new Date());
+
         CldsInfo cldsInfo = cldsInfoProvider.getCldsInfo();
 
         // audit log
@@ -192,7 +186,6 @@ public class CldsService extends SecureServiceBase {
     public String getBpmnXml(String modelName) {
         util.entering(request, "CldsService: GET model bpmn");
         Date startTime = new Date();
-        isAuthorized(permissionReadCl);
         logger.info("GET bpmnText for modelName={}", modelName);
         CldsModel model = CldsModel.retrieve(cldsDao, modelName, false);
         // audit log
@@ -213,7 +206,6 @@ public class CldsService extends SecureServiceBase {
     public String getImageXml(String modelName) {
         util.entering(request, "CldsService: GET model image");
         Date startTime = new Date();
-        isAuthorized(permissionReadCl);
         logger.info("GET imageText for modelName={}", modelName);
         CldsModel model = CldsModel.retrieve(cldsDao, modelName, false);
         // audit log
@@ -232,7 +224,6 @@ public class CldsService extends SecureServiceBase {
     public CldsModel getModel(String modelName) {
         util.entering(request, "CldsService: GET model");
         Date startTime = new Date();
-        isAuthorized(permissionReadCl);
         logger.debug("GET model for  modelName={}", modelName);
         CldsModel cldsModel = CldsModel.retrieve(cldsDao, modelName, false);
         isAuthorizedForVf(cldsModel);
@@ -242,7 +233,7 @@ public class CldsService extends SecureServiceBase {
             // Method to call dcae inventory and invoke insert event method
             if (cldsModel.canDcaeInventoryCall()
                 && !cldsModel.getTemplateName().startsWith(CsarInstallerImpl.TEMPLATE_NAME_PREFIX)) {
-                dcaeInventoryServices.setEventInventory(cldsModel, getUserId());
+                dcaeInventoryServices.setEventInventory(cldsModel, PrincipalUtils.getUserId());
             }
             // This is a blocking call
             if (cldsModel.getEvent().isActionCd(CldsEvent.ACTION_DEPLOY)
@@ -271,14 +262,13 @@ public class CldsService extends SecureServiceBase {
     public CldsModel putModel(String modelName, CldsModel cldsModel) {
         util.entering(request, "CldsService: PUT model");
         Date startTime = new Date();
-        isAuthorized(permissionUpdateCl);
         isAuthorizedForVf(cldsModel);
         logger.info("PUT model for  modelName={}", modelName);
         logger.info("PUT bpmnText={}", cldsModel.getBpmnText());
         logger.info("PUT propText={}", cldsModel.getPropText());
         logger.info("PUT imageText={}", cldsModel.getImageText());
         fillInCldsModel(cldsModel);
-        cldsModel.save(cldsDao, getUserId());
+        cldsModel.save(cldsDao, PrincipalUtils.getUserId());
 
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
@@ -295,7 +285,6 @@ public class CldsService extends SecureServiceBase {
     public List<ValueItem> getModelNames() {
         util.entering(request, "CldsService: GET model names");
         Date startTime = new Date();
-        isAuthorized(permissionReadCl);
         logger.info("GET list of model names");
         List<ValueItem> names = cldsDao.getModelNames();
         // audit log
@@ -342,13 +331,10 @@ public class CldsService extends SecureServiceBase {
         Date startTime = new Date();
         String errorMessage = "";
         String actionCd = "";
+        String userId = PrincipalUtils.getUserId();
         try {
             actionCd = action.toUpperCase();
-            SecureServicePermission permisionManage = SecureServicePermission.create(cldsPermissionTypeClManage,
-                cldsPermissionInstance, actionCd);
-            isAuthorized(permisionManage);
             isAuthorizedForVf(model);
-            String userId = getUserId();
             logger.info("PUT actionCd={}", actionCd);
             logger.info("PUT modelName={}", modelName);
             logger.info("PUT test={}", test);
@@ -359,7 +345,7 @@ public class CldsService extends SecureServiceBase {
             logger.info("PUT deploymentId={}", model.getDeploymentId());
             this.fillInCldsModel(model);
             // save model to db just in case
-            model.save(cldsDao, getUserId());
+            model.save(cldsDao, userId);
 
             // get vars and format if necessary
             String prop = model.getPropText();
@@ -395,7 +381,7 @@ public class CldsService extends SecureServiceBase {
         }
 
         if (null == errorMessage || (null != errorMessage && !errorMessage.isEmpty())) {
-            CldsEvent.insEvent(cldsDao, model.getControlName(), getUserId(), actionCd, CldsEvent.ACTION_STATE_ERROR,
+            CldsEvent.insEvent(cldsDao, model.getControlName(), userId, actionCd, CldsEvent.ACTION_STATE_ERROR,
                 null);
             // Need a refresh as new events have been inserted
             model = CldsModel.retrieve(cldsDao, modelName, false);
@@ -424,15 +410,9 @@ public class CldsService extends SecureServiceBase {
     public String postDcaeEvent(String test, DcaeEvent dcaeEvent) {
         util.entering(request, "CldsService: Post dcae event");
         Date startTime = new Date();
-        String userid = null;
-        // TODO: allow auth checking to be turned off by removing the permission
-        // type property
-        if (cldsPermissionTypeClEvent != null && cldsPermissionTypeClEvent.length() > 0) {
-            SecureServicePermission permissionEvent = SecureServicePermission.create(cldsPermissionTypeClEvent,
-                cldsPermissionInstance, dcaeEvent.getEvent());
-            isAuthorized(permissionEvent);
-            userid = getUserId();
-        }
+        String userid = PrincipalUtils.getUserId();
+       // dcaeEvent.getEvent());
+
         // Flag indicates whether it is triggered by Validation Test button from
         // UI
         boolean isTest = Boolean.parseBoolean(test);
@@ -470,7 +450,6 @@ public class CldsService extends SecureServiceBase {
     public String getSdcProperties() throws IOException {
         return refProp.getJsonTemplate(GLOBAL_PROPERTIES_KEY).toString();
     }
-
 
     /**
      * Determine if the user is authorized for a particular VF by its invariant
@@ -518,9 +497,6 @@ public class CldsService extends SecureServiceBase {
             fillInCldsModel(model);
             String bpmnJson = cldsBpmnTransformer.doXslTransformToString(model.getBpmnText());
             logger.info("PUT bpmnJson={}", bpmnJson);
-            SecureServicePermission permisionManage = SecureServicePermission.create(cldsPermissionTypeClManage,
-                cldsPermissionInstance, CldsEvent.ACTION_DEPLOY);
-            isAuthorized(permisionManage);
             isAuthorizedForVf(model);
             ModelProperties modelProp = new ModelProperties(modelName, model.getControlName(), CldsEvent.ACTION_DEPLOY,
                 false, bpmnJson, model.getPropText());
@@ -534,9 +510,10 @@ public class CldsService extends SecureServiceBase {
             }
             model.setDeploymentStatusUrl(dcaeDispatcherServices.createNewDeployment(deploymentId, model.getTypeId(),
                 modelProp.getGlobal().getDeployParameters()));
-            CldsEvent.insEvent(cldsDao, model.getControlName(), getUserId(), CldsEvent.ACTION_DEPLOY,
+            String userId = PrincipalUtils.getUserId();
+            CldsEvent.insEvent(cldsDao, model.getControlName(), userId, CldsEvent.ACTION_DEPLOY,
                 CldsEvent.ACTION_STATE_INITIATED, null);
-            model.save(cldsDao, getUserId());
+            model.save(cldsDao, userId);
             // This is a blocking call
             checkDcaeDeploymentStatus(model, CldsEvent.ACTION_DEPLOY, true);
             // Refresh the model object in any cases for new event
@@ -564,17 +541,14 @@ public class CldsService extends SecureServiceBase {
         Date startTime = new Date();
         String errorMessage = "";
         try {
-            SecureServicePermission permisionManage = SecureServicePermission.create(cldsPermissionTypeClManage,
-                cldsPermissionInstance, CldsEvent.ACTION_UNDEPLOY);
-            isAuthorized(permisionManage);
-            isAuthorizedForVf(model);
             model.setDeploymentStatusUrl(
                 dcaeDispatcherServices.deleteExistingDeployment(model.getDeploymentId(), model.getTypeId()));
-            CldsEvent.insEvent(cldsDao, model.getControlName(), getUserId(), CldsEvent.ACTION_UNDEPLOY,
+            String userId = PrincipalUtils.getUserId();
+            CldsEvent.insEvent(cldsDao, model.getControlName(), userId, CldsEvent.ACTION_UNDEPLOY,
                 CldsEvent.ACTION_STATE_INITIATED, null);
             // clean the deployment ID
             model.setDeploymentId(null);
-            model.save(cldsDao, getUserId());
+            model.save(cldsDao, userId);
             // This is a blocking call
             checkDcaeDeploymentStatus(model, CldsEvent.ACTION_UNDEPLOY, true);
             // Refresh the model object in any cases for new event
@@ -602,16 +576,17 @@ public class CldsService extends SecureServiceBase {
         String operationStatus = withRetry
             ? dcaeDispatcherServices.getOperationStatusWithRetry(model.getDeploymentStatusUrl())
             : dcaeDispatcherServices.getOperationStatus(model.getDeploymentStatusUrl());
+        String userId = PrincipalUtils.getUserId();
         if ("succeeded".equalsIgnoreCase(operationStatus)) {
             logger.info(cldsEvent + " model (" + model.getName() + ") succeeded...Deployment Id is - "
                 + model.getDeploymentId());
-            CldsEvent.insEvent(cldsDao, model.getControlName(), getUserId(), cldsEvent,
+            CldsEvent.insEvent(cldsDao, model.getControlName(), userId, cldsEvent,
                 CldsEvent.ACTION_STATE_COMPLETED, null);
         } else {
             String info = "DCAE " + cldsEvent + " (" + model.getName() + ") failed...Operation Status is - "
                 + operationStatus;
             logger.info(info);
-            CldsEvent.insEvent(cldsDao, model.getControlName(), getUserId(), cldsEvent, CldsEvent.ACTION_STATE_ERROR,
+            CldsEvent.insEvent(cldsDao, model.getControlName(), userId, cldsEvent, CldsEvent.ACTION_STATE_ERROR,
                 null);
             util.exiting(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "DCAE operation(" + cldsEvent + ") failed",
                 Level.INFO, ONAPLogConstants.ResponseStatus.ERROR);

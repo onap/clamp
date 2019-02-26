@@ -24,29 +24,58 @@
 
 package org.onap.clamp.clds.service;
 
+import org.onap.clamp.authorization.AuthorizationController;
 import org.onap.clamp.clds.model.CldsInfo;
 import org.onap.clamp.clds.util.ClampVersioning;
+import org.onap.clamp.clds.util.PrincipalUtils;
+import org.springframework.beans.factory.annotation.Value;
 
-class CldsInfoProvider {
+public class CldsInfoProvider {
+
+    final SecureServicePermission permissionReadCl;
+    final SecureServicePermission permissionUpdateCl;
+    final SecureServicePermission permissionReadTemplate;
+    final SecureServicePermission permissionUpdateTemplate;
+    final SecureServicePermission permissionReadTosca;
+    final SecureServicePermission permissionUpdateTosca;
+    private AuthorizationController auth = new AuthorizationController();
+
+    @Value("${clamp.config.security.permission.type.cl:permission-type-cl}")
+    private String cldsPersmissionTypeCl;
+    @Value("${clamp.config.security.permission.type.template:permission-type-template}")
+    private String cldsPermissionTypeTemplate;
+    @Value("${clamp.config.security.permission.type.tosca:permission-type-tosca}")
+    private String cldsPermissionTypeTosca;
+    @Value("${clamp.config.security.permission.instance:dev}")
+    private String cldsPermissionInstance;
 
 
-    private final CldsService cldsService;
-
-    public CldsInfoProvider(CldsService cldsService) {
-        this.cldsService = cldsService;
+    public CldsInfoProvider() {
+        permissionReadCl = SecureServicePermission.create(cldsPersmissionTypeCl, cldsPermissionInstance, "read");
+        permissionUpdateCl = SecureServicePermission.create(cldsPersmissionTypeCl, cldsPermissionInstance, "update");
+        permissionReadTemplate = SecureServicePermission.create(cldsPermissionTypeTemplate, cldsPermissionInstance,
+            "read");
+        permissionUpdateTemplate = SecureServicePermission.create(cldsPermissionTypeTemplate, cldsPermissionInstance,
+            "update");
+        permissionReadTosca = SecureServicePermission.create(cldsPermissionTypeTosca, cldsPermissionInstance, "read");
+        permissionUpdateTosca = SecureServicePermission.create(cldsPermissionTypeTosca, cldsPermissionInstance,"update");
     }
 
     public CldsInfo getCldsInfo() {
         CldsInfo cldsInfo = new CldsInfo();
-        cldsInfo.setUserName(cldsService.getUserName());
+        cldsInfo.setUserName(PrincipalUtils.getUserName());
         cldsInfo.setCldsVersion(ClampVersioning.getCldsVersionFromProps());
+        cldsInfo.setPermissionReadCl(auth.isUserPermittedNoException(permissionReadCl));
+        cldsInfo.setPermissionUpdateCl(auth.isUserPermittedNoException(permissionUpdateCl));
+        cldsInfo.setPermissionReadTemplate(auth.isUserPermittedNoException(permissionReadTemplate));
+        cldsInfo.setPermissionUpdateTemplate(auth.isUserPermittedNoException(permissionUpdateTemplate));
+        cldsInfo.setPermissionReadTosca(auth.isUserPermittedNoException(permissionReadTosca));
+        cldsInfo.setPermissionUpdateTosca(auth.isUserPermittedNoException(permissionUpdateTosca));
 
-        cldsInfo.setPermissionReadCl(cldsService.isAuthorizedNoException(cldsService.permissionReadCl));
-        cldsInfo.setPermissionUpdateCl(cldsService.isAuthorizedNoException(cldsService.permissionUpdateCl));
-        cldsInfo.setPermissionReadTemplate(cldsService.isAuthorizedNoException(cldsService.permissionReadTemplate));
-        cldsInfo.setPermissionUpdateTemplate(cldsService.isAuthorizedNoException(cldsService.permissionUpdateTemplate));
-        cldsInfo.setPermissionReadTosca(cldsService.isAuthorizedNoException(cldsService.permissionReadTosca));
-        cldsInfo.setPermissionUpdateTosca(cldsService.isAuthorizedNoException(cldsService.permissionUpdateTosca));
         return cldsInfo;
+    }
+    // created for testing purpose
+    public void setAuthorizationDelegate (AuthorizationController auth) {
+        this.auth = auth;
     }
 }

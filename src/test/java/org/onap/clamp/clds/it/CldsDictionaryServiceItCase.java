@@ -44,6 +44,7 @@ import org.onap.clamp.clds.model.CldsDictionary;
 import org.onap.clamp.clds.model.CldsDictionaryItem;
 import org.onap.clamp.clds.service.CldsDictionaryService;
 import org.onap.clamp.clds.util.LoggingUtils;
+import org.onap.clamp.clds.util.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -95,8 +96,7 @@ public class CldsDictionaryServiceItCase {
         util = Mockito.mock(LoggingUtils.class);
         Mockito.doNothing().when(util).entering(Matchers.any(HttpServletRequest.class), Matchers.any(String.class));
         cldsDictionaryService.setLoggingUtil(util);
-
-        cldsDictionaryService.setSecurityContext(securityContext);
+        PrincipalUtils.setSecurityContext(securityContext);
 
         cldsDictionary = new CldsDictionary();
 

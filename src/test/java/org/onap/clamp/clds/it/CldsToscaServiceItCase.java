@@ -43,6 +43,7 @@ import org.mockito.Mockito;
 import org.onap.clamp.clds.model.CldsToscaModel;
 import org.onap.clamp.clds.service.CldsToscaService;
 import org.onap.clamp.clds.util.LoggingUtils;
+import org.onap.clamp.clds.util.PrincipalUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -71,7 +72,6 @@ public class CldsToscaServiceItCase {
     private CldsToscaModel cldsToscaModel;
     private List<GrantedAuthority> authList = new LinkedList<GrantedAuthority>();
     private LoggingUtils util;
-
     /**
      * Setup the variable before the tests execution.
      *
@@ -95,8 +95,7 @@ public class CldsToscaServiceItCase {
         util = Mockito.mock(LoggingUtils.class);
         Mockito.doNothing().when(util).entering(Matchers.any(HttpServletRequest.class), Matchers.any(String.class));
         cldsToscaService.setLoggingUtil(util);
-
-        cldsToscaService.setSecurityContext(securityContext);
+        PrincipalUtils.setSecurityContext(securityContext);
 
         toscaModelYaml = ResourceFileUtil.getResourceAsString("tosca/tca-policy-test.yaml");
 

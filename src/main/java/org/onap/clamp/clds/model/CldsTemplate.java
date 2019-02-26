@@ -186,12 +186,4 @@ public class CldsTemplate {
     public void setImageId(String imageId) {
         this.imageId = imageId;
     }
-
-    public boolean isUserAuthorizedToUpdate() {
-        return userAuthorizedToUpdate;
-    }
-
-    public void setUserAuthorizedToUpdate(boolean userAuthorizedToUpdate) {
-        this.userAuthorizedToUpdate = userAuthorizedToUpdate;
-    }
 }

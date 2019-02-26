@@ -28,23 +28,58 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.onap.clamp.authorization.AuthorizationController;
 import org.onap.clamp.clds.model.CldsInfo;
+import org.onap.clamp.clds.util.PrincipalUtils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.User;
 
 
 public class CldsInfoProviderTest {
+    private Authentication authentication;
+    private List<GrantedAuthority> authList = new LinkedList<GrantedAuthority>();
+    private static final String TEST_USERNAME = "admin";
+    /**
+     * Setup the variable before the tests execution.
+     *
+     * @throws IOException
+     *         In case of issues when opening the files
+     */
+    @Before
+    public void setupBefore() throws IOException {
+        authList.add(new SimpleGrantedAuthority("null|null|read"));
+        authList.add(new SimpleGrantedAuthority("null|null|update"));
+        authList.add(new SimpleGrantedAuthority("null|null|read"));
+        authList.add(new SimpleGrantedAuthority("null|null|update"));
+        authList.add(new SimpleGrantedAuthority("null|null|*"));
+        authList.add(new SimpleGrantedAuthority("null|null|read"));
+        authList.add(new SimpleGrantedAuthority("null|null|update"));
+        authentication = new UsernamePasswordAuthenticationToken(new User("admin", "", authList), "", authList);
 
-    private static final String TEST_USERNAME = "TEST_USERNAME";
 
+    }
     @Test
     public void shouldProvideCldsInfoFromContext() throws Exception {
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        PrincipalUtils util = new PrincipalUtils();
+        util.setSecurityContext(securityContext);
+        AuthorizationController auth = mock(AuthorizationController.class);
+        when(auth.isUserPermittedNoException(any())).thenReturn(true);
 
-        // given
-        CldsService serviceBase = mock(CldsService.class);
-        when(serviceBase.getUserName()).thenReturn(TEST_USERNAME);
-        when(serviceBase.isAuthorizedNoException(any())).thenReturn(true);
-        CldsInfoProvider cldsInfoProvider = new CldsInfoProvider(serviceBase);
-
+        CldsInfoProvider cldsInfoProvider = new CldsInfoProvider();
+        cldsInfoProvider.setAuthorizationDelegate(auth);
         // when
         CldsInfo cldsInfo = cldsInfoProvider.getCldsInfo();
 
