@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f26dcf45_46069070",
+        "filename": "extra/sql/bulkload/clds-create-db-objects.sql",
+        "patchSetId": 1
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-02-26T08:19:36Z",
+      "side": 1,
+      "message": "do we need this sql for creating tables?\nWhy it is not done using JPA?",
+      "revId": "8fe51af26f6721262dfa86def687ab282b114282",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a0f805b9_b6f60830",
+        "filename": "extra/sql/bulkload/clds-create-db-objects.sql",
+        "patchSetId": 1
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-02-26T08:19:36Z",
+      "side": 1,
+      "message": "this is both in here and in association table",
+      "revId": "8fe51af26f6721262dfa86def687ab282b114282",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "288e6c6f_def2143f",
+        "filename": "src/main/java/org/onap/clamp/dao/model/LoopLog.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-02-26T08:19:36Z",
+      "side": 1,
+      "message": "why don\u0027t we have one to One relation here?",
+      "revId": "8fe51af26f6721262dfa86def687ab282b114282",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d070b251_e1bf12f2",
+        "filename": "src/main/java/org/onap/clamp/dao/model/MicroServicePolicy.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-02-26T08:19:36Z",
+      "side": 1,
+      "message": "why do we have both properties and jsonRepresentation?",
+      "revId": "8fe51af26f6721262dfa86def687ab282b114282",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f4ba3c1e_c719d988",
+        "filename": "src/main/java/org/onap/clamp/dao/model/MicroServicePolicy.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-02-26T08:19:36Z",
+      "side": 1,
+      "message": "can single Microservice policy be used by many loops?\nIn this case editing configuration for single loop affects all of them",
+      "revId": "8fe51af26f6721262dfa86def687ab282b114282",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bf949b7f_784ae304",
+        "filename": "src/main/resources/application-noaaf.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-02-26T08:19:36Z",
+      "side": 1,
+      "message": "This should be turn on only in tests. Otherwise clamp logs will be full of queries that bring no extra information in production",
+      "revId": "8fe51af26f6721262dfa86def687ab282b114282",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
