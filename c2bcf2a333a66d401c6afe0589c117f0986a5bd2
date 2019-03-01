@@ -16,6 +16,24 @@
       "revId": "c2bcf2a333a66d401c6afe0589c117f0986a5bd2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d4acaa78_c3c4c149",
+        "filename": "src/main/java/org/onap/clamp/dao/model/OperationalPolicy.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-01T14:35:48Z",
+      "side": 1,
+      "message": "Yeah i wanted to have that, i need to retry because it was failing to be properly serialized/deserialized.\nI\u0027ll give it another try",
+      "parentUuid": "d38566ac_3936199d",
+      "revId": "c2bcf2a333a66d401c6afe0589c117f0986a5bd2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
