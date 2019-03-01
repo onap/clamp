@@ -21,7 +21,7 @@
  *
  */
 
-package org.onap.clamp.dao.model;
+package org.onap.clamp.clds.loop.log;
 
 import com.google.gson.annotations.Expose;
 
@@ -40,6 +40,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.onap.clamp.clds.loop.Loop;
 
 /**
  *

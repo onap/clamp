@@ -21,7 +21,7 @@
  *
  */
 
-package org.onap.clamp.dao.model;
+package org.onap.clamp.clds.loop;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -29,26 +29,28 @@ import static org.junit.Assert.assertNotNull;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.util.HashSet;
 import java.util.Random;
 
 import org.junit.Test;
+import org.onap.clamp.clds.loop.Loop;
+import org.onap.clamp.clds.loop.log.LogType;
+import org.onap.clamp.clds.loop.log.LoopLog;
+import org.onap.clamp.clds.policy.microservice.MicroServicePolicy;
+import org.onap.clamp.clds.policy.operational.OperationalPolicy;
 import org.onap.clamp.clds.util.JsonUtils;
 
 public class LoopToJsonTest {
 
+    private Gson gson = new Gson();
+
     private OperationalPolicy getOperationalPolicy(String configJson, String name) {
-        OperationalPolicy opPolicy = new OperationalPolicy();
-        opPolicy.setName(name);
-        opPolicy.setConfigurationsJson(new Gson().fromJson(configJson, JsonObject.class));
-        return opPolicy;
+        return new OperationalPolicy(name, null, gson.fromJson(configJson, JsonObject.class));
     }
 
     private Loop getLoop(String name, String svgRepresentation, String blueprint, String globalPropertiesJson,
         String dcaeId, String dcaeUrl, String dcaeBlueprintId) {
-        Loop loop = new Loop();
-        loop.setName(name);
-        loop.setSvgRepresentation(svgRepresentation);
-        loop.setBlueprint(blueprint);
+        Loop loop = new Loop(name, blueprint, svgRepresentation);
         loop.setGlobalPropertiesJson(new Gson().fromJson(globalPropertiesJson, JsonObject.class));
         loop.setLastComputedState(LoopState.DESIGN);
         loop.setDcaeDeploymentId(dcaeId);
@@ -59,13 +61,10 @@ public class LoopToJsonTest {
 
     private MicroServicePolicy getMicroServicePolicy(String name, String jsonRepresentation, String policyTosca,
         String jsonProperties, boolean shared) {
-        MicroServicePolicy µService = new MicroServicePolicy();
-        µService.setJsonRepresentation(new Gson().fromJson(jsonRepresentation, JsonObject.class));
-        µService.setPolicyTosca(policyTosca);
+        MicroServicePolicy µService = new MicroServicePolicy(name, policyTosca, shared,
+            gson.fromJson(jsonRepresentation, JsonObject.class), new HashSet<>());
         µService.setProperties(new Gson().fromJson(jsonProperties, JsonObject.class));
-        µService.setShared(shared);
 
-        µService.setName(name);
         return µService;
     }
 

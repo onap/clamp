@@ -21,34 +21,38 @@
  *
  */
 
-package org.onap.clamp.dao.model;
+package org.onap.clamp.clds.policy.microservice;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.onap.clamp.clds.loop.Loop;
+import org.onap.clamp.clds.policy.Policy;
+import org.onap.clamp.clds.serialization.JsonObjectAttributeConverter;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 
 @Entity
-@Table(name = "operational_policies")
+@Table(name = "micro_service_policies")
 @TypeDefs({ @TypeDef(name = "json", typeClass = StringJsonUserType.class) })
-public class OperationalPolicy implements Serializable {
+public class MicroServicePolicy implements Serializable, Policy {
     /**
      *
      */
-    private static final long serialVersionUID = 6117076450841538255L;
+    private static final long serialVersionUID = 6271238288583332616L;
 
     @Expose
     @Id
@@ -57,35 +61,80 @@ public class OperationalPolicy implements Serializable {
 
     @Expose
     @Type(type = "json")
-    @Column(columnDefinition = "json", name = "configurations_json")
-    private JsonObject configurationsJson;
+    @Column(columnDefinition = "json", name = "properties")
+    private JsonObject properties;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "loop_id", nullable = false)
-    private Loop loop;
+    @Expose
+    @Column(name = "shared", nullable = false)
+    private Boolean shared;
 
-    public Loop getLoop() {
-        return loop;
+    @Expose
+    @Column(name = "policy_tosca", nullable = false)
+    private String policyTosca;
+
+    @Expose
+    @Column(columnDefinition = "json", name = "json_representation", nullable = false)
+    @Convert(converter = JsonObjectAttributeConverter.class)
+    private JsonObject jsonRepresentation;
+
+    @ManyToMany(mappedBy = "microServicePolicies")
+    private Set<Loop> usedByLoops = new HashSet<>();
+
+    public MicroServicePolicy() {
+        //serialization
     }
 
-    public void setLoop(Loop loop) {
-        this.loop = loop;
+    public MicroServicePolicy(String name, String policyTosca, Boolean shared, JsonObject jsonRepresentation,
+        Set<Loop> usedByLoops) {
+        this.name = name;
+        this.policyTosca = policyTosca;
+        this.shared = shared;
+        this.jsonRepresentation = jsonRepresentation;
+        this.usedByLoops = usedByLoops;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public JsonObject getProperties() {
+        return properties;
     }
 
-    public JsonObject getConfigurationsJson() {
-        return configurationsJson;
+    public void setProperties(JsonObject properties) {
+        this.properties = properties;
     }
 
-    public void setConfigurationsJson(JsonObject configurationsJson) {
-        this.configurationsJson = configurationsJson;
+    public Boolean getShared() {
+        return shared;
+    }
+
+    public void setShared(Boolean shared) {
+        this.shared = shared;
+    }
+
+    public String getPolicyTosca() {
+        return policyTosca;
+    }
+
+    public void setPolicyTosca(String policyTosca) {
+        this.policyTosca = policyTosca;
+    }
+
+    public JsonObject getJsonRepresentation() {
+        return jsonRepresentation;
+    }
+
+    public void setJsonRepresentation(JsonObject jsonRepresentation) {
+        this.jsonRepresentation = jsonRepresentation;
+    }
+
+    public Set<Loop> getUsedByLoops() {
+        return usedByLoops;
+    }
+
+    public void setUsedByLoops(Set<Loop> usedBy) {
+        this.usedByLoops = usedBy;
     }
 
     @Override
@@ -104,7 +153,7 @@ public class OperationalPolicy implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        OperationalPolicy other = (OperationalPolicy) obj;
+        MicroServicePolicy other = (MicroServicePolicy) obj;
         if (name == null) {
             if (other.name != null)
                 return false;
