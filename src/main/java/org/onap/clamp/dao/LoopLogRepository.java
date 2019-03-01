@@ -28,6 +28,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LoopLogRepository extends CrudRepository<LoopLog, String> {
+public interface LoopLogRepository extends CrudRepository<LoopLog, Long> {
 
 }
