@@ -21,8 +21,13 @@
  *
  */
 
-package org.onap.clamp.dao.model;
+package org.onap.clamp.clds.loop.log;
 
-public enum LogType {
-    INFO, WARNING, ERROR;
+import org.onap.clamp.clds.loop.log.LoopLog;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface LoopLogRepository extends CrudRepository<LoopLog, String> {
+
 }

@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2019 AT&T Intellectual Property. All rights
+ * Copyright (C) 2019 NokiaIntellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,9 +20,24 @@
  * ===================================================================
  *
  */
+package org.onap.clamp.clds.serialization;
 
-package org.onap.clamp.dao.model;
+import static org.onap.clamp.clds.util.JsonUtils.GSON;
 
-public enum LoopState {
-    DESIGN, SUBMITTED, DEPLOYED, RUNNING, STOPPED, IN_ERROR, WAITING;
+import com.google.gson.JsonObject;
+import javax.persistence.AttributeConverter;
+
+public class JsonObjectAttributeConverter implements AttributeConverter<JsonObject, String> {
+
+    @Override
+    public String convertToDatabaseColumn(JsonObject jsonObject) {
+        return GSON.toJson(jsonObject);
+    }
+
+    @Override
+    public JsonObject convertToEntityAttribute(String s) {
+        if (s != null) {
+            return GSON.fromJson(s, JsonObject.class);
+        } else return new JsonObject();
+    }
 }

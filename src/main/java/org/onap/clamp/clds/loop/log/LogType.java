@@ -21,13 +21,8 @@
  *
  */
 
-package org.onap.clamp.dao;
+package org.onap.clamp.clds.loop.log;
 
-import org.onap.clamp.dao.model.MicroServicePolicy;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface MicroServicePolicyRepository extends CrudRepository<MicroServicePolicy, String> {
-
+public enum LogType {
+    INFO, WARNING, ERROR;
 }

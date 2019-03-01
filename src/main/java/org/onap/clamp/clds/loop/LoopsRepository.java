@@ -21,13 +21,16 @@
  *
  */
 
-package org.onap.clamp.dao;
+package org.onap.clamp.clds.loop;
 
-import org.onap.clamp.dao.model.LoopLog;
+import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LoopLogRepository extends CrudRepository<LoopLog, String> {
+public interface LoopsRepository extends CrudRepository<Loop, String> {
 
+    @Query("SELECT loop.name FROM Loop as loop")
+    List<String> getAllLoopNames();
 }

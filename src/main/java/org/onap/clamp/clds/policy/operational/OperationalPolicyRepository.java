@@ -21,13 +21,12 @@
  *
  */
 
-package org.onap.clamp.dao;
+package org.onap.clamp.clds.policy.operational;
 
-import org.onap.clamp.dao.model.OperationalPolicy;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OperationalPolicyRepository extends CrudRepository<OperationalPolicy, String> {
-
+interface OperationalPolicyRepository extends CrudRepository<OperationalPolicy, String> {
+    void deleteByName(String policyName);
 }
