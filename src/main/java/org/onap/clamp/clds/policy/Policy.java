@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2019 AT&T Intellectual Property. All rights
+ * Copyright (C) 2019 Nokia Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,13 +21,15 @@
  *
  */
 
-package org.onap.clamp.dao;
 
-import org.onap.clamp.dao.model.Loop;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+package org.onap.clamp.clds.policy;
 
-@Repository
-public interface LoopsRepository extends CrudRepository<Loop, String> {
+import com.google.gson.JsonObject;
+
+public interface Policy {
+
+    String getName();
+
+    JsonObject getJsonRepresentation();
 
 }

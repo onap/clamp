@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2019 AT&T Intellectual Property. All rights
+ * Copyright (C) 2019 Nokia Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,8 +21,15 @@
  *
  */
 
-package org.onap.clamp.dao.model;
+package org.onap.clamp.clds.policy;
 
-public enum LogType {
-    INFO, WARNING, ERROR;
+import java.util.List;
+import java.util.Set;
+import org.onap.clamp.clds.loop.Loop;
+
+public interface PolicyService<T extends Policy> {
+
+    Set<T> updatePolicies(Loop loop,
+        List<T> newMicroservicePolicies);
+
 }

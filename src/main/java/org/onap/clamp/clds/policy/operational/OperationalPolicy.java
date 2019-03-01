@@ -21,29 +21,27 @@
  *
  */
 
-package org.onap.clamp.dao.model;
+package org.onap.clamp.clds.policy.operational;
 
+import com.google.common.base.Objects;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-
 import java.io.Serializable;
-import java.util.Map;
-
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.onap.clamp.clds.serialization.JsonObjectAttributeConverter;
+import org.onap.clamp.clds.policy.Policy;
 
 @Entity
 @Table(name = "operational_policies")
 @TypeDef(name = "json", typeClass = JsonStringType.class)
-public class OperationalPolicy implements Serializable {
+public class OperationalPolicy implements Serializable, Policy {
+
     /**
      *
      */
@@ -55,36 +53,56 @@ public class OperationalPolicy implements Serializable {
     private String name;
 
     @Expose
-    @Type(type = "json")
+    @Convert(converter = JsonObjectAttributeConverter.class)
     @Column(columnDefinition = "json", name = "configurations_json")
-    private Map<String, Object> configurationsJson;
+    private JsonObject configurationsJson;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "loop_id", nullable = false)
-    private Loop loop;
+    @Column(name = "loop_id", nullable = false, updatable = false)
+    private String loop;
 
-    public Loop getLoop() {
-        return loop;
+    public OperationalPolicy() {
+        //Serialization
     }
 
-    public void setLoop(Loop loop) {
+    public OperationalPolicy(String name, String loop, JsonObject configurationsJson) {
+        this.name = name;
         this.loop = loop;
+        this.configurationsJson = configurationsJson;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Map<String, Object> getConfigurationsJson() {
+    @Override
+    public JsonObject getJsonRepresentation() {
         return configurationsJson;
     }
 
-    public void setConfigurationsJson(Map<String, Object> configurationsJson) {
+    public JsonObject getConfigurationsJson() {
+        return configurationsJson;
+    }
+
+    public void setConfigurationsJson(JsonObject configurationsJson) {
         this.configurationsJson = configurationsJson;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        OperationalPolicy that = (OperationalPolicy) o;
+        return Objects.equal(name, that.name) &&
+            Objects.equal(configurationsJson, that.configurationsJson) &&
+            Objects.equal(loop, that.loop);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name, configurationsJson);
+    }
 }

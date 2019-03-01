@@ -21,26 +21,28 @@
  *
  */
 
-package org.onap.clamp.it.dao.model;
+package org.onap.clamp.clds.loop;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Map;
+import com.google.gson.JsonObject;
+import java.util.HashSet;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.onap.clamp.clds.Application;
-import org.onap.clamp.dao.LoopsRepository;
-import org.onap.clamp.dao.model.LogType;
-import org.onap.clamp.dao.model.Loop;
-import org.onap.clamp.dao.model.LoopLog;
-import org.onap.clamp.dao.model.LoopState;
-import org.onap.clamp.dao.model.MicroServicePolicy;
-import org.onap.clamp.dao.model.OperationalPolicy;
+import org.onap.clamp.clds.loop.LoopsRepository;
+import org.onap.clamp.clds.loop.log.LogType;
+import org.onap.clamp.clds.loop.Loop;
+import org.onap.clamp.clds.loop.log.LoopLog;
+import org.onap.clamp.clds.loop.LoopState;
+import org.onap.clamp.clds.policy.microservice.MicroServicePolicy;
+import org.onap.clamp.clds.policy.operational.OperationalPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -58,24 +60,18 @@ public class LoopItCase {
         loopTest.setName("ClosedLoopTest");
         loopTest.setSvgRepresentation("representation");
         loopTest.setBlueprint("blueprint");
-        loopTest.setGlobalPropertiesJson(new Gson().fromJson("{\"testName\":\"testValue\"}", Map.class));
+        loopTest.setGlobalPropertiesJson(new Gson().fromJson("{\"testName\":\"testValue\"}", JsonObject.class));
         loopTest.setLastComputedState(LoopState.DESIGN);
         loopTest.setBlueprint("yaml");
 
-        OperationalPolicy opPolicy = new OperationalPolicy();
-        opPolicy.setName("OpPolicyTest");
-        opPolicy.setConfigurationsJson(new Gson().fromJson("{\"testname\":\"testvalue\"}", Map.class));
-        opPolicy.setLoop(loopTest);
-        loopTest.addOperationalPolicy(opPolicy);
+        OperationalPolicy opPolicy = new OperationalPolicy("OpPolicyTest" , loopTest.getName(),
+            new Gson().fromJson("{\"testname\":\"testvalue\"}", JsonObject.class));
 
-        MicroServicePolicy µService = new MicroServicePolicy();
-        µService.setJsonRepresentation(new Gson().fromJson("{\"testrepresentation\":\"value\"}", Map.class));
-        µService.setPolicyTosca("tosca");
-        µService.setProperties(new Gson().fromJson("{\"testparam\":\"testvalue\"}", Map.class));
-        µService.setShared(true);
+        MicroServicePolicy µService = new MicroServicePolicy("ConfigPolicyTest", "tosca", true,
+            new Gson().fromJson("{\"testrepresentation\":\"value\"}", JsonObject.class), new HashSet<>());
 
-        µService.setName("ConfigPolicyTest");
-        loopTest.addMicroServicePolicy(µService);
+        loopTest.setMicroServicePolicies(Sets.newHashSet(µService));
+        loopTest.setOperationalPolicies(Sets.newHashSet(opPolicy));
 
         LoopLog log = new LoopLog();
         log.setLogType(LogType.INFO);

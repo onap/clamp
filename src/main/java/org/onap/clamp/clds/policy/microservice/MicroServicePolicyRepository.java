@@ -21,13 +21,12 @@
  *
  */
 
-package org.onap.clamp.dao;
+package org.onap.clamp.clds.policy.microservice;
 
-import org.onap.clamp.dao.model.OperationalPolicy;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OperationalPolicyRepository extends CrudRepository<OperationalPolicy, String> {
+interface MicroServicePolicyRepository extends CrudRepository<MicroServicePolicy, String> {
 
 }

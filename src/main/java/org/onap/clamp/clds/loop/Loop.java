@@ -21,18 +21,20 @@
  *
  */
 
-package org.onap.clamp.dao.model;
+package org.onap.clamp.clds.loop;
 
+import com.google.common.base.Objects;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -44,15 +46,18 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.onap.clamp.clds.serialization.JsonObjectAttributeConverter;
+import org.onap.clamp.clds.loop.log.LoopLog;
+import org.onap.clamp.clds.policy.microservice.MicroServicePolicy;
+import org.onap.clamp.clds.policy.operational.OperationalPolicy;
 
 @Entity
 @Table(name = "loops")
-//@JsonAdapter(JsonLoopAdapter.class)
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Loop implements Serializable {
 
+    public static final Loop EMPTY_LOOP = new Loop();
     /**
      *
      */
@@ -76,9 +81,9 @@ public class Loop implements Serializable {
     private String svgRepresentation;
 
     @Expose
-    @Type(type = "json")
+    @Convert(converter = JsonObjectAttributeConverter.class)
     @Column(columnDefinition = "json", name = "global_properties_json")
-    private Map<String, Object> globalPropertiesJson;
+    private JsonObject globalPropertiesJson;
 
     @Expose
     @Column(nullable = false, name = "blueprint_yaml")
@@ -90,17 +95,28 @@ public class Loop implements Serializable {
     private LoopState lastComputedState;
 
     @Expose
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop")
+    @OneToMany(targetEntity = OperationalPolicy.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop")
     private Set<OperationalPolicy> operationalPolicies = new HashSet<>();
 
     @Expose
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "loops_microservicepolicies", joinColumns = @JoinColumn(name = "loop_id"), inverseJoinColumns = @JoinColumn(name = "microservicepolicy_id"))
     private Set<MicroServicePolicy> microServicePolicies = new HashSet<>();
 
     @Expose
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop")
     private Set<LoopLog> loopLogs = new HashSet<>();
+
+    public Loop() {
+    }
+
+    public Loop(String name, String blueprint, String svgRepresentation) {
+        this.name = name;
+        this.svgRepresentation = svgRepresentation;
+        this.blueprint = blueprint;
+        this.lastComputedState = LoopState.DESIGN;
+        this.globalPropertiesJson = new JsonObject();
+    }
 
     public String getName() {
         return name;
@@ -126,74 +142,93 @@ public class Loop implements Serializable {
         this.dcaeDeploymentStatusUrl = dcaeDeploymentStatusUrl;
     }
 
-    public String getSvgRepresentation() {
+    String getSvgRepresentation() {
         return svgRepresentation;
     }
 
-    public void setSvgRepresentation(String svgRepresentation) {
+    void setSvgRepresentation(String svgRepresentation) {
         this.svgRepresentation = svgRepresentation;
     }
 
-    public String getBlueprint() {
+    String getBlueprint() {
         return blueprint;
     }
 
-    public void setBlueprint(String blueprint) {
+    void setBlueprint(String blueprint) {
         this.blueprint = blueprint;
     }
 
-    public LoopState getLastComputedState() {
+    LoopState getLastComputedState() {
         return lastComputedState;
     }
 
-    public void setLastComputedState(LoopState lastComputedState) {
+    void setLastComputedState(LoopState lastComputedState) {
         this.lastComputedState = lastComputedState;
     }
 
-    public Set<OperationalPolicy> getOperationalPolicies() {
+    Set<OperationalPolicy> getOperationalPolicies() {
         return operationalPolicies;
     }
 
-    public void setOperationalPolicies(Set<OperationalPolicy> operationalPolicies) {
+    void setOperationalPolicies(Set<OperationalPolicy> operationalPolicies) {
         this.operationalPolicies = operationalPolicies;
     }
 
-    public Set<MicroServicePolicy> getMicroServicePolicies() {
+    Set<MicroServicePolicy> getMicroServicePolicies() {
         return microServicePolicies;
     }
 
-    public void setMicroServicePolicies(Set<MicroServicePolicy> microServicePolicies) {
+    void setMicroServicePolicies(Set<MicroServicePolicy> microServicePolicies) {
         this.microServicePolicies = microServicePolicies;
     }
 
-    public Map<String, Object> getGlobalPropertiesJson() {
+    JsonObject getGlobalPropertiesJson() {
         return globalPropertiesJson;
     }
 
-    public void setGlobalPropertiesJson(Map<String, Object> globalPropertiesJson) {
+    void setGlobalPropertiesJson(JsonObject globalPropertiesJson) {
         this.globalPropertiesJson = globalPropertiesJson;
     }
 
-    public Set<LoopLog> getLoopLogs() {
+    Set<LoopLog> getLoopLogs() {
         return loopLogs;
     }
 
-    public void setLoopLogs(Set<LoopLog> loopLogs) {
+    void setLoopLogs(Set<LoopLog> loopLogs) {
         this.loopLogs = loopLogs;
     }
 
-    public void addOperationalPolicy(OperationalPolicy opPolicy) {
-        opPolicy.setLoop(this);
-        operationalPolicies.add(opPolicy);
-    }
-
-    public void addMicroServicePolicy(MicroServicePolicy microServicePolicy) {
-        microServicePolicies.add(microServicePolicy);
-        microServicePolicy.getUsedByLoops().add(this);
-    }
-
-    public void addLog(LoopLog log) {
+    void addLog(LoopLog log) {
         loopLogs.add(log);
         log.setLoop(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Loop loop = (Loop) o;
+        return Objects.equal(name, loop.name) &&
+            Objects.equal(dcaeDeploymentId, loop.dcaeDeploymentId) &&
+            Objects.equal(dcaeDeploymentStatusUrl, loop.dcaeDeploymentStatusUrl) &&
+            Objects.equal(svgRepresentation, loop.svgRepresentation) &&
+            Objects.equal(globalPropertiesJson, loop.globalPropertiesJson) &&
+            Objects.equal(blueprint, loop.blueprint) &&
+            lastComputedState == loop.lastComputedState &&
+            Objects.equal(operationalPolicies, loop.operationalPolicies) &&
+            Objects.equal(microServicePolicies, loop.microServicePolicies) &&
+            Objects.equal(loopLogs, loop.loopLogs);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects
+            .hashCode(name, dcaeDeploymentId, dcaeDeploymentStatusUrl, svgRepresentation, globalPropertiesJson,
+                blueprint,
+                lastComputedState, operationalPolicies, microServicePolicies, loopLogs);
     }
 }
