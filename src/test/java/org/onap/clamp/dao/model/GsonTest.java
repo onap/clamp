@@ -1,3 +1,4 @@
+
 /*-
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
@@ -21,7 +22,7 @@
  *
  */
 
-package org.onap.clamp.it.dao.model;
+package org.onap.clamp.dao.model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -36,19 +37,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.onap.clamp.clds.Application;
 import org.onap.clamp.dao.LoopsRepository;
-import org.onap.clamp.dao.model.LogType;
-import org.onap.clamp.dao.model.Loop;
-import org.onap.clamp.dao.model.LoopLog;
-import org.onap.clamp.dao.model.LoopState;
-import org.onap.clamp.dao.model.MicroServicePolicy;
-import org.onap.clamp.dao.model.OperationalPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
-public class LoopItCase {
+
+public class GsonTest {
 
     @Autowired
     private LoopsRepository loopRepository;

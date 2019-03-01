@@ -23,6 +23,7 @@
 
 package org.onap.clamp.dao.model;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -39,11 +41,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.onap.clamp.clds.serialization.JsonObjectAttributeConverter;
 
 @Entity
 @Table(name = "micro_service_policies")
 @TypeDef(name = "json", typeClass = JsonStringType.class)
-public class MicroServicePolicy implements Serializable {
+public class MicroServicePolicy implements Serializable, Policy {
     /**
      *
      */
@@ -57,7 +60,7 @@ public class MicroServicePolicy implements Serializable {
     @Expose
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "properties")
-    private Map<String, Object> properties;
+    private JsonObject properties;
 
     @Expose
     @Column(name = "shared", nullable = false)
@@ -68,12 +71,24 @@ public class MicroServicePolicy implements Serializable {
     private String policyTosca;
 
     @Expose
-    @Type(type = "json")
     @Column(columnDefinition = "json", name = "json_representation", nullable = false)
-    private Map<String, Object> jsonRepresentation;
+    @Convert(converter = JsonObjectAttributeConverter.class)
+    private JsonObject jsonRepresentation;
 
     @ManyToMany(mappedBy = "microServicePolicies")
     private Set<Loop> usedByLoops = new HashSet<>();
+
+    public MicroServicePolicy() {
+        //serialization
+    }
+
+    public MicroServicePolicy(String name, Boolean shared, JsonObject jsonRepresentation,
+        Set<Loop> usedByLoops) {
+        this.name = name;
+        this.shared = shared;
+        this.jsonRepresentation = jsonRepresentation;
+        this.usedByLoops = usedByLoops;
+    }
 
     public String getName() {
         return name;
@@ -83,11 +98,11 @@ public class MicroServicePolicy implements Serializable {
         this.name = name;
     }
 
-    public Map<String, Object> getProperties() {
+    public JsonObject getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, Object> properties) {
+    public void setProperties(JsonObject properties) {
         this.properties = properties;
     }
 
@@ -107,11 +122,11 @@ public class MicroServicePolicy implements Serializable {
         this.policyTosca = policyTosca;
     }
 
-    public Map<String, Object> getJsonRepresentation() {
+    public JsonObject getJsonRepresentation() {
         return jsonRepresentation;
     }
 
-    public void setJsonRepresentation(Map<String, Object> jsonRepresentation) {
+    public void setJsonRepresentation(JsonObject jsonRepresentation) {
         this.jsonRepresentation = jsonRepresentation;
     }
 

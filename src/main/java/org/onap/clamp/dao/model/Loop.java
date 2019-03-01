@@ -53,6 +53,7 @@ import org.hibernate.annotations.TypeDef;
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Loop implements Serializable {
 
+    public static final Loop EMPTY_LOOP = new Loop();
     /**
      *
      */
@@ -90,7 +91,7 @@ public class Loop implements Serializable {
     private LoopState lastComputedState;
 
     @Expose
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "loop")
     private Set<OperationalPolicy> operationalPolicies = new HashSet<>();
 
     @Expose
@@ -101,6 +102,16 @@ public class Loop implements Serializable {
     @Expose
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop")
     private Set<LoopLog> loopLogs = new HashSet<>();
+
+    public Loop() {
+    }
+
+    public Loop(String name, String blueprint, String svgRepresentation) {
+        this.name = name;
+        this.svgRepresentation = svgRepresentation;
+        this.blueprint = blueprint;
+        this.lastComputedState = LoopState.DESIGN;
+    }
 
     public String getName() {
         return name;
@@ -183,7 +194,6 @@ public class Loop implements Serializable {
     }
 
     public void addOperationalPolicy(OperationalPolicy opPolicy) {
-        opPolicy.setLoop(this);
         operationalPolicies.add(opPolicy);
     }
 

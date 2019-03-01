@@ -29,5 +29,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OperationalPolicyRepository extends CrudRepository<OperationalPolicy, String> {
-
+    void deleteByName(String policyName);
 }
