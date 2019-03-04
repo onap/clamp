@@ -34,6 +34,24 @@
       "revId": "c2bcf2a333a66d401c6afe0589c117f0986a5bd2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be076d51_595e532b",
+        "filename": "src/main/java/org/onap/clamp/dao/model/OperationalPolicy.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-04T08:26:12Z",
+      "side": 1,
+      "message": "I have this changed on my branch. Can we merge this one?",
+      "parentUuid": "d4acaa78_c3c4c149",
+      "revId": "c2bcf2a333a66d401c6afe0589c117f0986a5bd2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
