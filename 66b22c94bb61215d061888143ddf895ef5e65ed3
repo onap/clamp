@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2c47a9f1_3f1d10c7",
+        "filename": "src/main/java/org/onap/clamp/clds/loop/Loop.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-04T19:09:14Z",
+      "side": 1,
+      "message": "I\u0027ve just moved this class to different package. This let improve hermetization.",
+      "revId": "66b22c94bb61215d061888143ddf895ef5e65ed3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "073f87c0_5da964d0",
+        "filename": "src/main/java/org/onap/clamp/dao/MicroServicePolicyRepository.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-04T19:09:14Z",
+      "side": 1,
+      "message": "I\u0027ve just moved this class to different package. This let improve hermetization.",
+      "revId": "66b22c94bb61215d061888143ddf895ef5e65ed3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a28704a_5fb18897",
+        "filename": "src/main/java/org/onap/clamp/dao/OperationalPolicyRepository.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-04T19:09:14Z",
+      "side": 1,
+      "message": "I\u0027ve just moved this class to different package. This let improve hermetization.",
+      "revId": "66b22c94bb61215d061888143ddf895ef5e65ed3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1abfe804_087114aa",
+        "filename": "src/main/java/org/onap/clamp/dao/model/Loop.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-04T19:09:14Z",
+      "side": 1,
+      "message": "I\u0027ve just moved this class to different package. This let improve hermetization.",
+      "revId": "66b22c94bb61215d061888143ddf895ef5e65ed3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6ab46952_a7fee0d9",
+        "filename": "src/main/java/org/onap/clamp/dao/model/OperationalPolicy.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-04T19:09:14Z",
+      "side": 1,
+      "message": "I\u0027ve just moved this class to different package. This let improve hermetization.",
+      "revId": "66b22c94bb61215d061888143ddf895ef5e65ed3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
