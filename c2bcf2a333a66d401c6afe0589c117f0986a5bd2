@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "e07056c6_dbf46d3c",
+        "filename": "src/main/java/org/onap/clamp/dao/model/Loop.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-03-04T08:53:58Z",
+      "side": 1,
+      "message": "In the old CldsModel, there\u0027s also controlNamePrefix, controlNameUuid, typeId and typeName which are used in the code. The first 2 seems used to create the CL name and also used in the UI to identify the CL, the later 2 used in communicate with DCAE. Do you plan to add them also in the Loop?",
+      "revId": "c2bcf2a333a66d401c6afe0589c117f0986a5bd2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d38566ac_3936199d",
         "filename": "src/main/java/org/onap/clamp/dao/model/OperationalPolicy.java",
         "patchSetId": 6
