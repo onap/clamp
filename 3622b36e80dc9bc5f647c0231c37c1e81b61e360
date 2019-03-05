@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6daa12d_406a91bc",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsInfoProvider.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-05T14:25:07Z",
+      "side": 1,
+      "message": "I\u0027m not really ok with this class, \nCan\u0027t we have that code elsewhere ?",
+      "revId": "3622b36e80dc9bc5f647c0231c37c1e81b61e360",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f59d245e_9db351be",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsTemplateService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-05T14:25:07Z",
+      "side": 1,
+      "message": "Not sure to see why we cannot use camel flow for template endpoints ?",
+      "revId": "3622b36e80dc9bc5f647c0231c37c1e81b61e360",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
