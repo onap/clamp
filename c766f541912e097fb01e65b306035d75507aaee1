@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b316870_ede1f7fa",
+        "filename": "src/main/java/org/onap/clamp/clds/loop/ClosedLoopController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-05T13:22:33Z",
+      "side": 1,
+      "message": "I guess this is not the definitive code :-)",
+      "revId": "c766f541912e097fb01e65b306035d75507aaee1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04673da0_081736df",
+        "filename": "src/main/java/org/onap/clamp/clds/loop/ClosedLoopService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-05T13:22:33Z",
+      "side": 1,
+      "message": "Do we really need that, for now those fields are still annotated with @Expose, i guess we may want to remove that ?\nNow i\u0027m not sure you use the our JsonUtil to serialize/deserialize the Content, right ?",
+      "revId": "c766f541912e097fb01e65b306035d75507aaee1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ecc9fd0_d36b3559",
+        "filename": "src/main/java/org/onap/clamp/clds/loop/LoopState.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-05T13:22:33Z",
+      "side": 1,
+      "message": "I guess it\u0027s still a draft but I would prefer to have the new code outside of .clds.  \"Clds\" would be only for the previous legacy code that we have to maintain for now.",
+      "revId": "c766f541912e097fb01e65b306035d75507aaee1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d520f04e_8789acf8",
+        "filename": "src/test/resources/application.properties",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-05T13:22:33Z",
+      "side": 1,
+      "message": "This must be under *.properties.hibernate, otherwise this is not taken into account i think.",
+      "revId": "c766f541912e097fb01e65b306035d75507aaee1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
