@@ -23,12 +23,11 @@
 
 package org.onap.clamp.dao.model;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-import com.vladmihalcea.hibernate.type.json.JsonStringType;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -46,11 +45,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
+import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 
 @Entity
 @Table(name = "loops")
-//@JsonAdapter(JsonLoopAdapter.class)
-@TypeDef(name = "json", typeClass = JsonStringType.class)
+@TypeDefs({ @TypeDef(name = "json", typeClass = StringJsonUserType.class) })
 public class Loop implements Serializable {
 
     /**
@@ -78,7 +78,7 @@ public class Loop implements Serializable {
     @Expose
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "global_properties_json")
-    private Map<String, Object> globalPropertiesJson;
+    private JsonObject globalPropertiesJson;
 
     @Expose
     @Column(nullable = false, name = "blueprint_yaml")
@@ -166,11 +166,11 @@ public class Loop implements Serializable {
         this.microServicePolicies = microServicePolicies;
     }
 
-    public Map<String, Object> getGlobalPropertiesJson() {
+    public JsonObject getGlobalPropertiesJson() {
         return globalPropertiesJson;
     }
 
-    public void setGlobalPropertiesJson(Map<String, Object> globalPropertiesJson) {
+    public void setGlobalPropertiesJson(JsonObject globalPropertiesJson) {
         this.globalPropertiesJson = globalPropertiesJson;
     }
 
