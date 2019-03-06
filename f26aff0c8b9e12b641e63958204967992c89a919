@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "313d5d16_8e2ceb8a",
+        "filename": "src/main/java/org/onap/clamp/policy/microservice/MicroservicePolicyService.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-06T08:13:32Z",
+      "side": 1,
+      "message": "this part could be extracted too",
+      "range": {
+        "startLine": 51,
+        "startChar": 1,
+        "endLine": 56,
+        "endChar": 46
+      },
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "30403af4_831a65a9",
+        "filename": "src/main/java/org/onap/clamp/policy/operational/OperationalPolicyService.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-06T08:13:32Z",
+      "side": 1,
+      "message": "i\u0027d prefer to call it policy",
+      "range": {
+        "startLine": 63,
+        "startChar": 8,
+        "endLine": 63,
+        "endChar": 9
+      },
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
