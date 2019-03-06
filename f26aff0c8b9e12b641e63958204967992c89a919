@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "d0bec056_70cd1a05",
+        "filename": "src/main/java/org/onap/clamp/loop/ClosedLoopService.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-06T08:22:24Z",
+      "side": 1,
+      "message": "Same comment,should be LoopService",
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "aa35fe67_0a662d1d",
         "filename": "src/main/java/org/onap/clamp/loop/Loop.java",
         "patchSetId": 6
