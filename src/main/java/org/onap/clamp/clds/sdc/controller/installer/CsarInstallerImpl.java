@@ -57,6 +57,7 @@ import org.onap.clamp.clds.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.yaml.snakeyaml.Yaml;
 
@@ -65,6 +66,7 @@ import org.yaml.snakeyaml.Yaml;
  * There is no state kept by the bean. It's used to deploy the csar/notification
  * received from SDC in DB.
  */
+@Component
 public class CsarInstallerImpl implements CsarInstaller {
 
     private static final EELFLogger logger = EELFManager.getInstance().getLogger(CsarInstallerImpl.class);
@@ -79,18 +81,28 @@ public class CsarInstallerImpl implements CsarInstaller {
      */
     @Value("${clamp.config.sdc.blueprint.parser.mapping:'classpath:/clds/blueprint-parser-mapping.json'}")
     protected String blueprintMappingFile;
-    @Autowired
     protected ApplicationContext appContext;
-    @Autowired
     private CldsDao cldsDao;
-    @Autowired
     CldsTemplateService cldsTemplateService;
-    @Autowired
     CldsService cldsService;
-    @Autowired
     DcaeInventoryServices dcaeInventoryService;
-    @Autowired
     private XslTransformer cldsBpmnTransformer;
+
+    public CsarInstallerImpl() {
+    }
+
+    @Autowired
+    public CsarInstallerImpl(Map<String, BlueprintParserFilesConfiguration> bpmnMapping, ApplicationContext appContext,
+                             CldsDao cldsDao, CldsTemplateService cldsTemplateService, CldsService cldsService,
+                             DcaeInventoryServices dcaeInventoryService, XslTransformer cldsBpmnTransformer) {
+        this.bpmnMapping = bpmnMapping;
+        this.appContext = appContext;
+        this.cldsDao = cldsDao;
+        this.cldsTemplateService = cldsTemplateService;
+        this.cldsService = cldsService;
+        this.dcaeInventoryService = dcaeInventoryService;
+        this.cldsBpmnTransformer = cldsBpmnTransformer;
+    }
 
     @PostConstruct
     public void loadConfiguration() throws IOException {
@@ -156,7 +168,7 @@ public class CsarInstallerImpl implements CsarInstaller {
         }
     }
 
-    private BlueprintParserFilesConfiguration searchForRightMapping(BlueprintArtifact blueprintArtifact)
+    BlueprintParserFilesConfiguration searchForRightMapping(BlueprintArtifact blueprintArtifact)
         throws SdcArtifactInstallerException {
         List<BlueprintParserFilesConfiguration> listConfig = new ArrayList<>();
         Yaml yaml = new Yaml();
