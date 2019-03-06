@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "279844d9_7ab1c900",
+        "filename": "src/main/java/org/onap/clamp/loop/ClosedLoopController.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-06T08:14:56Z",
+      "side": 1,
+      "message": "For consistency, let\u0027s name it LoopController ?\nI had Closed/Opened loop in mind for the future :-)",
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aa35fe67_0a662d1d",
+        "filename": "src/main/java/org/onap/clamp/loop/Loop.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-06T08:14:56Z",
+      "side": 1,
+      "message": "Not sure to see why we removed the ManyToOne (even if not mandatory) in Op policy while we add that.\nAny specific reason ?",
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "313d5d16_8e2ceb8a",
         "filename": "src/main/java/org/onap/clamp/policy/microservice/MicroservicePolicyService.java",
         "patchSetId": 6
@@ -42,6 +76,23 @@
         "endLine": 63,
         "endChar": 9
       },
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e394af9a_e8d8e845",
+        "filename": "src/test/resources/application.properties",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-03-06T08:14:56Z",
+      "side": 1,
+      "message": "??? :-)",
       "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
