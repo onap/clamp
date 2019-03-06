@@ -92,11 +92,6 @@ public class CldsSdcControllerConfiguration {
         });
     }
 
-    @Bean(name = "csarInstaller")
-    public CsarInstaller getCsarInstaller() {
-        return new CsarInstallerImpl();
-    }
-
     @Bean(name = "sdcControllersConfiguration")
     public SdcControllersConfiguration getSdcControllersConfiguration() {
         return new SdcControllersConfiguration();
