@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "410f0793_a02c030e",
+        "filename": "src/main/java/org/onap/clamp/dao/MicroServicePolicyRepository.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-07T12:19:13Z",
+      "side": 1,
+      "message": "it\u0027s moved",
+      "revId": "a583fcdb0bbd850afcbb00633947f1971ae1304b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
