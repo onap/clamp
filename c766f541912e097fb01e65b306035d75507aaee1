@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d551f7f7_84c7ed7b",
+        "filename": "src/main/java/org/onap/clamp/clds/loop/ClosedLoopController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-07T11:38:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b316870_ede1f7fa",
+      "revId": "c766f541912e097fb01e65b306035d75507aaee1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "04673da0_081736df",
         "filename": "src/main/java/org/onap/clamp/clds/loop/ClosedLoopService.java",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "3f4234ce_f1ceb2d3",
+        "filename": "src/main/java/org/onap/clamp/clds/loop/ClosedLoopService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-07T11:38:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04673da0_081736df",
+      "revId": "c766f541912e097fb01e65b306035d75507aaee1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ecc9fd0_d36b3559",
         "filename": "src/main/java/org/onap/clamp/clds/loop/LoopState.java",
         "patchSetId": 3
@@ -47,6 +83,24 @@
       "writtenOn": "2019-03-05T13:22:33Z",
       "side": 1,
       "message": "I guess it\u0027s still a draft but I would prefer to have the new code outside of .clds.  \"Clds\" would be only for the previous legacy code that we have to maintain for now.",
+      "revId": "c766f541912e097fb01e65b306035d75507aaee1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a68b8617_af47149f",
+        "filename": "src/main/java/org/onap/clamp/clds/loop/LoopState.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-07T11:38:20Z",
+      "side": 1,
+      "message": "good idea I\u0027ve moved it outside of clds",
+      "parentUuid": "3ecc9fd0_d36b3559",
       "revId": "c766f541912e097fb01e65b306035d75507aaee1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
