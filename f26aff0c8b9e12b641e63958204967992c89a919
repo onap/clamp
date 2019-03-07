@@ -107,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "b840386a_1e26a522",
+        "filename": "src/main/java/org/onap/clamp/loop/Loop.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-07T11:39:59Z",
+      "side": 1,
+      "message": "now we can have it back",
+      "parentUuid": "9797bb73_dacc55fc",
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "313d5d16_8e2ceb8a",
         "filename": "src/main/java/org/onap/clamp/policy/microservice/MicroservicePolicyService.java",
         "patchSetId": 6
