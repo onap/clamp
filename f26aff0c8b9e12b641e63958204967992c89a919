@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "582c14ad_4cca69a7",
+        "filename": "src/main/java/org/onap/clamp/loop/ClosedLoopController.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-07T11:38:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "279844d9_7ab1c900",
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d0bec056_70cd1a05",
         "filename": "src/main/java/org/onap/clamp/loop/ClosedLoopService.java",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2019-03-06T08:22:24Z",
       "side": 1,
       "message": "Same comment,should be LoopService",
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bcfacc33_b39bf08e",
+        "filename": "src/main/java/org/onap/clamp/loop/ClosedLoopService.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-07T11:38:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0bec056_70cd1a05",
       "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "9797bb73_dacc55fc",
+        "filename": "src/main/java/org/onap/clamp/loop/Loop.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-07T11:38:20Z",
+      "side": 1,
+      "message": "it was not needed there, and I wanted to avoid situation when someone is changing loop parameters without using LoopService.",
+      "parentUuid": "aa35fe67_0a662d1d",
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "313d5d16_8e2ceb8a",
         "filename": "src/main/java/org/onap/clamp/policy/microservice/MicroservicePolicyService.java",
         "patchSetId": 6
@@ -64,6 +118,30 @@
       "writtenOn": "2019-03-06T08:13:32Z",
       "side": 1,
       "message": "this part could be extracted too",
+      "range": {
+        "startLine": 51,
+        "startChar": 1,
+        "endLine": 56,
+        "endChar": 46
+      },
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c20e5c54_56d42030",
+        "filename": "src/main/java/org/onap/clamp/policy/microservice/MicroservicePolicyService.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-07T11:38:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "313d5d16_8e2ceb8a",
       "range": {
         "startLine": 51,
         "startChar": 1,
@@ -134,6 +212,24 @@
       "writtenOn": "2019-03-06T08:14:56Z",
       "side": 1,
       "message": "??? :-)",
+      "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e2cf0682_168c237d",
+        "filename": "src/test/resources/application.properties",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-03-07T11:38:20Z",
+      "side": 1,
+      "message": "my bad :D",
+      "parentUuid": "e394af9a_e8d8e845",
       "revId": "f26aff0c8b9e12b641e63958204967992c89a919",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
