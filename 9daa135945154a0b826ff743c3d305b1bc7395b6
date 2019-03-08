@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "833e136b_603db9d4",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/BlueprintParser.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-08T09:15:01Z",
+      "side": 1,
+      "message": "As the convention, the explicit o-arg constructor can stay if it\u0027s the part of class contract, which is the case here.",
+      "parentUuid": "48340416_4672fc52",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 31
+      },
+      "revId": "9daa135945154a0b826ff743c3d305b1bc7395b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e99e33de_0f145bc8",
         "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/BlueprintParser.java",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2019-03-08T06:59:20Z",
       "side": 1,
       "message": "i think it\u0027ll be better to extract some of strings into consts",
+      "range": {
+        "startLine": 84,
+        "startChar": 20,
+        "endLine": 84,
+        "endChar": 30
+      },
+      "revId": "9daa135945154a0b826ff743c3d305b1bc7395b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f854b168_3dd9d328",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/BlueprintParser.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-08T09:15:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e99e33de_0f145bc8",
       "range": {
         "startLine": 84,
         "startChar": 20,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "e2bd9836_9d66822c",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/BlueprintParser.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-08T09:15:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc3f6395_4f7fd856",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 13
+      },
+      "revId": "9daa135945154a0b826ff743c3d305b1bc7395b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "619c7ebd_6b77f359",
         "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/ChainGenerator.java",
         "patchSetId": 2
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "2c3cf13e_ce074564",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/ChainGenerator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-08T09:15:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "619c7ebd_6b77f359",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 125
+      },
+      "revId": "9daa135945154a0b826ff743c3d305b1bc7395b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "87dc3382_693769f4",
         "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/ChainGenerator.java",
         "patchSetId": 2
@@ -105,6 +201,30 @@
       "writtenOn": "2019-03-08T06:59:20Z",
       "side": 1,
       "message": "as you\u0027re modyfing this list, it should be created and returned inside this method",
+      "range": {
+        "startLine": 67,
+        "startChar": 8,
+        "endLine": 67,
+        "endChar": 53
+      },
+      "revId": "9daa135945154a0b826ff743c3d305b1bc7395b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "161d7995_77be8f4b",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/ChainGenerator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-08T09:15:01Z",
+      "side": 1,
+      "message": "I disagree. The name of this method clearly indicates the intent: to insert a thing to existing list. The type of the list (LinkedList) indicates that there will be insertions. Copy-on-write semantics would be a redundancy there.",
+      "parentUuid": "87dc3382_693769f4",
       "range": {
         "startLine": 67,
         "startChar": 8,
