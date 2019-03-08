@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "48340416_4672fc52",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/BlueprintParser.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-08T06:59:20Z",
+      "side": 1,
+      "message": "redundant",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 31
+      },
+      "revId": "9daa135945154a0b826ff743c3d305b1bc7395b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e99e33de_0f145bc8",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/BlueprintParser.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-08T06:59:20Z",
+      "side": 1,
+      "message": "i think it\u0027ll be better to extract some of strings into consts",
+      "range": {
+        "startLine": 84,
+        "startChar": 20,
+        "endLine": 84,
+        "endChar": 30
+      },
+      "revId": "9daa135945154a0b826ff743c3d305b1bc7395b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bc3f6395_4f7fd856",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/BlueprintParser.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-08T06:59:20Z",
+      "side": 1,
+      "message": "that method needs to be refactored into smaller ones",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 13
+      },
+      "revId": "9daa135945154a0b826ff743c3d305b1bc7395b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "619c7ebd_6b77f359",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/ChainGenerator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-08T06:59:20Z",
+      "side": 1,
+      "message": "format to multiple lines",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 125
+      },
+      "revId": "9daa135945154a0b826ff743c3d305b1bc7395b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "87dc3382_693769f4",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/installer/ChainGenerator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-08T06:59:20Z",
+      "side": 1,
+      "message": "as you\u0027re modyfing this list, it should be created and returned inside this method",
+      "range": {
+        "startLine": 67,
+        "startChar": 8,
+        "endLine": 67,
+        "endChar": 53
+      },
+      "revId": "9daa135945154a0b826ff743c3d305b1bc7395b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
