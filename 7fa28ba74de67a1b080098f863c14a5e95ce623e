@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "342a8171_089d9a72",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/AwtUtils.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "generally I don\u0027t like \u0027one-char\u0027 variable names.  Here, height/width will be better, but  x,y replaced ,for example, by  horizontal/verticalPosition could be odd..\nSo I think you can leave as it is.",
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "96db1be7_6300ec59",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "replace all one-char names with full names",
+      "range": {
+        "startLine": 36,
+        "startChar": 37,
+        "endLine": 36,
+        "endChar": 38
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ddc70931_b6bb0fe2",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/DocumentBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "do we need both constructors public?\nBtw maybe use following:\n`\npublic DocumentBuilder(Document document,SVGGraphics2D g2d){\n super(document,g2d.getDOMFactory)}\n`",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 5
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a5c0f64_c70fe0b0",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ImageBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "what\u0027s wrong with \u0027rectangle\u0027?",
+      "range": {
+        "startLine": 54,
+        "startChar": 17,
+        "endLine": 54,
+        "endChar": 21
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "11fa7caf_7076b6e5",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ImageBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "typo: circle",
+      "range": {
+        "startLine": 74,
+        "startChar": 17,
+        "endLine": 74,
+        "endChar": 23
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b841f5c6_5524df92",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ImageBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "all those magic numbers needs to be extracted with descriptive names. currently i\u0027ve no idea why 6,4,3,2 were picked",
+      "range": {
+        "startLine": 97,
+        "startChar": 39,
+        "endLine": 97,
+        "endChar": 40
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a81af2e1_410f967d",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ImageBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "any smart way to get rid of switch?",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 9
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e8e6ddb_af1ee8f2",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/Painter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "i think that\u0027s little bit too long.\nbasically three blocks will be paint- \u0027starting block\u0027, one/many microservices, \u0027end block\u0027 - \u003ethat 3 things could be extracted",
+      "range": {
+        "startLine": 50,
+        "startChar": 20,
+        "endLine": 50,
+        "endChar": 27
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24b9e06b_90a4fdea",
+        "filename": "src/test/java/org/onap/clamp/clds/util/XmlToolsTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "remove \u0027Test\u0027 postfix",
+      "range": {
+        "startLine": 42,
+        "startChar": 16,
+        "endLine": 42,
+        "endChar": 45
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6ee00b84_c306e9a7",
+        "filename": "src/test/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilderTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "is assertj available in clamp?",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 61
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "02b3c5b2_841bce0b",
+        "filename": "src/test/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilderTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3873
+      },
+      "writtenOn": "2019-03-10T17:58:11Z",
+      "side": 1,
+      "message": "remove as it\u0027s redundant - junit will handle situation when expected exception won\u0027t be raised",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 22
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
