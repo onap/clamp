@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "cdc0467b_0aa472d9",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/AwtUtils.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "342a8171_089d9a72",
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "96db1be7_6300ec59",
         "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilder.java",
         "patchSetId": 2
@@ -30,6 +48,30 @@
       "writtenOn": "2019-03-10T17:58:11Z",
       "side": 1,
       "message": "replace all one-char names with full names",
+      "range": {
+        "startLine": 36,
+        "startChar": 37,
+        "endLine": 36,
+        "endChar": 38
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1f1efad7_5e957bc5",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96db1be7_6300ec59",
       "range": {
         "startLine": 36,
         "startChar": 37,
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "393c64db_6c640613",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/DocumentBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ddc70931_b6bb0fe2",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 5
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a5c0f64_c70fe0b0",
         "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ImageBuilder.java",
         "patchSetId": 2
@@ -76,6 +142,30 @@
       "writtenOn": "2019-03-10T17:58:11Z",
       "side": 1,
       "message": "what\u0027s wrong with \u0027rectangle\u0027?",
+      "range": {
+        "startLine": 54,
+        "startChar": 17,
+        "endLine": 54,
+        "endChar": 21
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "68e6cac3_37f98591",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ImageBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a5c0f64_c70fe0b0",
       "range": {
         "startLine": 54,
         "startChar": 17,
@@ -111,6 +201,30 @@
     },
     {
       "key": {
+        "uuid": "0bc85353_9db3e0ab",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ImageBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11fa7caf_7076b6e5",
+      "range": {
+        "startLine": 74,
+        "startChar": 17,
+        "endLine": 74,
+        "endChar": 23
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b841f5c6_5524df92",
         "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ImageBuilder.java",
         "patchSetId": 2
@@ -122,6 +236,30 @@
       "writtenOn": "2019-03-10T17:58:11Z",
       "side": 1,
       "message": "all those magic numbers needs to be extracted with descriptive names. currently i\u0027ve no idea why 6,4,3,2 were picked",
+      "range": {
+        "startLine": 97,
+        "startChar": 39,
+        "endLine": 97,
+        "endChar": 40
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "18432bc5_40dca536",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ImageBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b841f5c6_5524df92",
       "range": {
         "startLine": 97,
         "startChar": 39,
@@ -157,6 +295,30 @@
     },
     {
       "key": {
+        "uuid": "b3e19d54_657581a3",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ImageBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "No. I think keeping the drawing code it in one place enables the reader to quickly follow through the flow instead of jumping through (presumably) three new classes. I will change method names to make them more descriptive though. In this case converting switch to a bunch of classes is not worth \"100% Object-Oriented Design Badge\".",
+      "parentUuid": "a81af2e1_410f967d",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 9
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7e8e6ddb_af1ee8f2",
         "filename": "src/main/java/org/onap/clamp/clds/util/drawing/Painter.java",
         "patchSetId": 2
@@ -168,6 +330,30 @@
       "writtenOn": "2019-03-10T17:58:11Z",
       "side": 1,
       "message": "i think that\u0027s little bit too long.\nbasically three blocks will be paint- \u0027starting block\u0027, one/many microservices, \u0027end block\u0027 - \u003ethat 3 things could be extracted",
+      "range": {
+        "startLine": 50,
+        "startChar": 20,
+        "endLine": 50,
+        "endChar": 27
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5e688ccb_12b1ce6e",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/Painter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "I think that drawing code should be kept together for the reader to have a nice view of what is actually being drawn. There is no need to switch context between methods.",
+      "parentUuid": "7e8e6ddb_af1ee8f2",
       "range": {
         "startLine": 50,
         "startChar": 20,
@@ -203,6 +389,30 @@
     },
     {
       "key": {
+        "uuid": "3b51cb6f_04077fac",
+        "filename": "src/test/java/org/onap/clamp/clds/util/XmlToolsTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "This distinguishes the public test method from non-test one. Omitting this postfix will trick the reader into thinking that maybe all public method should be annotated with @Test, which is not the case here.",
+      "parentUuid": "24b9e06b_90a4fdea",
+      "range": {
+        "startLine": 42,
+        "startChar": 16,
+        "endLine": 42,
+        "endChar": 45
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6ee00b84_c306e9a7",
         "filename": "src/test/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilderTest.java",
         "patchSetId": 2
@@ -226,6 +436,30 @@
     },
     {
       "key": {
+        "uuid": "7045ab81_9e7a9a1a",
+        "filename": "src/test/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilderTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "Yes.",
+      "parentUuid": "6ee00b84_c306e9a7",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 61
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "02b3c5b2_841bce0b",
         "filename": "src/test/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilderTest.java",
         "patchSetId": 2
@@ -237,6 +471,30 @@
       "writtenOn": "2019-03-10T17:58:11Z",
       "side": 1,
       "message": "remove as it\u0027s redundant - junit will handle situation when expected exception won\u0027t be raised",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 22
+      },
+      "revId": "7fa28ba74de67a1b080098f863c14a5e95ce623e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fdd1563f_28a7f5d0",
+        "filename": "src/test/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilderTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-03-11T07:14:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02b3c5b2_841bce0b",
       "range": {
         "startLine": 81,
         "startChar": 0,
