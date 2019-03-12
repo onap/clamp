@@ -28,14 +28,15 @@ import com.att.eelf.configuration.EELFManager;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import java.util.Optional;
 import java.util.Set;
+
 import javax.annotation.PostConstruct;
 import javax.xml.transform.TransformerException;
 
@@ -155,7 +156,7 @@ public class CsarInstallerImpl implements CsarInstaller {
     }
 
     private void createPolicyModel(CsarHandler csar) throws PolicyModelException {
-        try{
+        try {
             Optional<String> policyModelYaml = csar.getPolicyModelYaml();
             // save policy model into the database
         } catch (IOException e) {
@@ -250,21 +251,22 @@ public class CsarInstallerImpl implements CsarInstaller {
     private CldsTemplate createFakeCldsTemplate(CsarHandler csar, BlueprintArtifact blueprintArtifact,
         BlueprintParserFilesConfiguration configFiles) throws IOException, SdcArtifactInstallerException {
 
-        Set<MicroService> microServicesFromBlueprint = blueprintParser.getMicroServices(blueprintArtifact.getDcaeBlueprint()) ;
+        Set<MicroService> microServicesFromBlueprint = blueprintParser
+            .getMicroServices(blueprintArtifact.getDcaeBlueprint());
         List<MicroService> microServicesChain = chainGenerator.getChainOfMicroServices(microServicesFromBlueprint);
-        if(microServicesChain.isEmpty()) {
+        if (microServicesChain.isEmpty()) {
             microServicesChain = blueprintParser.fallbackToOneMicroService(blueprintArtifact.getDcaeBlueprint());
         }
-        //place where SVG text will be generated
+        // place where SVG text will be generated
 
         CldsTemplate template = new CldsTemplate();
         template.setBpmnId("Sdc-Generated");
-        template
-            .setBpmnText(IOUtils.toString(appContext.getResource(configFiles.getBpmnXmlFilePath()).getInputStream()));
+        template.setBpmnText(IOUtils.toString(appContext.getResource(configFiles.getBpmnXmlFilePath()).getInputStream(),
+            StandardCharsets.UTF_8));
         template.setPropText(
             "{\"global\":[{\"name\":\"service\",\"value\":[\"" + blueprintArtifact.getDcaeBlueprint() + "\"]}]}");
-        template
-            .setImageText(IOUtils.toString(appContext.getResource(configFiles.getSvgXmlFilePath()).getInputStream()));
+        template.setImageText(IOUtils.toString(appContext.getResource(configFiles.getSvgXmlFilePath()).getInputStream(),
+            StandardCharsets.UTF_8));
         template.setName(TEMPLATE_NAME_PREFIX + buildModelName(csar, blueprintArtifact));
         template.save(cldsDao, null);
         logger.info("Fake Clds Template created for blueprint " + blueprintArtifact.getBlueprintArtifactName()
