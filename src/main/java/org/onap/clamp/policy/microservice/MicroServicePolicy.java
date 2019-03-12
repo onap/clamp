@@ -39,9 +39,11 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
+import org.onap.clamp.clds.util.JsonUtils;
+import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 import org.onap.clamp.loop.Loop;
 import org.onap.clamp.policy.Policy;
-import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 
 @Entity
 @Table(name = "micro_service_policies")
@@ -67,7 +69,7 @@ public class MicroServicePolicy implements Serializable, Policy {
     private Boolean shared;
 
     @Expose
-    @Column(name = "policy_tosca", nullable = false)
+    @Column(columnDefinition = "MEDIUMTEXT", name = "policy_tosca", nullable = false)
     private String policyTosca;
 
     @Expose
@@ -79,7 +81,16 @@ public class MicroServicePolicy implements Serializable, Policy {
     private Set<Loop> usedByLoops = new HashSet<>();
 
     public MicroServicePolicy() {
-        //serialization
+        // serialization
+    }
+
+    public MicroServicePolicy(String name, String policyTosca, Boolean shared, Set<Loop> usedByLoops) {
+        this.name = name;
+        this.policyTosca = policyTosca;
+        this.shared = shared;
+        this.jsonRepresentation = JsonUtils.GSON_JPA_MODEL
+            .fromJson(new ToscaYamlToJsonConvertor(null).parseToscaYaml(policyTosca), JsonObject.class);
+        this.usedByLoops = usedByLoops;
     }
 
     public MicroServicePolicy(String name, String policyTosca, Boolean shared, JsonObject jsonRepresentation,
@@ -87,10 +98,11 @@ public class MicroServicePolicy implements Serializable, Policy {
         this.name = name;
         this.policyTosca = policyTosca;
         this.shared = shared;
-        this.jsonRepresentation = jsonRepresentation;
         this.usedByLoops = usedByLoops;
+        this.jsonRepresentation = jsonRepresentation;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -119,6 +131,7 @@ public class MicroServicePolicy implements Serializable, Policy {
         this.policyTosca = policyTosca;
     }
 
+    @Override
     public JsonObject getJsonRepresentation() {
         return jsonRepresentation;
     }
