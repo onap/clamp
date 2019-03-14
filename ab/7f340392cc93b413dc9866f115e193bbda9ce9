@@ -1,0 +1,8 @@
+Code-Review-1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Verified+1: Christophe Closset <christophe.closset@intl.att.com>
+Code-Review+2: Christophe Closset <christophe.closset@intl.att.com>
+Submitted-by: Sébastien Determe <sebastien.determe@intl.att.com>
+Submitted-at: Thu, 14 Mar 2019 15:48:08 +0000
+Reviewed-on: https://gerrit.onap.org/r/82235
+Project: clamp
+Branch: refs/heads/master
