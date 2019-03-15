@@ -55,6 +55,7 @@ import org.onap.sdc.tosca.parser.impl.SdcToscaParserFactory;
 import org.onap.sdc.toscaparser.api.elements.Metadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -135,7 +136,7 @@ public class CsarInstallerItCase {
 
         // Mockito.when(csarHandler.getSdcCsarHelper()).thenReturn(csarHelper);
         Mockito.when(csarHandler.getPolicyModelYaml())
-            .thenReturn(Optional.ofNullable(ResourceFileUtil.getResourceAsString("tosca/tca-policy-test.yaml")));
+            .thenReturn(Optional.ofNullable(ResourceFileUtil.getResourceAsString("tosca/tosca_example.yaml")));
         return csarHandler;
     }
 
@@ -152,6 +153,7 @@ public class CsarInstallerItCase {
 
     @Test
     @Transactional
+    @Rollback(value = false)
     public void testInstallTheCsarTca() throws SdcArtifactInstallerException, SdcToscaParserException,
         CsarHandlerException, IOException, JSONException, InterruptedException, PolicyModelException {
         String generatedName = RandomStringUtils.randomAlphanumeric(5);
