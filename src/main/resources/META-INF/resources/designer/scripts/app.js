@@ -677,7 +677,7 @@ function($scope, $rootScope, $timeout, dialogs) {
 	    $scope.PolicyWindow = function(policy) {
 
 		    var dlg = dialogs.create(
-		    'partials/portfolios/PolicyWindow_properties.html',
+		    'partials/portfolios/operational_policy_window.html',
 		    'operationalPolicyCtrl', {
 		        closable : true,
 		        draggable : true
