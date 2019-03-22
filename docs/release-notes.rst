@@ -1,9 +1,24 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
 .. http://creativecommons.org/licenses/by/4.0
-.. Copyright (c) 2017-2018 AT&T Intellectual Property.  All rights reserved.
+.. Copyright (c) 2017-2019 AT&T Intellectual Property.  All rights reserved.
 
 Release Notes
 =============
+
+Version: 3.0.4 - maintenance release
+------------------------------------
+
+:Release Date: 2019-04-06
+
+**New Features**
+none
+
+**Bug Fixes**
+none
+
+**Known Issues**
+CLAMP certificates have been renewed to extend their expiry dates
+    - `CLAMP-335 <https://jira.onap.org/browse/CLAMP-335>`_ Update Certificates on Casablanca release.
 
 
 Version: 3.0.3 - maintenance release
@@ -18,7 +33,7 @@ none
 none
 
 **Known Issues**
-one documentation issue was fixed, this issue does not require a new docker image: 
+one documentation issue was fixed, this issue does not require a new docker image:
     - `CLAMP-257 <https://jira.onap.org/browse/CLAMP-257>`_ User Manual for CLAMP : nothing on readthedocs.
 
 Version: 3.0.3
@@ -51,7 +66,7 @@ The main goal of the Casablanca release was to:
 
 **Security Notes**
 
-CLAMP code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and actions to be taken in future release. 
+CLAMP code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and actions to be taken in future release.
 The CLAMP open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=42598587>`_.
 
 Quick Links:
@@ -116,9 +131,9 @@ CLAMP code has been formally scanned during build time using NexusIQ and all Cri
 
 Quick Links:
  	- `CLAMP project page <https://wiki.onap.org/display/DW/CLAMP+Project>`_
- 	
+
  	- `Passing Badge information for CLAMP <https://bestpractices.coreinfrastructure.org/en/projects/1197>`_
- 	
+
  	- `Project Vulnerability Review Table for CLAMP <https://wiki.onap.org/pages/viewpage.action?pageId=25440749>`_
 
 **Upgrade Notes**
