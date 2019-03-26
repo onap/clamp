@@ -45,7 +45,7 @@ function($scope, $rootScope, $modalInstance, $window, $uibModalInstance, cldsMod
 			$scope.modelNamel.push(pars[i]);
 		}
 		setTimeout(function() {
-			setMultiSelect();
+			//setMultiSelect();
 		}, 100);
 	});
 	$scope.paramsRetry = function() {
@@ -140,5 +140,5 @@ function($scope, $rootScope, $modalInstance, $window, $uibModalInstance, cldsMod
 		});
 		$uibModalInstance.close("closed");
 	};
-	setMultiSelect();
+	//setMultiSelect();
 } ]);
