@@ -189,7 +189,7 @@ For OOM, the URL is https://<host-ip>:30258/designer/index.html
      Default password : password
 
    - With AAF enabled, the certificate p12 must be added to the browser
-     ca path: src/main/resources/clds/aaf/org.onap.clamp.p12, password "pZ[![d{HI69azXF3dqXQoE)8"
+     ca path: src/main/resources/clds/aaf/org.onap.clamp.p12, password "China in the Spring"
      Or get it from this page : https://wiki.onap.org/display/DW/Control+Loop+Flows+and+Models+for+Casablanca
 
 Human Interfaces
