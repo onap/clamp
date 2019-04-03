@@ -25,16 +25,17 @@ package org.onap.clamp.policy.operational;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -66,14 +67,18 @@ public class OperationalPolicy implements Serializable, Policy {
     private Loop loop;
 
     public OperationalPolicy() {
-        //Serialization
+        // Serialization
     }
 
     /**
      * The constructor.
-     * @param name The name of the operational policy
-     * @param loop The loop that uses this operational policy
-     * @param configurationsJson The operational policy property in the format of json
+     *
+     * @param name
+     *        The name of the operational policy
+     * @param loop
+     *        The loop that uses this operational policy
+     * @param configurationsJson
+     *        The operational policy property in the format of json
      */
     public OperationalPolicy(String name, Loop loop, JsonObject configurationsJson) {
         this.name = name;
@@ -81,6 +86,7 @@ public class OperationalPolicy implements Serializable, Policy {
         this.configurationsJson = configurationsJson;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -134,6 +140,12 @@ public class OperationalPolicy implements Serializable, Policy {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String createPolicyPayload() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
