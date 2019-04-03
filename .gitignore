@@ -1,19 +1,5 @@
-target
-.settings
-.classpath
-.project
-.buildpath
-.idea
-*.iml
-**/logs/
-**/.evosuite/
-**/debug-logs/
-*.log
-*.tmp
-
-# emacs working files
-.\#*
-\#*\#
-*~
-auto-save-list
-tramp
+/target/
+/.checkstyle
+/.classpath
+/.gitignore
+/.project
