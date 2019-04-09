@@ -965,8 +965,7 @@
 														</run>
 														<build>
 																<cleanup>true</cleanup>
-																<tags>
-																		<tag>latest</tag>
+																<tags>																		
 																		<tag>${project.docker.latesttagtimestamp.version}</tag>
 																		<tag>${project.docker.latesttag.version}</tag>
 																</tags>
@@ -988,7 +987,6 @@
 														<build>
 																<cleanup>true</cleanup>
 																<tags>
-																		<tag>latest</tag>
 																		<tag>${project.docker.latesttagtimestamp.version}</tag>
 																		<tag>${project.docker.latesttag.version}</tag>
 																</tags>
@@ -1004,7 +1002,6 @@
 														<build>
 																<cleanup>true</cleanup>
 																<tags>
-																		<tag>latest</tag>
 																		<tag>${project.docker.latesttagtimestamp.version}</tag>
 																		<tag>${project.docker.latesttag.version}</tag>
 																</tags>
