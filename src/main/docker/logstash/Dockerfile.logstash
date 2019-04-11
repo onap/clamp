@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM  docker.elastic.co/logstash/logstash-oss:6.6.2
+FROM infosiftronap/logstash
 
 MAINTAINER "The Onap Team"
 LABEL Description="Logstash image with some plugins needed for the clamp dashboard"
