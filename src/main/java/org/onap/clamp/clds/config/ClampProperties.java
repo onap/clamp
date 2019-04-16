@@ -155,7 +155,7 @@ public class ClampProperties {
     }
 
     /**
-     * 
+     * Returns the list of strings split with separator.
      * 
      * @param key
      *        property key

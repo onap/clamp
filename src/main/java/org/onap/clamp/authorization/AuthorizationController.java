@@ -76,7 +76,7 @@ public class AuthorizationController {
      * @param action
      *        The action of the permissions. e.g. read
      */
-    public void authorize (Exchange camelExchange, String typeVar, String instanceVar, String action) {
+    public void authorize(Exchange camelExchange, String typeVar, String instanceVar, String action) {
         String type = refProp.getStringValue(permPrefix + typeVar);
         String instance = refProp.getStringValue(permInstance);
 
@@ -133,7 +133,7 @@ public class AuthorizationController {
     }
 
     /**
-     * Verify whether the user has the permission
+     * Verify whether the user has the permission.
      *
      * @param inPermission
      *        The permissions to verify
