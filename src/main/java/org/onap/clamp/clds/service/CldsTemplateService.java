@@ -52,7 +52,7 @@ public class CldsTemplateService extends SecureServiceBase {
     private SecureServicePermission permissionReadTemplate;
     private SecureServicePermission permissionUpdateTemplate;
     @Autowired
-	private HttpServletRequest request;
+    private HttpServletRequest request;
 
     @PostConstruct
     private final void afterConstruction() {
@@ -71,17 +71,17 @@ public class CldsTemplateService extends SecureServiceBase {
      * database. This is subset of the json getModel. This is only expected to
      * be used for testing purposes, not by the UI.
      *
-     * @param templateName
+     * @param templateName template name
      * @return bpmn xml text - content of bpmn given name
      */
     public String getBpmnTemplate(String templateName) {
-    	util.entering(request, "CldsTemplateService: GET template bpmn");
+        util.entering(request, "CldsTemplateService: GET template bpmn");
         Date startTime = new Date();
         isAuthorized(permissionReadTemplate);
+        LoggingUtils.setTimeContext(startTime, new Date());
         logger.info("GET bpmnText for templateName=" + templateName);
         CldsTemplate template = CldsTemplate.retrieve(cldsDao, templateName, false);
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET template bpmn completed");
         util.exiting("200", "Get template bpmn success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return template.getBpmnText();
@@ -92,17 +92,16 @@ public class CldsTemplateService extends SecureServiceBase {
      * database. This is subset of the json getModel. This is only expected to
      * be used for testing purposes, not by the UI.
      *
-     * @param templateName
+     * @param templateName template name
      * @return image xml text - content of image given name
      */
     public String getImageXml(String templateName) {
-    	util.entering(request, "CldsTemplateService: GET template image");
+        util.entering(request, "CldsTemplateService: GET template image");
         Date startTime = new Date();
         isAuthorized(permissionReadTemplate);
+        LoggingUtils.setTimeContext(startTime, new Date()); // audit log
         logger.info("GET imageText for templateName=" + templateName);
         CldsTemplate template = CldsTemplate.retrieve(cldsDao, templateName, false);
-        // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET template image completed");
         util.exiting("200", "Get template image success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return template.getImageText();
@@ -111,18 +110,18 @@ public class CldsTemplateService extends SecureServiceBase {
     /**
      * REST service that retrieves a CLDS template by name from the database.
      *
-     * @param templateName
+     * @param templateName template name
      * @return clds template - clds template for the given template name
      */
     public CldsTemplate getTemplate(String templateName) {
-    	util.entering(request, "CldsTemplateService: GET template");
+        util.entering(request, "CldsTemplateService: GET template");
         Date startTime = new Date();
         isAuthorized(permissionReadTemplate);
+        LoggingUtils.setTimeContext(startTime, new Date());
         logger.info("GET model for  templateName=" + templateName);
         CldsTemplate template = CldsTemplate.retrieve(cldsDao, templateName, false);
         template.setUserAuthorizedToUpdate(isAuthorizedNoException(permissionUpdateTemplate));
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET template completed");
         util.exiting("200", "Get template success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return template;
@@ -131,13 +130,12 @@ public class CldsTemplateService extends SecureServiceBase {
     /**
      * REST service that saves a CLDS template by name in the database.
      *
-     * @param templateName
-     * @param cldsTemplate
+     * @param templateName template name
+     * @param cldsTemplate clds template
      * @return The CldsTemplate modified and saved in DB
      */
     public CldsTemplate putTemplate(String templateName, CldsTemplate cldsTemplate) {
-    	util.entering(request, "CldsTemplateService: PUT template");
-        Date startTime = new Date();
+        util.entering(request, "CldsTemplateService: PUT template");
         isAuthorized(permissionUpdateTemplate);
         logger.info("PUT Template for  templateName=" + templateName);
         logger.info("PUT bpmnText=" + cldsTemplate.getBpmnText());
@@ -146,6 +144,7 @@ public class CldsTemplateService extends SecureServiceBase {
         cldsTemplate.setName(templateName);
         cldsTemplate.save(cldsDao, null);
         // audit log
+        Date startTime = new Date();
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("PUT template completed");
         util.exiting("200", "Put template success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
@@ -158,20 +157,20 @@ public class CldsTemplateService extends SecureServiceBase {
      * @return template names in JSON
      */
     public List<ValueItem> getTemplateNames() {
-    	util.entering(request, "CldsTemplateService: GET template names");
+        util.entering(request, "CldsTemplateService: GET template names");
         Date startTime = new Date();
         isAuthorized(permissionReadTemplate);
+        LoggingUtils.setTimeContext(startTime, new Date());
         logger.info("GET list of template names");
         List<ValueItem> names = cldsDao.getTemplateNames();
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET template names completed");
         util.exiting("200", "Get template names success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return names;
     }
 
     // Created for the integration test
-    public void setLoggingUtil (LoggingUtils utilP) {
+    public void setLoggingUtil(LoggingUtils utilP) {
         util =  utilP;
     }
 }

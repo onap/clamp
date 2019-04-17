@@ -41,7 +41,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 /**
- * REST services to manage Tosca Model
+ * REST services to manage Tosca Model.
  */
 @Component
 public class CldsToscaService extends SecureServiceBase {
@@ -84,12 +84,12 @@ public class CldsToscaService extends SecureServiceBase {
      *         type
      */
     public ResponseEntity<?> parseToscaModelAndSave(String toscaModelName, CldsToscaModel cldsToscaModel) {
-        Date startTime = new Date();
         LoggingUtils.setRequestContext("CldsToscaService: Parse Tosca model and save", getPrincipalName());
         // TODO revisit based on new permissions
         isAuthorized(permissionUpdateTosca);
         cldsToscaModel.setToscaModelName(toscaModelName);
         cldsToscaModel = cldsToscaModel.save(cldsDao, refProp, policyClient, getUserId());
+        Date startTime = new Date();
         LoggingUtils.setTimeContext(startTime, new Date());
         LoggingUtils.setResponseContext("0", "Parse Tosca model and save success", this.getClass().getName());
         auditLogger.info("Parse Tosca model and save completed");

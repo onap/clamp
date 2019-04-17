@@ -85,7 +85,7 @@ public class CldsService extends SecureServiceBase {
      * The constant LIST_OF_SDC_SERVICE_INFO_TYPE.
      */
     public static final Type LIST_OF_SDC_SERVICE_INFO_TYPE = new TypeToken<List<SdcServiceInfo>>() {
-    }.getType();
+        }.getType();
     @Produce(uri = "direct:processSubmit")
     private CamelProxy camelProxy;
     /**
@@ -209,9 +209,9 @@ public class CldsService extends SecureServiceBase {
     public List<CldsMonitoringDetails> getCldsDetails() {
         util.entering(request, "CldsService: GET model details");
         Date startTime = new Date();
+        LoggingUtils.setTimeContext(startTime, new Date());
         List<CldsMonitoringDetails> cldsMonitoringDetailsList = cldsDao.getCldsMonitoringDetails();
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET cldsDetails completed");
         util.exiting("200", "Get cldsDetails success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return cldsMonitoringDetailsList;
@@ -551,7 +551,7 @@ public class CldsService extends SecureServiceBase {
      * UUID. If not authorized, then NotAuthorizedException is thrown.
      *
      * @param model The clds model
-     * @return
+     * @return boolean or throws NotAuthorizedException
      */
     private boolean isAuthorizedForVf(CldsModel model) {
         String vf = ModelProperties.getVf(model);
