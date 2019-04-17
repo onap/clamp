@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d8bb0b97_de2e1c2e",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-04-17T11:58:19Z",
+      "side": 1,
+      "message": "This line is used for log to record the end time while exiting the method, so you can not move it up, because it should be put near the end of the method.\n\nTo reduce the check style issue, maybe you can update the LoggingUtils class, to separate the setTimeContext method into 2 methods: 1 to note down the starting time and put in the beginning of the method; and another to note down the end time and interval time and put at the end of the method.",
+      "revId": "8365112e4103096f1211e26339fd056208386f5d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7c6eef0f_69985ca7",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-04-17T11:58:19Z",
+      "side": 1,
+      "message": "Can not move it up, as explained in another comment",
+      "revId": "8365112e4103096f1211e26339fd056208386f5d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aa8b025b_5d69315a",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-04-17T11:58:19Z",
+      "side": 1,
+      "message": "Can not move it up, as explained in another comment",
+      "revId": "8365112e4103096f1211e26339fd056208386f5d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "425d240a_ba4ebdf3",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-04-17T11:58:19Z",
+      "side": 1,
+      "message": "Can not move it up, as explained in another comment",
+      "revId": "8365112e4103096f1211e26339fd056208386f5d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "79159691_3e34fba4",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-04-17T11:58:19Z",
+      "side": 1,
+      "message": "Can not move it down, as exlained in another comment",
+      "revId": "8365112e4103096f1211e26339fd056208386f5d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "553db16f_2fcbc3d2",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-04-17T11:58:19Z",
+      "side": 1,
+      "message": "Can not move it up, as explained in another comment",
+      "revId": "8365112e4103096f1211e26339fd056208386f5d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d465435f_15182bdb",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsToscaService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-04-17T11:58:19Z",
+      "side": 1,
+      "message": "Can not move it down, as explained in another comment",
+      "revId": "8365112e4103096f1211e26339fd056208386f5d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
