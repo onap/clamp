@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "d95a235d_1021448d",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-04-18T06:49:54Z",
+      "side": 1,
+      "message": "Could you please break the LoggingUtils method into 2 methods? As suggested in my previous comment. In that case it will solve the sonar issue and keep the original logic.",
+      "parentUuid": "3a1c6295_729a01b2",
+      "revId": "8365112e4103096f1211e26339fd056208386f5d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7c6eef0f_69985ca7",
         "filename": "src/main/java/org/onap/clamp/clds/service/CldsTemplateService.java",
         "patchSetId": 1
