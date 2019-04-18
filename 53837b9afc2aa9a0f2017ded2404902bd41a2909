@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f1648f1_3eb46783",
+        "filename": "src/main/java/org/onap/clamp/authorization/AuthorizationController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5100
+      },
+      "writtenOn": "2019-04-18T13:54:03Z",
+      "side": 1,
+      "message": "Is internal bool variable even needed ?\nThis method either ends with returning true or throwing exception (which is indication of no access)...\nNo case to return false.",
+      "range": {
+        "startLine": 106,
+        "startChar": 16,
+        "endLine": 106,
+        "endChar": 26
+      },
+      "revId": "53837b9afc2aa9a0f2017ded2404902bd41a2909",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a4a56ce5_6e7890b3",
+        "filename": "src/main/java/org/onap/clamp/clds/config/sdc/BlueprintParserMappingConfiguration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5100
+      },
+      "writtenOn": "2019-04-18T13:54:03Z",
+      "side": 1,
+      "message": "not necessary (just cleanup of imports)",
+      "range": {
+        "startLine": 8,
+        "startChar": 3,
+        "endLine": 8,
+        "endChar": 16
+      },
+      "revId": "53837b9afc2aa9a0f2017ded2404902bd41a2909",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24474c41_6a8dc674",
+        "filename": "src/main/java/org/onap/clamp/clds/config/sdc/SdcControllersConfiguration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5100
+      },
+      "writtenOn": "2019-04-18T13:54:03Z",
+      "side": 1,
+      "message": "Missing Samsung modification copyright (in case logging code will be added)",
+      "range": {
+        "startLine": 5,
+        "startChar": 3,
+        "endLine": 5,
+        "endChar": 12
+      },
+      "revId": "53837b9afc2aa9a0f2017ded2404902bd41a2909",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}

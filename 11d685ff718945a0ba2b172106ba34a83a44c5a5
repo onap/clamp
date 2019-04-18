@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "de5daf27_8ec7e0e6",
+        "filename": "src/main/java/org/onap/clamp/clds/config/sdc/SdcControllersConfiguration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5100
+      },
+      "writtenOn": "2019-04-18T13:54:03Z",
+      "side": 0,
+      "message": "This code is part of logging framework.\nI can understand that it has not been used (and that\u0027s why Sonar complaints about it).\nBut maybe right thing would be to start using it to log activities in this class ?",
+      "range": {
+        "startLine": 52,
+        "startChar": 36,
+        "endLine": 52,
+        "endChar": 42
+      },
+      "revId": "11d685ff718945a0ba2b172106ba34a83a44c5a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
