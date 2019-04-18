@@ -23,9 +23,6 @@
 
 package org.onap.clamp.clds.config.sdc;
 
-import com.att.eelf.configuration.EELFLogger;
-import com.att.eelf.configuration.EELFManager;
-
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,7 +46,6 @@ import org.springframework.core.io.Resource;
  */
 public class SdcControllersConfiguration {
 
-    private static final EELFLogger logger = EELFManager.getInstance().getLogger(SdcControllersConfiguration.class);
     public static final String CONTROLLER_SUBTREE_KEY = "sdc-connections";
     @Autowired
     protected ApplicationContext appContext;

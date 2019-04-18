@@ -5,6 +5,8 @@
  * Copyright (C) 2019 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
+ * Modifications Copyright (c) 2019 Samsung
+ * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,8 +41,6 @@ import org.onap.clamp.util.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -57,9 +57,8 @@ public class AuthorizationController {
     @Autowired
     private ClampProperties refProp;
 
-    private SecurityContext securityContext = SecurityContextHolder.getContext();
-    private static final String permPrefix = "security.permission.type.";
-    private static final String permInstance = "security.permission.instance";
+    private static final String PERM_PREFIX = "security.permission.type.";
+    private static final String PERM_INSTANCE = "security.permission.instance";
 
     public AuthorizationController() {
     }
@@ -77,8 +76,8 @@ public class AuthorizationController {
      *        The action of the permissions. e.g. read
      */
     public void authorize(Exchange camelExchange, String typeVar, String instanceVar, String action) {
-        String type = refProp.getStringValue(permPrefix + typeVar);
-        String instance = refProp.getStringValue(permInstance);
+        String type = refProp.getStringValue(PERM_PREFIX + typeVar);
+        String instance = refProp.getStringValue(PERM_INSTANCE);
 
         if (null == type || type.isEmpty()) {
             //authorization is turned off, since the permission is not defined
@@ -104,27 +103,23 @@ public class AuthorizationController {
     }
 
     private boolean isUserPermitted(SecureServicePermission inPermission) {
-        boolean authorized = false;
+        boolean authorized;
         String principalName = PrincipalUtils.getPrincipalName();
         // check if the user has the permission key or the permission key with a
         // combination of  all instance and/or all action.
-        if (hasRole(inPermission.getKey())) {
-            auditLogger.info("{} authorized because user has permission with * for instance: {}", 
-                  principalName, inPermission.getKey());
+        if (hasRole(inPermission.getKey()) || hasRole(inPermission.getKeyAllInstance())) {
+            auditLogger.info("{} authorized because user has permission with * for instance: {}",
+                    principalName, inPermission.getKey());
             authorized = true;
             // the rest of these don't seem to be required - isUserInRole method
             // appears to take * as a wildcard
-        } else if (hasRole(inPermission.getKeyAllInstance())) {
-            auditLogger.info("{} authorized because user has permission with * for instance: {}", 
-                  principalName, inPermission.getKey());
-            authorized = true;
         } else if (hasRole(inPermission.getKeyAllInstanceAction())) {
-            auditLogger.info("{} authorized because user has permission with * for instance and * for action: {}", 
-                  principalName, inPermission.getKey());
+            auditLogger.info("{} authorized because user has permission with * for instance and * for action: {}",
+                    principalName, inPermission.getKey());
             authorized = true;
         } else if (hasRole(inPermission.getKeyAllAction())) {
             auditLogger.info("{} authorized because user has permission with * for action: {}",
-                  principalName, inPermission.getKey());
+                    principalName, inPermission.getKey());
             authorized = true;
         } else {
             throw new NotAuthorizedException("");

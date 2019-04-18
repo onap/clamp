@@ -199,17 +199,13 @@ public class CldsDao {
             .addValue("v_model_blueprint_text", model.getBlueprintText())
             .addValue("v_service_type_id", model.getTypeId()).addValue("v_deployment_id", model.getDeploymentId())
             .addValue("v_deployment_status_url", model.getDeploymentStatusUrl())
-            .addValue("v_control_name_prefix", model.getControlNamePrefix())
+            .addValue(V_CONTROL_NAME_PREFIX, model.getControlNamePrefix())
             .addValue(V_CONTROL_NAME_UUID, model.getControlNameUuid());
         Map<String, Object> out = logSqlExecution(procSetModel, in);
         model.setControlNamePrefix((String) out.get(V_CONTROL_NAME_PREFIX));
         model.setControlNameUuid((String) out.get(V_CONTROL_NAME_UUID));
         model.setId((String) (out.get("v_model_id")));
-        model.getEvent().setId((String) (out.get("v_event_id")));
-        model.getEvent().setActionCd((String) out.get("v_action_cd"));
-        model.getEvent().setActionStateCd((String) out.get("v_action_state_cd"));
-        model.getEvent().setProcessInstanceId((String) out.get("v_event_process_instance_id"));
-        model.getEvent().setUserid((String) out.get("v_event_user_id"));
+        setEventProp(model.getEvent(), out);
         return model;
     }
 
@@ -318,14 +314,9 @@ public class CldsDao {
             .addValue("v_user_id", userid).addValue("v_template_bpmn_text", template.getBpmnText())
             .addValue("v_template_image_text", template.getImageText())
             .addValue("v_template_doc_text", template.getPropText());
-        Map<String, Object> out = logSqlExecution(procSetTemplate, in);
-        template.setId((String) (out.get("v_template_id")));
-        template.setBpmnUserid((String) (out.get("v_template_bpmn_user_id")));
-        template.setBpmnId((String) (out.get("v_template_bpmn_id")));
-        template.setImageId((String) (out.get("v_template_image_id")));
-        template.setImageUserid((String) out.get("v_template_image_user_id"));
-        template.setPropId((String) (out.get("v_template_doc_id")));
-        template.setPropUserid((String) out.get("v_template_doc_user_id"));
+
+        // properties to setup the template is return from the logSqlExecution method
+        setTemplateBaseProp(template, logSqlExecution(procSetTemplate, in));
     }
 
     /**
@@ -349,18 +340,33 @@ public class CldsDao {
         CldsTemplate template = new CldsTemplate();
         template.setName(templateName);
         SqlParameterSource in = new MapSqlParameterSource().addValue("v_template_name", templateName);
+
         Map<String, Object> out = logSqlExecution(procGetTemplate, in);
-        template.setId((String) (out.get("v_template_id")));
-        template.setBpmnUserid((String) (out.get("v_template_bpmn_user_id")));
-        template.setBpmnId((String) (out.get("v_template_bpmn_id")));
-        template.setBpmnText((String) (out.get("v_template_bpmn_text")));
-        template.setImageId((String) (out.get("v_template_image_id")));
-        template.setImageUserid((String) out.get("v_template_image_user_id"));
-        template.setImageText((String) out.get("v_template_image_text"));
-        template.setPropId((String) (out.get("v_template_doc_id")));
-        template.setPropUserid((String) out.get("v_template_doc_user_id"));
+        setTemplateBaseProp(template, out);
+
+        // additional template setting's
         template.setPropText((String) out.get("v_template_doc_text"));
+        template.setBpmnText((String) (out.get("v_template_bpmn_text")));
+        template.setImageText((String) out.get("v_template_image_text"));
         return template;
+    }
+
+    /**
+     * Helper method to setup the base template properties
+     *
+     * @param template
+     *  the template
+     * @param prop
+     *  collection with the properties
+     */
+    private void setTemplateBaseProp(CldsTemplate template, Map prop) {
+        template.setId((String) (prop.get("v_template_id")));
+        template.setBpmnUserid((String) (prop.get("v_template_bpmn_user_id")));
+        template.setBpmnId((String) (prop.get("v_template_bpmn_id")));
+        template.setImageId((String) (prop.get("v_template_image_id")));
+        template.setImageUserid((String) prop.get("v_template_image_user_id"));
+        template.setPropId((String) (prop.get("v_template_doc_id")));
+        template.setPropUserid((String) prop.get("v_template_doc_user_id"));
     }
 
     private static Map<String, Object> logSqlExecution(SimpleJdbcCall call, SqlParameterSource source) {
@@ -460,14 +466,27 @@ public class CldsDao {
         model.setImageText((String) out.get("v_template_image_text"));
         model.setDocText((String) out.get("v_template_doc_text"));
         model.setBlueprintText((String) out.get("v_model_blueprint_text"));
-        model.getEvent().setId((String) (out.get("v_event_id")));
-        model.getEvent().setActionCd((String) out.get("v_action_cd"));
-        model.getEvent().setActionStateCd((String) out.get("v_action_state_cd"));
-        model.getEvent().setProcessInstanceId((String) out.get("v_event_process_instance_id"));
-        model.getEvent().setUserid((String) out.get("v_event_user_id"));
         model.setTypeId((String) out.get("v_service_type_id"));
         model.setDeploymentId((String) out.get("v_deployment_id"));
         model.setDeploymentStatusUrl((String) out.get("v_deployment_status_url"));
+
+        setEventProp(model.getEvent(), out);
+    }
+
+    /**
+     * Helper method to setup the event prop to the CldsEvent class
+     *
+     * @param event
+     *  the clds event
+     * @param prop
+     *  collection with the configuration
+     */
+    private void setEventProp(CldsEvent event, Map prop) {
+        event.setId((String) (prop.get("v_event_id")));
+        event.setActionCd((String) prop.get("v_action_cd"));
+        event.setActionStateCd((String) prop.get("v_action_state_cd"));
+        event.setProcessInstanceId((String) prop.get("v_event_process_instance_id"));
+        event.setUserid((String) prop.get("v_event_user_id"));
     }
 
     /**
