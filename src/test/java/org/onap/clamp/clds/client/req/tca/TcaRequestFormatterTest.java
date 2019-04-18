@@ -31,7 +31,9 @@ import static org.mockito.Mockito.when;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.onap.clamp.clds.config.ClampProperties;
+import org.onap.clamp.clds.exception.TcaRequestFormatterException;
 import org.onap.clamp.clds.model.properties.ModelProperties;
 import org.onap.clamp.clds.model.properties.Tca;
 import org.onap.clamp.clds.model.properties.TcaItem;
@@ -94,5 +96,19 @@ public class TcaRequestFormatterTest {
 
         //then
         assertThat(expectedRequest).isEqualTo(policyContent);
+    }
+
+    @Test(expected = TcaRequestFormatterException.class)
+    public void shouldThrowTcaRequestFormatterException() throws IOException{
+        //given
+        String service = "TestService";
+        String policy = "TestService_scope.PolicyName";
+        ClampProperties clampProperties =  mock(ClampProperties.class);
+        ModelProperties modelProperties = mock(ModelProperties.class);
+        Tca tca = mock(Tca.class);
+        //when
+        Mockito.when(clampProperties.getJsonTemplate(any(), any())).thenThrow(IOException.class);
+        //then
+        TcaRequestFormatter.createPolicyContent(clampProperties, modelProperties, service, policy, tca);
     }
 }
