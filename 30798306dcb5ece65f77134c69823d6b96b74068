@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "284bd065_38a473f2",
+        "filename": "src/test/java/org/onap/clamp/clds/client/req/tca/TcaRequestFormatterTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5100
+      },
+      "writtenOn": "2019-04-18T13:43:40Z",
+      "side": 1,
+      "message": "Missing Samsung modification copyright.",
+      "range": {
+        "startLine": 5,
+        "startChar": 3,
+        "endLine": 5,
+        "endChar": 12
+      },
+      "revId": "30798306dcb5ece65f77134c69823d6b96b74068",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
