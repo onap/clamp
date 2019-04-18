@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5d80f19b_12660b72",
+        "filename": "src/main/java/org/onap/clamp/clds/ClampServlet.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5100
+      },
+      "writtenOn": "2019-04-18T13:41:57Z",
+      "side": 1,
+      "message": "Maybe other members of this class can be made private as well ?",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 10
+      },
+      "revId": "27175dde7151c990c0a1235054fa120eb21f565b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fae3072d_4d6fa31d",
+        "filename": "src/main/java/org/onap/clamp/clds/client/req/policy/PolicyClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5100
+      },
+      "writtenOn": "2019-04-18T13:41:57Z",
+      "side": 1,
+      "message": "Same thing - make them private ?",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 11
+      },
+      "revId": "27175dde7151c990c0a1235054fa120eb21f565b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
