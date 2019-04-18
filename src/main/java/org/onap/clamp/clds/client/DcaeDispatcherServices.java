@@ -25,11 +25,7 @@ package org.onap.clamp.clds.client;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
-
 import com.google.gson.JsonObject;
-import java.io.IOException;
-import java.util.Date;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -39,6 +35,9 @@ import org.onap.clamp.clds.util.LoggingUtils;
 import org.onap.clamp.util.HttpConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.io.IOException;
+
+import java.util.Date;
 
 /**
  * This class implements the communication with DCAE for the service
@@ -54,7 +53,6 @@ public class DcaeDispatcherServices {
     private static final String STATUS_URL_LOG = "Status URL extracted: ";
     private static final String DCAE_URL_PREFIX = "/dcae-deployments/";
     private static final String DCAE_URL_PROPERTY_NAME = "dcae.dispatcher.url";
-    public static final String DCAE_REQUESTID_PROPERTY_NAME = "dcae.header.requestId";
     private static final String DCAE_LINK_FIELD = "links";
     private static final String DCAE_STATUS_FIELD = "status";
 
@@ -66,8 +64,8 @@ public class DcaeDispatcherServices {
 
     /**
      * Get the Operation Status from a specified URL with retry.
-     * @param operationStatusUrl
-     *        The URL of the DCAE
+     *
+     * @param operationStatusUrl The URL of the DCAE
      * @return The status
      * @throws InterruptedException Exception during the retry
      */
@@ -89,8 +87,8 @@ public class DcaeDispatcherServices {
 
     /**
      * Get the Operation Status from a specified URL.
-     * @param statusUrl
-     *        The URL provided by a previous DCAE Query
+     *
+     * @param statusUrl The URL provided by a previous DCAE Query
      * @return The status
      */
     public String getOperationStatus(String statusUrl) {
@@ -119,12 +117,10 @@ public class DcaeDispatcherServices {
 
     /**
      * Returns status URL for createNewDeployment operation.
-     * @param deploymentId
-     *        The deployment ID
-     * @param serviceTypeId
-     *        Service type ID
-     * @param blueprintInputJson
-     *        The value for each blueprint parameters in a flat JSON
+     *
+     * @param deploymentId       The deployment ID
+     * @param serviceTypeId      Service type ID
+     * @param blueprintInputJson The value for each blueprint parameters in a flat JSON
      * @return The status URL
      */
     public String createNewDeployment(String deploymentId, String serviceTypeId, JsonObject blueprintInputJson) {
@@ -140,7 +136,7 @@ public class DcaeDispatcherServices {
             logger.info("Dcae api Body String - " + apiBodyString);
             String url = refProp.getStringValue(DCAE_URL_PROPERTY_NAME) + DCAE_URL_PREFIX + deploymentId;
             String statusUrl = getDcaeResponse(url, "PUT", apiBodyString, "application/json", DCAE_LINK_FIELD,
-                DCAE_STATUS_FIELD);
+                    DCAE_STATUS_FIELD);
             LoggingUtils.setResponseContext("0", "Create new deployment failed", this.getClass().getName());
             return statusUrl;
         } catch (Exception e) {
@@ -170,7 +166,7 @@ public class DcaeDispatcherServices {
             logger.info("Dcae api Body String - " + apiBodyString);
             String url = refProp.getStringValue(DCAE_URL_PROPERTY_NAME) + DCAE_URL_PREFIX + deploymentId;
             String statusUrl = getDcaeResponse(url, "DELETE", apiBodyString, "application/json", DCAE_LINK_FIELD,
-                DCAE_STATUS_FIELD);
+                    DCAE_STATUS_FIELD);
             LoggingUtils.setResponseContext("0", "Delete existing deployment success", this.getClass().getName());
             return statusUrl;
 
@@ -179,7 +175,7 @@ public class DcaeDispatcherServices {
             LoggingUtils.setErrorContext("900", "Delete existing deployment error");
             logger.error("Exception occurred during deleteExistingDeployment Operation with DCAE", e);
             throw new DcaeDeploymentException("Exception occurred during deleteExistingDeployment Operation with DCAE",
-                e);
+                    e);
         } finally {
             LoggingUtils.setTimeContext(startTime, new Date());
             metricsLogger.info("deleteExistingDeployment complete");
@@ -187,7 +183,7 @@ public class DcaeDispatcherServices {
     }
 
     private String getDcaeResponse(String url, String requestMethod, String payload, String contentType, String node,
-        String nodeAttr) throws IOException, ParseException {
+                                   String nodeAttr) throws IOException, ParseException {
         Date startTime = new Date();
         try {
             String responseStr = dcaeHttpConnectionManager.doHttpRequest(url, requestMethod, payload, contentType, "DCAE", null, null);
@@ -207,8 +203,6 @@ public class DcaeDispatcherServices {
 
     private JSONObject parseResponse(String responseStr) throws ParseException {
         JSONParser parser = new JSONParser();
-        Object obj0 = parser.parse(responseStr);
-        JSONObject jsonObj = (JSONObject) obj0;
-        return jsonObj;
+        return (JSONObject) parser.parse(responseStr);
     }
 }
