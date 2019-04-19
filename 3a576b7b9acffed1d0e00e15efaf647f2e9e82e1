@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b68dfb43_bf053a9c",
+        "filename": "src/main/java/org/onap/clamp/authorization/AuthorizationController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5100
+      },
+      "writtenOn": "2019-04-19T09:25:27Z",
+      "side": 1,
+      "message": "After looking through usage I have feeling, that this can be simplified and use of exception can be eliminated completely.\nThis is private function and using thrown exception instead of false (meaning not authorized) seems to be bad design.\n\nPls consider refactoring of isUserPermittedNoException() and authorize() together.",
+      "range": {
+        "startLine": 102,
+        "startChar": 17,
+        "endLine": 102,
+        "endChar": 32
+      },
+      "revId": "3a576b7b9acffed1d0e00e15efaf647f2e9e82e1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
