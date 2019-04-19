@@ -22,6 +22,30 @@
       "revId": "11d685ff718945a0ba2b172106ba34a83a44c5a5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5e930b0b_02ba0062",
+        "filename": "src/main/java/org/onap/clamp/clds/config/sdc/SdcControllersConfiguration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2019-04-19T09:45:18Z",
+      "side": 0,
+      "message": "The only method was the logger can be used is in the method getAllDefinedControllers that throw the exception by this situation the exception will be logger anyway so there is no point using the logger in this class.",
+      "parentUuid": "de5daf27_8ec7e0e6",
+      "range": {
+        "startLine": 52,
+        "startChar": 36,
+        "endLine": 52,
+        "endChar": 42
+      },
+      "revId": "11d685ff718945a0ba2b172106ba34a83a44c5a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
