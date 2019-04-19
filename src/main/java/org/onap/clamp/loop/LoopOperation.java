@@ -33,7 +33,6 @@ import com.google.gson.JsonPrimitive;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +51,7 @@ import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * Closed loop operations
+ * Closed loop operations.
  */
 @Component
 public class LoopOperation {
@@ -74,13 +73,66 @@ public class LoopOperation {
     }
 
     /**
+     * Generate the entry log.
+     *
+     * @param serviceDesc The service description
+     *        the loop name
+     */
+    public void startLog(Exchange exchange, String serviceDesc) {
+        util.entering(request, serviceDesc);
+        exchange.getIn().setHeader(ONAPLogConstants.Headers.REQUEST_ID, 
+            util.getProperties(ONAPLogConstants.MDCs.REQUEST_ID));
+        exchange.getIn().setHeader(ONAPLogConstants.Headers.INVOCATION_ID, 
+            util.getProperties(ONAPLogConstants.MDCs.INVOCATION_ID));
+        exchange.getIn().setHeader(ONAPLogConstants.Headers.PARTNER_NAME, 
+            util.getProperties(ONAPLogConstants.MDCs.PARTNER_NAME));
+    }
+
+    /**
+     * Generate the exiting log.
+     */
+    public void endLog() {
+        util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, 
+            ONAPLogConstants.ResponseStatus.COMPLETED);
+    }
+
+    /**
+     * Generate the error exiting log.
+     */
+    public void errorLog() {
+        util.exiting(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "Failed",
+            Level.INFO, ONAPLogConstants.ResponseStatus.ERROR);
+    }
+    
+    /**
+     * Generate the error exiting log.
+     */
+    public void httpErrorLog() {
+
+    }
+
+    /**
+     * Generate the invoke log.
+     */
+    public void invokeLog(String targetEntity, String targetServiceName) {
+        util.invoke(targetEntity, targetServiceName);
+    }
+
+    /**
+     * Generate the invoke return marker.
+     */
+    public void invokeReturnLog() {
+        util.invokeReturn();
+    }
+    
+    /**
      * Deploy the closed loop.
      *
      * @param loopName
      *        the loop name
      * @return the updated loop
-     * @throws Exceptions
-     *         during the operation
+     * @throws OperationException
+     *         Exception during the operation
      */
     public Loop deployLoop(Exchange camelExchange, String loopName) throws OperationException {
         util.entering(request, "CldsService: Deploy model");
@@ -172,32 +224,35 @@ public class LoopOperation {
         return loop;
     }
 
-    private JsonElement wrapSnakeObject(Object o) {
+    private JsonElement wrapSnakeObject(Object obj) {
         // NULL => JsonNull
-        if (o == null)
+        if (obj == null) {
             return JsonNull.INSTANCE;
+        }
 
         // Collection => JsonArray
-        if (o instanceof Collection) {
+        if (obj instanceof Collection) {
             JsonArray array = new JsonArray();
-            for (Object childObj : (Collection<?>) o)
+            for (Object childObj : (Collection<?>) obj) {
                 array.add(wrapSnakeObject(childObj));
+            }
             return array;
         }
 
         // Array => JsonArray
-        if (o.getClass().isArray()) {
+        if (obj.getClass().isArray()) {
             JsonArray array = new JsonArray();
 
             int length = Array.getLength(array);
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < length; i++) {
                 array.add(wrapSnakeObject(Array.get(array, i)));
+            }
             return array;
         }
 
         // Map => JsonObject
-        if (o instanceof Map) {
-            Map<?, ?> map = (Map<?, ?>) o;
+        if (obj instanceof Map) {
+            Map<?, ?> map = (Map<?, ?>) obj;
 
             JsonObject jsonObject = new JsonObject();
             for (final Map.Entry<?, ?> entry : map.entrySet()) {
@@ -209,7 +264,7 @@ public class LoopOperation {
         }
 
         // otherwise take it as a string
-        return new JsonPrimitive(String.valueOf(o));
+        return new JsonPrimitive(String.valueOf(obj));
     }
 
 }
