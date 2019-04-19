@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "b922ce85_291f6bf1",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1943
+      },
+      "writtenOn": "2019-04-19T07:13:46Z",
+      "side": 1,
+      "message": "Hi Xue Gao, I will fix this in next commit. I have removed timecontext related changes for now in this commit.",
+      "parentUuid": "d95a235d_1021448d",
+      "revId": "8365112e4103096f1211e26339fd056208386f5d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7c6eef0f_69985ca7",
         "filename": "src/main/java/org/onap/clamp/clds/service/CldsTemplateService.java",
         "patchSetId": 1
