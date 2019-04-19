@@ -22,6 +22,30 @@
       "revId": "3a576b7b9acffed1d0e00e15efaf647f2e9e82e1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d03e7aac_c03b210e",
+        "filename": "src/main/java/org/onap/clamp/authorization/AuthorizationController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2019-04-19T09:45:18Z",
+      "side": 1,
+      "message": "I thought about this but I don\u0027t want to broke the authorize method logic that throws this exception higher.",
+      "parentUuid": "b68dfb43_bf053a9c",
+      "range": {
+        "startLine": 102,
+        "startChar": 17,
+        "endLine": 102,
+        "endChar": 32
+      },
+      "revId": "3a576b7b9acffed1d0e00e15efaf647f2e9e82e1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
