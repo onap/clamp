@@ -28,10 +28,10 @@ import java.util.List;
 public class SdcServiceDetail {
 
     private String uuid;
-    private String invariantUUID;
+    private String invariantUuid;
     private String name;
     private String version;
-    private String toscaModelURL;
+    private String toscaModelUrl;
     private String category;
     private String lifecycleState;
     private String lastUpdaterUserId;
@@ -48,12 +48,12 @@ public class SdcServiceDetail {
         this.uuid = uuid;
     }
 
-    public String getInvariantUUID() {
-        return invariantUUID;
+    public String getInvariantUuid() {
+        return invariantUuid;
     }
 
-    public void setInvariantUUID(String invariantUUID) {
-        this.invariantUUID = invariantUUID;
+    public void setInvariantUuid(String invariantUuid) {
+        this.invariantUuid = invariantUuid;
     }
 
     public String getName() {
@@ -72,12 +72,12 @@ public class SdcServiceDetail {
         this.version = version;
     }
 
-    public String getToscaModelURL() {
-        return toscaModelURL;
+    public String getToscaModelUrl() {
+        return toscaModelUrl;
     }
 
-    public void setToscaModelURL(String toscaModelURL) {
-        this.toscaModelURL = toscaModelURL;
+    public void setToscaModelUrl(String toscaModelUrl) {
+        this.toscaModelUrl = toscaModelUrl;
     }
 
     public String getCategory() {

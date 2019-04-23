@@ -105,36 +105,36 @@ public class DcaeEvent {
     }
 
     /**
-     * Get the serviceUUID.
-     * @return the serviceUUID
+     * Get the serviceUuid.
+     * @return the serviceUuid
      */
-    public String getServiceUUID() {
+    public String getServiceUuid() {
         return serviceUuid;
     }
 
     /**
-     * Set the serviceUUID.
-     * @param serviceUUID
+     * Set the serviceUuid.
+     * @param serviceUuid
      *        the serviceUUID to set
      */
-    public void setServiceUUID(String serviceUuid) {
+    public void setServiceUuid(String serviceUuid) {
         this.serviceUuid = serviceUuid;
     }
 
     /**
-     * Get the resourceUUID.
-     * @return the resourceUUID
+     * Get the resourceUuid.
+     * @return the resourceUuid
      */
-    public String getResourceUUID() {
+    public String getResourceUuid() {
         return resourceUuid;
     }
 
     /**
-     * Set the resourceUUID.
-     * @param resourceUUID
-     *        the resourceUUID to set
+     * Set the resourceUuid.
+     * @param resourceUuid
+     *        the resourceUuid to set
      */
-    public void setResourceUUID(String resourceUuid) {
+    public void setResourceUuid(String resourceUuid) {
         this.resourceUuid = resourceUuid;
     }
 

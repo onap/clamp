@@ -36,7 +36,7 @@ public class SdcResource implements Comparable<SdcResource> {
 
     private String resourceInstanceName;
     private String resourceName;
-    private String resourceInvariantUUID;
+    private String resourceInvariantUuid;
     private String resourceVersion;
     private String resoucreType;
     private String resourceUuid;
@@ -58,12 +58,12 @@ public class SdcResource implements Comparable<SdcResource> {
         this.resourceName = resourceName;
     }
 
-    public String getResourceInvariantUUID() {
-        return resourceInvariantUUID;
+    public String getResourceInvariantUuid() {
+        return resourceInvariantUuid;
     }
 
-    public void setResourceInvariantUUID(String resourceInvUuid) {
-        this.resourceInvariantUUID = resourceInvUuid;
+    public void setResourceInvariantUuid(String resourceInvUuid) {
+        this.resourceInvariantUuid = resourceInvUuid;
     }
 
     public String getResourceVersion() {
@@ -82,11 +82,11 @@ public class SdcResource implements Comparable<SdcResource> {
         this.resoucreType = resoucreType;
     }
 
-    public String getResourceUUID() {
+    public String getResourceUuid() {
         return resourceUuid;
     }
 
-    public void setResourceUUID(String resourceUUID) {
+    public void setResourceUuid(String resourceUUID) {
         this.resourceUuid = resourceUUID;
     }
 

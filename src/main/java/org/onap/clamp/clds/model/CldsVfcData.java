@@ -49,11 +49,11 @@ public class CldsVfcData implements Serializable {
         this.cldsAlarmConditions = cldsAlarmConditions;
     }
 
-    public String getVfcInvariantResourceUUID() {
+    public String getVfcInvariantResourceUuid() {
         return vfcInvariantResourceUuid;
     }
 
-    public void setVfcInvariantResourceUUID(String vfcInvariantResourceUuid) {
+    public void setVfcInvariantResourceUuid(String vfcInvariantResourceUuid) {
         this.vfcInvariantResourceUuid = vfcInvariantResourceUuid;
     }
 
