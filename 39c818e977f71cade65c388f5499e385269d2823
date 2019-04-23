@@ -129,6 +129,30 @@
     },
     {
       "key": {
+        "uuid": "c43582af_bac7d975",
+        "filename": "src/test/java/org/onap/clamp/clds/dao/CldsServiceDataMapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5094
+      },
+      "writtenOn": "2019-04-23T08:36:16Z",
+      "side": 1,
+      "message": "But there is also no any test conditions. What does it test?",
+      "parentUuid": "d4584c98_4ff2b13e",
+      "range": {
+        "startLine": 55,
+        "startChar": 3,
+        "endLine": 55,
+        "endChar": 69
+      },
+      "revId": "39c818e977f71cade65c388f5499e385269d2823",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "aedca3cd_61ada03e",
         "filename": "src/test/java/org/onap/clamp/clds/util/MockResultSet.java",
         "patchSetId": 1
