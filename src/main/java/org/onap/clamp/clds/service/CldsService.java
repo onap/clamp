@@ -32,18 +32,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BadRequestException;
-import javax.ws.rs.NotAuthorizedException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.camel.Produce;
-import org.apache.commons.codec.DecoderException;
 import org.json.simple.parser.ParseException;
 import org.onap.clamp.clds.camel.CamelProxy;
 import org.onap.clamp.clds.client.DcaeDispatcherServices;
@@ -494,8 +491,8 @@ public class CldsService extends SecureServiceBase {
         if (dcaeEvent.getInstances() != null) {
             instanceCount = dcaeEvent.getInstances().size();
         }
-        String msgInfo = "event=" + dcaeEvent.getEvent() + " serviceUUID=" + dcaeEvent.getServiceUUID()
-            + " resourceUUID=" + dcaeEvent.getResourceUUID() + " artifactName=" + dcaeEvent.getArtifactName()
+        String msgInfo = "event=" + dcaeEvent.getEvent() + " serviceUUID=" + dcaeEvent.getServiceUuid()
+            + " resourceUUID=" + dcaeEvent.getResourceUuid() + " artifactName=" + dcaeEvent.getArtifactName()
             + " instance count=" + instanceCount + " isTest=" + isTest;
         logger.info("POST dcae event {}", msgInfo);
         if (isTest) {
