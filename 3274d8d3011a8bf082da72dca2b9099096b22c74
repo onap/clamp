@@ -34,6 +34,24 @@
       "revId": "3274d8d3011a8bf082da72dca2b9099096b22c74",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "44c5ef4d_3923a988",
+        "filename": "src/main/java/org/onap/clamp/clds/model/sdc/SdcServiceInfo.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1943
+      },
+      "writtenOn": "2019-04-23T09:59:08Z",
+      "side": 1,
+      "message": "Kindly review other changes",
+      "parentUuid": "9cf58941_7492233d",
+      "revId": "3274d8d3011a8bf082da72dca2b9099096b22c74",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
