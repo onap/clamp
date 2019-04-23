@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b01acf3_af882d7e",
+        "filename": "src/main/java/org/onap/clamp/clds/config/DefaultUserConfiguration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-23T08:49:06Z",
+      "side": 1,
+      "message": "can it be private?",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 10
+      },
+      "revId": "ff0370f95bc5a72ad5e0382d7d604839e4d307d4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
