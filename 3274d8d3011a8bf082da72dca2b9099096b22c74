@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab8b1818_f76cce48",
+        "filename": "src/main/java/org/onap/clamp/clds/model/sdc/SdcServiceInfo.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-04-23T09:18:14Z",
+      "side": 1,
+      "message": "You can\u0027t change that, otherwise the SDC payload won\u0027t be deserialized properly.",
+      "revId": "3274d8d3011a8bf082da72dca2b9099096b22c74",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
