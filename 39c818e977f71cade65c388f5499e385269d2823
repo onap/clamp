@@ -85,6 +85,29 @@
       "revId": "39c818e977f71cade65c388f5499e385269d2823",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "48c00c3a_6dda0e1f",
+        "filename": "src/test/java/org/onap/clamp/clds/util/MockResultSet.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5094
+      },
+      "writtenOn": "2019-04-23T08:34:27Z",
+      "side": 1,
+      "message": "No copyright header.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 3
+      },
+      "revId": "39c818e977f71cade65c388f5499e385269d2823",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
