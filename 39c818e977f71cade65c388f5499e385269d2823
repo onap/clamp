@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "e311d226_ef503040",
+        "filename": "src/main/java/org/onap/clamp/clds/config/DefaultUserConfiguration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-23T08:36:08Z",
+      "side": 1,
+      "message": "Could it be private?",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 10
+      },
+      "revId": "39c818e977f71cade65c388f5499e385269d2823",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c2920dec_38004e56",
         "filename": "src/test/java/org/onap/clamp/clds/dao/CldsServiceDataMapperTest.java",
         "patchSetId": 1
@@ -13,6 +36,24 @@
       "writtenOn": "2019-04-23T08:33:45Z",
       "side": 1,
       "message": "No copyright headers",
+      "revId": "39c818e977f71cade65c388f5499e385269d2823",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7f76b4bb_c2413756",
+        "filename": "src/test/java/org/onap/clamp/clds/dao/CldsServiceDataMapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-23T08:36:08Z",
+      "side": 1,
+      "message": "no copyright info",
+      "parentUuid": "c2920dec_38004e56",
       "revId": "39c818e977f71cade65c388f5499e385269d2823",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -82,6 +123,23 @@
         "endLine": 55,
         "endChar": 69
       },
+      "revId": "39c818e977f71cade65c388f5499e385269d2823",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aedca3cd_61ada03e",
+        "filename": "src/test/java/org/onap/clamp/clds/util/MockResultSet.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-23T08:36:08Z",
+      "side": 1,
+      "message": "no copyright info",
       "revId": "39c818e977f71cade65c388f5499e385269d2823",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
