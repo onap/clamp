@@ -33,15 +33,15 @@ public class SdcServiceInfo implements Comparable<SdcServiceInfo> {
     protected static final EELFLogger logger      = EELFManager.getInstance().getLogger(SdcServiceInfo.class);
     protected static final EELFLogger auditLogger = EELFManager.getInstance().getAuditLogger();
 
-    private String                    uuid;
-    private String                    invariantUUID;
-    private String                    name;
-    private String                    version;
-    private String                    toscaModelURL;
-    private String                    category;
-    private String                    lifecycleState;
-    private String                    lastUpdaterUserId;
-    private String                    distributionStatus;
+    private String uuid;
+    private String invariantUUID;
+    private String name;
+    private String version;
+    private String toscaModelURL;
+    private String category;
+    private String lifecycleState;
+    private String lastUpdaterUserId;
+    private String distributionStatus;
 
     public String getUuid() {
         return uuid;

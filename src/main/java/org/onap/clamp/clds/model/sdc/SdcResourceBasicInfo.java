@@ -34,10 +34,10 @@ public class SdcResourceBasicInfo implements Comparable<SdcResourceBasicInfo> {
     protected static final EELFLogger metricsLogger = EELFManager.getInstance().getMetricsLogger();
 
     private String uuid;
-    private String invariantUUID;
+    private String invariantUuid;
     private String name;
     private String version;
-    private String toscaModelURL;
+    private String toscaModelUrl;
     private String category;
     private String subCategory;
     private String resourceType;
@@ -122,12 +122,12 @@ public class SdcResourceBasicInfo implements Comparable<SdcResourceBasicInfo> {
         this.uuid = uuid;
     }
 
-    public String getInvariantUUID() {
-        return invariantUUID;
+    public String getInvariantUuid() {
+        return invariantUuid;
     }
 
-    public void setInvariantUUID(String invariantUUID) {
-        this.invariantUUID = invariantUUID;
+    public void setInvariantUuid(String invariantUuid) {
+        this.invariantUuid = invariantUuid;
     }
 
     public String getName() {
@@ -146,12 +146,12 @@ public class SdcResourceBasicInfo implements Comparable<SdcResourceBasicInfo> {
         this.version = version;
     }
 
-    public String getToscaModelURL() {
-        return toscaModelURL;
+    public String getToscaModelUrl() {
+        return toscaModelUrl;
     }
 
-    public void setToscaModelURL(String toscaModelURL) {
-        this.toscaModelURL = toscaModelURL;
+    public void setToscaModelUrl(String toscaModelUrl) {
+        this.toscaModelUrl = toscaModelUrl;
     }
 
     public String getCategory() {
@@ -194,7 +194,7 @@ public class SdcResourceBasicInfo implements Comparable<SdcResourceBasicInfo> {
         this.lastUpdaterUserId = lastUpdaterUserId;
     }
 
-    public EELFLogger getLOGGER() {
+    public EELFLogger getLogger() {
         return logger;
     }
 }

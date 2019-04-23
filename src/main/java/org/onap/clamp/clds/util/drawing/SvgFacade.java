@@ -38,11 +38,11 @@ public class SvgFacade {
         SVGGraphics2D svgGraphics2D = new SVGGraphics2D(XmlTools.createEmptySvgDocument());
         Document document = XmlTools.createEmptySvgDocument();
         DocumentBuilder dp = new DocumentBuilder(document, svgGraphics2D.getDOMFactory());
-        Painter p = new Painter(svgGraphics2D, dp);
-        ClampGraphBuilder cgp = new ClampGraphBuilder(p).collector("VES");
+        Painter painter = new Painter(svgGraphics2D, dp);
+        ClampGraphBuilder cgp = new ClampGraphBuilder(painter).collector("VES");
         cgp.addAllMicroServices(microServicesChain);
         ClampGraph cg = cgp.policy("Policy").build();
-        return cg.getAsSVG();
+        return cg.getAsSvg();
     }
 
 }

@@ -42,8 +42,8 @@ public class CldsDbServiceCache {
      */
     public CldsDbServiceCache(CldsServiceData cldsServiceData) throws IOException {
         setCldsDataInstream(cldsServiceData);
-        setInvariantId(cldsServiceData.getServiceInvariantUUID());
-        setServiceId(cldsServiceData.getServiceUUID());
+        setInvariantId(cldsServiceData.getServiceInvariantUuid());
+        setServiceId(cldsServiceData.getServiceUuid());
     }
 
     public String getInvariantId() {
