@@ -100,7 +100,8 @@ public class ClampServlet extends CamelHttpTransportServlet {
             permissionList.add(SecureServicePermission
                     .create(applicationContext.getEnvironment().getProperty(PERM_TOSCA), cldsPermissionInstance, READ));
             permissionList.add(SecureServicePermission
-                    .create(applicationContext.getEnvironment().getProperty(PERM_TOSCA), cldsPermissionInstance, UPDATE));
+                    .create(applicationContext.getEnvironment().getProperty(PERM_TOSCA),
+                        cldsPermissionInstance, UPDATE));
         }
         return permissionList;
     }
@@ -122,8 +123,8 @@ public class ClampServlet extends CamelHttpTransportServlet {
                     grantedAuths.add(new SimpleGrantedAuthority(permString));
                 }
             }
-            Authentication auth = new UsernamePasswordAuthenticationToken(new User(principal.getName(), "", grantedAuths), "",
-                    grantedAuths);
+            Authentication auth = new UsernamePasswordAuthenticationToken(
+                new User(principal.getName(), "", grantedAuths), "", grantedAuths);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         try {

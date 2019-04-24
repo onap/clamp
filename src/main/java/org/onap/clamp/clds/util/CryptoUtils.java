@@ -165,7 +165,7 @@ public final class CryptoUtils {
             //Workaround fix to make encryption key configurable
             // System environment variable takes precedence for over clds/key.properties
             String encryptionKey = System.getenv(AES_ENCRYPTION_KEY);
-            if(encryptionKey != null && encryptionKey.trim().length() > 0) {
+            if (encryptionKey != null && encryptionKey.trim().length() > 0) {
                 return getSecretKeySpec(encryptionKey);
             } else {
                 props.load(ResourceFileUtil.getResourceAsStream(propertiesFileName));

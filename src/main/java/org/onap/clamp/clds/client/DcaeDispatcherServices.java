@@ -194,7 +194,8 @@ public class DcaeDispatcherServices {
         String nodeAttr) throws IOException, ParseException {
         Date startTime = new Date();
         try {
-            String responseStr = dcaeHttpConnectionManager.doHttpRequest(url, requestMethod, payload, contentType, "DCAE", null, null);
+            String responseStr = dcaeHttpConnectionManager.doHttpRequest(url, requestMethod, payload,
+                contentType, "DCAE", null, null);
             JSONObject jsonObj = parseResponse(responseStr);
             JSONObject linksObj = (JSONObject) jsonObj.get(node);
             String statusUrl = (String) linksObj.get(nodeAttr);

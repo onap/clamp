@@ -40,10 +40,8 @@ import org.springframework.stereotype.Controller;
 public class LoopController {
 
     private final LoopService loopService;
-    private static final Type OPERATIONAL_POLICY_TYPE = new TypeToken<List<OperationalPolicy>>() {
-    }.getType();
-    private static final Type MICROSERVICE_POLICY_TYPE = new TypeToken<List<MicroServicePolicy>>() {
-    }.getType();
+    private static final Type OPERATIONAL_POLICY_TYPE = new TypeToken<List<OperationalPolicy>>() {}.getType();
+    private static final Type MICROSERVICE_POLICY_TYPE = new TypeToken<List<MicroServicePolicy>>() {}.getType();
 
     @Autowired
     public LoopController(LoopService loopService) {
@@ -121,7 +119,7 @@ public class LoopController {
      *        The loop name
      * @return The SVG representation
      */
-    public String getSVGRepresentation(String loopName) {
+    public String getSvgRepresentation(String loopName) {
         return loopService.getLoop(loopName).getSvgRepresentation();
     }
 }

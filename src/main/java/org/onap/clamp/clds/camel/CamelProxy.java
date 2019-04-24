@@ -55,8 +55,11 @@ public interface CamelProxy {
     String executeAction(@ExchangeProperty("actionCd") String actionCommand,
                          @ExchangeProperty("modelProp") String modelProperties,
                          @ExchangeProperty("modelBpmnProp") String modelBpmnProperties,
-                         @ExchangeProperty("modelName") String modelName, @ExchangeProperty("controlName") String controlName,
-                         @ExchangeProperty("docText") String docText, @ExchangeProperty("isTest") boolean isTest,
-                         @ExchangeProperty("userid") String userId, @ExchangeProperty("isInsertTestEvent") boolean isInsertTestEvent,
+                         @ExchangeProperty("modelName") String modelName,
+                         @ExchangeProperty("controlName") String controlName,
+                         @ExchangeProperty("docText") String docText,
+                         @ExchangeProperty("isTest") boolean isTest,
+                         @ExchangeProperty("userid") String userId,
+                         @ExchangeProperty("isInsertTestEvent") boolean isInsertTestEvent,
                          @ExchangeProperty("eventAction") String eventAction);
 }
