@@ -81,7 +81,8 @@ public class MicroService {
             return false;
         }
         MicroService that = (MicroService) o;
-        return name.equals(that.name) && modelType.equals(that.modelType) && inputFrom.equals(that.inputFrom) && mappedNameJpa.equals(that.mappedNameJpa) && blueprintName.equals(that.blueprintName);
+        return name.equals(that.name) && modelType.equals(that.modelType) && inputFrom.equals(that.inputFrom)
+            && mappedNameJpa.equals(that.mappedNameJpa) && blueprintName.equals(that.blueprintName);
     }
 
     @Override

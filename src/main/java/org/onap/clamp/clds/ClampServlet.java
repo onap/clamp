@@ -122,8 +122,8 @@ public class ClampServlet extends CamelHttpTransportServlet {
                     grantedAuths.add(new SimpleGrantedAuthority(permString));
                 }
             }
-            Authentication auth = new UsernamePasswordAuthenticationToken(new User(principal.getName(), "", grantedAuths), "",
-                    grantedAuths);
+            Authentication auth = new UsernamePasswordAuthenticationToken(
+                new User(principal.getName(), "", grantedAuths), "", grantedAuths);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         try {

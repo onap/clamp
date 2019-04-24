@@ -20,6 +20,7 @@
  * ===================================================================
  *
  */
+
 package org.onap.clamp.clds.sdc.controller.installer;
 
 import com.google.gson.Gson;
@@ -163,10 +164,10 @@ public class BlueprintParserTest {
 
     @Test
     public void fallBackToOneMicroServiceTCATest() {
-        MicroService tcaMS = new MicroService(BlueprintParser.TCA, "onap.policy.monitoring.cdap.tca.hi.lo.app", "", "",
+        MicroService tcaMs = new MicroService(BlueprintParser.TCA, "onap.policy.monitoring.cdap.tca.hi.lo.app", "", "",
             "");
 
-        List<MicroService> expected = Collections.singletonList(tcaMS);
+        List<MicroService> expected = Collections.singletonList(tcaMs);
         List<MicroService> actual = new BlueprintParser().fallbackToOneMicroService(microServiceBlueprintOldStyleTCA);
 
         Assert.assertEquals(expected, actual);
@@ -174,10 +175,10 @@ public class BlueprintParserTest {
 
     @Test
     public void fallBackToOneMicroServiceHolmesTest() {
-        MicroService holmesMS = new MicroService(BlueprintParser.HOLMES, "onap.policy.monitoring.cdap.tca.hi.lo.app",
+        MicroService holmesMs = new MicroService(BlueprintParser.HOLMES, "onap.policy.monitoring.cdap.tca.hi.lo.app",
             "", "", "");
 
-        List<MicroService> expected = Collections.singletonList(holmesMS);
+        List<MicroService> expected = Collections.singletonList(holmesMs);
         List<MicroService> actual = new BlueprintParser()
             .fallbackToOneMicroService(microServiceBlueprintOldStyleHolmes);
 

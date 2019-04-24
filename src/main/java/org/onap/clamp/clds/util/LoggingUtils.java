@@ -183,8 +183,8 @@ public class LoggingUtils {
         MDC.clear();
         checkNotNull(request);
         // Extract MDC values from standard HTTP headers.
-        final String requestId = defaultToUUID(request.getHeader(ONAPLogConstants.Headers.REQUEST_ID));
-        final String invocationId = defaultToUUID(request.getHeader(ONAPLogConstants.Headers.INVOCATION_ID));
+        final String requestId = defaultToUuid(request.getHeader(ONAPLogConstants.Headers.REQUEST_ID));
+        final String invocationId = defaultToUuid(request.getHeader(ONAPLogConstants.Headers.INVOCATION_ID));
         final String partnerName = defaultToEmpty(request.getHeader(ONAPLogConstants.Headers.PARTNER_NAME));
 
         // Default the partner name to the user name used to login to clamp
@@ -378,7 +378,7 @@ public class LoggingUtils {
      * @param in to be filtered
      * @return input string or null
      */
-    private static String defaultToUUID(final String in) {
+    private static String defaultToUuid(final String in) {
         if (in == null) {
             return UUID.randomUUID().toString();
         }
@@ -390,12 +390,12 @@ public class LoggingUtils {
      *
      * @param targetEntity Target entity (an external/sub component, for ex. "sdc")
      * @param targetServiceName Target service name (name of API invoked on target)
-     * @param invocationID The invocation ID
+     * @param invocationId The invocation ID
      */
-    private void invokeContext(String targetEntity, String targetServiceName, String invocationID) {
+    private void invokeContext(String targetEntity, String targetServiceName, String invocationId) {
         MDC.put(ONAPLogConstants.MDCs.TARGET_ENTITY, defaultToEmpty(targetEntity));
         MDC.put(ONAPLogConstants.MDCs.TARGET_SERVICE_NAME, defaultToEmpty(targetServiceName));
-        MDC.put(ONAPLogConstants.MDCs.INVOCATIONID_OUT, invocationID);
+        MDC.put(ONAPLogConstants.MDCs.INVOCATIONID_OUT, invocationId);
         MDC.put(ONAPLogConstants.MDCs.INVOKE_TIMESTAMP,
             ZonedDateTime.now(ZoneOffset.UTC)
             .format(DateTimeFormatter.ISO_INSTANT));

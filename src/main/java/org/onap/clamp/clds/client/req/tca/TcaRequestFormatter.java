@@ -106,8 +106,8 @@ public class TcaRequestFormatter {
      *            modelProperties.setCurrentModelElementId will be used
      * @return The Json node containing what should be sent to policy
      */
-    public static JsonObject createPolicyContent(ClampProperties refProp, ModelProperties modelProperties, String service,
-            String policyName, Tca tca) {
+    public static JsonObject createPolicyContent(ClampProperties refProp, ModelProperties modelProperties,
+        String service, String policyName, Tca tca) {
         try {
             String serviceToUse = service;
             String policyNameToUse = policyName;
