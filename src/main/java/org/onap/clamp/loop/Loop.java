@@ -109,7 +109,8 @@ public class Loop implements Serializable {
 
     @Expose
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "loops_microservicepolicies", joinColumns = @JoinColumn(name = "loop_id"), inverseJoinColumns = @JoinColumn(name = "microservicepolicy_id"))
+    @JoinTable(name = "loops_microservicepolicies", joinColumns = @JoinColumn(name = "loop_id"),
+            inverseJoinColumns = @JoinColumn(name = "microservicepolicy_id"))
     private Set<MicroServicePolicy> microServicePolicies = new HashSet<>();
 
     @Expose

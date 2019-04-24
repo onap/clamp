@@ -60,6 +60,11 @@ public class ClampGraphBuilder {
         return this;
     }
 
+    /**
+     * Returns an instance of ClampGraph if there is at least one micro service and policy.
+     *
+     * @return an instance of ClampGraph if there is at least one micro service and policy
+     */
     public ClampGraph build() {
         if (microServices.isEmpty()) {
             throw new InvalidStateException("At least one microservice is required");

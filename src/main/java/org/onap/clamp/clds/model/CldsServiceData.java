@@ -44,11 +44,11 @@ public class CldsServiceData implements Serializable {
     private Long ageOfRecord;
     private List<CldsVfData> cldsVfs;
 
-    public String getServiceInvariantUUID() {
+    public String getServiceInvariantUuid() {
         return serviceInvariantUuid;
     }
 
-    public void setServiceInvariantUUID(String serviceInvariantUuid) {
+    public void setServiceInvariantUuid(String serviceInvariantUuid) {
         this.serviceInvariantUuid = serviceInvariantUuid;
     }
 
@@ -60,11 +60,11 @@ public class CldsServiceData implements Serializable {
         this.cldsVfs = cldsVfs;
     }
 
-    public String getServiceUUID() {
+    public String getServiceUuid() {
         return serviceUiod;
     }
 
-    public void setServiceUUID(String serviceUuid) {
+    public void setServiceUuid(String serviceUuid) {
         this.serviceUiod = serviceUuid;
     }
 
@@ -91,11 +91,11 @@ public class CldsServiceData implements Serializable {
                 // if user is authorized for the VF then add it to the filtered
                 // list
                 try {
-                    if (svc.isAuthorizedForVf(vf.getVfInvariantResourceUUID())) {
+                    if (svc.isAuthorizedForVf(vf.getVfInvariantResourceUuid())) {
                         filteredCldsVfs.add(vf);
                     }
                 } catch (NotAuthorizedException e) {
-                    logger.error("user not authorized for {}" + vf.getVfInvariantResourceUUID(), e);
+                    logger.error("user not authorized for {}" + vf.getVfInvariantResourceUuid(), e);
                     // when not NotAuthorizedException - don't add to
                     // filteredCldsVfs list
                 }

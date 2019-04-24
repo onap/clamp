@@ -106,8 +106,8 @@ public class TcaRequestFormatter {
      *            modelProperties.setCurrentModelElementId will be used
      * @return The Json node containing what should be sent to policy
      */
-    public static JsonObject createPolicyContent(ClampProperties refProp, ModelProperties modelProperties, String service,
-            String policyName, Tca tca) {
+    public static JsonObject createPolicyContent(ClampProperties refProp, ModelProperties modelProperties,
+                                                 String service, String policyName, Tca tca) {
         try {
             String serviceToUse = service;
             String policyNameToUse = policyName;
@@ -123,7 +123,8 @@ public class TcaRequestFormatter {
                 policyNameToUse = modelProperties.getCurrentPolicyScopeAndPolicyName();
             }
             JsonObject rootNode = refProp.getJsonTemplate("tca.template", serviceToUse).getAsJsonObject();
-            JsonObject metricsPerEventName = rootNode.get("metricsPerEventName").getAsJsonArray().get(0).getAsJsonObject();
+            JsonObject metricsPerEventName = rootNode.get("metricsPerEventName").getAsJsonArray().get(0)
+                    .getAsJsonObject();
             metricsPerEventName.addProperty("eventName", tcaToUse.getTcaItem().getEventName());
             metricsPerEventName.addProperty("policyName", policyNameToUse);
             metricsPerEventName.addProperty("controlLoopSchemaType",tcaToUse.getTcaItem().getControlLoopSchemaType());
@@ -175,7 +176,7 @@ public class TcaRequestFormatter {
     /**
      * This method updates the blueprint that is received in the UI with the TCA
      * Json.
-     *
+     * 
      * @param refProp
      *            * The refProp generally created by Spring, it's an access on
      *            the clds-references.properties file

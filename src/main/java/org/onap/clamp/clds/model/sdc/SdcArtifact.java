@@ -51,11 +51,11 @@ public class SdcArtifact {
         this.artifactType = artifactType;
     }
 
-    public String getArtifactURL() {
+    public String getArtifactUrl() {
         return artifactUrl;
     }
 
-    public void setArtifactURL(String artifactURL) {
+    public void setArtifactUrl(String artifactURL) {
         this.artifactUrl = artifactURL;
     }
 
@@ -83,11 +83,11 @@ public class SdcArtifact {
         this.artifactChecksum = artifactChecksum;
     }
 
-    public String getArtifactUUID() {
+    public String getArtifactUuid() {
         return artifactUuid;
     }
 
-    public void setArtifactUUID(String artifactUUID) {
+    public void setArtifactUuid(String artifactUUID) {
         this.artifactUuid = artifactUUID;
     }
 
@@ -99,11 +99,11 @@ public class SdcArtifact {
         this.artifactVersion = artifactVersion;
     }
 
-    public String getGeneratedFromUUID() {
+    public String getGeneratedFromUuid() {
         return generatedFromUuid;
     }
 
-    public void setGeneratedFromUUID(String generatedFromUUID) {
+    public void setGeneratedFromUuid(String generatedFromUUID) {
         this.generatedFromUuid = generatedFromUUID;
     }
 }

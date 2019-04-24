@@ -89,7 +89,8 @@ public class AuthorizationControllerItCase {
         AuthorizationController auth = new AuthorizationController();
         assertTrue(auth.isUserPermitted(new SecureServicePermission("permission-type-cl","dev","read")));
         assertTrue(auth.isUserPermitted(new SecureServicePermission("permission-type-cl-manage","dev","DEPLOY")));
-        assertTrue(auth.isUserPermitted(new SecureServicePermission("permission-type-filter-vf","dev","12345-55555-55555-5555")));
+        assertTrue(auth.isUserPermitted(new SecureServicePermission("permission-type-filter-vf","dev",
+                                                                    "12345-55555-55555-5555")));
         assertFalse(auth.isUserPermitted(new SecureServicePermission("permission-type-cl","test","read")));
     }
 }

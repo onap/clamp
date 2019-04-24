@@ -175,7 +175,8 @@ public class CsarInstallerImpl implements CsarInstaller {
 
     private JsonObject createGlobalPropertiesJson(BlueprintArtifact blueprintArtifact, Loop newLoop) {
         JsonObject globalProperties = new JsonObject();
-        globalProperties.add("dcaeDeployParameters", getAllBlueprintParametersInJson(blueprintArtifact, newLoop));
+        globalProperties.add("dcaeDeployParameters", getAllBlueprintParametersInJson(blueprintArtifact,
+                                                                                     newLoop));
         return globalProperties;
     }
 
@@ -212,7 +213,8 @@ public class CsarInstallerImpl implements CsarInstaller {
             }
         });
         // For Dublin only one micro service is expected
-        node.addProperty("policy_id", ((MicroServicePolicy) newLoop.getMicroServicePolicies().toArray()[0]).getName());
+        node.addProperty("policy_id", ((MicroServicePolicy) newLoop.getMicroServicePolicies()
+                .toArray()[0]).getName());
         return node;
     }
 
