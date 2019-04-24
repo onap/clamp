@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b38fe597_53809ccb",
+        "filename": "src/main/java/org/onap/clamp/clds/config/spring/SdcControllerConfiguration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-04-24T09:10:25Z",
+      "side": 1,
+      "message": "Not sure why we need to change all those settings ?\nChanging the profile in the application.properties is not enough ?",
+      "revId": "e6b43cf4595a06fbdf72c312e708c67c1c4dc314",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
