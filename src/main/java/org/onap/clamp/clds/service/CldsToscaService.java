@@ -84,13 +84,13 @@ public class CldsToscaService extends SecureServiceBase {
      *         type
      */
     public ResponseEntity<?> parseToscaModelAndSave(String toscaModelName, CldsToscaModel cldsToscaModel) {
-        Date startTime = new Date();
+        LoggingUtils.setEntryTimeContext(new Date());
         LoggingUtils.setRequestContext("CldsToscaService: Parse Tosca model and save", getPrincipalName());
         // TODO revisit based on new permissions
         isAuthorized(permissionUpdateTosca);
         cldsToscaModel.setToscaModelName(toscaModelName);
         cldsToscaModel = cldsToscaModel.save(cldsDao, refProp, policyClient, getUserId());
-        LoggingUtils.setTimeContext(startTime, new Date());
+        LoggingUtils.setEndTimeContext(new Date());
         LoggingUtils.setResponseContext("0", "Parse Tosca model and save success", this.getClass().getName());
         auditLogger.info("Parse Tosca model and save completed");
         return new ResponseEntity<>(cldsToscaModel, HttpStatus.CREATED);

@@ -116,13 +116,13 @@ public class CldsTemplateService extends SecureServiceBase {
      */
     public CldsTemplate getTemplate(String templateName) {
         util.entering(request, "CldsTemplateService: GET template");
-        Date startTime = new Date();
+        LoggingUtils.setEntryTimeContext(new Date());
         isAuthorized(permissionReadTemplate);
         logger.info("GET model for  templateName=" + templateName);
         CldsTemplate template = CldsTemplate.retrieve(cldsDao, templateName, false);
         template.setUserAuthorizedToUpdate(isAuthorizedNoException(permissionUpdateTemplate));
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
+        LoggingUtils.setEndTimeContext(new Date());
         auditLogger.info("GET template completed");
         util.exiting("200", "Get template success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return template;
@@ -137,7 +137,7 @@ public class CldsTemplateService extends SecureServiceBase {
      */
     public CldsTemplate putTemplate(String templateName, CldsTemplate cldsTemplate) {
         util.entering(request, "CldsTemplateService: PUT template");
-        Date startTime = new Date();
+        LoggingUtils.setEntryTimeContext(new Date());
         isAuthorized(permissionUpdateTemplate);
         logger.info("PUT Template for  templateName=" + templateName);
         logger.info("PUT bpmnText=" + cldsTemplate.getBpmnText());
@@ -146,7 +146,7 @@ public class CldsTemplateService extends SecureServiceBase {
         cldsTemplate.setName(templateName);
         cldsTemplate.save(cldsDao, null);
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
+        LoggingUtils.setEndTimeContext(new Date());
         auditLogger.info("PUT template completed");
         util.exiting("200", "Put template success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return cldsTemplate;

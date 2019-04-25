@@ -285,7 +285,7 @@ public class CldsService extends SecureServiceBase {
      */
     public CldsModel getModel(String modelName) {
         util.entering(request, "CldsService: GET model");
-        Date startTime = new Date();
+        LoggingUtils.setEntryTimeContext(new Date());
         isAuthorized(permissionReadCl);
         logger.debug("GET model for  modelName={}", modelName);
         CldsModel cldsModel = CldsModel.retrieve(cldsDao, modelName, false);
@@ -311,7 +311,7 @@ public class CldsService extends SecureServiceBase {
             logger.error("getModel set event Inventory error:" + e);
         }
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
+        LoggingUtils.setEndTimeContext(new Date());
         auditLogger.info("GET model completed");
         util.exiting("200", "Get model success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return cldsModel;
@@ -326,7 +326,7 @@ public class CldsService extends SecureServiceBase {
      */
     public CldsModel putModel(String modelName, CldsModel cldsModel) {
         util.entering(request, "CldsService: PUT model");
-        Date startTime = new Date();
+        LoggingUtils.setEntryTimeContext(new Date());
         isAuthorized(permissionUpdateCl);
         isAuthorizedForVf(cldsModel);
         logger.info("PUT model for  modelName={}", modelName);
@@ -337,7 +337,7 @@ public class CldsService extends SecureServiceBase {
         cldsModel.save(cldsDao, getUserId());
 
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
+        LoggingUtils.setEndTimeContext(new Date());
         auditLogger.info("PUT model completed");
         util.exiting("200", "Put model success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return cldsModel;
@@ -474,7 +474,7 @@ public class CldsService extends SecureServiceBase {
      */
     public String postDcaeEvent(String test, DcaeEvent dcaeEvent) {
         util.entering(request, "CldsService: Post dcae event");
-        Date startTime = new Date();
+        LoggingUtils.setEntryTimeContext(new Date());
         String userid = null;
         // TODO: allow auth checking to be turned off by removing the permission
         // type property
@@ -506,7 +506,7 @@ public class CldsService extends SecureServiceBase {
             }
         }
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
+        LoggingUtils.setEndTimeContext(new Date());
         auditLogger.info("Post dcae event completed");
         util.exiting("200", "Post dcae event success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return msgInfo;

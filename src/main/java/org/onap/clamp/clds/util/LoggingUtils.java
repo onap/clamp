@@ -30,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -47,6 +48,10 @@ import org.onap.clamp.clds.service.DefaultUserNameHandler;
 import org.slf4j.MDC;
 import org.slf4j.event.Level;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import static org.onap.clamp.clds.util.ONAPLogConstants.MDCs.ELAPSED_TIMESTAMP;
+import static org.onap.clamp.clds.util.ONAPLogConstants.MDCs.END_TIMESTAMP;
+import static org.onap.clamp.clds.util.ONAPLogConstants.MDCs.ENTRY_TIMESTAMP;
 
 /**
  * This class handles the special info that appear in the log, like RequestID,
@@ -103,6 +108,32 @@ public class LoggingUtils {
         MDC.put("EntryTimestamp", generateTimestampStr(beginTimeStamp));
         MDC.put("EndTimestamp", generateTimestampStr(endTimeStamp));
         MDC.put("ElapsedTime", String.valueOf(endTimeStamp.getTime() - beginTimeStamp.getTime()));
+    }
+
+    /**
+     * Sets the start time stamp.
+     *
+     * @param beginTimeStamp start time
+     */
+    public static void setEntryTimeContext(@NotNull Date beginTimeStamp) {
+        MDC.put(ENTRY_TIMESTAMP, generateTimestampStr(beginTimeStamp));
+    }
+
+    /**
+     * Sets the end time stamp and elapsed time.
+     *
+     * @param endTimeStamp End time
+     */
+    public static void setEndTimeContext(@NotNull Date endTimeStamp) {
+        MDC.put(END_TIMESTAMP, generateTimestampStr(endTimeStamp));
+        Date entryTimeStamp;
+        try {
+            entryTimeStamp = DATE_FORMAT.parse(MDC.get(ENTRY_TIMESTAMP));
+        } catch (ParseException e) {
+            logger.error("Failed to parse the entry time stamp " + e);
+            return;
+        }
+        MDC.put(ELAPSED_TIMESTAMP, String.valueOf(endTimeStamp.getTime() - entryTimeStamp.getTime()));
     }
 
     /**
@@ -197,8 +228,8 @@ public class LoggingUtils {
         // others, OR set them BEFORE or AFTER the invocation of #entering,
         // depending on where you need them to appear, OR extend the
         // ServiceDescriptor to add them.
-        MDC.put(ONAPLogConstants.MDCs.ENTRY_TIMESTAMP,
-            ZonedDateTime.now(ZoneOffset.UTC)
+        MDC.put(ENTRY_TIMESTAMP,
+                ZonedDateTime.now(ZoneOffset.UTC)
             .format(DateTimeFormatter.ISO_INSTANT));
         MDC.put(ONAPLogConstants.MDCs.REQUEST_ID, requestId);
         MDC.put(ONAPLogConstants.MDCs.INVOCATION_ID, invocationId);
@@ -233,12 +264,12 @@ public class LoggingUtils {
             MDC.put(ONAPLogConstants.MDCs.RESPONSE_SEVERITY, defaultToEmpty(severity));
             MDC.put(ONAPLogConstants.MDCs.RESPONSE_STATUS_CODE, defaultToEmpty(status));
 
-            ZonedDateTime startTime = ZonedDateTime.parse(MDC.get(ONAPLogConstants.MDCs.ENTRY_TIMESTAMP),
+            ZonedDateTime startTime = ZonedDateTime.parse(MDC.get(ENTRY_TIMESTAMP),
                 DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.UTC));
             ZonedDateTime endTime = ZonedDateTime.now(ZoneOffset.UTC);
-            MDC.put(ONAPLogConstants.MDCs.END_TIMESTAMP, endTime.format(DateTimeFormatter.ISO_INSTANT));
+            MDC.put(END_TIMESTAMP, endTime.format(DateTimeFormatter.ISO_INSTANT));
             long duration = ChronoUnit.MILLIS.between(startTime, endTime);
-            MDC.put(ONAPLogConstants.MDCs.ELAPSED_TIMESTAMP, String.valueOf(duration)); 
+            MDC.put(ELAPSED_TIMESTAMP, String.valueOf(duration));
             this.mlogger.info(ONAPLogConstants.Markers.EXIT);
         }
         finally {
