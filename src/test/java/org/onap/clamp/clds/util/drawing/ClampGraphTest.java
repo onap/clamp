@@ -46,28 +46,28 @@ public class ClampGraphTest {
     private DocumentBuilder mockDocumentBuilder;
 
     @Test
-    public void getAsSVGTest() throws IOException, ParserConfigurationException, SAXException {
+    public void getAsSvgTest() throws IOException, ParserConfigurationException, SAXException {
         String expected = ResourceFileUtil.getResourceAsString("clds/util/file.xml");
         Document document = XmlToolsTest.parseStringToXmlDocument(expected);
 
         when(mockDocumentBuilder.getGroupingDocument()).thenReturn(document);
 
-        String actual = new ClampGraph(mockDocumentBuilder).getAsSVG();
+        String actual = new ClampGraph(mockDocumentBuilder).getAsSvg();
         Assert.assertEquals(expected.trim(), actual.trim());
     }
 
     @Test
-    public void getAsSVGLazyTest() throws IOException, ParserConfigurationException, SAXException {
+    public void getAsSvgLazyTest() throws IOException, ParserConfigurationException, SAXException {
         String expected = ResourceFileUtil.getResourceAsString("clds/util/file.xml");
         Document document = XmlToolsTest.parseStringToXmlDocument(expected);
 
         when(mockDocumentBuilder.getGroupingDocument()).thenReturn(document);
         ClampGraph cg = new ClampGraph(mockDocumentBuilder);
 
-        String actualFirst = cg.getAsSVG();
+        String actualFirst = cg.getAsSvg();
         verify(mockDocumentBuilder, times(1)).getGroupingDocument();
 
-        String actualSecond = cg.getAsSVG();
+        String actualSecond = cg.getAsSvg();
         verifyNoMoreInteractions(mockDocumentBuilder);
 
         Assert.assertEquals(expected.trim(), actualFirst.trim());

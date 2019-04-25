@@ -72,7 +72,7 @@ public class LoopOperation {
         this.loopService = loopService;
         this.dcaeDispatcherServices = dcaeDispatcherServices;
     }
-    
+
     /**
      * Deploy the closed loop.
      *

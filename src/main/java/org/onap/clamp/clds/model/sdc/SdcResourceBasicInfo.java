@@ -194,7 +194,7 @@ public class SdcResourceBasicInfo implements Comparable<SdcResourceBasicInfo> {
         this.lastUpdaterUserId = lastUpdaterUserId;
     }
 
-    public EELFLogger getLOGGER() {
+    public EELFLogger getLogger() {
         return logger;
     }
 }

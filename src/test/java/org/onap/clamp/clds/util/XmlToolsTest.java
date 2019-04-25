@@ -55,6 +55,16 @@ public class XmlToolsTest {
     }
 
 
+    /**
+     * Parse the content of string and creates XML Document.
+     *
+     * @param res XML in string format
+     * @return XML document
+     * @throws ParserConfigurationException if DocumentBuilderFactory or the DocumentBuilder
+     *     it creates cannot support this feature
+     * @throws SAXException If any parse errors occur
+     * @throws IOException If any IO errors occur
+     */
     public static Document parseStringToXmlDocument(String res)
         throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

@@ -115,8 +115,8 @@ public class ImageBuilder {
     }
 
     private void drawHorizontalLineForMicroService(Point point, int width, int height) {
-        int y = calculateMsHorizontalLineYCoordinate(point,height);
-        g2d.drawLine(point.x, y, point.x + width, y);
+        int axisY = calculateMsHorizontalLineYCoordinate(point,height);
+        g2d.drawLine(point.x, axisY, point.x + width, axisY);
     }
 
     private void drawDiagonalLineForPolicy(Point point, int width, int height) {
@@ -128,9 +128,9 @@ public class ImageBuilder {
     }
 
     private Point coordinatesForRectangle(Point from, Point next) {
-        int x = from.x;
-        int y = from.y - next.y + LINE_THICKNESS / 2;
-        return new Point(x,y);
+        int axisX = from.x;
+        int axisY = from.y - next.y + LINE_THICKNESS / 2;
+        return new Point(axisX,axisY);
     }
 
 }

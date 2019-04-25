@@ -75,6 +75,14 @@ public class CsarHandler {
     public static final String DATA_DEFINITION_NAME_SUFFIX = "Definitions/data.yml";
     public static final String DATA_DEFINITION_KEY = "data_types:";
 
+    /**
+     * Constructor to create an instance of CsarHandle.
+     *
+     * @param data SDC notification
+     * @param controller controller name
+     * @param clampCsarPath csar path
+     * @throws CsarHandlerException exception if CSAR is not present in notification
+     */
     public CsarHandler(INotificationData data, String controller, String clampCsarPath) throws CsarHandlerException {
         this.sdcNotification = data;
         this.controllerName = controller;
@@ -86,8 +94,8 @@ public class CsarHandler {
         return clampCsarPath + "/" + controllerName + "/" + artifactElement.getArtifactName();
     }
 
-    private IArtifactInfo searchForUniqueCsar(INotificationData iNotif) throws CsarHandlerException {
-        List<IArtifactInfo> serviceArtifacts = iNotif.getServiceArtifacts();
+    private IArtifactInfo searchForUniqueCsar(INotificationData data) throws CsarHandlerException {
+        List<IArtifactInfo> serviceArtifacts = data.getServiceArtifacts();
         for (IArtifactInfo artifact : serviceArtifacts) {
             if (artifact.getArtifactType().equals(CSAR_TYPE)) {
                 return artifact;
