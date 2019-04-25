@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "43e10f28_55ebaba1",
+        "filename": "src/test/java/org/onap/clamp/clds/it/AuthorizationControllerItCase.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-25T11:27:24Z",
+      "side": 1,
+      "message": "Two unused imports.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 6
+      },
+      "revId": "fb2074b3bc7f8851fbd97ff463f3e6675a1d54f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "731780e1_a98b40ea",
+        "filename": "src/test/java/org/onap/clamp/clds/it/MockPermission.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-25T11:27:24Z",
+      "side": 1,
+      "message": "I don\u0027t like the name. Mock+Name is quite unique and IMHO should implement the Name interface.",
+      "range": {
+        "startLine": 37,
+        "startChar": 13,
+        "endLine": 37,
+        "endChar": 27
+      },
+      "revId": "fb2074b3bc7f8851fbd97ff463f3e6675a1d54f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d8126338_39bfa55a",
+        "filename": "src/test/java/org/onap/clamp/clds/it/MockPermission.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-25T11:27:24Z",
+      "side": 1,
+      "message": "This can be final as well.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 11
+      },
+      "revId": "fb2074b3bc7f8851fbd97ff463f3e6675a1d54f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "36f36eca_3ae16ce3",
+        "filename": "src/test/java/org/onap/clamp/clds/it/MockPermission.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-25T11:27:24Z",
+      "side": 1,
+      "message": "Can we make constants for \"dev\" and \"test\"?",
+      "range": {
+        "startLine": 53,
+        "startChar": 25,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "fb2074b3bc7f8851fbd97ff463f3e6675a1d54f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fedcd190_9b978c7a",
+        "filename": "src/test/java/org/onap/clamp/clds/it/MockPermission.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-25T11:27:24Z",
+      "side": 1,
+      "message": "not used",
+      "range": {
+        "startLine": 72,
+        "startChar": 11,
+        "endLine": 72,
+        "endChar": 25
+      },
+      "revId": "fb2074b3bc7f8851fbd97ff463f3e6675a1d54f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a36216_c5fae919",
+        "filename": "src/test/java/org/onap/clamp/clds/it/MockPermission.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-25T11:27:24Z",
+      "side": 1,
+      "message": "not used",
+      "range": {
+        "startLine": 78,
+        "startChar": 28,
+        "endLine": 78,
+        "endChar": 41
+      },
+      "revId": "fb2074b3bc7f8851fbd97ff463f3e6675a1d54f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
