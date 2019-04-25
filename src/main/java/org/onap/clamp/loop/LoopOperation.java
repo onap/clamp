@@ -84,7 +84,7 @@ public class LoopOperation {
      */
     public Loop deployLoop(Exchange camelExchange, String loopName) throws OperationException {
         util.entering(request, "CldsService: Deploy model");
-        Date startTime = new Date();
+        LoggingUtils.setEntryTimeContext(new Date());
         Loop loop = loopService.getLoop(loopName);
 
         if (loop == null) {
@@ -122,7 +122,7 @@ public class LoopOperation {
         loopService.saveOrUpdateLoop(loop);
 
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
+        LoggingUtils.setEndTimeContext(new Date());
         auditLogger.info("Deploy model completed");
         util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return loop;
@@ -137,7 +137,7 @@ public class LoopOperation {
      */
     public Loop unDeployLoop(String loopName) throws OperationException {
         util.entering(request, "LoopOperation: Undeploy the closed loop");
-        Date startTime = new Date();
+        LoggingUtils.setEntryTimeContext(new Date());
         Loop loop = loopService.getLoop(loopName);
 
         if (loop == null) {
@@ -166,7 +166,7 @@ public class LoopOperation {
         loopService.saveOrUpdateLoop(loop);
 
         // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
+        LoggingUtils.setEndTimeContext(new Date());
         auditLogger.info("Undeploy model completed");
         util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
         return loop;

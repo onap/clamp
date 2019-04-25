@@ -106,6 +106,26 @@ public class LoggingUtils {
     }
 
     /**
+     * Sets the start time stamp.
+     *
+     * @param beginTimeStamp start time
+     */
+    public static void setEntryTimeContext(@NotNull Date beginTimeStamp) {
+        MDC.put("EntryTimestamp", generateTimestampStr(beginTimeStamp));
+    }
+
+    /**
+     * Sets the end time stamp and elapsed time.
+     *
+     * @param endTimeStamp End time
+     */
+    public static void setEndTimeContext(@NotNull Date endTimeStamp) {
+        Date beginTimeStamp = getProperties("EntryTimestamp");
+        MDC.put("EndTimestamp", generateTimestampStr(endTimeStamp));
+        MDC.put("ElapsedTime", String.valueOf(endTimeStamp.getTime() - beginTimeStamp.getTime()));
+    }
+
+    /**
      * Set response related logging variables in thread local data via MDC.
      *
      * @param code Response code ("0" indicates success)

@@ -73,7 +73,7 @@ public class CldsDictionaryService extends SecureServiceBase {
      */
     public ResponseEntity<CldsDictionary> createOrUpdateDictionary(String dictionaryName,
             CldsDictionary cldsDictionary) {
-        Date startTime = new Date();
+        LoggingUtils.setEntryTimeContext(new Date());
         LoggingUtils.setRequestContext("CldsDictionaryService: createOrUpdateDictionary", getPrincipalName());
         // TODO revisit based on new permissions
         isAuthorized(permissionUpdateTosca);
@@ -82,7 +82,7 @@ public class CldsDictionaryService extends SecureServiceBase {
             cldsDictionary.setDictionaryName(dictionaryName);
         }
         cldsDictionary.save(dictionaryName, cldsDao, getUserId());
-        LoggingUtils.setTimeContext(startTime, new Date());
+        LoggingUtils.setEndTimeContext(new Date());
         LoggingUtils.setResponseContext("0", "createOrUpdateDictionary success", this.getClass().getName());
         auditLogger.info("createOrUpdateDictionary completed");
         return new ResponseEntity<>(cldsDictionary, HttpStatus.OK);
@@ -99,12 +99,12 @@ public class CldsDictionaryService extends SecureServiceBase {
      */
     public ResponseEntity<CldsDictionaryItem> createOrUpdateDictionaryElements(String dictionaryName,
             CldsDictionaryItem dictionaryItem) {
-        Date startTime = new Date();
+        LoggingUtils.setEntryTimeContext(new Date());
         LoggingUtils.setRequestContext("CldsDictionaryService: createOrUpdateDictionaryElements", getPrincipalName());
         // TODO revisit based on new permissions
         isAuthorized(permissionUpdateTosca);
         dictionaryItem.save(dictionaryName, cldsDao, getUserId());
-        LoggingUtils.setTimeContext(startTime, new Date());
+        LoggingUtils.setEndTimeContext(new Date());
         LoggingUtils.setResponseContext("0", "createOrUpdateDictionaryElements success", this.getClass().getName());
         auditLogger.info("createOrUpdateDictionaryElements completed");
         return new ResponseEntity<>(dictionaryItem, HttpStatus.OK);
