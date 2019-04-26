@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.onap.clamp.clds.model.CldsServiceData;
 import org.onap.clamp.clds.model.CldsVfData;
-import org.onap.clamp.clds.model.CldsVfKPIData;
+import org.onap.clamp.clds.model.CldsVfKpiData;
 import org.onap.clamp.clds.model.CldsVfcData;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -50,7 +50,7 @@ public final class CldsServiceDataMapper implements RowMapper<CldsServiceData> {
         CldsServiceData cldsServiceData = new CldsServiceData();
         try (ValidatingObjectInputStream oip = new ValidatingObjectInputStream(rs.getBlob(4).getBinaryStream())) {
             oip.accept(CldsServiceData.class, ArrayList.class, CldsVfData.class, CldsVfcData.class,
-                    CldsVfKPIData.class);
+                    CldsVfKpiData.class);
             cldsServiceData = (CldsServiceData) oip.readObject();
             cldsServiceData.setAgeOfRecord(rs.getLong(5));
         } catch (IOException | ClassNotFoundException e) {

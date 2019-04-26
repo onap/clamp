@@ -34,7 +34,7 @@ public class SdcServiceInfo implements Comparable<SdcServiceInfo> {
     protected static final EELFLogger auditLogger = EELFManager.getInstance().getAuditLogger();
 
     private String                    uuid;
-    private String                    invariantUUID;
+    private String                    invariantUuid;
     private String                    name;
     private String                    version;
     private String                    toscaModelURL;
@@ -51,12 +51,12 @@ public class SdcServiceInfo implements Comparable<SdcServiceInfo> {
         this.uuid = uuid;
     }
 
-    public String getInvariantUUID() {
-        return invariantUUID;
+    public String getInvariantUuid() {
+        return invariantUuid;
     }
 
-    public void setInvariantUUID(String invariantUUID) {
-        this.invariantUUID = invariantUUID;
+    public void setInvariantUuid(String invariantUuid) {
+        this.invariantUuid = invariantUuid;
     }
 
     public String getName() {

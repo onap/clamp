@@ -491,8 +491,8 @@ public class CldsService extends SecureServiceBase {
         if (dcaeEvent.getInstances() != null) {
             instanceCount = dcaeEvent.getInstances().size();
         }
-        String msgInfo = "event=" + dcaeEvent.getEvent() + " serviceUUID=" + dcaeEvent.getServiceUUID()
-            + " resourceUUID=" + dcaeEvent.getResourceUUID() + " artifactName=" + dcaeEvent.getArtifactName()
+        String msgInfo = "event=" + dcaeEvent.getEvent() + " serviceUUID=" + dcaeEvent.getServiceUuid()
+            + " resourceUUID=" + dcaeEvent.getResourceUuid() + " artifactName=" + dcaeEvent.getArtifactName()
             + " instance count=" + instanceCount + " isTest=" + isTest;
         logger.info("POST dcae event {}", msgInfo);
         if (isTest) {
