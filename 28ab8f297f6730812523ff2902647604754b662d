@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7bf4423b_01918af3",
+        "filename": "src/main/java/org/onap/clamp/clds/ClampServlet.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-26T12:58:16Z",
+      "side": 1,
+      "message": "com. imports should go before java. \nall in alphabetical order",
+      "range": {
+        "startLine": 49,
+        "startChar": 7,
+        "endLine": 49,
+        "endChar": 10
+      },
+      "revId": "28ab8f297f6730812523ff2902647604754b662d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f27e4973_c00dccf7",
+        "filename": "src/test/java/org/onap/clamp/loop/LoopRepositoriesItCase.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-26T12:58:16Z",
+      "side": 1,
+      "message": "Should it be \u0027micro\u0027 rather than \u0027my\u0027?",
+      "range": {
+        "startLine": 90,
+        "startChar": 27,
+        "endLine": 90,
+        "endChar": 36
+      },
+      "revId": "28ab8f297f6730812523ff2902647604754b662d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6d1a88e3_1757e744",
+        "filename": "src/test/java/org/onap/clamp/loop/LoopToJsonTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-26T12:58:16Z",
+      "side": 1,
+      "message": "\u0027micro\u0027 ?\n/same as previous/",
+      "range": {
+        "startLine": 68,
+        "startChar": 27,
+        "endLine": 68,
+        "endChar": 36
+      },
+      "revId": "28ab8f297f6730812523ff2902647604754b662d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
