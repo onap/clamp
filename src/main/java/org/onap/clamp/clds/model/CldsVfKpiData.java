@@ -25,7 +25,7 @@ package org.onap.clamp.clds.model;
 
 import java.io.Serializable;
 
-public class CldsVfKPIData implements Serializable {
+public class CldsVfKpiData implements Serializable {
 
     private static final long serialVersionUID = 9067755871527776380L;
 

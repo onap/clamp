@@ -40,18 +40,18 @@ public class CldsDbServiceCacheTest {
     public void testConstructor() throws IOException, ClassNotFoundException {
         // given
         CldsServiceData cldsServiceData = new CldsServiceData();
-        cldsServiceData.setServiceUUID("testUUID");
+        cldsServiceData.setServiceUuid("testUUID");
         cldsServiceData.setAgeOfRecord(100L);
-        cldsServiceData.setServiceInvariantUUID("testInvariantUUID");
+        cldsServiceData.setServiceInvariantUuid("testInvariantUUID");
 
         CldsVfData cldsVfData = new CldsVfData();
         cldsVfData.setVfName("vf");
 
-        CldsVfKPIData cldsVfKpiData = new CldsVfKPIData();
+        CldsVfKpiData cldsVfKpiData = new CldsVfKpiData();
         cldsVfKpiData.setFieldPath("fieldPath");
         cldsVfKpiData.setFieldPathValue("fieldValue");
 
-        List<CldsVfKPIData> cldsKpiList = new ArrayList<>();
+        List<CldsVfKpiData> cldsKpiList = new ArrayList<>();
         cldsKpiList.add(cldsVfKpiData);
         cldsVfData.setCldsKPIList(cldsKpiList);
 
@@ -70,8 +70,8 @@ public class CldsDbServiceCacheTest {
         assertThat(cldsServiceDataResult.getCldsVfs()).hasSize(1);
         assertThat(cldsServiceDataResult.getCldsVfs().get(0).getCldsKPIList()).hasSize(1);
 
-        assertThat(cldsServiceDataResult.getServiceInvariantUUID()).isEqualTo("testInvariantUUID");
-        assertThat(cldsServiceDataResult.getServiceUUID()).isEqualTo("testUUID");
+        assertThat(cldsServiceDataResult.getServiceInvariantUuid()).isEqualTo("testInvariantUUID");
+        assertThat(cldsServiceDataResult.getServiceUuid()).isEqualTo("testUUID");
         assertThat(cldsServiceDataResult.getAgeOfRecord()).isEqualTo(100L);
     }
 }
