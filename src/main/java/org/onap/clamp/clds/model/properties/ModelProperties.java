@@ -372,6 +372,12 @@ public class ModelProperties {
         }
     }
 
+    /**
+     * Gets the type of the given class.
+     *
+     * @param clazz the given class
+     * @return the type
+     */
     public <T extends AbstractModelElement> T getType(Class<T> clazz) {
         instantiateMissingModelElements();
         String type = modelElementClasses.get(clazz);
