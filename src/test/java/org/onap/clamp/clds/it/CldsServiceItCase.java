@@ -264,8 +264,8 @@ public class CldsServiceItCase {
         DcaeEvent dcaeEvent = new DcaeEvent();
         dcaeEvent.setArtifactName("ClosedLoop_with-enough-characters_TestArtifact.yml");
         dcaeEvent.setEvent(DcaeEvent.EVENT_CREATED);
-        dcaeEvent.setResourceUUID("1");
-        dcaeEvent.setServiceUUID("2");
+        dcaeEvent.setResourceUuid("1");
+        dcaeEvent.setServiceUuid("2");
         assertEquals(cldsService.postDcaeEvent("false", dcaeEvent),
             "event=created serviceUUID=2 resourceUUID=1 artifactName="
                 + "ClosedLoop_with-enough-characters_TestArtifact.yml instance count=0 isTest=false");
