@@ -5,6 +5,8 @@
  * Copyright (C) 2017-2018 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
+ * Modifications Copyright (c) 2019 Samsung
+ * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -76,14 +78,11 @@ public class CldsTemplateService extends SecureServiceBase {
      */
     public String getBpmnTemplate(String templateName) {
         util.entering(request, "CldsTemplateService: GET template bpmn");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         isAuthorized(permissionReadTemplate);
         logger.info("GET bpmnText for templateName=" + templateName);
         CldsTemplate template = CldsTemplate.retrieve(cldsDao, templateName, false);
-        // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
-        auditLogger.info("GET template bpmn completed");
-        util.exiting("200", "Get template bpmn success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        auditLogInfo("GET template bpmn", startTime);
         return template.getBpmnText();
     }
 
@@ -97,14 +96,11 @@ public class CldsTemplateService extends SecureServiceBase {
      */
     public String getImageXml(String templateName) {
         util.entering(request, "CldsTemplateService: GET template image");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         isAuthorized(permissionReadTemplate);
         logger.info("GET imageText for templateName=" + templateName);
         CldsTemplate template = CldsTemplate.retrieve(cldsDao, templateName, false);
-        // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
-        auditLogger.info("GET template image completed");
-        util.exiting("200", "Get template image success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        auditLogInfo("GET template image", startTime);
         return template.getImageText();
     }
 
@@ -116,15 +112,12 @@ public class CldsTemplateService extends SecureServiceBase {
      */
     public CldsTemplate getTemplate(String templateName) {
         util.entering(request, "CldsTemplateService: GET template");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         isAuthorized(permissionReadTemplate);
         logger.info("GET model for  templateName=" + templateName);
         CldsTemplate template = CldsTemplate.retrieve(cldsDao, templateName, false);
         template.setUserAuthorizedToUpdate(isAuthorizedNoException(permissionUpdateTemplate));
-        // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
-        auditLogger.info("GET template completed");
-        util.exiting("200", "Get template success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        auditLogInfo("GET template", startTime);
         return template;
     }
 
@@ -137,7 +130,7 @@ public class CldsTemplateService extends SecureServiceBase {
      */
     public CldsTemplate putTemplate(String templateName, CldsTemplate cldsTemplate) {
         util.entering(request, "CldsTemplateService: PUT template");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         isAuthorized(permissionUpdateTemplate);
         logger.info("PUT Template for  templateName=" + templateName);
         logger.info("PUT bpmnText=" + cldsTemplate.getBpmnText());
@@ -145,10 +138,7 @@ public class CldsTemplateService extends SecureServiceBase {
         logger.info("PUT imageText=" + cldsTemplate.getImageText());
         cldsTemplate.setName(templateName);
         cldsTemplate.save(cldsDao, null);
-        // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
-        auditLogger.info("PUT template completed");
-        util.exiting("200", "Put template success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        auditLogInfo("PUT template", startTime);
         return cldsTemplate;
     }
 
@@ -159,16 +149,20 @@ public class CldsTemplateService extends SecureServiceBase {
      */
     public List<ValueItem> getTemplateNames() {
         util.entering(request, "CldsTemplateService: GET template names");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         isAuthorized(permissionReadTemplate);
         logger.info("GET list of template names");
         List<ValueItem> names = cldsDao.getTemplateNames();
-        // audit log
-        LoggingUtils.setTimeContext(startTime, new Date());
-        auditLogger.info("GET template names completed");
-        util.exiting("200", "Get template names success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        auditLogInfo("GET template names", startTime);
         return names;
     }
+
+    private void auditLogInfo(String actionDescription, Date startTime) {
+        LoggingUtils.setTimeContext(startTime, new Date());
+        auditLogger.info(actionDescription + " completed");
+        util.exiting("200", actionDescription + " success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+    }
+
 
     // Created for the integration test
     public void setLoggingUtil(LoggingUtils utilP) {
