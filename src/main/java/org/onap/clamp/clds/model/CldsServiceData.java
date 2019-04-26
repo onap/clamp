@@ -40,15 +40,15 @@ public class CldsServiceData implements Serializable {
     protected static final EELFLogger logger = EELFManager.getInstance().getLogger(CldsServiceData.class);
     protected static final EELFLogger auditLogger = EELFManager.getInstance().getAuditLogger();
     private String serviceInvariantUuid;
-    private String serviceUiod;
+    private String serviceUuid;
     private Long ageOfRecord;
     private List<CldsVfData> cldsVfs;
 
-    public String getServiceInvariantUUID() {
+    public String getServiceInvariantUuid() {
         return serviceInvariantUuid;
     }
 
-    public void setServiceInvariantUUID(String serviceInvariantUuid) {
+    public void setServiceInvariantUuid(String serviceInvariantUuid) {
         this.serviceInvariantUuid = serviceInvariantUuid;
     }
 
@@ -60,12 +60,12 @@ public class CldsServiceData implements Serializable {
         this.cldsVfs = cldsVfs;
     }
 
-    public String getServiceUUID() {
-        return serviceUiod;
+    public String getServiceUuid() {
+        return serviceUuid;
     }
 
-    public void setServiceUUID(String serviceUuid) {
-        this.serviceUiod = serviceUuid;
+    public void setServiceUuid(String serviceUuid) {
+        this.serviceUuid = serviceUuid;
     }
 
     public Long getAgeOfRecord() {
@@ -91,11 +91,11 @@ public class CldsServiceData implements Serializable {
                 // if user is authorized for the VF then add it to the filtered
                 // list
                 try {
-                    if (svc.isAuthorizedForVf(vf.getVfInvariantResourceUUID())) {
+                    if (svc.isAuthorizedForVf(vf.getVfInvariantResourceUuid())) {
                         filteredCldsVfs.add(vf);
                     }
                 } catch (NotAuthorizedException e) {
-                    logger.error("user not authorized for {}" + vf.getVfInvariantResourceUUID(), e);
+                    logger.error("user not authorized for {}" + vf.getVfInvariantResourceUuid(), e);
                     // when not NotAuthorizedException - don't add to
                     // filteredCldsVfs list
                 }
