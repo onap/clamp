@@ -23,6 +23,7 @@
 
 package org.onap.clamp.clds.service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -107,11 +108,12 @@ public class CldsToscaService extends SecureServiceBase {
         LoggingUtils.setRequestContext("CldsToscaService: Get All tosca models", getPrincipalName());
         // TODO revisit based on new permissions
         isAuthorized(permissionReadTosca);
-        List<CldsToscaModel> cldsToscaModels = Optional.ofNullable(cldsDao.getAllToscaModels()).get();
+        Optional<List<CldsToscaModel>> cldsToscaModels = Optional.ofNullable(cldsDao.getAllToscaModels());
         LoggingUtils.setTimeContext(startTime, new Date());
+        List<CldsToscaModel> result = cldsToscaModels.orElse(Collections.emptyList());
         LoggingUtils.setResponseContext("0", "Get All tosca models success", this.getClass().getName());
         auditLogger.info("Get All tosca models");
-        return cldsToscaModels;
+        return result;
     }
 
     /**
@@ -138,8 +140,8 @@ public class CldsToscaService extends SecureServiceBase {
     /**
      * REST service that retrieves a CLDS Tosca model lists for a policy type
      * from the database.
-     * 
      * @param policyType
+     *        Type of the policy
      * @return clds tosca model - CLDS tosca model for a given policy type
      */
     public CldsToscaModel getToscaModelsByPolicyType(String policyType) {

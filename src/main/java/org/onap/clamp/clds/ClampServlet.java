@@ -25,8 +25,15 @@
 
 package org.onap.clamp.clds;
 
-import com.att.eelf.configuration.EELFLogger;
-import com.att.eelf.configuration.EELFManager;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.camel.component.servlet.CamelHttpTransportServlet;
 import org.onap.clamp.clds.service.SecureServicePermission;
 import org.springframework.context.ApplicationContext;
@@ -39,13 +46,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import com.att.eelf.configuration.EELFLogger;
+import com.att.eelf.configuration.EELFManager;
 
 public class ClampServlet extends CamelHttpTransportServlet {
 
@@ -100,7 +102,8 @@ public class ClampServlet extends CamelHttpTransportServlet {
             permissionList.add(SecureServicePermission
                     .create(applicationContext.getEnvironment().getProperty(PERM_TOSCA), cldsPermissionInstance, READ));
             permissionList.add(SecureServicePermission
-                    .create(applicationContext.getEnvironment().getProperty(PERM_TOSCA), cldsPermissionInstance, UPDATE));
+                    .create(applicationContext.getEnvironment().getProperty(PERM_TOSCA),
+                            cldsPermissionInstance, UPDATE));
         }
         return permissionList;
     }
@@ -122,8 +125,8 @@ public class ClampServlet extends CamelHttpTransportServlet {
                     grantedAuths.add(new SimpleGrantedAuthority(permString));
                 }
             }
-            Authentication auth = new UsernamePasswordAuthenticationToken(new User(principal.getName(), "", grantedAuths), "",
-                    grantedAuths);
+            Authentication auth = new UsernamePasswordAuthenticationToken(
+                    new User(principal.getName(), "", grantedAuths), "", grantedAuths);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         try {

@@ -412,9 +412,7 @@ public class CldsService extends SecureServiceBase {
             model.save(cldsDao, getUserId());
 
             // get vars and format if necessary
-            String prop = model.getPropText();
             String bpmn = model.getBpmnText();
-            String docText = model.getDocText();
             String controlName = model.getControlName();
             String bpmnJson = cldsBpmnTransformer.doXslTransformToString(bpmn);
             logger.info("PUT bpmnJson={}", bpmnJson);
@@ -426,7 +424,9 @@ public class CldsService extends SecureServiceBase {
             logger.info("PUT isInsertTestEvent={}", isInsertTestEvent);
             // determine if requested action is permitted
             model.validateAction(actionCd);
+            String prop = model.getPropText();
             logger.info("modelProp - " + prop);
+            String docText = model.getDocText();
             logger.info("docText - " + docText);
             try {
                 String result = camelProxy.executeAction(actionCd, prop, bpmnJson, modelName, controlName, docText,
