@@ -202,7 +202,7 @@ public class CldsService extends SecureServiceBase {
      */
     public List<CldsMonitoringDetails> getCldsDetails() {
         util.entering(request, "CldsService: GET model details");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         List<CldsMonitoringDetails> cldsMonitoringDetailsList = cldsDao.getCldsMonitoringDetails();
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
@@ -219,7 +219,7 @@ public class CldsService extends SecureServiceBase {
      */
     public CldsInfo getCldsInfo() {
         util.entering(request, "CldsService: GET cldsInfo");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         LoggingUtils.setTimeContext(startTime, new Date());
 
         CldsInfoProvider cldsInfoProvider = new CldsInfoProvider(this);
@@ -242,10 +242,10 @@ public class CldsService extends SecureServiceBase {
      */
     public String getBpmnXml(String modelName) {
         util.entering(request, "CldsService: GET model bpmn");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         isAuthorized(permissionReadCl);
         logger.info("GET bpmnText for modelName={}", modelName);
-        CldsModel model = CldsModel.retrieve(cldsDao, modelName, false);
+        final CldsModel model = CldsModel.retrieve(cldsDao, modelName, false);
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET model bpmn completed");
@@ -263,10 +263,10 @@ public class CldsService extends SecureServiceBase {
      */
     public String getImageXml(String modelName) {
         util.entering(request, "CldsService: GET model image");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         isAuthorized(permissionReadCl);
         logger.info("GET imageText for modelName={}", modelName);
-        CldsModel model = CldsModel.retrieve(cldsDao, modelName, false);
+        final CldsModel model = CldsModel.retrieve(cldsDao, modelName, false);
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET model image completed");
@@ -282,7 +282,7 @@ public class CldsService extends SecureServiceBase {
      */
     public CldsModel getModel(String modelName) {
         util.entering(request, "CldsService: GET model");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         isAuthorized(permissionReadCl);
         logger.debug("GET model for  modelName={}", modelName);
         CldsModel cldsModel = CldsModel.retrieve(cldsDao, modelName, false);
@@ -323,7 +323,7 @@ public class CldsService extends SecureServiceBase {
      */
     public CldsModel putModel(String modelName, CldsModel cldsModel) {
         util.entering(request, "CldsService: PUT model");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         isAuthorized(permissionUpdateCl);
         isAuthorizedForVf(cldsModel);
         logger.info("PUT model for  modelName={}", modelName);
@@ -332,7 +332,6 @@ public class CldsService extends SecureServiceBase {
         logger.info("PUT imageText={}", cldsModel.getImageText());
         fillInCldsModel(cldsModel);
         cldsModel.save(cldsDao, getUserId());
-
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("PUT model completed");
@@ -347,10 +346,10 @@ public class CldsService extends SecureServiceBase {
      */
     public List<ValueItem> getModelNames() {
         util.entering(request, "CldsService: GET model names");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         isAuthorized(permissionReadCl);
         logger.info("GET list of model names");
-        List<ValueItem> names = cldsDao.getModelNames();
+        final List<ValueItem> names = cldsDao.getModelNames();
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET model names completed");
@@ -386,7 +385,7 @@ public class CldsService extends SecureServiceBase {
     public ResponseEntity<?> putModelAndProcessAction(String action, String modelName, String test, CldsModel model)
         throws TransformerException, ParseException {
         util.entering(request, "CldsService: Process model action");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         String errorMessage = "";
         String actionCd = "";
         try {
@@ -409,9 +408,7 @@ public class CldsService extends SecureServiceBase {
             model.save(cldsDao, getUserId());
 
             // get vars and format if necessary
-            String prop = model.getPropText();
             String bpmn = model.getBpmnText();
-            String docText = model.getDocText();
             String controlName = model.getControlName();
             String bpmnJson = cldsBpmnTransformer.doXslTransformToString(bpmn);
             logger.info("PUT bpmnJson={}", bpmnJson);
@@ -423,7 +420,9 @@ public class CldsService extends SecureServiceBase {
             logger.info("PUT isInsertTestEvent={}", isInsertTestEvent);
             // determine if requested action is permitted
             model.validateAction(actionCd);
+            String prop = model.getPropText();
             logger.info("modelProp - " + prop);
+            String docText = model.getDocText();
             logger.info("docText - " + docText);
             try {
                 String result = camelProxy.executeAction(actionCd, prop, bpmnJson, modelName, controlName, docText,
@@ -471,7 +470,7 @@ public class CldsService extends SecureServiceBase {
      */
     public String postDcaeEvent(String test, DcaeEvent dcaeEvent) {
         util.entering(request, "CldsService: Post dcae event");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         String userid = null;
         // TODO: allow auth checking to be turned off by removing the permission
         // type property
@@ -489,7 +488,8 @@ public class CldsService extends SecureServiceBase {
             instanceCount = dcaeEvent.getInstances().size();
         }
         String msgInfo = "event=" + dcaeEvent.getEvent() + " serviceUUID=" + dcaeEvent.getServiceUUID()
-            + " resourceUUID=" + dcaeEvent.getResourceUUID() + " artifactName=" + dcaeEvent.getArtifactName()
+            + " resourceUUID=" + dcaeEvent.getResourceUUID()
+                + " artifactName=" + dcaeEvent.getArtifactName()
             + " instance count=" + instanceCount + " isTest=" + isTest;
         logger.info("POST dcae event {}", msgInfo);
         if (isTest) {
@@ -566,7 +566,7 @@ public class CldsService extends SecureServiceBase {
      */
     public ResponseEntity<CldsModel> deployModel(String modelName, CldsModel model) {
         util.entering(request, "CldsService: Deploy model");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         String errorMessage = "";
         try {
             fillInCldsModel(model);
@@ -622,7 +622,7 @@ public class CldsService extends SecureServiceBase {
      */
     public ResponseEntity<CldsModel> unDeployModel(String modelName, CldsModel model) {
         util.entering(request, "CldsService: Undeploy model");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         String errorMessage = "";
         try {
             SecureServicePermission permisionManage = SecureServicePermission.create(cldsPermissionTypeClManage,

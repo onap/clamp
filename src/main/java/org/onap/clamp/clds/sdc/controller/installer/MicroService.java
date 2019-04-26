@@ -73,15 +73,16 @@ public class MicroService {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (object == null || getClass() != object.getClass()) {
             return false;
         }
-        MicroService that = (MicroService) o;
-        return name.equals(that.name) && modelType.equals(that.modelType) && inputFrom.equals(that.inputFrom) && mappedNameJpa.equals(that.mappedNameJpa) && blueprintName.equals(that.blueprintName);
+        MicroService that = (MicroService) object;
+        return name.equals(that.name) && modelType.equals(that.modelType) && inputFrom.equals(that.inputFrom)
+                && mappedNameJpa.equals(that.mappedNameJpa) && blueprintName.equals(that.blueprintName);
     }
 
     @Override
