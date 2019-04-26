@@ -5,6 +5,8 @@
  * Copyright (C) 2018 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
+ * Modifications Copyright (c) 2019 Samsung
+ * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +25,7 @@
 
 package org.onap.clamp.clds.service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -84,15 +87,13 @@ public class CldsToscaService extends SecureServiceBase {
      *         type
      */
     public ResponseEntity<?> parseToscaModelAndSave(String toscaModelName, CldsToscaModel cldsToscaModel) {
-        Date startTime = new Date();
+        final Date startTime = new Date();
         LoggingUtils.setRequestContext("CldsToscaService: Parse Tosca model and save", getPrincipalName());
         // TODO revisit based on new permissions
         isAuthorized(permissionUpdateTosca);
         cldsToscaModel.setToscaModelName(toscaModelName);
         cldsToscaModel = cldsToscaModel.save(cldsDao, refProp, policyClient, getUserId());
-        LoggingUtils.setTimeContext(startTime, new Date());
-        LoggingUtils.setResponseContext("0", "Parse Tosca model and save success", this.getClass().getName());
-        auditLogger.info("Parse Tosca model and save completed");
+        auditLogInfo("Parse Tosca model and save", startTime);
         return new ResponseEntity<>(cldsToscaModel, HttpStatus.CREATED);
     }
 
@@ -102,16 +103,13 @@ public class CldsToscaService extends SecureServiceBase {
      * @return clds tosca models - list of CLDS tosca models
      */
     public List<CldsToscaModel> getAllToscaModels() {
-
-        Date startTime = new Date();
-        LoggingUtils.setRequestContext("CldsToscaService: Get All tosca models", getPrincipalName());
         // TODO revisit based on new permissions
+        final Date startTime = new Date();
+        LoggingUtils.setRequestContext("CldsToscaService: Get All tosca models", getPrincipalName());
         isAuthorized(permissionReadTosca);
-        List<CldsToscaModel> cldsToscaModels = Optional.ofNullable(cldsDao.getAllToscaModels()).get();
-        LoggingUtils.setTimeContext(startTime, new Date());
-        LoggingUtils.setResponseContext("0", "Get All tosca models success", this.getClass().getName());
-        auditLogger.info("Get All tosca models");
-        return cldsToscaModels;
+        Optional<List<CldsToscaModel>> cldsToscaModels = Optional.ofNullable(cldsDao.getAllToscaModels());
+        auditLogInfo("Get All tosca models", startTime);
+        return cldsToscaModels.orElse(Collections.emptyList());
     }
 
     /**
@@ -124,34 +122,38 @@ public class CldsToscaService extends SecureServiceBase {
      * @return clds tosca model - CLDS tosca model for a given tosca model name
      */
     public CldsToscaModel getToscaModel(String toscaModelName) {
-        Date startTime = new Date();
+        final Date startTime = new Date();
         LoggingUtils.setRequestContext("CldsToscaService: Get tosca models by model name", getPrincipalName());
         // TODO revisit based on new permissions
         isAuthorized(permissionReadTosca);
-        List<CldsToscaModel> cldsToscaModels = Optional.ofNullable(cldsDao.getToscaModelByName(toscaModelName)).get();
-        LoggingUtils.setTimeContext(startTime, new Date());
-        LoggingUtils.setResponseContext("0", "Get tosca models by model name success", this.getClass().getName());
-        auditLogger.info("GET tosca models by model name completed");
-        return cldsToscaModels.get(0);
+        Optional<List<CldsToscaModel>> cldsToscaModels = Optional.ofNullable(
+                cldsDao.getToscaModelByName(toscaModelName));
+        auditLogInfo("Get tosca models by model name", startTime);
+        return cldsToscaModels.map(models -> models.get(0)).orElse(null);
     }
 
     /**
      * REST service that retrieves a CLDS Tosca model lists for a policy type
      * from the database.
-     * 
      * @param policyType
+     *        Type of the policy
      * @return clds tosca model - CLDS tosca model for a given policy type
      */
     public CldsToscaModel getToscaModelsByPolicyType(String policyType) {
-        Date startTime = new Date();
+        final Date startTime = new Date();
         LoggingUtils.setRequestContext("CldsToscaService: Get tosca models by policyType", getPrincipalName());
         // TODO revisit based on new permissions
         isAuthorized(permissionReadTosca);
-        List<CldsToscaModel> cldsToscaModels = Optional.ofNullable(cldsDao.getToscaModelByPolicyType(policyType)).get();
+        Optional<List<CldsToscaModel>> cldsToscaModels = Optional.ofNullable(
+                cldsDao.getToscaModelByPolicyType(policyType));
+        auditLogInfo("Get tosca models by policyType", startTime);
+        return cldsToscaModels.map(models -> models.get(0)).orElse(null);
+    }
+
+    private void auditLogInfo(String actionDescription, Date startTime) {
         LoggingUtils.setTimeContext(startTime, new Date());
-        LoggingUtils.setResponseContext("0", "Get tosca models by policyType success", this.getClass().getName());
-        auditLogger.info("GET tosca models by policyType completed");
-        return cldsToscaModels.get(0);
+        LoggingUtils.setResponseContext("0", actionDescription + " success", this.getClass().getName());
+        auditLogger.info(actionDescription + " completed");
     }
 
     public ResponseEntity<?> deleteToscaModelById(String toscaModeId) {
