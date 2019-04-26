@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "80f52c3f_e02637a9",
+        "filename": "src/test/java/org/onap/clamp/clds/config/CldsUserJsonDecoderTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-26T13:19:05Z",
+      "side": 1,
+      "message": "could \u0027// when\u0027 be before that?",
+      "range": {
+        "startLine": 101,
+        "startChar": 8,
+        "endLine": 101,
+        "endChar": 27
+      },
+      "revId": "a0775f83cb520a85e59f71ac692a8494a5157046",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "286bb3bd_80cf76e8",
+        "filename": "src/test/resources/clds/clds-parse-exception.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-26T13:19:05Z",
+      "side": 1,
+      "message": "could be much simpler: any non json text",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 1
+      },
+      "revId": "a0775f83cb520a85e59f71ac692a8494a5157046",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
