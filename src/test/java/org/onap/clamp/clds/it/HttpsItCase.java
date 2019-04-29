@@ -23,27 +23,18 @@
 
 package org.onap.clamp.clds.it;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.nio.charset.Charset;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.onap.clamp.clds.config.ClampProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -51,18 +42,33 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.nio.charset.Charset;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+
 /**
  * Test HTTP and HTTPS settings + redirection of HTTP to HTTPS.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @TestPropertySource(locations = "classpath:https/https-test.properties")
+//@EnableWebSecurity
 public class HttpsItCase {
 
     @Value("${server.port}")
     private String httpsPort;
     @Value("${server.http-to-https-redirection.port}")
     private String httpPort;
+
+    @Autowired
+    ClampProperties clampProp;
+
+    RestTemplate template;
 
     /**
      * Setup the variable before tests execution.
@@ -98,17 +104,15 @@ public class HttpsItCase {
         }
     }
 
+    @Before
+    public void setupBefore(){
+        template = new RestTemplate();
+        final MySimpleClientHttpRequestFactory factory = new MySimpleClientHttpRequestFactory((hostname, session) -> true);
+        template.setRequestFactory(factory);
+    }
+
     @Test
     public void testDesignerIndex() throws Exception {
-        RestTemplate template = new RestTemplate();
-        final MySimpleClientHttpRequestFactory factory = new MySimpleClientHttpRequestFactory(new HostnameVerifier() {
-
-            @Override
-            public boolean verify(final String hostname, final SSLSession session) {
-                return true;
-            }
-        });
-        template.setRequestFactory(factory);
         ResponseEntity<String> entity = template
             .getForEntity("http://localhost:" + this.httpPort + "/designer/index.html", String.class);
         assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.FOUND);
@@ -120,15 +124,6 @@ public class HttpsItCase {
 
     @Test
     public void testSwaggerJson() throws Exception {
-        RestTemplate template = new RestTemplate();
-        final MySimpleClientHttpRequestFactory factory = new MySimpleClientHttpRequestFactory(new HostnameVerifier() {
-
-            @Override
-            public boolean verify(final String hostname, final SSLSession session) {
-                return true;
-            }
-        });
-        template.setRequestFactory(factory);
         ResponseEntity<String> httpsEntity = template
             .getForEntity("https://localhost:" + this.httpsPort + "/restservices/clds/api-doc", String.class);
         assertThat(httpsEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -137,6 +132,20 @@ public class HttpsItCase {
                 new File("docs/swagger/swagger.json"), httpsEntity.getBody(), Charset.defaultCharset());
     }
 
+    @Test
+    public void testClampServlet() {
+
+        RestTemplateBuilder templateBuilder = new RestTemplateBuilder();
+        templateBuilder = templateBuilder.requestFactory(() -> template.getRequestFactory());
+
+        // TODO CREATE THE TEST USER
+        TestRestTemplate testTemplate = new TestRestTemplate(templateBuilder, "admin", "password");
+
+        ResponseEntity<String> httpsEntity = testTemplate
+                .getForEntity("https://localhost:" + this.httpsPort + "/restservices/clds/api-doc", String.class);
+        assertThat(httpsEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+    }
     /**
      * Http Request Factory for ignoring SSL hostname errors. Not for production
      * use!
@@ -145,7 +154,7 @@ public class HttpsItCase {
 
         private final HostnameVerifier verifier;
 
-        public MySimpleClientHttpRequestFactory(final HostnameVerifier verifier) {
+        MySimpleClientHttpRequestFactory(final HostnameVerifier verifier) {
             this.verifier = verifier;
         }
 
