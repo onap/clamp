@@ -93,6 +93,7 @@ public class LoopOperation {
         rootObject.addProperty(DCAE_SERVICETYPE_ID, serviceTypeId);
         if (deploymentProp != null) {
             rootObject.add(DCAE_INPUTS, deploymentProp);
+
         }
         String apiBodyString = rootObject.toString();
         logger.info("Dcae api Body String - " + apiBodyString);
