@@ -22,6 +22,30 @@
       "revId": "9d5f583c2ef318aee8e17f610909a143371f0be1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "25d42f8f_439349a8",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/DistributionStatusMessage.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2019-04-29T09:52:34Z",
+      "side": 1,
+      "message": "There are not issue connected with that.",
+      "parentUuid": "7384d373_4933cabe",
+      "range": {
+        "startLine": 31,
+        "startChar": 19,
+        "endLine": 31,
+        "endChar": 30
+      },
+      "revId": "9d5f583c2ef318aee8e17f610909a143371f0be1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
