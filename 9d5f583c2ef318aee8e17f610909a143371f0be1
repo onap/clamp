@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7384d373_4933cabe",
+        "filename": "src/main/java/org/onap/clamp/clds/sdc/controller/DistributionStatusMessage.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-29T09:39:07Z",
+      "side": 1,
+      "message": "Didn\u0027t it complain about the \u0027URL\u0027 (and \u0027ID\u0027 below) being an all-uppercase-letter abbreviation?",
+      "range": {
+        "startLine": 31,
+        "startChar": 19,
+        "endLine": 31,
+        "endChar": 30
+      },
+      "revId": "9d5f583c2ef318aee8e17f610909a143371f0be1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
