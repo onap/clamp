@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45ec1279_06a37d27",
+        "filename": "src/test/java/org/onap/clamp/clds/it/CldsServiceItCase.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-29T11:20:33Z",
+      "side": 1,
+      "message": "In test it\u0027d be better to use Assert.assertNotNull(in);",
+      "range": {
+        "startLine": 152,
+        "startChar": 8,
+        "endLine": 152,
+        "endChar": 14
+      },
+      "revId": "8d2da4133d9b27f4c1899eafebe44cd24296700a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
