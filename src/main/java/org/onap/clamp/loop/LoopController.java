@@ -41,9 +41,9 @@ public class LoopController {
 
     private final LoopService loopService;
     private static final Type OPERATIONAL_POLICY_TYPE = new TypeToken<List<OperationalPolicy>>() {
-    }.getType();
+       }.getType();
     private static final Type MICROSERVICE_POLICY_TYPE = new TypeToken<List<MicroServicePolicy>>() {
-    }.getType();
+       }.getType();
 
     @Autowired
     public LoopController(LoopService loopService) {
@@ -74,7 +74,7 @@ public class LoopController {
     }
 
     /**
-     * Update the whole array of MicroService policies properties
+     * Update the whole array of MicroService policies properties.
      *
      * @param loopName
      *        The loop name
@@ -89,7 +89,7 @@ public class LoopController {
     }
 
     /**
-     * Update the global properties
+     * Update the global properties.
      *
      * @param loopName
      *        The loop name
@@ -102,7 +102,7 @@ public class LoopController {
     }
 
     /**
-     * Update one MicroService policy properties
+     * Update one MicroService policy properties.
      *
      * @param loopName
      *        The loop name
@@ -115,13 +115,13 @@ public class LoopController {
     }
 
     /**
-     * Get the SVG representation of the loop
+     * Get the SVG representation of the loop.
      * 
      * @param loopName
      *        The loop name
      * @return The SVG representation
      */
-    public String getSVGRepresentation(String loopName) {
+    public String getSvgRepresentation(String loopName) {
         return loopService.getLoop(loopName).getSvgRepresentation();
     }
 }

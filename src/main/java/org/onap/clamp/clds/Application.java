@@ -87,6 +87,11 @@ public class Application extends SpringBootServletInitializer {
         return application.sources(Application.class);
     }
 
+    /**
+     * Start Spring Boot application.
+     *
+     * @param args parameters
+     */
     public static void main(String[] args) {
         // This is to initialize some Onap Clamp components
         initializeComponents();

@@ -58,7 +58,7 @@ public final class ResourceFileUtil {
         InputStream is = getResourceAsStream(name);
         Scanner scanner = new Scanner(is);
         Scanner delimitedScanner = scanner.useDelimiter("\\A");
-        String text = delimitedScanner.hasNext() ? delimitedScanner.next() : "";
+        final String text = delimitedScanner.hasNext() ? delimitedScanner.next() : "";
         delimitedScanner.close();
         scanner.close();
         is.close();
