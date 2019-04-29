@@ -42,7 +42,7 @@ import org.apache.camel.Exchange;
 import org.onap.clamp.clds.client.DcaeDispatcherServices;
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.util.LoggingUtils;
-import org.onap.clamp.clds.util.ONAPLogConstants;
+import org.onap.clamp.clds.util.OnapLogConstants;
 import org.onap.clamp.exception.OperationException;
 import org.onap.clamp.util.HttpConnectionManager;
 import org.slf4j.event.Level;
@@ -84,13 +84,13 @@ public class LoopOperation {
      */
     public Loop deployLoop(Exchange camelExchange, String loopName) throws OperationException {
         util.entering(request, "CldsService: Deploy model");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         Loop loop = loopService.getLoop(loopName);
 
         if (loop == null) {
             String msg = "Deploy loop exception: Not able to find closed loop:" + loopName;
             util.exiting(HttpStatus.INTERNAL_SERVER_ERROR.toString(), msg, Level.INFO,
-                ONAPLogConstants.ResponseStatus.ERROR);
+                OnapLogConstants.ResponseStatus.ERROR);
             throw new OperationException(msg);
         }
 
@@ -98,7 +98,7 @@ public class LoopOperation {
         if (loop.getLastComputedState() != LoopState.SUBMITTED) {
             String msg = "Deploy loop exception: This closed loop is in state:" + loop.getLastComputedState()
                 + ". It could be deployed only when it is in SUBMITTED state.";
-            util.exiting(HttpStatus.CONFLICT.toString(), msg, Level.INFO, ONAPLogConstants.ResponseStatus.ERROR);
+            util.exiting(HttpStatus.CONFLICT.toString(), msg, Level.INFO, OnapLogConstants.ResponseStatus.ERROR);
             throw new OperationException(msg);
         }
 
@@ -124,7 +124,7 @@ public class LoopOperation {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("Deploy model completed");
-        util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return loop;
     }
 
@@ -137,13 +137,13 @@ public class LoopOperation {
      */
     public Loop unDeployLoop(String loopName) throws OperationException {
         util.entering(request, "LoopOperation: Undeploy the closed loop");
-        Date startTime = new Date();
+        final Date startTime = new Date();
         Loop loop = loopService.getLoop(loopName);
 
         if (loop == null) {
             String msg = "Undeploy loop exception: Not able to find closed loop:" + loopName;
             util.exiting(HttpStatus.INTERNAL_SERVER_ERROR.toString(), msg, Level.INFO,
-                ONAPLogConstants.ResponseStatus.ERROR);
+                OnapLogConstants.ResponseStatus.ERROR);
             throw new OperationException(msg);
         }
 
@@ -151,7 +151,7 @@ public class LoopOperation {
         if (loop.getLastComputedState() != LoopState.DEPLOYED) {
             String msg = "Unploy loop exception: This closed loop is in state:" + loop.getLastComputedState()
                 + ". It could be undeployed only when it is in DEPLOYED state.";
-            util.exiting(HttpStatus.CONFLICT.toString(), msg, Level.INFO, ONAPLogConstants.ResponseStatus.ERROR);
+            util.exiting(HttpStatus.CONFLICT.toString(), msg, Level.INFO, OnapLogConstants.ResponseStatus.ERROR);
             throw new OperationException(msg);
         }
 
@@ -168,7 +168,7 @@ public class LoopOperation {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("Undeploy model completed");
-        util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return loop;
     }
 
