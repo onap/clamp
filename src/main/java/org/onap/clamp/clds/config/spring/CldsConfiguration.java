@@ -57,6 +57,11 @@ public class CldsConfiguration {
         return new EncodedPasswordBasicDataSource();
     }
 
+    /**
+     * Mapper.
+     *
+     * @return PropertiesFactoryBean bean
+     */
     @Bean(name = "mapper")
     public PropertiesFactoryBean mapper() {
         PropertiesFactoryBean bean = new PropertiesFactoryBean();
@@ -64,6 +69,11 @@ public class CldsConfiguration {
         return bean;
     }
 
+    /**
+     *
+     * @return XSL Transformer.
+     * @throws TransformerConfigurationException
+     */
     @Bean(name = "cldsBpmnTransformer")
     public XslTransformer getCldsBpmnXslTransformer() throws TransformerConfigurationException {
         XslTransformer xslTransformer = new XslTransformer();

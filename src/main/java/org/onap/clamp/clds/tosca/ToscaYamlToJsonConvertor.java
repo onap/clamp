@@ -389,10 +389,6 @@ public class ToscaYamlToJsonConvertor {
                                     if (p.getValue() instanceof Map) {
                                         LinkedHashMap<String, Object> childNodeMap2 = (LinkedHashMap<String, Object>) p
                                             .getValue();
-                                        if (childNodeMap2.containsKey(ToscaSchemaConstants.TYPE)
-                                            && (((String) childNodeMap2.get(ToscaSchemaConstants.TYPE))
-                                                .contains(ToscaSchemaConstants.POLICY_DATA))) {
-                                        }
                                     }
                                 });
                             }
