@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "a5ffbe5e_0deb3609",
+        "filename": "src/main/java/org/onap/clamp/util/PrincipalUtils.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4313
+      },
+      "writtenOn": "2019-04-29T14:41:13Z",
+      "side": 1,
+      "message": "please, add comment here too - about private constructor for utils class",
+      "range": {
+        "startLine": 40,
+        "startChar": 3,
+        "endLine": 41,
+        "endChar": 5
+      },
+      "revId": "8d2da4133d9b27f4c1899eafebe44cd24296700a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "45ec1279_06a37d27",
         "filename": "src/test/java/org/onap/clamp/clds/it/CldsServiceItCase.java",
         "patchSetId": 2
