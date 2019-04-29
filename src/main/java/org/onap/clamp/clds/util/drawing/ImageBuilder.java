@@ -77,7 +77,7 @@ public class ImageBuilder {
     }
 
     ImageBuilder circle(String dataElementId, int lineThickness) {
-        Point to = new Point(currentPoint.x + 2 * CIRCLE_RADIUS, currentPoint.y);
+        final Point to = new Point(currentPoint.x + 2 * CIRCLE_RADIUS, currentPoint.y);
         Shape circleStart =
             new Ellipse2D.Double(currentPoint.x, currentPoint.y - CIRCLE_RADIUS,
                 2 * CIRCLE_RADIUS, 2 * CIRCLE_RADIUS);
