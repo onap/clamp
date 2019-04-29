@@ -30,7 +30,7 @@ import java.util.Date;
 import org.onap.clamp.clds.dao.CldsDao;
 import org.onap.clamp.clds.model.CldsHealthCheck;
 import org.onap.clamp.clds.util.LoggingUtils;
-import org.onap.clamp.clds.util.ONAPLogConstants;
+import org.onap.clamp.clds.util.OnapLogConstants;
 import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,11 +79,11 @@ public class CldsHealthcheckService {
         LoggingUtils.setTimeContext(startTime, new Date());
         if (healthcheckFailed) {
             util.exiting(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "Healthcheck failed", Level.INFO,
-                         ONAPLogConstants.ResponseStatus.ERROR);
+                         OnapLogConstants.ResponseStatus.ERROR);
             return new ResponseEntity<>(cldsHealthCheck, HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
             util.exiting("200", "Healthcheck failed", Level.INFO,
-                         ONAPLogConstants.ResponseStatus.COMPLETED);
+                         OnapLogConstants.ResponseStatus.COMPLETED);
             return new ResponseEntity<>(cldsHealthCheck, HttpStatus.OK);
         }
     }
