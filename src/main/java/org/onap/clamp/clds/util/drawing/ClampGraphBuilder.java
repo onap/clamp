@@ -60,6 +60,11 @@ public class ClampGraphBuilder {
         return this;
     }
 
+    /**
+     * Build ClampGraph.
+     *
+     * @return ClampGraph
+     */
     public ClampGraph build() {
         if (microServices.isEmpty()) {
             throw new InvalidStateException("At least one microservice is required");
