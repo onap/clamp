@@ -90,7 +90,7 @@ public class AuthorizationController {
         LoggingUtils.setTimeContext(startTime, new Date());
         securityLogger.debug("checking if {} has permission: {}", principalName, perm);
 
-        if (!isUserPermitted(perm)){
+        if (!isUserPermitted(perm)) {
             String msg = principalName + " does not have permission: " + perm;
             LoggingUtils.setErrorContext("100", "Authorization Error");
             securityLogger.warn(msg);
@@ -98,6 +98,12 @@ public class AuthorizationController {
         }
     }
 
+    /**
+     * Check if the user has permission.
+     *
+     * @param inPermission Permission class
+     * @return boolean
+     */
     public boolean isUserPermitted(SecureServicePermission inPermission) {
 
         String principalName = PrincipalUtils.getPrincipalName();
