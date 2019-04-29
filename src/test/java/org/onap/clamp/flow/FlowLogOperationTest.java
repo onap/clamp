@@ -31,7 +31,7 @@ import org.apache.camel.impl.DefaultExchange;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.onap.clamp.clds.util.LoggingUtils;
-import org.onap.clamp.clds.util.ONAPLogConstants;
+import org.onap.clamp.clds.util.OnapLogConstants;
 import org.onap.clamp.flow.log.FlowLogOperation;
 import org.slf4j.MDC;
 import org.slf4j.spi.MDCAdapter;
@@ -49,15 +49,15 @@ public class FlowLogOperationTest {
         ReflectionTestUtils.setField(flowLogOperation, "util", loggingUtils);
 
         //when
-        Mockito.when(loggingUtils.getProperties(ONAPLogConstants.MDCs.REQUEST_ID)).thenReturn("MockRequestId");
-        Mockito.when(loggingUtils.getProperties(ONAPLogConstants.MDCs.INVOCATION_ID)).thenReturn("MockInvocationId");
-        Mockito.when(loggingUtils.getProperties(ONAPLogConstants.MDCs.PARTNER_NAME)).thenReturn("MockPartnerName");
+        Mockito.when(loggingUtils.getProperties(OnapLogConstants.Mdcs.REQUEST_ID)).thenReturn("MockRequestId");
+        Mockito.when(loggingUtils.getProperties(OnapLogConstants.Mdcs.INVOCATION_ID)).thenReturn("MockInvocationId");
+        Mockito.when(loggingUtils.getProperties(OnapLogConstants.Mdcs.PARTNER_NAME)).thenReturn("MockPartnerName");
         flowLogOperation.startLog(exchange, "serviceName");
 
         //then
-        assertThat(exchange.getProperty(ONAPLogConstants.Headers.REQUEST_ID)).isEqualTo("MockRequestId");
-        assertThat(exchange.getProperty(ONAPLogConstants.Headers.INVOCATION_ID)).isEqualTo("MockInvocationId");
-        assertThat(exchange.getProperty(ONAPLogConstants.Headers.PARTNER_NAME)).isEqualTo("MockPartnerName");
+        assertThat(exchange.getProperty(OnapLogConstants.Headers.REQUEST_ID)).isEqualTo("MockRequestId");
+        assertThat(exchange.getProperty(OnapLogConstants.Headers.INVOCATION_ID)).isEqualTo("MockInvocationId");
+        assertThat(exchange.getProperty(OnapLogConstants.Headers.PARTNER_NAME)).isEqualTo("MockPartnerName");
     }
 
     @Test
@@ -69,8 +69,8 @@ public class FlowLogOperationTest {
         //when
         flowLogOperation.invokeLog(mockEntity, mockServiceName);
         //then
-        String entity = mdcAdapter.get(ONAPLogConstants.MDCs.TARGET_ENTITY);
-        String serviceName = mdcAdapter.get(ONAPLogConstants.MDCs.TARGET_SERVICE_NAME);
+        String entity = mdcAdapter.get(OnapLogConstants.Mdcs.TARGET_ENTITY);
+        String serviceName = mdcAdapter.get(OnapLogConstants.Mdcs.TARGET_SERVICE_NAME);
         assertEquals(entity,mockEntity);
         assertEquals(serviceName,mockServiceName);
     }
@@ -78,22 +78,22 @@ public class FlowLogOperationTest {
    @Test
     public void testEndLog() {
         //given
-       MDC.put(ONAPLogConstants.MDCs.ENTRY_TIMESTAMP, "2019-05-19T00:00:00.007Z");
+       MDC.put(OnapLogConstants.Mdcs.ENTRY_TIMESTAMP, "2019-05-19T00:00:00.007Z");
        MDCAdapter mdcAdapter = MDC.getMDCAdapter();
        ///when
        flowLogOperation.endLog();
        //then
-       assertThat(mdcAdapter.get(ONAPLogConstants.MDCs.ENTRY_TIMESTAMP)).isNull();
+       assertThat(mdcAdapter.get(OnapLogConstants.Mdcs.ENTRY_TIMESTAMP)).isNull();
     }
 
     @Test
     public void testErrorLog() {
         //given
-        MDC.put(ONAPLogConstants.MDCs.ENTRY_TIMESTAMP, "2019-05-19T00:00:00.007Z");
+        MDC.put(OnapLogConstants.Mdcs.ENTRY_TIMESTAMP, "2019-05-19T00:00:00.007Z");
         MDCAdapter mdcAdapter = MDC.getMDCAdapter();
         //when
         flowLogOperation.errorLog();
         //then
-        assertThat(mdcAdapter.get(ONAPLogConstants.MDCs.ENTRY_TIMESTAMP)).isNull();
+        assertThat(mdcAdapter.get(OnapLogConstants.Mdcs.ENTRY_TIMESTAMP)).isNull();
     }
 }
