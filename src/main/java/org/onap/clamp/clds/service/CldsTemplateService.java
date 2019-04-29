@@ -35,7 +35,7 @@ import org.onap.clamp.clds.dao.CldsDao;
 import org.onap.clamp.clds.model.CldsTemplate;
 import org.onap.clamp.clds.model.ValueItem;
 import org.onap.clamp.clds.util.LoggingUtils;
-import org.onap.clamp.clds.util.ONAPLogConstants;
+import org.onap.clamp.clds.util.OnapLogConstants;
 import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -85,7 +85,7 @@ public class CldsTemplateService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET template bpmn completed");
-        util.exiting("200", "Get template bpmn success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Get template bpmn success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return template.getBpmnText();
     }
 
@@ -106,7 +106,7 @@ public class CldsTemplateService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET template image completed");
-        util.exiting("200", "Get template image success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Get template image success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return template.getImageText();
     }
 
@@ -126,7 +126,7 @@ public class CldsTemplateService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET template completed");
-        util.exiting("200", "Get template success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Get template success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return template;
     }
 
@@ -150,7 +150,7 @@ public class CldsTemplateService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("PUT template completed");
-        util.exiting("200", "Put template success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Put template success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return cldsTemplate;
     }
 
@@ -168,7 +168,7 @@ public class CldsTemplateService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET template names completed");
-        util.exiting("200", "Get template names success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Get template names success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return names;
     }
 

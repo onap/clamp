@@ -62,7 +62,7 @@ import org.onap.clamp.clds.sdc.controller.installer.CsarInstaller;
 import org.onap.clamp.clds.transform.XslTransformer;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.LoggingUtils;
-import org.onap.clamp.clds.util.ONAPLogConstants;
+import org.onap.clamp.clds.util.OnapLogConstants;
 import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -209,7 +209,7 @@ public class CldsService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET cldsDetails completed");
-        util.exiting("200", "Get cldsDetails success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Get cldsDetails success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return cldsMonitoringDetailsList;
     }
 
@@ -230,7 +230,7 @@ public class CldsService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         securityLogger.info("GET cldsInfo completed");
-        util.exiting("200", "Get cldsInfo success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Get cldsInfo success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return cldsInfo;
     }
 
@@ -251,7 +251,7 @@ public class CldsService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET model bpmn completed");
-        util.exiting("200", "Get model bpmn success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Get model bpmn success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return model.getBpmnText();
     }
 
@@ -272,7 +272,7 @@ public class CldsService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET model image completed");
-        util.exiting("200", "Get model image success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Get model image success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return model.getImageText();
     }
 
@@ -312,7 +312,7 @@ public class CldsService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET model completed");
-        util.exiting("200", "Get model success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Get model success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return cldsModel;
     }
 
@@ -338,7 +338,7 @@ public class CldsService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("PUT model completed");
-        util.exiting("200", "Put model success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Put model success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return cldsModel;
     }
 
@@ -356,7 +356,7 @@ public class CldsService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("GET model names completed");
-        util.exiting("200", "Get model names success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Get model names success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return names;
     }
 
@@ -453,13 +453,13 @@ public class CldsService extends SecureServiceBase {
             }
             model.setErrorMessageForUi(errorMessage);
             util.exiting(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "putModelAndProcessAction failed", Level.INFO,
-                ONAPLogConstants.ResponseStatus.ERROR);
+                OnapLogConstants.ResponseStatus.ERROR);
             return new ResponseEntity<>(model, HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
             // Need a refresh as new events have been inserted, could have been deleted so
             // not blocking call
             model = CldsModel.retrieve(cldsDao, modelName, true);
-            util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+            util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
             return new ResponseEntity<>(model, HttpStatus.OK);
         }
     }
@@ -507,7 +507,7 @@ public class CldsService extends SecureServiceBase {
         // audit log
         LoggingUtils.setTimeContext(startTime, new Date());
         auditLogger.info("Post dcae event completed");
-        util.exiting("200", "Post dcae event success", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+        util.exiting("200", "Post dcae event success", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
         return msgInfo;
     }
 
@@ -607,10 +607,10 @@ public class CldsService extends SecureServiceBase {
         if (!errorMessage.isEmpty()) {
             model.setErrorMessageForUi(errorMessage);
             util.exiting(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "DeployModel failed", Level.INFO,
-                ONAPLogConstants.ResponseStatus.ERROR);
+                OnapLogConstants.ResponseStatus.ERROR);
             return new ResponseEntity<>(model, HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
-            util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+            util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
             return new ResponseEntity<>(model, HttpStatus.OK);
         }
     }
@@ -652,10 +652,10 @@ public class CldsService extends SecureServiceBase {
         if (!errorMessage.isEmpty()) {
             model.setErrorMessageForUi(errorMessage);
             util.exiting(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "UndeployModel failed", Level.INFO,
-                ONAPLogConstants.ResponseStatus.ERROR);
+                OnapLogConstants.ResponseStatus.ERROR);
             return new ResponseEntity<>(model, HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
-            util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, ONAPLogConstants.ResponseStatus.COMPLETED);
+            util.exiting(HttpStatus.OK.toString(), "Successful", Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
             return new ResponseEntity<>(model, HttpStatus.OK);
         }
     }
@@ -677,7 +677,7 @@ public class CldsService extends SecureServiceBase {
             CldsEvent.insEvent(cldsDao, model.getControlName(), getUserId(), cldsEvent, CldsEvent.ACTION_STATE_ERROR,
                 null);
             util.exiting(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "DCAE operation(" + cldsEvent + ") failed",
-                Level.INFO, ONAPLogConstants.ResponseStatus.ERROR);
+                Level.INFO, OnapLogConstants.ResponseStatus.ERROR);
             throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, info);
         }
     }

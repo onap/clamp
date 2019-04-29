@@ -32,6 +32,9 @@ import org.onap.clamp.clds.util.XmlTools;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 
+/**
+ * Return svg String.
+ */
 @Component
 public class SvgFacade {
     public String getSvgImage(List<MicroService> microServicesChain) {
@@ -42,7 +45,7 @@ public class SvgFacade {
         ClampGraphBuilder cgp = new ClampGraphBuilder(p).collector("VES");
         cgp.addAllMicroServices(microServicesChain);
         ClampGraph cg = cgp.policy("OperationalPolicy").build();
-        return cg.getAsSVG();
+        return cg.getAsSvg();
     }
 
 }
