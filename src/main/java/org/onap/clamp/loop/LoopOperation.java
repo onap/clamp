@@ -97,6 +97,7 @@ public class LoopOperation {
         rootObject.addProperty(DCAE_SERVICETYPE_ID, serviceTypeId);
         if (bluePrint != null) {
             rootObject.add(DCAE_INPUTS, bluePrint);
+
         }
         String apiBodyString = rootObject.toString();
         logger.info("Dcae api Body String - " + apiBodyString);
@@ -144,7 +145,6 @@ public class LoopOperation {
 
         // use http4 instead of http, because camel http4 component is used to do the http call
         statusUrl.replace("http", "http4");
-
         loop.setDcaeDeploymentId(deploymentId);
         loop.setDcaeDeploymentStatusUrl(statusUrl);
         loopService.saveOrUpdateLoop(loop);
