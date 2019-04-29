@@ -45,6 +45,29 @@
       "revId": "a0775f83cb520a85e59f71ac692a8494a5157046",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a5a00024_df807f6a",
+        "filename": "src/test/resources/clds/clds-parse-exception.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4313
+      },
+      "writtenOn": "2019-04-29T14:55:04Z",
+      "side": 1,
+      "message": "if you decide to go with json (after Piotr comment) - please replace tabs to spaces",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 1
+      },
+      "revId": "a0775f83cb520a85e59f71ac692a8494a5157046",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
