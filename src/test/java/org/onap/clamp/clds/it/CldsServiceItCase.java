@@ -149,6 +149,7 @@ public class CldsServiceItCase {
         Properties prop = new Properties();
         InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("clds-version.properties");
         prop.load(in);
+        assert in != null;
         in.close();
         assertEquals(cldsInfo.getCldsVersion(), prop.getProperty("clds.version"));
         assertEquals(cldsInfo.getUserName(), "admin");
