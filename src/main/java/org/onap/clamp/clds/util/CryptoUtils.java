@@ -67,7 +67,7 @@ public final class CryptoUtils {
     private static final String ALGORITHM = "AES";
     
     /**
-     * AES Encryption Key environment variable for external configuration
+     * AES Encryption Key environment variable for external configuration.
      */
     private static final String AES_ENCRYPTION_KEY = "AES_ENCRYPTION_KEY";
     
@@ -165,7 +165,7 @@ public final class CryptoUtils {
             //Workaround fix to make encryption key configurable
             // System environment variable takes precedence for over clds/key.properties
             String encryptionKey = System.getenv(AES_ENCRYPTION_KEY);
-            if(encryptionKey != null && encryptionKey.trim().length() > 0) {
+            if (encryptionKey != null && encryptionKey.trim().length() > 0) {
                 return getSecretKeySpec(encryptionKey);
             } else {
                 props.load(ResourceFileUtil.getResourceAsStream(propertiesFileName));
