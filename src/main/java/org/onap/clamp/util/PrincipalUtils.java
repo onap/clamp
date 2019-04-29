@@ -37,6 +37,9 @@ public class PrincipalUtils {
     private static UserNameHandler userNameHandler = new DefaultUserNameHandler();
     private static SecurityContext securityContext = SecurityContextHolder.getContext();
 
+    private PrincipalUtils(){
+    }
+
     /**
      * Get the Full name.
      *
