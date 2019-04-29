@@ -5,6 +5,8 @@
  * Copyright (C) 2019 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
+ * Modifications Copyright (c) 2019 Samsung
+ * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -83,6 +85,12 @@ public class LoopLog implements Serializable {
     public LoopLog() {
     }
 
+    /**
+     * Constructor.
+     * @param message message
+     * @param logType logType
+     * @param loop loop
+     */
     public LoopLog(String message, LogType logType, Loop loop) {
         this.message = message;
         this.logType = logType;
