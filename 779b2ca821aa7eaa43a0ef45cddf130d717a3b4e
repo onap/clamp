@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f7f38d6c_8e16e056",
+        "filename": "src/main/java/org/onap/clamp/clds/util/LoggingUtils.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-04-30T10:05:36Z",
+      "side": 1,
+      "message": "MDC is the abbreviation so it should be spelled Mdcs",
+      "range": {
+        "startLine": 159,
+        "startChar": 37,
+        "endLine": 159,
+        "endChar": 41
+      },
+      "revId": "779b2ca821aa7eaa43a0ef45cddf130d717a3b4e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
