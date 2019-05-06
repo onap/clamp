@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ff9f6c9_a2c6b7b7",
+        "filename": "src/test/java/org/onap/clamp/clds/util/LoggingUtilsTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-05-06T14:23:58Z",
+      "side": 1,
+      "message": "You can simply check the value for username to be \"test\"... :-) ...at the end of this test.",
+      "range": {
+        "startLine": 97,
+        "startChar": 8,
+        "endLine": 97,
+        "endChar": 18
+      },
+      "revId": "aab0ab2926bbd8b37b58bb686e6a216a71a013b1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
