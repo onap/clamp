@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a624e6a_a1c26839",
+        "filename": "src/test/java/org/onap/clamp/clds/util/LoggingUtilsTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-05-06T11:57:27Z",
+      "side": 1,
+      "message": "1. Why are you using @Mock on top of Mock... class?\n2. You need this mock in the first test only. Put it there instead.",
+      "range": {
+        "startLine": 64,
+        "startChar": 12,
+        "endLine": 64,
+        "endChar": 34
+      },
+      "revId": "6a4e674230e06de8f3a421a4d58ed2bc390595b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "62aa1525_f39babf2",
+        "filename": "src/test/java/org/onap/clamp/clds/util/LoggingUtilsTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-05-06T11:57:27Z",
+      "side": 1,
+      "message": "When using @Mock these three commands are useless. \nUsing sth like:\nMockito.when(request.getHeader(Mockito.eq(ONAPLogConstants.Headers.REQUEST_ID))).thenReturn(\"...\"); \ninstead would be useful.",
+      "range": {
+        "startLine": 76,
+        "startChar": 16,
+        "endLine": 76,
+        "endChar": 25
+      },
+      "revId": "6a4e674230e06de8f3a421a4d58ed2bc390595b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "812dfceb_675ae544",
+        "filename": "src/test/java/org/onap/clamp/clds/util/LoggingUtilsTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-05-06T11:57:27Z",
+      "side": 1,
+      "message": "Checking the keys only. What about the values?",
+      "range": {
+        "startLine": 103,
+        "startChar": 8,
+        "endLine": 103,
+        "endChar": 18
+      },
+      "revId": "6a4e674230e06de8f3a421a4d58ed2bc390595b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "536a18a2_7ef206c1",
+        "filename": "src/test/java/org/onap/clamp/clds/util/LoggingUtilsTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-05-06T11:57:27Z",
+      "side": 1,
+      "message": "It could be private...",
+      "range": {
+        "startLine": 138,
+        "startChar": 12,
+        "endLine": 138,
+        "endChar": 24
+      },
+      "revId": "6a4e674230e06de8f3a421a4d58ed2bc390595b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
