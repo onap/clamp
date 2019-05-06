@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a0de646_66f56fa3",
+        "filename": "src/main/java/org/onap/clamp/loop/Loop.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-05-06T11:15:33Z",
+      "side": 1,
+      "message": "A line should not begin with a comma.",
+      "range": {
+        "startLine": 113,
+        "startChar": 12,
+        "endLine": 113,
+        "endChar": 13
+      },
+      "revId": "34c2ed262c6a61cbe14fc5054a2db250b3b3d8ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
