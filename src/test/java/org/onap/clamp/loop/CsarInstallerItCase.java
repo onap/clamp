@@ -30,9 +30,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -51,6 +53,7 @@ import org.onap.clamp.clds.sdc.controller.installer.CsarHandler;
 import org.onap.clamp.clds.sdc.controller.installer.CsarInstaller;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
+import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.onap.sdc.api.notification.IArtifactInfo;
 import org.onap.sdc.api.notification.INotificationData;
 import org.onap.sdc.api.notification.IResourceInstance;
@@ -111,7 +114,7 @@ public class CsarInstallerItCase {
         Mockito.when(csarHandler.getMapOfBlueprints()).thenReturn(blueprintMap);
         // Create fake blueprint artifact 1 on resource1
         BlueprintArtifact blueprintArtifact = buildFakeBuildprintArtifact(RESOURCE_INSTANCE_NAME_RESOURCE1,
-            INVARIANT_RESOURCE1_UUID, "example/sdc/blueprint-dcae/tca.yaml", "tca.yaml", INVARIANT_SERVICE_UUID);
+            INVARIANT_RESOURCE1_UUID, "example/sdc/blueprint-dcae/tca_1.yaml", "tca_1.yaml", INVARIANT_SERVICE_UUID);
         listResources.add(blueprintArtifact.getResourceAttached());
         blueprintMap.put(blueprintArtifact.getBlueprintArtifactName(), blueprintArtifact);
         // Create fake blueprint artifact 2 on resource2
@@ -186,7 +189,7 @@ public class CsarInstallerItCase {
         CsarHandler csar = buildFakeCsarHandler(generatedName);
         csarInstaller.installTheCsar(csar);
         assertThat(loopsRepo
-            .existsById(Loop.generateLoopName(generatedName, "1.0", RESOURCE_INSTANCE_NAME_RESOURCE1, "tca.yaml")))
+            .existsById(Loop.generateLoopName(generatedName, "1.0", RESOURCE_INSTANCE_NAME_RESOURCE1, "tca_1.yaml")))
                 .isTrue();
         assertThat(loopsRepo
             .existsById(Loop.generateLoopName(generatedName, "1.0", RESOURCE_INSTANCE_NAME_RESOURCE1, "tca_3.yaml")))
@@ -197,10 +200,17 @@ public class CsarInstallerItCase {
         // Verify now that policy and json representation, global properties are well
         // set
         Loop loop = loopsRepo
-            .findById(Loop.generateLoopName(generatedName, "1.0", RESOURCE_INSTANCE_NAME_RESOURCE1, "tca.yaml")).get();
+            .findById(Loop.generateLoopName(generatedName, "1.0", RESOURCE_INSTANCE_NAME_RESOURCE1, "tca_1.yaml")).get();
         assertThat(loop.getSvgRepresentation()).startsWith("<svg ");
         assertThat(loop.getGlobalPropertiesJson().get("dcaeDeployParameters")).isNotNull();
         assertThat(loop.getMicroServicePolicies()).hasSize(1);
+        Set<MicroServicePolicy> microServiceSet = loop.getMicroServicePolicies();
+        Iterator<MicroServicePolicy> itr = microServiceSet.iterator();
+        while (itr.hasNext()) {
+            MicroServicePolicy policy = itr.next();
+            assertThat(policy.getModelType().equals("onap.policies.monitoring.cdap.tca.hi.lo.app"));
+        }
+
         assertThat(loop.getOperationalPolicies()).hasSize(1);
         assertThat(loop.getModelPropertiesJson().get("serviceDetails")).isNotNull();
         assertThat(loop.getModelPropertiesJson().get("resourceDetails")).isNotNull();

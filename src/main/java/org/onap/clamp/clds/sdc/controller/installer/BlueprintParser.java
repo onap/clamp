@@ -30,6 +30,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -57,23 +58,51 @@ public class BlueprintParser {
     private static final String RELATIONSHIPS = "relationships";
     private static final String CLAMP_NODE_RELATIONSHIPS_GETS_INPUT_FROM = "clamp_node.relationships.gets_input_from";
     private static final String TARGET = "target";
+    private static final String TARGET_TYPE = "dcae.nodes.policy";
 
+    /**
+     * Get the set of Micro Services from the blueprint.
+     * 
+     * @param blueprintString The blue print in String
+     * @return The set of MicroServices
+     */
     public Set<MicroService> getMicroServices(String blueprintString) {
-        Set<MicroService> microServices = new HashSet<>();
+        Map<String, MicroService> microServices = new HashMap<>();
         JsonObject jsonObject = BlueprintParser.convertToJson(blueprintString);
         JsonObject results = jsonObject.get(NODE_TEMPLATES).getAsJsonObject();
 
+        // Load the initial Micro Service info
         for (Entry<String, JsonElement> entry : results.entrySet()) {
             JsonObject nodeTemplate = entry.getValue().getAsJsonObject();
             if (nodeTemplate.get(TYPE).getAsString().contains(DCAE_NODES)) {
                 MicroService microService = getNodeRepresentation(entry);
-                microServices.add(microService);
+                microServices.put(microService.getName(), microService);
             }
         }
-        microServices.removeIf(ms -> TCA_POLICY.equals(ms.getName()));
-        return microServices;
+
+        // Refine the Micro Service modelType info
+        for (Entry<String, JsonElement> entry : results.entrySet()) {
+            JsonObject nodeTemplate = entry.getValue().getAsJsonObject();
+            String target = getTargetForModelType(nodeTemplate);
+            if (!target.isEmpty() && microServices.get(target) != null 
+                    && microServices.get(target).getType().equals(TARGET_TYPE)) {
+                MicroService parentMs = microServices.get(entry.getKey());
+                parentMs.setModelType(microServices.get(target).getModelType());
+                microServices.put(entry.getKey(), parentMs);
+            }
+        }
+
+        Set<MicroService> microServiceSet = new HashSet<MicroService>(microServices.values());
+        microServiceSet.removeIf(ms -> TCA_POLICY.equals(ms.getName()));
+        return microServiceSet;
     }
 
+    /**
+     * Create a fall back Micro Service.
+     * 
+     * @param blueprintString The blue print 
+     * @return The MicroService list
+     */
     public List<MicroService> fallbackToOneMicroService(String blueprintString) {
         JsonObject jsonObject = BlueprintParser.convertToJson(blueprintString);
         JsonObject results = jsonObject.get(NODE_TEMPLATES).getAsJsonObject();
@@ -89,7 +118,7 @@ public class BlueprintParser {
         }
         String msName = theBiggestMicroServiceKey.toLowerCase().contains(HOLMES_PREFIX) ? HOLMES : TCA;
         return Collections
-            .singletonList(new MicroService(msName, "onap.policies.monitoring.cdap.tca.hi.lo.app", "", "", ""));
+            .singletonList(new MicroService(msName, "onap.policies.monitoring.cdap.tca.hi.lo.app", "", "", "", ""));
     }
 
     String getName(Entry<String, JsonElement> entry) {
@@ -136,18 +165,40 @@ public class BlueprintParser {
         return entry.getKey();
     }
 
+    String getType(Entry<String, JsonElement> entry) {
+        JsonObject elementObject = entry.getValue().getAsJsonObject();
+        if (elementObject.has(TYPE)) {
+            return elementObject.get(TYPE).getAsString();
+        }
+        return "";
+    }
+
     MicroService getNodeRepresentation(Entry<String, JsonElement> entry) {
         String name = getName(entry);
         String getInputFrom = getInput(entry);
         String modelType = getModelType(entry);
         String blueprintName = getBlueprintName(entry);
-        return new MicroService(name, modelType, getInputFrom, "", blueprintName);
+        String type = getType(entry);
+        return new MicroService(name, modelType, getInputFrom, "", blueprintName, type);
     }
 
     private String getTarget(JsonObject elementObject) {
         if (elementObject.has(TYPE) && elementObject.has(TARGET)
             && elementObject.get(TYPE).getAsString().equals(CLAMP_NODE_RELATIONSHIPS_GETS_INPUT_FROM)) {
             return elementObject.get(TARGET).getAsString();
+        }
+        return "";
+    }
+
+    private String getTargetForModelType(JsonObject elementObject) {
+        if (elementObject.has(RELATIONSHIPS)) {
+            JsonArray relationships = elementObject.getAsJsonArray(RELATIONSHIPS);
+            for (JsonElement element : relationships) {
+                JsonObject relationShip = element.getAsJsonObject();
+                if (relationShip.has(TARGET)) {
+                    return relationShip.get(TARGET).getAsString();
+                }
+            }
         }
         return "";
     }
