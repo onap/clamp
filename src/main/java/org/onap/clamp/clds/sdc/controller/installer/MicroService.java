@@ -28,17 +28,20 @@ import java.util.Objects;
 
 public class MicroService {
     private final String name;
-    private final String modelType;
+    private String modelType;
     private final String blueprintName;
     private final String inputFrom;
+    private final String type;
     private String mappedNameJpa;
 
-    public MicroService(String name, String modelType, String inputFrom, String mappedNameJpa, String blueprintName) {
+    public MicroService(String name, String modelType, String inputFrom, 
+            String mappedNameJpa, String blueprintName, String type) {
         this.name = name;
         this.inputFrom = inputFrom;
         this.mappedNameJpa = mappedNameJpa;
         this.modelType =  modelType;
         this.blueprintName = blueprintName;
+        this.type = type;
     }
 
     public String getName() {
@@ -49,8 +52,16 @@ public class MicroService {
         return modelType;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public String getInputFrom() {
         return inputFrom;
+    }
+
+    public void setModelType(String modelType) {
+        this.modelType = modelType;
     }
 
     public String getBlueprintName() {

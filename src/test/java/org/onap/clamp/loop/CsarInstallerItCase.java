@@ -30,9 +30,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -51,6 +53,7 @@ import org.onap.clamp.clds.sdc.controller.installer.CsarHandler;
 import org.onap.clamp.clds.sdc.controller.installer.CsarInstaller;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
+import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.onap.sdc.api.notification.IArtifactInfo;
 import org.onap.sdc.api.notification.INotificationData;
 import org.onap.sdc.api.notification.IResourceInstance;
@@ -201,6 +204,13 @@ public class CsarInstallerItCase {
         assertThat(loop.getSvgRepresentation()).startsWith("<svg ");
         assertThat(loop.getGlobalPropertiesJson().get("dcaeDeployParameters")).isNotNull();
         assertThat(loop.getMicroServicePolicies()).hasSize(1);
+        Set<MicroServicePolicy> microServiceSet = loop.getMicroServicePolicies();
+        Iterator<MicroServicePolicy> itr = microServiceSet.iterator();
+        while (itr.hasNext()) {
+            MicroServicePolicy policy = itr.next();
+            assertThat(policy.getModelType().equals("onap.policies.monitoring.cdap.tca.hi.lo.app"));
+        }
+
         assertThat(loop.getOperationalPolicies()).hasSize(1);
         assertThat(loop.getModelPropertiesJson().get("serviceDetails")).isNotNull();
         assertThat(loop.getModelPropertiesJson().get("resourceDetails")).isNotNull();
