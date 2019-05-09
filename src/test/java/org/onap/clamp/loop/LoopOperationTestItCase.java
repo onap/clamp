@@ -66,7 +66,8 @@ public class LoopOperationTestItCase {
             + "    type: dcae.nodes.SelectedDockerHost";
 
         Loop loopTest = new Loop("ControlLoopTest", yaml, "<xml></xml>");
-        loopTest.setGlobalPropertiesJson(new Gson().fromJson("{\"testname\":\"testvalue\"}", JsonObject.class));
+        loopTest.setGlobalPropertiesJson(new Gson().fromJson("{\"dcaeDeployParameters\":"
+                + "{\"policy_id\": \"name\"}}", JsonObject.class));
         loopTest.setLastComputedState(LoopState.DESIGN);
         loopTest.setDcaeDeploymentId("123456789");
         loopTest.setDcaeDeploymentStatusUrl("http4://localhost:8085");
@@ -244,7 +245,7 @@ public class LoopOperationTestItCase {
         LoopOperation loopOp = new LoopOperation(loopService, property);
         String deploymentPayload = loopOp.getDeployPayload(loop);
 
-        String expectedPayload = "{\"serviceTypeId\":\"UUID-blueprint\",\"inputs\":{\"imports\":[\"http://www.getcloudify.org/spec/cloudify/3.4/types.yaml\"],\"node_templates\":{\"docker_service_host\":{\"type\":\"dcae.nodes.SelectedDockerHost\"}}}}";
+        String expectedPayload = "{\"serviceTypeId\":\"UUID-blueprint\",\"inputs\":{\"policy_id\":\"name\"}}";
         assertThat(deploymentPayload).isEqualTo(expectedPayload);
     }
 }
