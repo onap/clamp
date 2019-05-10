@@ -137,6 +137,14 @@ app
 				    o[this.name] = this.value || '';
 			    }
 		    });
+		    // In case the attribute is radio/checkbox, the value is empty by default in case checked
+		    // we set the value to true specifically
+		    var $radio = $('input[type=radio],input[type=checkbox]',element);
+		    $.each($radio,function(){
+		        if(o.hasOwnProperty(this.name)){
+		            o[this.name] = 'true';
+		        }
+		    });
 		    return o;
 	    }
 	    function savePolicyLocally() {
@@ -179,8 +187,11 @@ app
 		    console.log("load properties to op policy");
 		    // Set the header
 		    $.each($('#operationalPolicyHeaderForm').find('.form-control'), function() {
-
-			    $(this).val(allPolicies['operational_policy']['controlLoop'][this.id]);
+			    if(this.type == "checkbox" && allPolicies['operational_policy']['controlLoop'][this.id] != null) {
+			        $(this).prop("checked", true);
+			    } else {
+			    	$(this).val(allPolicies['operational_policy']['controlLoop'][this.id]);
+			    }
 		    });
 		    // Set the sub-policies
 		    $.each(allPolicies['operational_policy']['policies'], function(opPolicyElemIndex, opPolicyElemValue) {
