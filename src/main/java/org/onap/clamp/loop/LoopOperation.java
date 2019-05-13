@@ -64,7 +64,6 @@ public class LoopOperation {
     /**
      * The constructor.
      * @param loopService The loop service
-     * @param refProp The clamp properties
      */
     @Autowired
     public LoopOperation(LoopService loopService) {
