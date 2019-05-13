@@ -63,11 +63,15 @@ public class LoopOperation {
 
     /**
      * The constructor.
+<<<<<<< Upstream, based on gerrit/master
      *
      * @param loopService
      *        The loop service
      * @param refProp
      *        The clamp properties
+=======
+     * @param loopService The loop service
+>>>>>>> 99c0646 Update the order of the loop log
      */
     @Autowired
     public LoopOperation(LoopService loopService) {
