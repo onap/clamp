@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "66d69a7a_1fe55969",
+        "filename": "src/main/resources/META-INF/resources/designer/scripts/OperationalPolicyCtrl.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-05-14T12:44:28Z",
+      "side": 1,
+      "message": "We have a duplicated code here, could we replace it by a unique code ?\ninitTargetResourceId and changeTargetResourceId\n\nAlso we initialize that component when click on it + when we load the data. So we load it twice, can\u0027t we replace ng-click by ng-init so that the component is initialize before we load the data to all the different forms ?",
+      "revId": "8635278f47109c967d5db549cf9df59534ebb1cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
