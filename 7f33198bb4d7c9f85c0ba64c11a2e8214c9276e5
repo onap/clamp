@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6739917b_f102d8e5",
+        "filename": "src/test/java/org/onap/clamp/clds/it/sdc/controller/SdcSingleControllerItCase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2019-05-15T07:09:22Z",
+      "side": 1,
+      "message": "In my opinion, if these exceptions will be catch test should fail",
+      "revId": "7f33198bb4d7c9f85c0ba64c11a2e8214c9276e5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
