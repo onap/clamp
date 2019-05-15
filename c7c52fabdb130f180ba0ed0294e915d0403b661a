@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "878e3eed_d6623260",
+        "filename": "src/test/java/org/onap/clamp/flow/FlowLogOperationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-05-15T15:08:48Z",
+      "side": 1,
+      "message": "This is null and is used only within the method. I\u0027d rather use it locally or even as cast null here.",
+      "range": {
+        "startLine": 49,
+        "startChar": 48,
+        "endLine": 49,
+        "endChar": 60
+      },
+      "revId": "c7c52fabdb130f180ba0ed0294e915d0403b661a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
