@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e7660f7_e8c78b74",
+        "filename": "src/test/java/org/onap/clamp/clds/model/DcaeEventTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-05-16T10:06:10Z",
+      "side": 1,
+      "message": "Usually the main action (mentioned in the test method name) is executed under the \u0027// when\u0027 comment. \u0027// then\u0027 is used then just for checking the results.",
+      "range": {
+        "startLine": 49,
+        "startChar": 56,
+        "endLine": 49,
+        "endChar": 71
+      },
+      "revId": "0a0c898baf65dac34f9596cb6e44fba0b05898a8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
