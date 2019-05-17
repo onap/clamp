@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8d04692_f0be5491",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/SvgFacade.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5336
+      },
+      "writtenOn": "2019-05-17T14:48:09Z",
+      "side": 1,
+      "message": "I guess this is the method that returns svg string, not the class.",
+      "revId": "383d3a85dad369e922b55f657558f1db3a450e81",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
