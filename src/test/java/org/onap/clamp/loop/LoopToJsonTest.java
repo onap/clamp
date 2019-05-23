@@ -36,6 +36,7 @@ import java.util.Random;
 import org.junit.Test;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
+import org.onap.clamp.loop.components.external.PolicyComponent;
 import org.onap.clamp.loop.log.LogType;
 import org.onap.clamp.loop.log.LoopLog;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
@@ -71,7 +72,7 @@ public class LoopToJsonTest {
     }
 
     private LoopLog getLoopLog(LogType type, String message, Loop loop) {
-        LoopLog log = new LoopLog(message, type, loop);
+        LoopLog log = new LoopLog(message, type, "CLAMP", loop);
         log.setId(Long.valueOf(new Random().nextInt()));
         return log;
     }
@@ -121,6 +122,6 @@ public class LoopToJsonTest {
         loopTest.addMicroServicePolicy(microServicePolicy);
 
         JSONAssert.assertEquals(ResourceFileUtil.getResourceAsString("tosca/pdp-group-policy-payload.json"),
-            loopTest.createPoliciesPayloadPdpGroup(), false);
+            PolicyComponent.createPoliciesPayloadPdpGroup(loopTest), false);
     }
 }
