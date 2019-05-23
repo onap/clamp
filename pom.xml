@@ -24,7 +24,7 @@
 		<modelVersion>4.0.0</modelVersion>
 		<groupId>org.onap.clamp</groupId>
 		<artifactId>clds</artifactId>
-		<version>4.0.2-SNAPSHOT</version>
+		<version>4.0.3-SNAPSHOT</version>
 		<name>clamp</name>
 
 <!--  -->
@@ -89,7 +89,7 @@
 				<docker.skip.tag>true</docker.skip.tag>
 				<skip.staging.artifacts>false</skip.staging.artifacts>
 				<python.http.proxy.param/>
-				<tomcat.version>9.0.16</tomcat.version>
+				<tomcat.version>9.0.20</tomcat.version>
 		</properties>
 
 		<profiles>
