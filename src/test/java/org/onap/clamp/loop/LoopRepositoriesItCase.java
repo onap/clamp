@@ -92,7 +92,7 @@ public class LoopRepositoriesItCase {
     }
 
     private LoopLog getLoopLog(LogType type, String message, Loop loop) {
-        return new LoopLog(message, type, loop);
+        return new LoopLog(message, type, "CLAMP", loop);
     }
 
     @Test
