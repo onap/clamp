@@ -16,6 +16,24 @@
       "revId": "3ecf12c7359849cdbd33d7008067aed610b2a119",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8030442e_f8cd083c",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsDictionaryService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5335
+      },
+      "writtenOn": "2019-06-04T10:54:29Z",
+      "side": 1,
+      "message": "Thanks, good point.\nMy intention was to simplify this logic and don\u0027t use the CldsDictionary object all-time in the test, because not always that was necessary. I will refactor the code to don\u0027t break this contract and add an additional test to this logic.",
+      "parentUuid": "567be15b_7faa1765",
+      "revId": "3ecf12c7359849cdbd33d7008067aed610b2a119",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
