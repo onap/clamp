@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0801901f_3438dc1f",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsToscaService.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-06-04T07:39:30Z",
+      "side": 1,
+      "message": "It\u0027s 3. method audit log info. Maybe it\u0027s worth to extract it to class responsible for doing that.",
+      "revId": "073cc4a9272cfaf01864da6cc90fe640205c0ac8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
