@@ -22,6 +22,30 @@
       "revId": "84c7cac93007ef66cd06b78a6f576056bbeaf2eb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7747d3d3_ee8225b4",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/AwtUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3717
+      },
+      "writtenOn": "2019-06-04T11:40:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b139b4e7_f93779dd",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 25
+      },
+      "revId": "84c7cac93007ef66cd06b78a6f576056bbeaf2eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
