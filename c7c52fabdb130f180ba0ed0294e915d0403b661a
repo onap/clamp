@@ -22,6 +22,30 @@
       "revId": "c7c52fabdb130f180ba0ed0294e915d0403b661a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e1ce6534_36adecd1",
+        "filename": "src/test/java/org/onap/clamp/flow/FlowLogOperationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-06-04T07:25:34Z",
+      "side": 1,
+      "message": "I agree. It shouldn\u0027t be a field.\nWhen it comes to null, if you don\u0027t care what it does better pass mock.",
+      "parentUuid": "878e3eed_d6623260",
+      "range": {
+        "startLine": 49,
+        "startChar": 48,
+        "endLine": 49,
+        "endChar": 60
+      },
+      "revId": "c7c52fabdb130f180ba0ed0294e915d0403b661a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
