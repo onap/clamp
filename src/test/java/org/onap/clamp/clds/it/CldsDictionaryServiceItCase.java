@@ -5,6 +5,8 @@
  * Copyright (C) 2018 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
+ * Modifications Copyright (c) 2019 Samsung
+ * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,7 +31,6 @@ import static org.junit.Assert.assertNotNull;
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -69,17 +70,17 @@ public class CldsDictionaryServiceItCase {
     private Authentication authentication;
     private CldsDictionary cldsDictionary;
     private CldsDictionaryItem cldsDictionaryItem;
-    private List<GrantedAuthority> authList = new LinkedList<GrantedAuthority>();
+    private List<GrantedAuthority> authList = new LinkedList<>();
     private LoggingUtils util;
+
+    private static final String DICTIONARY_NAME = "TestDictionary";
 
     /**
      * Setup the variable before the tests execution.
      *
-     * @throws IOException
-     *         In case of issues when opening the files
      */
     @Before
-    public void setupBefore() throws IOException {
+    public void setupBefore() {
         authList.add(new SimpleGrantedAuthority("permission-type-cl|dev|read"));
         authList.add(new SimpleGrantedAuthority("permission-type-cl|dev|update"));
         authList.add(new SimpleGrantedAuthority("permission-type-template|dev|read"));
@@ -99,10 +100,10 @@ public class CldsDictionaryServiceItCase {
         cldsDictionaryService.setSecurityContext(securityContext);
 
         cldsDictionary = new CldsDictionary();
+        cldsDictionary.setDictionaryName(DICTIONARY_NAME);
 
-        cldsDictionary.setDictionaryName("TestDictionary");
-        ResponseEntity entity = cldsDictionaryService.createOrUpdateDictionary("TestDictionary", cldsDictionary);
-        cldsDictionary = (CldsDictionary) entity.getBody();
+        ResponseEntity<CldsDictionary> entity = cldsDictionaryService.createOrUpdateDictionary(cldsDictionary);
+        cldsDictionary = entity.getBody();
 
         cldsDictionaryItem = new CldsDictionaryItem();
         cldsDictionaryItem.setDictElementShortName("TestDictionaryItemShortName");
@@ -110,23 +111,53 @@ public class CldsDictionaryServiceItCase {
         cldsDictionaryItem.setDictElementType("string");
         cldsDictionaryItem.setDictionaryId(cldsDictionary.getDictionaryId());
         cldsDictionaryItem.setDictElementDesc("TestDictionaryItemDesc");
-        cldsDictionaryService.createOrUpdateDictionaryElements("TestDictionary", cldsDictionaryItem);
+        cldsDictionaryService.createOrUpdateDictionaryElements(DICTIONARY_NAME, cldsDictionaryItem);
 
         logger.info("Initial Clds Dictionary uploaded in DB:" + cldsDictionaryItem);
     }
 
     @Test
-    public void testCreateOrUpdateDictionary() throws Exception {
-        ResponseEntity<CldsDictionary> responseEntity = cldsDictionaryService.createOrUpdateDictionary("TestDictionary",
-            cldsDictionary);
-        CldsDictionary dictionary = responseEntity.getBody();
+    public void testCreateDefaultDictionary(){
+        String dictionaryName = "TestDefaultDictionary";
+        ResponseEntity<CldsDictionary> entity = cldsDictionaryService.createOrUpdateDictionary(dictionaryName);
+        CldsDictionary dictionary = entity.getBody();
         assertNotNull(dictionary);
-        logger.info("CLDS Dictionary is:" + dictionary);
-        assertEquals("TestDictionary", dictionary.getDictionaryName());
+        logger.info("CLDS Default Dictionary is:" + dictionary);
+        assertEquals(dictionaryName, dictionary.getDictionaryName());
     }
 
     @Test
-    public void testCreateOrUpdateDictionaryElements() throws Exception {
+    public void testCreateOrUpdateDictionary() {
+        ResponseEntity<CldsDictionary> responseEntity = cldsDictionaryService.createOrUpdateDictionary(cldsDictionary);
+        CldsDictionary dictionary = responseEntity.getBody();
+        assertNotNull(dictionary);
+        logger.info("CLDS Dictionary is:" + dictionary);
+        assertEquals(DICTIONARY_NAME, dictionary.getDictionaryName());
+    }
+
+    @Test
+    public void testCreateOrUpdateDictionaryUsedByFrontend() {
+        ResponseEntity<CldsDictionary> responseEntity =
+                cldsDictionaryService.createOrUpdateDictionary(DICTIONARY_NAME, null);
+        CldsDictionary dictionary1 = responseEntity.getBody();
+
+        responseEntity = cldsDictionaryService.createOrUpdateDictionary(DICTIONARY_NAME, cldsDictionary);
+        CldsDictionary dictionary2 = responseEntity.getBody();
+
+        responseEntity = cldsDictionaryService.createOrUpdateDictionary(DICTIONARY_NAME, new CldsDictionary());
+        CldsDictionary dictionary3 = responseEntity.getBody();
+
+        assertNotNull(dictionary1);
+        assertNotNull(dictionary2);
+        assertNotNull(dictionary3);
+        assertEquals(DICTIONARY_NAME, dictionary1.getDictionaryName());
+        assertEquals(DICTIONARY_NAME, dictionary2.getDictionaryName());
+        assertNotNull(dictionary3.getDictionaryName());
+        assertEquals(DICTIONARY_NAME, dictionary3.getDictionaryName());
+    }
+
+    @Test
+    public void testCreateOrUpdateDictionaryElements() {
         cldsDictionaryItem = new CldsDictionaryItem();
         cldsDictionaryItem.setDictElementShortName("TestDictionaryItemShortName1");
         cldsDictionaryItem.setDictElementName("TestDictionaryItemName1");
@@ -135,7 +166,7 @@ public class CldsDictionaryServiceItCase {
         cldsDictionaryItem.setDictElementDesc("TestDictionaryItemDesc1");
 
         ResponseEntity<CldsDictionaryItem> responseEntity = cldsDictionaryService
-            .createOrUpdateDictionaryElements("TestDictionary", cldsDictionaryItem);
+                .createOrUpdateDictionaryElements(DICTIONARY_NAME, cldsDictionaryItem);
         CldsDictionaryItem dictionaryItem = responseEntity.getBody();
         assertNotNull(dictionaryItem);
         logger.info("CLDS Dictionary Item is:" + dictionaryItem);
@@ -143,7 +174,7 @@ public class CldsDictionaryServiceItCase {
     }
 
     @Test
-    public void testGetAllDictionaryNames() throws Exception {
+    public void testGetAllDictionaryNames() {
         ResponseEntity<List<CldsDictionary>> responseEntity = cldsDictionaryService.getAllDictionaryNames();
         List<CldsDictionary> dictionaries = responseEntity.getBody();
         assertNotNull(dictionaries);
@@ -151,9 +182,9 @@ public class CldsDictionaryServiceItCase {
     }
 
     @Test
-    public void testGetDictionaryElementsByName() throws Exception {
+    public void testGetDictionaryElementsByName() {
         ResponseEntity<List<CldsDictionaryItem>> responseEntity = cldsDictionaryService
-            .getDictionaryElementsByName("TestDictionary");
+                .getDictionaryElementsByName(DICTIONARY_NAME);
         List<CldsDictionaryItem> dictionaryItems = responseEntity.getBody();
         assertNotNull(dictionaryItems);
         logger.info("CLDS Dictionary Item LIst is:" + dictionaryItems);
