@@ -1,0 +1,11 @@
+Code-Review-1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Piotr Borelowski <p.borelowski@partner.samsung.com>
+Code-Review+1: Marcin Kowalski <m.kowalski3@partner.samsung.com>
+Code-Review+1: Katsia Kazak <k.kazak@samsung.com>
+Code-Review+2: Sébastien Determe <sebastien.determe@intl.att.com>
+Verified+1: Sébastien Determe <sebastien.determe@intl.att.com>
+Submitted-by: Sébastien Determe <sebastien.determe@intl.att.com>
+Submitted-at: Tue, 04 Jun 2019 11:49:14 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/clamp/+/86507
+Project: clamp
+Branch: refs/heads/master
