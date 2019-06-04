@@ -32,6 +32,16 @@ The main goal of the Dublin release was to:
 
 **Security Notes**
 
+*Fixed Security Issues*
+
+    - `OJSI-128 <https://jira.onap.org/browse/OJSI-128>`_ In default deployment CLAMP (clamp) exposes HTTP port 30258 outside of cluster.
+    - `OJSI-147 <https://jira.onap.org/browse/OJSI-147>`_ In default deployment CLAMP (cdash-kibana) exposes HTTP port 30290 outside of cluster.
+    - `OJSI-152 <https://jira.onap.org/browse/OJSI-152>`_ In default deployment CLAMP (clamp) exposes HTTP port 30295 outside of cluster.
+
+*Known Security Issues*
+
+*Known Vulnerabilities in Used Modules*
+
 CLAMP code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and actions to be taken in future release. 
 The CLAMP open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=64003444>`_.
 
