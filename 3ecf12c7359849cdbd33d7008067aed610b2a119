@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "567be15b_7faa1765",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsDictionaryService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-06-04T07:19:57Z",
+      "side": 1,
+      "message": "This change will break Clamp.\nYou\u0027re changing contract between frontend and backend.\nThis function seems not to be used howether it\u0027s used in camel configuration. Please checkout clds-services.xml",
+      "revId": "3ecf12c7359849cdbd33d7008067aed610b2a119",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
