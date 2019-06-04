@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Piotr Borelowski <p.borelowski@partner.samsung.com>
+Code-Review+1: Robert Bogacki <r.bogacki@samsung.com>
+Code-Review+2: Adam Krysiak <adam.krysiak@nokia.com>
+Submitted-by: Adam Krysiak <adam.krysiak@nokia.com>
+Submitted-at: Tue, 04 Jun 2019 07:12:25 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/clamp/+/86147
+Project: clamp
+Branch: refs/heads/master
