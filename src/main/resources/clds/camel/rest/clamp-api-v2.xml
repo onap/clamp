@@ -483,6 +483,10 @@
 						</split>
 					</split>
 
+					<delay>
+						<constant>3000</constant>
+					</delay>
+
 					<to uri="direct:add-all-to-active-pdp-group" />
 
 					<log
