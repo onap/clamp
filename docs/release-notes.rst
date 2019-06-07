@@ -5,7 +5,7 @@
 Release Notes
 =============
 
-Version: 4.0.4
+Version: 4.0.5
 --------------
 
 :Release Date: 2019-06-06
