@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ca2bb0b_baf65829",
+        "filename": "src/main/java/org/onap/clamp/clds/service/CldsDictionaryService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-06-18T12:27:32Z",
+      "side": 1,
+      "message": "Line 89, 90, 94, 95, 96 are for logging purpose, normally it should be present in the main function, to record the starting/ending of the function. So it is more suitable to be put in the function createOrUpdateDictionary(String dictionaryName,                                                                  CldsDictionary cldsDictionary).\n\nLine 92 is for authorization control, and it should be put on the main function as well.\n\nCould you please restructure the 3 createOrUpdateDictionary methods accordingly please?",
+      "revId": "4ac44e9f251c635a8b8d1c58bf9d171aee3c69ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
