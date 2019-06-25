@@ -15,7 +15,7 @@ VOLUME /opt/clamp/config
 RUN mkdir /var/log/onap
 RUN chmod a+rwx /var/log/onap
 
-COPY onap-clamp/clamp.jar /opt/clamp/app.jar
+COPY onap-clamp-backend/clamp.jar /opt/clamp/app.jar
 RUN chmod 700 /opt/clamp/app.jar
 
 RUN chown -R clamp:onap /opt/clamp

@@ -29,28 +29,13 @@
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
 
-
 	<fileSets>
 		<!-- include config files -->
 		<fileSet>
-			<includes>
-				<include>${project.build.finalName}.jar</include>
-			</includes>
-			<directory>${project.build.directory}</directory>
-			<outputDirectory>/</outputDirectory>
-		</fileSet>
-		<fileSet>
-			<includes>
-				<include>>etc/config/**</include>
-			</includes>
-			<directory>${project.build.directory}</directory>
-			<outputDirectory>/</outputDirectory>
-		</fileSet>
-		<fileSet>
-			<includes>
-				<include>etc/keystore/**</include>
-			</includes>
-			<directory>${project.build.directory}</directory>
+			<excludes>
+				<exclude>node_modules</exclude>
+			</excludes>
+			<directory>${project.basedir}/ui-react</directory>
 			<outputDirectory>/</outputDirectory>
 		</fileSet>
 	</fileSets>
