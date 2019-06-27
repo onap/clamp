@@ -20,11 +20,3 @@
  * ===================================================================
  *
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Clamp from './Clamp';
-
-ReactDOM.render(
-	<Clamp />,
-	document.getElementById('root')
-)

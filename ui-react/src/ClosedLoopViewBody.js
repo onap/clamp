@@ -21,10 +21,19 @@
  *
  */
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Clamp from './Clamp';
+import './css/index.css';
 
-ReactDOM.render(
-	<Clamp />,
-	document.getElementById('root')
-)
+ class ClosedLoopViewBody extends React.Component {
+   render() {
+   	return (
+      <div>
+
+        <div id="paletteDiv" className="cl_view_body panel-body">
+        </div>
+
+      </div>
+   	);
+   }
+ }
+
+ export default ClosedLoopViewBody;
