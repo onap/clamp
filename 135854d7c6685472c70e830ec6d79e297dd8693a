@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6af0dbc2_796f5b46",
+        "filename": "ui-react/public/index.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-06-28T08:35:21Z",
+      "side": 1,
+      "message": "We must change that, it\u0027s an online dependency, if the lab is isolated this won\u0027t work",
+      "revId": "135854d7c6685472c70e830ec6d79e297dd8693a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
