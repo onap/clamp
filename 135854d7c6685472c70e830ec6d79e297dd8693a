@@ -16,6 +16,23 @@
       "revId": "135854d7c6685472c70e830ec6d79e297dd8693a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "493f98c2_dc759589",
+        "filename": "ui-react/src/css/bootstrap.css",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-06-28T08:37:50Z",
+      "side": 1,
+      "message": "We don\u0027t need to commit that css file, you must reference the css in node_modules instead i think",
+      "revId": "135854d7c6685472c70e830ec6d79e297dd8693a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
