@@ -26,31 +26,32 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 
 class MenuBar extends React.Component {
+	
 	render () {
 	   return (
-  <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
-      <NavDropdown title="Closed Loop" id="basic-nav-dropdown">
-        <NavDropdown.Item href="#action/3.1">Open CL</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.2">Properties CL</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.3">Close Model</NavDropdown.Item>
-      </NavDropdown>
-			<NavDropdown title="Manage" id="basic-nav-dropdown">
-				<NavDropdown.Item href="#action/3.1">Submit</NavDropdown.Item>
-				<NavDropdown.Item href="#action/3.2">Stop</NavDropdown.Item>
-				<NavDropdown.Item href="#action/3.3">Restart</NavDropdown.Item>
-				<NavDropdown.Item href="#action/3.3">Delete</NavDropdown.Item>
-				<NavDropdown.Item href="#action/3.3">Deploy</NavDropdown.Item>
-				<NavDropdown.Item href="#action/3.3">UnDeploy</NavDropdown.Item>
-			</NavDropdown>
-			<NavDropdown title="View" id="basic-nav-dropdown">
-				<NavDropdown.Item href="#action/3.1">Refresh Status</NavDropdown.Item>
-			</NavDropdown>
-		<NavDropdown title="Help" id="basic-nav-dropdown">
-			<NavDropdown.Item href="#action/3.1">Wiki</NavDropdown.Item>
-			<NavDropdown.Item href="#action/3.2">Contact Us</NavDropdown.Item>
-			<NavDropdown.Item href="#action/3.3">User Info</NavDropdown.Item>
-		</NavDropdown>
-  </Navbar.Collapse>
+		  <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
+		      <NavDropdown title="Closed Loop" id="basic-nav-dropdown">
+		        <NavDropdown.Item href="#action/3.1">Open CL</NavDropdown.Item>
+		        <NavDropdown.Item href="#action/3.2">Properties CL</NavDropdown.Item>
+		        <NavDropdown.Item href="#action/3.3">Close Model</NavDropdown.Item>
+		      </NavDropdown>
+					<NavDropdown title="Manage" id="basic-nav-dropdown">
+						<NavDropdown.Item href="#action/3.1">Submit</NavDropdown.Item>
+						<NavDropdown.Item href="#action/3.2">Stop</NavDropdown.Item>
+						<NavDropdown.Item href="#action/3.3">Restart</NavDropdown.Item>
+						<NavDropdown.Item href="#action/3.3">Delete</NavDropdown.Item>
+						<NavDropdown.Item href="#action/3.3">Deploy</NavDropdown.Item>
+						<NavDropdown.Item href="#action/3.3">UnDeploy</NavDropdown.Item>
+					</NavDropdown>
+					<NavDropdown title="View" id="basic-nav-dropdown">
+						<NavDropdown.Item href="#action/3.1">Refresh Status</NavDropdown.Item>
+					</NavDropdown>
+				<NavDropdown title="Help" id="basic-nav-dropdown">
+					<NavDropdown.Item href="#action/3.1">Wiki</NavDropdown.Item>
+					<NavDropdown.Item href="#action/3.2">Contact Us</NavDropdown.Item>
+					<NavDropdown.Item href="#action/3.3">User Info</NavDropdown.Item>
+				</NavDropdown>
+		  </Navbar.Collapse>
 
 
     );
