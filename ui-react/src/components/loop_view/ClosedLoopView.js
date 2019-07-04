@@ -21,22 +21,21 @@
  *
  */
 import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import 'bootstrap-css-only/css/bootstrap.min.css';
+import ClosedLoopViewHeader from './ClosedLoopViewHeader';
+import ClosedLoopViewBody from './ClosedLoopViewBody';
+import './ClosedLoopView.css';
 
-class UserBar extends React.Component {
-	render () {
-		const user = this.props.user;
-		return (
+ class ClosedLoopView extends React.Component {
+ 	render() {
+ 		return (
+      <div className="container-fluid cldsmodelling">
+      		<div className="cl_panel">
+            <ClosedLoopViewHeader />
+            <ClosedLoopViewBody />
+          </div>
+      </div>
+ 		);
+ 	}
+ }
 
- <Navbar.Collapse className="justify-content-end">
-	<Navbar.Text>
-		Hello: <a>{user}</a>
-	</Navbar.Text>
-</Navbar.Collapse>
-
-		);
-	}
-}
-
-export default UserBar;
+ export default ClosedLoopView;

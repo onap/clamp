@@ -20,38 +20,35 @@
  * ===================================================================
  *
  */
-import React from 'react';
-import Table from 'react-bootstrap/Table';
-import './css/index.css';
 
-class ClosedLoopViewLogs extends React.Component {
-  render() {
-    return (
-      <div className="log_div">
-        <div className="log_table">
-          <label className="table_header">Loop Logs</label>
-          <Table striped hover id="loop-log-div">
-            <thead>
-  							<tr>
-  								<th><span align="left" className="text">Date</span></th>
-  								<th><span align="left" className="text">Type</span></th>
-  								<th><span align="left" className="text">Component</span></th>
-  								<th><span align="right" className="text">Log</span></th>
-  							</tr>
-  						</thead>
-  						<tbody>
-  							<tr>
-  								<td className="row_10_per">test</td>
-  								<td className="row_10_per">test</td>
-  								<td className="row_10_per">test</td>
-  								<td className="row_70_per">test</td>
-  							</tr>
-  						</tbody>
-            </Table>
-          </div>
-        </div>
-    );
+import { createGlobalStyle } from 'styled-components';
+
+export const GlobalClampStyle = createGlobalStyle`
+  body {
+    padding: 0;
+    margin: 0;
+    font-family: ${props => props.theme.fontFamily};
+    font-size: ${props => props.theme.fontSize};
+    font-weight: normal;
+    color: ${props => props.theme.fontColor};
+    background-color: ${props => (props.theme.backgroundColor)};
   }
-}
 
-export default ClosedLoopViewLogs;
+  a {
+	font-family: ${props => props.theme.fontFamily};
+    font-size: ${props => props.theme.fontSize};
+    font-weight: bold;
+    color: ${props => props.theme.fontColor};
+    background-color: ${props => (props.theme.backgroundColor)};
+  }
+`
+
+export const DefaultClampTheme = {
+	backgroundColor: '#ffeeee',
+	fontColor: '#ffff00',
+	fontFamily: 'Arial, sans-serif',
+	fontSize: '15px',
+	danger: '#eb238e',
+	light: '#f4f4f4',
+	dark: '#222'
+};

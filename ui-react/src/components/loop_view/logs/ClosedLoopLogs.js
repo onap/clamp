@@ -20,21 +20,38 @@
  * ===================================================================
  *
  */
-
 import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import 'bootstrap-css-only/css/bootstrap.min.css';
+import Table from 'react-bootstrap/Table';
+import './ClosedLoopLogs.css';
 
-class ClampLogoImg extends React.Component {
-	render() {
-		return (
-			<Navbar.Brand>
-			  <img alt="" src={require('./images/logo_onap_2017.png')}
-				  height="50px" width="234px"
-				  className="d-inline-block align-top"/>
-		  </Navbar.Brand>
-		);
-	}
+class ClosedLoopViewLogs extends React.Component {
+  render() {
+    return (
+      <div className="log_div">
+        <div className="log_table">
+          <label className="table_header">Loop Logs</label>
+          <Table striped hover id="loop-log-div">
+            <thead>
+  							<tr>
+  								<th><span align="left" className="text">Date</span></th>
+  								<th><span align="left" className="text">Type</span></th>
+  								<th><span align="left" className="text">Component</span></th>
+  								<th><span align="right" className="text">Log</span></th>
+  							</tr>
+  						</thead>
+  						<tbody>
+  							<tr>
+  								<td className="row_10_per">test</td>
+  								<td className="row_10_per">test</td>
+  								<td className="row_10_per">test</td>
+  								<td className="row_70_per">test</td>
+  							</tr>
+  						</tbody>
+            </Table>
+          </div>
+        </div>
+    );
+  }
 }
 
-export default ClampLogoImg;
+export default ClosedLoopViewLogs;

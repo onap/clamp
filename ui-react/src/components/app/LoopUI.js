@@ -22,24 +22,73 @@
  */
 
 import React from 'react';
-import ClampLogoImg from './ClampLogoImg';
-import ClampLogo from './ClampLogo';
-import UserBar from './UserBar';
-import MenuBar from './MenuBar';
+import ClosedLoopView from '../loop_view/ClosedLoopView';
+import styled from 'styled-components';
+import MenuBar from '../menu/MenuBar';
 import Navbar from 'react-bootstrap/Navbar';
-import 'bootstrap-css-only/css/bootstrap.min.css';
+import logo from './logo.png';
+import { GlobalClampStyle } from '../../theme/globalStyle.js';
 
-class ClampHeader extends React.Component {
+const ProjectNameStyle = styled.a`
+	padding: 20px;
+	font-size: 30px;
+
+`
+
+export default class LoopUI extends React.Component {
+	
+	user = "testuser";
+		
+	renderMenuNavBar() {
+		return (
+			<MenuBar />
+		);
+	}
+	
+	renderUserLoggedNavBar() {
+		return (
+			<Navbar.Text>
+				<a href="index.html">Signed in as: {this.user}</a>
+			</Navbar.Text>
+		);
+	}
+	
+	renderLogoNavBar() {
+		return (
+			<Navbar.Brand>
+			<img height="50px" width="234px" src={logo} alt=""/>
+				<Navbar.Text>
+					<ProjectNameStyle>
+						CLAMP
+					</ProjectNameStyle>
+				</Navbar.Text>
+			</Navbar.Brand>
+		);
+	}
+	
+	renderNavBar() {
+		return (
+		<Navbar expand="lg">
+			{this.renderLogoNavBar()}
+			{this.renderMenuNavBar()}
+			{this.renderUserLoggedNavBar()}
+		</Navbar>
+	);
+	}
+	
+	renderLoopView() {
+		return (<ClosedLoopView />);
+	}
+	
 	render() {
 		return (
-			<Navbar bg="light" expand="lg">
-				<ClampLogoImg />
-				<ClampLogo />
-				<MenuBar />
-				<UserBar />
-			</Navbar>
+				<div>
+				 	<GlobalClampStyle />
+					{this.renderNavBar()}
+					{this.renderLoopView()}
+				</div>
 		);
 	}
 }
 
-export default ClampHeader;
+

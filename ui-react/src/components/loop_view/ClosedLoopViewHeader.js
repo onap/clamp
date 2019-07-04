@@ -22,19 +22,22 @@
  */
 
 import React from 'react';
-import ClampHeader from './ClampHeader';
-import ClosedLoopView from './ClosedLoopView';
+import './ClosedLoopView.css';
 
-
-class Clamp extends React.Component {
-	render() {
-		return (
-			<div>
-				<ClampHeader />
-				<ClosedLoopView />
-			</div>
-		);
-	}
+class ClosedLoopViewHeader extends React.Component {
+  render() {
+  	return (
+      <div className="cl_panel_heading clearfix">
+        <div>
+          <span className="pull-left"> <span id="modeler_name">Closed
+              Loop Modeler</span>
+          </span> <span className="pull-right"> <span id="loop_name">No
+              LOOP loaded yet</span> &nbsp; <i ></i>
+          </span>
+        </div>
+      </div>
+  	);
+  }
 }
 
-export default Clamp;
+export default ClosedLoopViewHeader;

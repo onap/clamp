@@ -20,51 +20,20 @@
  * ===================================================================
  *
  */
+
 import React from 'react';
-import ClosedLoopSVG from './ClosedLoopSVG';
-import ClosedLoopLogs from './ClosedLoopLogs';
-import ClosedLoopStatus from './ClosedLoopStatus';
-import './css/index.css';
+import LoopUI from './components/app/LoopUI'
+import { ThemeProvider } from 'styled-components';
+import { DefaultClampTheme } from './theme/globalStyle.js';
 
- class ClosedLoopViewBody extends React.Component {
+export default class OnapClamp extends LoopUI {
+	
+	render() {
+		console.log("Onap Clamp UI starting");
+		return (
+		<ThemeProvider theme={DefaultClampTheme}>
+			{super.render()}
+		</ThemeProvider>);
+	}
+}
 
-   constructor(props) {
-      super(props);
-      this.state = {
-         disableDiv: false
-      };
-      this.disableDiv = this.disableDiv.bind(this);
-      this.enableDiv = this.enableDiv.bind(this);
-    }
-
-    disableDiv() {
-      this.setState({
-         disableDiv:true
-      });
-    }
-
-    enableDiv() {
-      this.setState({
-         disableDiv:false
-      });
-    }
-
-
-   render() {
-     var divStyle = {
-      display:this.state.disableDiv?'block':'none'
-    };
-   	return (
-        <div id="paletteDiv" className="cl_view_body" style={divStyle}>
-          <div id="js-canvas" className="js_canvas">
-            <ClosedLoopSVG />
-            <ClosedLoopLogs />
-          </div>
-          <ClosedLoopStatus />
-        </div>
-   	);
-   }
- }
-
-
- export default ClosedLoopViewBody;

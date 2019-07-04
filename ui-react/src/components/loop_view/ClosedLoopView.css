@@ -4,6 +4,7 @@
 	margin-left: 1px;
 	margin-right: 1px;
 }
+
 .cl_panel {
 	margin-bottom: 20px;
 	background-color: #fff;
@@ -14,6 +15,7 @@
 	height: 100%;
 	border-color: #337ab7;
 }
+
 .cl_panel_heading{
 	color: #fff;
 	background-color: #337ab7;
@@ -24,6 +26,7 @@
 	border-top-right-radius: 3px;
 	font-size: 12px;
 }
+
 .pull-left{
 	float: left !important;
 }
@@ -31,58 +34,12 @@
 	float: right !important;
 }
 
-.color_white {
-	color: white;
-}
 .cl_view_body {
 	height: 83.5vh; width: 100%;
 }
-.logo_text {
-	font-size: 20px;
-	font-weight: bold;
-}
+
 .js_canvas {
 	margin-top: 200px;
 	margin-left: 20px;
 	margin-right: 20px;
-}
-.log_div{
-	border: 2px solid gray;
-	margin-right: 20px;
-	font-size: 12px;
-}
-.log_table {
-	width: 100%;
-	height: 87%;
-	overflow: auto;
-}
-.row_10_per {
-	width: 10%;
-}
-.row_30_per {
-	width: 30%;
-}
-.row_70_per {
-	width: 70%;
-}
-.table_header {
-	font-weight: bold;
-}
-.status_title{
-	position: absolute;
-	left: 61%;
-	top: 151px;
-	font-size:20px;
-}
-.status{
-	background-color: gray;
-	-moz-border-radius: 50px;
-	-webkit-border-radius: 50px;
-	border-radius: 50px;
-}
-.status_table {
-	position: absolute;
-	left: 61%;
-	top: 191px;
-	font-size:10px;
 }

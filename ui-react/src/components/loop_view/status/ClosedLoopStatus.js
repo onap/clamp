@@ -22,7 +22,7 @@
 */
 import React from 'react';
 import Table from 'react-bootstrap/Table';
-import './css/index.css';
+import './ClosedLoopStatus.css';
 
 class ClosedLoopStatus extends React.Component {
   render() {

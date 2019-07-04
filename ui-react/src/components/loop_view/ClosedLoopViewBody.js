@@ -21,21 +21,50 @@
  *
  */
 import React from 'react';
-import ClosedLoopViewHeader from './ClosedLoopViewHeader';
-import ClosedLoopViewBody from './ClosedLoopViewBody';
-import './css/index.css';
+import ClosedLoopSVG from './ClosedLoopSVG';
+import ClosedLoopLogs from './logs/ClosedLoopLogs';
+import ClosedLoopStatus from './status/ClosedLoopStatus';
+import './ClosedLoopView.css';
 
- class ClosedLoopView extends React.Component {
- 	render() {
- 		return (
-      <div className="container-fluid cldsmodelling">
-      		<div className="cl_panel">
-            <ClosedLoopViewHeader />
-            <ClosedLoopViewBody />
+ class ClosedLoopViewBody extends React.Component {
+
+   constructor(props) {
+      super(props);
+      this.state = {
+         disableDiv: false
+      };
+      this.disableDiv = this.disableDiv.bind(this);
+      this.enableDiv = this.enableDiv.bind(this);
+    }
+
+    disableDiv() {
+      this.setState({
+         disableDiv:true
+      });
+    }
+
+    enableDiv() {
+      this.setState({
+         disableDiv:false
+      });
+    }
+
+
+   render() {
+     var divStyle = {
+      display:this.state.disableDiv?'block':'none'
+    };
+   	return (
+        <div id="paletteDiv" className="cl_view_body" style={divStyle}>
+          <div id="js-canvas" className="js_canvas">
+            <ClosedLoopSVG />
+            <ClosedLoopLogs />
           </div>
-      </div>
- 		);
- 	}
+          <ClosedLoopStatus />
+        </div>
+   	);
+   }
  }
 
- export default ClosedLoopView;
+
+ export default ClosedLoopViewBody;

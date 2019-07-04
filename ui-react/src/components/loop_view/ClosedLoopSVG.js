@@ -20,24 +20,15 @@
  * ===================================================================
  *
  */
-
 import React from 'react';
-import './css/index.css';
 
-class ClosedLoopViewHeader extends React.Component {
+class ClosedLoopViewSVG extends React.Component {
   render() {
-  	return (
-      <div className="cl_panel_heading clearfix">
-        <div className="color_white">
-          <span className="pull-left"> <span id="modeler_name">Closed
-              Loop Modeler</span>
-          </span> <span className="pull-right"> <span id="loop_name">No
-              LOOP loaded yet</span> &nbsp; <i ></i>
-          </span>
+    return (
+        <div id="loop_content">
         </div>
-      </div>
-  	);
+    );
   }
 }
 
-export default ClosedLoopViewHeader;
+export default ClosedLoopViewSVG;
