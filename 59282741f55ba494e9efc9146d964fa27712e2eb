@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2891b37f_790c2ce8",
+        "filename": "ui-react/src/components/app/login/BasicAuthLogin.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-07-10T09:27:46Z",
+      "side": 1,
+      "message": "Please keep naming convention.  --\u003e like \"LoginHeaderStyled\" for all styled components defined",
+      "revId": "59282741f55ba494e9efc9146d964fa27712e2eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8abc1f97_45eb1c1e",
+        "filename": "ui-react/src/components/app/login/LoginFailedPage.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-07-10T09:27:46Z",
+      "side": 1,
+      "message": "Formatting is not correct",
+      "revId": "59282741f55ba494e9efc9146d964fa27712e2eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3557d8b_5b5d8fae",
+        "filename": "ui-react/src/components/app/login/LoginFailedPage.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-07-10T09:27:46Z",
+      "side": 1,
+      "message": "Same comment as for router, we can remove that link and put / instead ?",
+      "revId": "59282741f55ba494e9efc9146d964fa27712e2eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87553225_b6f2cf6a",
+        "filename": "ui-react/src/components/menu/MenuBar.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-07-10T09:27:46Z",
+      "side": 1,
+      "message": "No method should be defined here, instead that must be referenced in the router and only href should be mentioned in the menu items",
+      "revId": "59282741f55ba494e9efc9146d964fa27712e2eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cdd470b_a4edb7b7",
+        "filename": "ui-react/src/components/menu/MenuBar.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-07-10T09:27:46Z",
+      "side": 1,
+      "message": "This should not be NavDropdown.Item but StyledNavDropdownItem, onclick should not be used, instead href should be used, with a route defined in the React router",
+      "revId": "59282741f55ba494e9efc9146d964fa27712e2eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8034ff2_c08ba532",
+        "filename": "ui-react/src/index.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-07-10T09:27:46Z",
+      "side": 1,
+      "message": "I guess we could remove that ? we don\u0027t need the designer/index.html link anymore\nAnd remove it from all sites",
+      "revId": "59282741f55ba494e9efc9146d964fa27712e2eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b590195f_4549776f",
+        "filename": "ui-react/src/services/userService.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-07-10T09:27:46Z",
+      "side": 1,
+      "message": "Should be defined in a class that contains all rest queries",
+      "revId": "59282741f55ba494e9efc9146d964fa27712e2eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
