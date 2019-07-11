@@ -30,11 +30,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.util.HttpConnectionManager;
 
@@ -76,9 +76,9 @@ public class DcaeDispatcherServicesTest {
                 .put("dcae.dispatcher.url", DCAE_URL)
                 .build()
                 .forEach((property, value) -> {
-                    Mockito.when(clampProperties.getStringValue(Matchers.matches(property), Matchers.any()))
-                            .thenReturn(value);
-                    Mockito.when(clampProperties.getStringValue(Matchers.matches(property))).thenReturn(value);
+//                    Mockito.when(clampProperties.getStringValue(Matchers.matches(property), Matchers.any()))
+//                            .thenReturn(value);
+                    Mockito.when(clampProperties.getStringValue(ArgumentMatchers.matches(property))).thenReturn(value);
                 });
     }
 

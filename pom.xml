@@ -56,8 +56,8 @@
 				<maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
 				<clamp.project.version>${project.version}</clamp.project.version>
 				<clamp.build.timestamp>${maven.build.timestamp}</clamp.build.timestamp>
-				<maven.compiler.source>1.8</maven.compiler.source>
-				<maven.compiler.target>1.8</maven.compiler.target>
+				<maven.compiler.source>11</maven.compiler.source>
+				<maven.compiler.target>11</maven.compiler.target>
 				<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 				<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -255,6 +255,16 @@
 						<groupId>com.att.eelf</groupId>
 						<artifactId>eelf-core</artifactId>
 						<version>${eelf.core.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId> org.powermock</groupId>
+							<artifactId>powermock-module-junit4</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId> org.powermock</groupId>
+							<artifactId>powermock-api-mockito</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 				<dependency>
 						<groupId>org.codehaus.janino</groupId>
@@ -367,6 +377,18 @@
 										<artifactId>android-json</artifactId>
 								</exclusion>
 						</exclusions>
+				</dependency>
+				<dependency>
+					<groupId>org.powermock</groupId>
+					<artifactId>powermock-module-junit4</artifactId>
+					<version>2.0.2</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.powermock</groupId>
+					<artifactId>powermock-api-mockito2</artifactId>
+					<version>2.0.2</version>
+					<scope>test</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
@@ -632,7 +654,7 @@
 				<dependency>
 					<groupId>org.mockito</groupId>
 					<artifactId>mockito-core</artifactId>
-					<version>1.10.19</version>
+					<version>3.0.0</version>
 					<scope>test</scope>
 				</dependency>
 		</dependencies>

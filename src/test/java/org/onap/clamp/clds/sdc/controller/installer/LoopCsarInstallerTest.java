@@ -136,7 +136,7 @@ public class LoopCsarInstallerTest {
         filesConfiguration.setSvgXmlFilePath("samplePath");
         Resource resource = Mockito.mock(Resource.class);
         InputStream inputStream = IOUtils.toInputStream(input, "UTF-8");
-        Mockito.when(applicationContext.getResource(Mockito.any(String.class))).thenReturn(resource);
+        Mockito.when(applicationContext.getResource(Mockito.any())).thenReturn(resource);
         Mockito.when(resource.getInputStream()).thenReturn(inputStream);
         csarInstaller.loadConfiguration();
         // when

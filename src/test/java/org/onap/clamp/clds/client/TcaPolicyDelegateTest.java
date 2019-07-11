@@ -40,7 +40,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.clamp.clds.client.req.policy.PolicyClient;
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.dao.CldsDao;
@@ -105,17 +105,17 @@ public class TcaPolicyDelegateTest {
         JsonObject jsonObject;
 
         jsonTemplate = mock(JsonElement.class);
-        when(refProp.getJsonTemplate(eq(TCA_TEMPLATE_KEY), anyString())).thenReturn(jsonTemplate);
+        when(refProp.getJsonTemplate(eq(TCA_TEMPLATE_KEY), any())).thenReturn(jsonTemplate);
         jsonObject = JsonUtils.GSON.fromJson(TCA_TEMPLATE_JSON, JsonObject.class);
         when(jsonTemplate.getAsJsonObject()).thenReturn(jsonObject);
 
         jsonTemplate = mock(JsonElement.class);
-        when(refProp.getJsonTemplate(eq(TCA_POLICY_TEMPLATE_KEY), anyString())).thenReturn(jsonTemplate);
+        when(refProp.getJsonTemplate(eq(TCA_POLICY_TEMPLATE_KEY), any())).thenReturn(jsonTemplate);
         jsonObject = JsonUtils.GSON.fromJson(TCA_POLICY_TEMPLATE_JSON, JsonObject.class);
         when(jsonTemplate.getAsJsonObject()).thenReturn(jsonObject);
 
         jsonTemplate = mock(JsonElement.class);
-        when(refProp.getJsonTemplate(eq(TCA_THRESHOLDS_TEMPLATE_KEY), anyString())).thenReturn(jsonTemplate);
+        when(refProp.getJsonTemplate(eq(TCA_THRESHOLDS_TEMPLATE_KEY), any())).thenReturn(jsonTemplate);
         jsonObject = JsonUtils.GSON.fromJson(TCA_THRESHOLDS_TEMPLATE_JSON, JsonObject.class);
         when(jsonTemplate.getAsJsonObject()).thenReturn(jsonObject);
 

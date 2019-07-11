@@ -65,12 +65,7 @@ public final class CryptoUtils {
      * Definition of encryption algorithm.
      */
     private static final String ALGORITHM = "AES";
-    
-    /**
-     * AES Encryption Key environment variable for external configuration
-     */
-    private static final String AES_ENCRYPTION_KEY = "AES_ENCRYPTION_KEY";
-    
+
     /**
      * Detailed definition of encryption algorithm.
      */
@@ -164,7 +159,7 @@ public final class CryptoUtils {
         try {
             // Workaround fix to make encryption key configurable
             // System environment variable takes precedence for over clds/key.properties
-            String encryptionKey = System.getenv(AES_ENCRYPTION_KEY);
+            String encryptionKey = EncryptionKeyProvider.getEncryptionKey();
             if(encryptionKey != null && encryptionKey.trim().length() > 0) {
                 return getSecretKeySpec(encryptionKey);
             } else {

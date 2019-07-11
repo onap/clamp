@@ -23,7 +23,7 @@
 
 package org.onap.clamp.clds.util.drawing;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -34,7 +34,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.onap.clamp.clds.util.XmlToolsTest;
 import org.w3c.dom.Document;
@@ -57,7 +57,7 @@ public class DocumentBuilderTest {
         Node newNode = document.createElement(newNodeTag);
         newNode.appendChild(document.createTextNode(newNodeText));
 
-        when(mockG2d.getRoot(any(Element.class))).then(a -> a.getArgumentAt(0, Element.class).appendChild(newNode));
+        when(mockG2d.getRoot(any(Element.class))).then(a -> a.getArgument(0, Element.class).appendChild(newNode));
 
         DocumentBuilder db = new DocumentBuilder(document, document);
         db.pushChangestoDocument(mockG2d, dataElementId);
