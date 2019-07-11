@@ -41,7 +41,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.onap.clamp.clds.client.req.policy.PolicyClient;
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.dao.CldsDao;
@@ -54,8 +54,8 @@ import org.onap.clamp.clds.util.JsonUtils;
 @RunWith(MockitoJUnitRunner.class)
 public class HolmesPolicyDelegateTest {
 
-    private static final String ID_JSON = "{\"id\":{\"r\":[{},{\"serviceConfigurations\":"
-            + "[[\"x\",\"+\",\"2\",\"y\"]]}]}}";
+    private static final String ID_JSON = "{\"id\":[{},{\"name\":\"configPolicyName\",\"value\":\"cccc\"},{\"serviceConfigurations\":"
+            + "[[\"x\",\"+\",\"2\",\"y\"]]}]}";
     private static final String METRICS_JSON = "{\"metricsPerEventName\":[{\"thresholds\":[]}]}";
     private static final String CONTENT_JSON = "{\"content\":{}}";
     private static final String NULL_JSON = "{}";
@@ -95,25 +95,13 @@ public class HolmesPolicyDelegateTest {
     private HolmesPolicyDelegate holmesPolicyDelegateTest;
 
     @Test
-    public void shouldExecuteSuccessfully() throws IOException {
+    public void shouldExecuteSuccessfully() {
         // given
         when(exchange.getProperty(eq(MODEL_BPMN_KEY))).thenReturn(HOLMES_ID_FROM_JSON);
         when(exchange.getProperty(eq(MODEL_PROP_KEY))).thenReturn(ID_JSON);
         when(exchange.getProperty(eq(MODEL_NAME_KEY))).thenReturn(MODEL_NAME_VALUE);
         when(exchange.getProperty(eq(TEST_KEY))).thenReturn(false);
         when(exchange.getProperty(eq(USERID_KEY))).thenReturn(USERID_VALUE);
-
-        JsonElement jsonTemplateA = mock(JsonElement.class);
-        when(clampProperties.getJsonTemplate(eq(TCA_TEMPLATE_KEY), anyString())).thenReturn(jsonTemplateA);
-        when(jsonTemplateA.getAsJsonObject()).thenReturn(getJsonObject(METRICS_JSON));
-
-        JsonElement jsonTemplateB = mock(JsonElement.class);
-        when(clampProperties.getJsonTemplate(eq(TCA_POLICY_TEMPLATE_KEY), anyString())).thenReturn(jsonTemplateB);
-        when(jsonTemplateB.getAsJsonObject()).thenReturn(getJsonObject(CONTENT_JSON));
-
-        JsonElement jsonTemplateC = mock(JsonElement.class);
-        when(clampProperties.getJsonTemplate(eq(TCA_THRESHOLDS_TEMPLATE_KEY), anyString())).thenReturn(jsonTemplateC);
-        when(jsonTemplateC.getAsJsonObject()).thenReturn(getJsonObject(NULL_JSON));
 
         when(policyClient.sendBasePolicyInOther(anyString(), anyString(), any(), anyString()))
                 .thenReturn(RESPONSE_MESSAGE_VALUE);
@@ -127,8 +115,8 @@ public class HolmesPolicyDelegateTest {
         holmesPolicyDelegateTest.execute(exchange);
 
         // then
-        verify(exchange).setProperty(eq(HOLMES_POLICY_RESPONSE_MESSAGE_KEY), eq(RESPONSE_MESSAGE_VALUE.getBytes()));
-        verify(cldsDao).setModel(eq(cldsModel), eq(USERID_VALUE));
+        verify(exchange).setProperty(HOLMES_POLICY_RESPONSE_MESSAGE_KEY, RESPONSE_MESSAGE_VALUE.getBytes());
+        verify(cldsDao).setModel(cldsModel, USERID_VALUE);
     }
 
     @Test
