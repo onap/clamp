@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e5b1a26e_4cd07e8d",
+        "filename": "src/main/java/org/onap/clamp/clds/transform/XslTransformer.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3541
+      },
+      "writtenOn": "2019-07-11T09:42:58Z",
+      "side": 0,
+      "message": "This implementation is not exported in module anymore",
+      "revId": "7c7323d8ec54e65ac7a9a5e8c7cd8bdc755ea70a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
