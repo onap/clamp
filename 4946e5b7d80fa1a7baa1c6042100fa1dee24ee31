@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "95cadecb_75e9a8aa",
+        "filename": "ui-react/src/components/backend_communication/UserService.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2019-07-12T06:24:39Z",
+      "side": 1,
+      "message": "You can not just check response.ok. In case clamp backend got timeout, it will redirect any request to the timeout page with response.ok as reply. But it is false OK.",
+      "revId": "4946e5b7d80fa1a7baa1c6042100fa1dee24ee31",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
