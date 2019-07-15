@@ -53,6 +53,7 @@ export default class OperationalPolicyModal extends React.Component {
 
 	handleClose() {
 		this.setState({ show: false });
+		this.props.history.push('/')
 	}
 
 	initPolicySelect() {
