@@ -21,31 +21,25 @@
  *
  */
 
-export default class UserService {
-	static notLoggedUserName='Anonymous';
-	static LOGIN() {
-		return fetch('/restservices/clds/v1/user/getUser', {
+ export default class LoopService {
+
+	static GET_SVG(loopName) {
+		return fetch('/restservices/clds/v2/loop/svgRepresentation/'+loopName, {
 				method: 'GET',
 				credentials: 'include',
 			})
 		.then(function (response) {
-			console.debug("getUser response received, status code:", response.status);
+			console.debug("svgRepresentation response received: ", response.status);
 			if (response.ok) {
 				return response.text();
 			} else {
-				console.error("getUser response is nok");
-				return UserService.notLoggedUserName;
+				console.error("svgRepresentation query failed");
+				return "";
 			}
 		})
-		.then(function (data) {
-			console.info ("User connected:",data)
-			return data;
-		})
 		.catch(function(error) {
-			console.warn("getUser error received, user set to: ",UserService.notLoggedUserName);
-			console.error("getUser error:",error);
-			return UserService.notLoggedUserName;
+			console.error("svgRepresentation error received",error);
+			return "";
 		});
 	}
 }
-

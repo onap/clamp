@@ -28,9 +28,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import logo from './logo.png';
 import { GlobalClampStyle } from './theme/globalStyle.js';
 
-import ClosedLoopSvg from './components/loop_viewer/svg/ClosedLoopSvg';
-import ClosedLoopLogs from './components/loop_viewer/logs/ClosedLoopLogs';
-import ClosedLoopStatus from './components/loop_viewer/status/ClosedLoopStatus';
+import ClosedLoopSvg from './components/loop_viewer/svg/LoopSvg';
+import ClosedLoopLogs from './components/loop_viewer/logs/LoopLogs';
+import ClosedLoopStatus from './components/loop_viewer/status/LoopStatus';
 import UserService from './api/UserService';
 
 const ProjectNameStyled = styled.a`
