@@ -183,7 +183,7 @@ export default class LoopUI extends React.Component {
 					render={(routeProps) => (<OperationalPolicyModal {...routeProps} loopCache={this.state.loopCache} />)} />
 				<Route path="/configurationPolicyModal/:componentName" render={(routeProps) => (<ConfigurationPolicyModal {...routeProps} loopCache={this.state.loopCache} />)} />
 				<Route path="/openLoop" render={(routeProps) => (<OpenLoopModal {...routeProps} updateLoopCacheFunction={this.updateLoopCache} />)} />
-				<Route path="/loopProperties" render={(routeProps) => (<LoopProperties {...routeProps} loopCache={this.getLoopCache()} />)} />
+				<Route path="/loopProperties" render={(routeProps) => (<LoopProperties {...routeProps} loopCache={this.state.loopCache} />)} />
 				<Route path="/userInfo" render={(routeProps) => (<UserInfo {...routeProps} />)} />
 				<Route path="/closeLoop" render={(routeProps) => (<Redirect to='/'/>)} />
 			</div>
