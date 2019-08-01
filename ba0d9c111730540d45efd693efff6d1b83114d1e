@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1c552fc4_f3f50c07",
+        "filename": "releases/4.1.0.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 481
+      },
+      "writtenOn": "2019-08-01T22:51:39Z",
+      "side": 1,
+      "message": "This should be clamp",
+      "range": {
+        "startLine": 4,
+        "startChar": 10,
+        "endLine": 4,
+        "endChar": 14
+      },
+      "revId": "ba0d9c111730540d45efd693efff6d1b83114d1e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9769abe7_b4b34689",
+        "filename": "releases/4.1.0.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 481
+      },
+      "writtenOn": "2019-08-01T22:51:39Z",
+      "side": 1,
+      "message": "this should be an optional maven central. If this is just going into nexus.onap.org then we don\u0027t need this line.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 35
+      },
+      "revId": "ba0d9c111730540d45efd693efff6d1b83114d1e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
