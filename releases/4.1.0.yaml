@@ -1,0 +1,6 @@
+---
+distribution_type: 'maven'
+version: '4.1.0'
+project: 'clds'
+log_dir: 'clamp-maven-stage-master/81/'
+maven_central_url: 'nexus.onap.org'
