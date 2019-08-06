@@ -28,14 +28,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom'
 
 const StyledNavDropdownItem = styled(NavDropdown.Item)`
-	color: ${props => props.theme.menuFontColor};
-	background-color: ${props => props.theme.menuBackgroundColor};
+	color: ${props => props.theme.fontNormal};
 	:hover {
-			background-color: ${props => props.theme.menuHighlightedBackgroundColor};
-			color:  ${props => props.theme.menuHighlightedFontColor};
+			background-color: ${props => props.theme.loopViewerHeaderBackgroundColor};
+			color:  ${props => props.theme.loopViewerHeaderFontColor}
 	}
 `;
-
 const StyledLink = styled(Link)`
 	color: ${props => props.theme.menuColor};
 	background-color: ${props => props.theme.menuBackgroundColor};
@@ -55,24 +53,25 @@ const StyledLink = styled(Link)`
 `;
 
 export default class MenuBar extends React.Component {
+
 	render () {
 		return (
-				<Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
-					<NavDropdown title="Closed Loop" id="basic-nav-dropdown">
+				<Navbar.Collapse>
+					<NavDropdown title="Closed Loop">
 						<StyledNavDropdownItem as={StyledLink} to="/openLoop">Open CL</StyledNavDropdownItem>
 						<StyledNavDropdownItem as={StyledLink} to="/loopProperties">Properties CL</StyledNavDropdownItem>
 						<StyledNavDropdownItem as={StyledLink} to="/closeLoop">Close Model</StyledNavDropdownItem>
 					</NavDropdown>
-					<NavDropdown title="Manage" id="basic-nav-dropdown">
-						<StyledNavDropdownItem as={StyledLink} to="/operationalPolicyModal">Submit</StyledNavDropdownItem>
-						<StyledNavDropdownItem as={StyledLink} to="#action/3.2">Stop</StyledNavDropdownItem>
-						<StyledNavDropdownItem as={StyledLink} to="#action/3.3">Restart</StyledNavDropdownItem>
-						<StyledNavDropdownItem as={StyledLink} to="#action/3.3">Delete</StyledNavDropdownItem>
+					<NavDropdown title="Manage">
+						<StyledNavDropdownItem as={StyledLink} to="/submit">Submit</StyledNavDropdownItem>
+						<StyledNavDropdownItem as={StyledLink} to="/stop">Stop</StyledNavDropdownItem>
+						<StyledNavDropdownItem as={StyledLink} to="/restart">Restart</StyledNavDropdownItem>
+						<StyledNavDropdownItem as={StyledLink} to="/delete">Delete</StyledNavDropdownItem>
 						<StyledNavDropdownItem as={StyledLink} to="#action/3.3">Deploy</StyledNavDropdownItem>
-						<StyledNavDropdownItem as={StyledLink} to="#action/3.3">UnDeploy</StyledNavDropdownItem>
+						<StyledNavDropdownItem as={StyledLink} to="/undeploy">UnDeploy</StyledNavDropdownItem>
 					</NavDropdown>
-					<NavDropdown title="View" id="basic-nav-dropdown">
-						<StyledNavDropdownItem as={StyledLink} to="#action/3.1">Refresh Status</StyledNavDropdownItem>
+					<NavDropdown title="View">
+						<StyledNavDropdownItem as={StyledLink} to="/refreshStatus">Refresh Status</StyledNavDropdownItem>
 					</NavDropdown>
 					<NavDropdown title="Help" id="basic-nav-dropdown">
 						<StyledNavDropdownItem href="https://wiki.onap.org/" target="_blank">Wiki</StyledNavDropdownItem>
