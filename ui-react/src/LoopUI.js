@@ -185,6 +185,7 @@ export default class LoopUI extends React.Component {
 		this.setState({ loopCache: new LoopCache({}), loopName: LoopUI.defaultLoopName });
 		this.props.history.push('/');
 	}
+	
  render() {
 		return (
 				<div id="main_div">
