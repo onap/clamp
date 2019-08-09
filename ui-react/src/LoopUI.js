@@ -187,7 +187,7 @@ export default class LoopUI extends React.Component {
 				<Route path="/loopProperties" render={(routeProps) => (<LoopProperties {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop}/>)} />
 				<Route path="/userInfo" render={(routeProps) => (<UserInfo {...routeProps} />)} />
 				<Route path="/closeLoop" render={(routeProps) => (<Redirect to='/'/>)} />
-					<GlobalClampStyle />
+				<GlobalClampStyle />
 					{this.renderNavBar()}
 					{this.renderLoopViewer()}
 				</div>

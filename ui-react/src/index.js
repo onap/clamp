@@ -32,7 +32,7 @@ const routing = (
 	</BrowserRouter>
 );
 
-ReactDOM.render(
+export var mainClamp = ReactDOM.render(
 	routing,
 	document.getElementById('root')
 )
