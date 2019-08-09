@@ -80,6 +80,11 @@ public class OperationalPolicy implements Serializable, Policy {
     @Column(columnDefinition = "json", name = "configurations_json")
     private JsonObject configurationsJson;
 
+    @Expose
+    @Type(type = "json")
+    @Column(columnDefinition = "json", name = "json_representation", nullable = false)
+    private JsonObject jsonRepresentation;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "loop_id", nullable = false)
     private Loop loop;
@@ -91,17 +96,17 @@ public class OperationalPolicy implements Serializable, Policy {
     /**
      * The constructor.
      *
-     * @param name
-     *        The name of the operational policy
-     * @param loop
-     *        The loop that uses this operational policy
-     * @param configurationsJson
-     *        The operational policy property in the format of json
+     * @param name               The name of the operational policy
+     * @param loop               The loop that uses this operational policy
+     * @param configurationsJson The operational policy property in the format of
+     *                           json
      */
     public OperationalPolicy(String name, Loop loop, JsonObject configurationsJson) {
         this.name = name;
         this.loop = loop;
         this.configurationsJson = configurationsJson;
+        LegacyOperationalPolicy.preloadConfiguration(this.configurationsJson, loop);
+        this.jsonRepresentation = OperationalPolicyRepresentationBuilder.generateJsonRepresentation(loop);
     }
 
     @Override
@@ -117,17 +122,21 @@ public class OperationalPolicy implements Serializable, Policy {
         return loop;
     }
 
-    @Override
-    public JsonObject getJsonRepresentation() {
-        return configurationsJson;
-    }
-
     public JsonObject getConfigurationsJson() {
         return configurationsJson;
     }
 
     public void setConfigurationsJson(JsonObject configurationsJson) {
         this.configurationsJson = configurationsJson;
+    }
+
+    @Override
+    public JsonObject getJsonRepresentation() {
+        return jsonRepresentation;
+    }
+
+    void setJsonRepresentation(JsonObject jsonRepresentation) {
+        this.jsonRepresentation = jsonRepresentation;
     }
 
     @Override
@@ -184,7 +193,7 @@ public class OperationalPolicy implements Serializable, Policy {
         metadata.addProperty("policy-id", this.name);
 
         operationalPolicyDetails.add("properties", LegacyOperationalPolicy
-            .reworkPayloadAttributes(this.configurationsJson.get("operational_policy").deepCopy()));
+                .reworkPayloadAttributes(this.configurationsJson.get("operational_policy").deepCopy()));
 
         Gson gson = new GsonBuilder().create();
 
@@ -204,9 +213,8 @@ public class OperationalPolicy implements Serializable, Policy {
         // Now using the legacy payload fo Dublin
         JsonObject payload = new JsonObject();
         payload.addProperty("policy-id", this.getName());
-        payload.addProperty("content", URLEncoder.encode(
-            LegacyOperationalPolicy.createPolicyPayloadYamlLegacy(this.configurationsJson.get("operational_policy")),
-            StandardCharsets.UTF_8.toString()));
+        payload.addProperty("content", URLEncoder.encode(LegacyOperationalPolicy.createPolicyPayloadYamlLegacy(
+                this.configurationsJson.get("operational_policy")), StandardCharsets.UTF_8.toString()));
         String opPayload = new GsonBuilder().setPrettyPrinting().create().toJson(payload);
         logger.info("Operational policy payload: " + opPayload);
         return opPayload;
