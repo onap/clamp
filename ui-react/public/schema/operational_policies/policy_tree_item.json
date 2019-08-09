@@ -1,0 +1,103 @@
+{
+	"title": "Policy Decision",
+	"type": "object",
+	"headerTemplate": "{{self.id}}",
+	"format": "categories",
+	"basicCategoryTitle": "recipe",
+	"required": [
+		"id",
+		"recipe",
+		"retry",
+		"timeout",
+		"actor",
+		"success",
+		"failure",
+		"failure_timeout",
+		"failure_retries",
+		"failure_exception",
+		"failure_guard",
+		"target"
+	],
+	"properties": {
+		"id": {
+			"default": "Policy 1",
+			"title": "Policy ID",
+			"type": "string"
+		},
+		"recipe": {
+			"title": "Recipe",
+			"type": "string",
+			"enum": [
+				"Restart",
+				"Rebuild",
+				"Migrate",
+				"Health-Check",
+				"ModifyConfig",
+				"VF Module Create",
+				"VF Module Delete",
+				"Reroute"
+			]
+		},
+		"retry": {
+			"default": "0",
+			"title": "Number of Retry",
+			"type": "string",
+			"format": "number"
+		},
+		"timeout": {
+			"default": "0",
+			"title": "Timeout",
+			"type": "string",
+			"format": "number"
+		},
+		"actor": {
+			"title": "Actor",
+			"type": "string",
+			"enum": [
+				"APPC",
+				"SO",
+				"VFC",
+				"SDNC",
+				"SDNR"
+			]
+		},
+		"payload": {
+			"title": "Payload (YAML)",
+			"type": "string",
+			"format": "textarea"
+		},
+		"success": {
+			"default": "",
+			"title": "When Success",
+			"type": "string"
+		},
+		"failure": {
+			"default": "",
+			"title": "When Failure",
+			"type": "string"
+		},
+		"failure_timeout": {
+			"default": "",
+			"title": "When Failure Timeout",
+			"type": "string"
+		},
+		"failure_retries": {
+			"default": "",
+			"title": "When Failure Retries",
+			"type": "string"
+		},
+		"failure_exception": {
+			"default": "",
+			"title": "When Failure Exception",
+			"type": "string"
+		},
+		"failure_guard": {
+			"default": "",
+			"title": "When Failure Guard",
+			"type": "string"
+		},
+		"target": {
+			"$ref": "/schema/operational_policies/operational_policy_target.json"
+		}
+	}
+}

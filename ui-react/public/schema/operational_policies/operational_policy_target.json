@@ -1,0 +1,22 @@
+{
+	"type": "object",
+	"required": [
+		"type",
+		"resourceID"
+	],
+	"properties": {
+		"type": {
+			"title": "Target type",
+			"type": "string",
+			"enum": [
+				"VFMODULE",
+				"VM",
+				"VNF"
+			]
+		},
+		"resourceID": {
+			"title": "Target Resource ID",
+			"type": "string"
+		}
+	}
+}
