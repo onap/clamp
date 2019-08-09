@@ -1,0 +1,49 @@
+{
+	"title": "Guard policy",
+	"type": "object",
+	"properties": {
+		"content": {
+			"properties": {
+				"actor": {
+					"type": "string",
+					"enum": [
+						"APPC",
+						"SO",
+						"VFC",
+						"SDNC",
+						"SDNR"
+					]
+				},
+				"recipe": {
+					"type": "string",
+					"enum": [
+						"Restart",
+						"Rebuild",
+						"Migrate",
+						"Health-Check",
+						"ModifyConfig",
+						"VF Module Create",
+						"VF Module Delete",
+						"Reroute"
+					]
+				},
+				"targets": {
+					"type": "string",
+					"default": ".*"
+				},
+				"clname": {
+					"type": "string",
+					"default": "guard.frequency.new"
+				},
+				"guardActiveStart": {
+					"type": "string",
+					"default": "00:00:00Z"
+				},
+				"guardActiveEnd": {
+					"type": "string",
+					"default": "10:00:00Z"
+				}
+			}
+		}
+	}
+}

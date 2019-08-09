@@ -1,0 +1,96 @@
+{
+	"schema": {
+		"uniqueItems": "true",
+		"format": "tabs",
+		"type": "array",
+		"title": "Operational policies",
+		"items": {
+			"type": "object",
+			"title": "Operational Policy Item",
+			"headerTemplate": "{{self.name}}",
+			"required": [
+				"name",
+				"configurationsJson"
+			],
+			"properties": {
+				"name": {
+					"type": "string",
+					"title": "Operational policy name"
+				},
+				"configurationsJson": {
+					"type": "object",
+					"title":"Configuration",
+					"required": [
+						"operational_policy",
+						"guard_policies"
+					],
+					"properties": {
+						"operational_policy": {
+							"type": "object",
+							"title": "Related Parameters",
+							"properties": {
+								"controlLoop": {
+									"type": "object",
+									"title":"Control Loop details",
+									"properties": {
+										"timeout": {
+											"type": "string",
+											"title": "Overall Time Limit",
+											"default": "0",
+											"format": "number"
+										},
+										"abatement": {
+											"type": "string",
+											"title": "Abatement",
+											"enum": [
+												"True",
+												"False"
+											]
+										},
+										"trigger_policy": {
+											"type": "string",
+											"title": "Policy Decision Entry"
+										},
+										"controlLoopName": {
+											"type": "string",
+											"title": "Control loop name"
+										}
+									}
+								},
+							"policies": {
+								"uniqueItems": "true",
+								"id": "policies",
+								"type": "array",
+								"title": "Policy Decision Tree",
+								"format": "tabs-top",
+								"items": {
+									"$ref": "/schema/operational_policies/policy_tree_item.json"
+								}
+							}
+							}
+						},
+						"guard_policies": {
+							"type":"array",
+							"format":"tabs-top",
+							"title": "Associated Guard policies",
+							"items": {
+								"headerTemplate": "{{i}} - {{self.policy_id}}",
+								  "oneOf": [
+					              {
+					                "$ref": "/schema/operational_policies/guard_min_max.json",
+					                "title": "Guard MinMax"
+					              },
+					              {
+					                "$ref": "/schema/operational_policies/guard_frequency.json",
+					                "title": "Guard Frequency"
+					              }
+					            ]
+							}
+							}
+						}
+					}
+				
+			}
+		}
+	}
+}

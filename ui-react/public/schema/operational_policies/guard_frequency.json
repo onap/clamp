@@ -1,0 +1,26 @@
+{
+	"$ref": "/schema/operational_policies/guard_base.json",
+	"title": "Guard Frequency",
+	"properties": {
+		"policy_id": {
+			"type": "string",
+			"default": "guard.frequency.new"
+		},
+		"content": {
+			"properties": {
+				"limit": {
+					"type": "string",
+					"default": "guard.frequency.new"
+				},
+				"timeWindow": {
+					"type": "string",
+					"default": "guard.frequency.new"
+				},
+				"timeUnits": {
+					"type": "string",
+					"default": "guard.frequency.new"
+				}
+			}
+		}
+	}
+}
