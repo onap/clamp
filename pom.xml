@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ============LICENSE_START=======================================================
-  ONAP CLAMP
+  ONAP CLAMP CHANGE
   ================================================================================
   Copyright (C) 2017-2018 AT&T Intellectual Property. All rights
                               reserved.
@@ -87,6 +87,9 @@
 				<skip.staging.artifacts>false</skip.staging.artifacts>
 				<python.http.proxy.param/>
 				<tomcat.version>9.0.20</tomcat.version>
+				<ui.react.src>ui-react</ui.react.src>
+				<ui.react.target>target/ui-react</ui.react.target>
+				<npm.publish.url>https://nexus3.onap.org/repository/npm.snapshot/</npm.publish.url>
 		</properties>
 
 		<profiles>
@@ -709,6 +712,35 @@
 				</resources>
 
 				<plugins>
+						<!-- Copy the required reactjs source files to target for installation and deployment. -->
+						<!-- Existence of NPM on the server where this is run is not required as nodejs and    -->
+						<!-- NPM will be installed in target near these sources.                               -->
+						<plugin>
+							<artifactId>maven-resources-plugin</artifactId>
+							<version>3.1.0</version>
+							<executions>
+								<execution>
+									<id>copy-ui-react-resources</id>
+									<phase>validate</phase>
+									<goals>
+										<goal>copy-resources</goal>
+									</goals>
+									<configuration>
+										<outputDirectory>${ui.react.target}</outputDirectory>
+										<resources>          
+											<resource>
+												<directory>${ui.react.src}</directory>
+												<includes>
+													<include>src/**</include>
+													<include>public/**</include>
+													<exclude>package.json</exclude>
+												</includes>
+											</resource>
+										</resources>              
+									</configuration>            
+								</execution>
+							</executions>
+						</plugin>
 						<plugin>
 							<groupId>de.jpdigital</groupId>
 							<artifactId>hibernate52-ddl-maven-plugin</artifactId>
@@ -1214,22 +1246,25 @@
 						</plugin>
 
 					<plugin>
+						<!-- frontend-maven-plugin supports installation of nodejs and npm based on  -->
+						<!-- configured versions, as well as certain npm actions. "publish" is NOT   -->
+						<!-- a supported action, and thus the publish step for "deploy" phase must   -->
+						<!-- be accomplished with the exec-maven-plugin below                        -->
+
 						<groupId>com.github.eirslett</groupId>
 						<artifactId>frontend-maven-plugin</artifactId>
 						<version>1.6</version>
 						<configuration>
-							<installDirectory>${project.build.directory}/clamp-ui</installDirectory>
-							<workingDirectory>${project.build.directory}/clamp-ui</workingDirectory>
-							<skip>${maven.test.skip}</skip>
+							<installDirectory>${ui.react.target}</installDirectory>
+							<workingDirectory>${ui.react.target}</workingDirectory>
 						</configuration>
-
 						<executions>
 							<execution>
 								<id>install_node_and_npm</id>
 								<goals>
 									<goal>install-node-and-npm</goal>
 								</goals>
-								<phase>test</phase>
+								<phase>generate-sources</phase>
 								<configuration>
 									<nodeVersion>v8.11.1</nodeVersion>
 									<npmVersion>5.6.0</npmVersion>
@@ -1240,7 +1275,7 @@
 								<goals>
 									<goal>npm</goal>
 								</goals>
-								<phase>test</phase>
+								<phase>install</phase>
 								<configuration>
 									<arguments>install</arguments>
 								</configuration>
@@ -1252,10 +1287,41 @@
 								</goals>
 								<phase>test</phase>
 								<configuration>
-									<arguments>run-script test:coverage</arguments>
+									<arguments>run-script test</arguments>
 								</configuration>
 							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<!-- use the nodejs and npm we have installed previously to "publish"  -->
+						<!-- as an npm package the potentially re-usable reactjs components    -->
 
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.6.0</version>
+						<executions>
+							<execution>
+								<id>npm-publish</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>deploy</phase>
+								<configuration>
+									<workingDirectory>${ui.react.target}</workingDirectory>
+									<environmentVariables>
+										<PATH>
+											:node:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+										</PATH>
+									</environmentVariables> 
+									<workingDirectory>${ui.react.target}</workingDirectory>
+									<executable>node/npm</executable>
+									<arguments>
+										<argument>publish</argument>
+										<argument>--registry</argument>
+										<argument>${npm.publish.url}</argument>
+									</arguments>
+								</configuration>
+							</execution>
 						</executions>
 					</plugin>
 				</plugins>
