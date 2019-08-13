@@ -77,34 +77,6 @@ describe('Verify LoopCache functions', () => {
       expect(loopCache.getDcaeDeploymentProperties()).toStrictEqual(deploymentProp);
     });
 
-    it('getMicroServicesJsonForType', () => {
-      const msJson = {
-          "name": "TCA_h2NMX_v1_0_ResourceInstanceName1_tca",
-          "modelType": "onap.policies.monitoring.cdap.tca.hi.lo.app",
-          "properties": {"domain": "measurementsForVfScaling"},
-          "shared": false,
-          "jsonRepresentation": {"schema": {}}
-      };
-      expect(loopCache.getMicroServicesJsonForType("TCA_h2NMX_v1_0_ResourceInstanceName1_tca")).toStrictEqual(msJson);
-      expect(loopCache.getMicroServicesJsonForType("TCA_h2NMX_v1_0_ResourceInstanceName1_tca_2")).toBeNull();
-    });
-
-    it('getMicroServiceProperties', () => {
-      const msProp = {"domain": "measurementsForVfScaling"};
-      expect(loopCache.getMicroServiceProperties("TCA_h2NMX_v1_0_ResourceInstanceName1_tca")).toStrictEqual(msProp);
-      expect(loopCache.getMicroServiceProperties("TCA_h2NMX_v1_0_ResourceInstanceName1_tca_2")).toBeNull();
-    });
-
-    it('getMicroServiceJsonRepresentationForType', () => {
-      const msJsonRepresentation = {"schema": {}};
-      expect(loopCache.getMicroServiceJsonRepresentationForType("TCA_h2NMX_v1_0_ResourceInstanceName1_tca")).toStrictEqual(msJsonRepresentation);
-    });
-
-    it('getMicroServiceJsonRepresentationForType', () => {
-      const msJsonRepresentation = {"schema": {}};
-      expect(loopCache.getMicroServiceJsonRepresentationForType("TCA_h2NMX_v1_0_ResourceInstanceName1_tca")).toStrictEqual(msJsonRepresentation);
-    });
-
     it('getResourceDetailsVfProperty', () => {
       const resourceVF = {
         "vLoadBalancerMS 0": {
@@ -212,6 +184,5 @@ describe('Verify LoopCache functions', () => {
           "jsonRepresentation": {"schema": {}}
       };;
       loopCache.updateMicroServiceProperties("TCA_h2NMX_v1_0_ResourceInstanceName1_tca", newMsPolicy);
-      expect(loopCache.getMicroServicesJsonForType("TCA_h2NMX_v1_0_ResourceInstanceName1_tca")).toStrictEqual(newMsPolicy);
     });
  });
