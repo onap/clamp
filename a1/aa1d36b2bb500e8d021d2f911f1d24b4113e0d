@@ -1,0 +1,9 @@
+Code-Review-1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Marcin Kowalski <m.kowalski3@partner.samsung.com>
+Code-Review+2: Sébastien Determe <sebastien.determe@intl.att.com>
+Verified+1: Sébastien Determe <sebastien.determe@intl.att.com>
+Submitted-by: Sébastien Determe <sebastien.determe@intl.att.com>
+Submitted-at: Wed, 14 Aug 2019 15:06:18 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/clamp/+/87680
+Project: clamp
+Branch: refs/heads/master
