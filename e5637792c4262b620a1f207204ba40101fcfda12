@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef190b10_42f915ca",
+        "filename": "ui-react/src/components/menu/DeployLoop.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-08-19T13:03:09Z",
+      "side": 1,
+      "message": "Please move that compo in dialog folder",
+      "revId": "e5637792c4262b620a1f207204ba40101fcfda12",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
