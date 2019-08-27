@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ae8cc5b_31732bac",
+        "filename": "INFO.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 481
+      },
+      "writtenOn": "2019-08-27T16:59:14Z",
+      "side": 1,
+      "message": "05:17:33   74:1      error    too many blank lines (1 \u003e 0)  (empty-lines)\n\nthis is the error, remove the last blank lines",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 0
+      },
+      "revId": "259bf8c865581451a252fb61d61ad8aa971479a1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
