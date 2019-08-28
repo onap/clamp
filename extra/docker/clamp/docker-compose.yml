@@ -1,6 +1,11 @@
 version: '2'
 
 services:
+  clamp-frontend:
+    image: onap/clamp-frontend
+
+    ports:
+      - "443:443"
   db:
     image: mariadb:10.3.12
     volumes:
@@ -12,10 +17,8 @@ services:
     ports:
       - "3306:3306"
 
-  clamp:
+  clamp-backend:
     image: onap/clamp-backend
-    volumes:
-      - "./config/:/opt/clamp/config:rw"
     depends_on:
       - db
     env_file:

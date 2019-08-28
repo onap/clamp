@@ -46,6 +46,7 @@ RUN mkdir /var/log/onap
 RUN chmod a+rwx /var/log/onap
 
 COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/ssl /etc/ssl
 RUN rm /etc/nginx/conf.d/default.conf
 COPY onap-clamp-frontend/nginx/nginx.conf /etc/nginx/conf.d
 EXPOSE 80
