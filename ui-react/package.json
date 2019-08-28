@@ -4,7 +4,6 @@
   "description": "ONAP Clamp Loop Designer UI",
   "author": "ONAP Clamp Team",
   "license": "Apache-2.0",
-  "homepage": "wiki.onap.org",
   "publishConfig": {
     "registry": "https://nexus3.onap.org/repository/npm.snapshot/"
   },
