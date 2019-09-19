@@ -1,6 +1,6 @@
 {
 	"name": "onap-clamp-ui",
-	"version": "${project.version}",
+	"version": "4.1.1-SNAPSHOT",
 	"description": "ONAP Clamp Loop Designer UI",
 	"author": "ONAP Clamp Team",
 	"license": "Apache-2.0",
@@ -55,16 +55,23 @@
 	],
 	"jest": {
 		"verbose": true,
-		"coverageDirectory": "${project.build.directory}/${ui.react.src}/coverage",
+		"coverageDirectory": "/home/xue/git/clamp-lf/target/ui-react/coverage",
 		"collectCoverageFrom": [
 			"**/*.{js,jsx}"
 		],
-		"rootDir": "${project.build.directory}/${ui.react.src}",
+		"rootDir": "/home/xue/git/clamp-lf/target/ui-react",
 		"coverageReporters": [
 			"lcov"
 		],
-		"setupFiles": ["./src/setupTests.js"],
-		"snapshotSerializers": ["enzyme-to-json/serializer"]
+		"moduleNameMapper": {
+		"\\.(css|png)$": "identity-obj-proxy"
+		},
+		"setupFiles": [
+			"./src/setupTests.js"
+		],
+		"snapshotSerializers": [
+			"enzyme-to-json/serializer"
+		]
 	},
 	"babel": {
 		"presets": [
