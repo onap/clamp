@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1e311d12_c1299bde",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-10-01T13:26:20Z",
+      "side": 0,
+      "message": "Yep perfect, we don\u0027t need that anymore. Thanks",
+      "revId": "83fe2b0afab57482c548ccb360fc1266891fa051",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
