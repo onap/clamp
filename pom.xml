@@ -1247,7 +1247,7 @@
 						</goals>
 						<phase>compile</phase>
 						<configuration>
-							<arguments>install</arguments>
+							<arguments>install --registry https://registry.npmjs.com/</arguments>
 						</configuration>
 					</execution>
 					<execution>
