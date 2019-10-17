@@ -945,38 +945,6 @@
 								</assembly>
 							</build>
 						</image>
-						<image>
-							<name>onap/clamp-dashboard-logstash</name>
-							<alias>onap-clamp-dashboard-logstash</alias>
-							<run>
-								<skip>true</skip>
-							</run>
-							<build>
-								<cleanup>true</cleanup>
-								<tags>
-									<tag>latest</tag>
-									<tag>${project.docker.latesttagtimestamp.version}</tag>
-									<tag>${project.docker.latesttag.version}</tag>
-								</tags>
-								<dockerFile>logstash/Dockerfile</dockerFile>
-							</build>
-						</image>
-						<image>
-							<name>onap/clamp-dashboard-kibana</name>
-							<alias>onap-clamp-dashboard-kibana</alias>
-							<run>
-								<skip>true</skip>
-							</run>
-							<build>
-								<cleanup>true</cleanup>
-								<tags>
-									<tag>latest</tag>
-									<tag>${project.docker.latesttagtimestamp.version}</tag>
-									<tag>${project.docker.latesttag.version}</tag>
-								</tags>
-								<dockerFile>kibana/Dockerfile</dockerFile>
-							</build>
-						</image>
 					</images>
 				</configuration>
 
