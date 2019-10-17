@@ -23,11 +23,8 @@
 
 FROM  docker.elastic.co/kibana/kibana-oss:6.6.2
 
-# Search Guard plugin
-RUN kibana-plugin install https://repo1.maven.org/maven2/com/floragunn/search-guard-kibana-plugin/6.6.2-18.4/search-guard-kibana-plugin-6.6.2-18.4.zip
-
 MAINTAINER "The Onap Team"
-LABEL Description="Kibana image with saved objects loading and Search Guard support"
+LABEL Description="Kibana image with saved objects loading"
 USER root
 RUN yum install -y python-requests && yum clean all
 
