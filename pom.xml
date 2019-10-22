@@ -1122,6 +1122,7 @@
 						</goals>
 						<phase>deploy</phase>
 						<configuration>
+							<skip>true</skip>
 							<arguments>publish --registry ${npm.publish.url}</arguments>
 						</configuration>
 					</execution>
