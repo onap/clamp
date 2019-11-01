@@ -28,16 +28,13 @@ import Modal from 'react-bootstrap/Modal';
 import styled from 'styled-components';
 import TemplateMenu from '../../../api/TemplateMenu';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import Clear from '@material-ui/icons/Clear';
-import FilterList from '@material-ui/icons/FilterList';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
 import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
+
 
 const ModalStyled = styled(Modal)`
 	background-color: transparent;
@@ -84,9 +81,6 @@ export default class ViewToscalModals extends React.Component {
 			}
 		],
 		tableIcons: {
-			Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-      DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-      Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
       FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
       LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
       NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
@@ -94,8 +88,6 @@ export default class ViewToscalModals extends React.Component {
       ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
       Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
       SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
-      ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-      ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 		}
 	};
 
