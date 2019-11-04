@@ -32,6 +32,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.onap.clamp.clds.util.ResourceFileUtil;
+import org.onap.clamp.loop.service.Service;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 public class OperationalPolicyRepresentationBuilderTest {
@@ -40,8 +41,9 @@ public class OperationalPolicyRepresentationBuilderTest {
     public void testOperationalPolicyPayloadConstruction() throws IOException {
         JsonObject jsonModel = new GsonBuilder().create()
                 .fromJson(ResourceFileUtil.getResourceAsString("tosca/model-properties.json"), JsonObject.class);
+        Service service = new Service (jsonModel.get("serviceDetails").getAsJsonObject(),jsonModel.get("resourceDetails").getAsJsonObject());
 
-        JsonObject jsonSchema = OperationalPolicyRepresentationBuilder.generateOperationalPolicySchema(jsonModel);
+        JsonObject jsonSchema = OperationalPolicyRepresentationBuilder.generateOperationalPolicySchema(service);
 
         assertThat(jsonSchema).isNotNull();
 

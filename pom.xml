@@ -108,6 +108,8 @@
 		<tomcat.version>9.0.20</tomcat.version>
 		<ui.react.src>ui-react</ui.react.src>
 		<npm.publish.url>https://nexus3.onap.org/repository/npm.release/</npm.publish.url>
+		<!--<docker.mariadb.port.host>3306</docker.mariadb.port.host>
+								<docker.http-cache.port.host>8085</docker.http-cache.port.host>-->
 	</properties>
 
 	<profiles>
