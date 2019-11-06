@@ -52,7 +52,7 @@ exports[`Verify MenuBar Test the render method 1`] = `
         }
       }
       disabled={false}
-      to="/viewToscaModals"
+      to="/viewToscaModal"
     >
       View Tosca Model
     </DropdownItem>
