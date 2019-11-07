@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac81d631_3bbae985",
+        "filename": "src/main/java/org/onap/clamp/loop/LoopCsarInstaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-07T13:21:48Z",
+      "side": 1,
+      "message": "Spelling mistake",
+      "revId": "e2cffe40e660f2b3ff233528083981a0e73b719a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cba8a498_34f06cbd",
+        "filename": "src/main/java/org/onap/clamp/loop/LoopCsarInstaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-07T13:21:48Z",
+      "side": 1,
+      "message": "Please rename the method to createServiceModel",
+      "revId": "e2cffe40e660f2b3ff233528083981a0e73b719a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17fb040b_1ab16d94",
+        "filename": "src/main/java/org/onap/clamp/loop/LoopCsarInstaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-07T13:21:48Z",
+      "side": 1,
+      "message": "Why are we saving that here ?\nThis should be saved automatically when we save the loop ? no ?",
+      "revId": "e2cffe40e660f2b3ff233528083981a0e73b719a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59d68893_782bc20a",
+        "filename": "src/test/resources/tosca/resource-details.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-07T13:21:48Z",
+      "side": 1,
+      "message": "Should not be changed ??",
+      "revId": "e2cffe40e660f2b3ff233528083981a0e73b719a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10b691fd_300c385e",
+        "filename": "src/test/resources/tosca/service-details.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-07T13:21:48Z",
+      "side": 1,
+      "message": "Again should not be changed ??",
+      "revId": "e2cffe40e660f2b3ff233528083981a0e73b719a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
