@@ -37,4 +37,21 @@ export default class TemplateMenuService {
         return {};
       });
   }
+  
+  static getBPTempls() {
+	    return fetch('restservices/clds/v2/loop/getAllLoopTemplates', { method: 'GET', credentials: 'same-origin', })
+	      .then(function (response) {
+	        console.debug("getBPTempls response received: ", response.status);
+	        if (response.ok) {
+	          return response.json();
+	        } else {
+	          console.error("getBPTempls query failed");
+	          return {};
+	        }
+	      })
+	      .catch(function (error) {
+	        console.error("getBPTempls error received", error);
+	        return {};
+	      });
+	  }
 }

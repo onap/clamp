@@ -64,7 +64,7 @@ export default class ViewToscalModal extends React.Component {
 				cellStyle: vtmCellStyle,
 				headerStyle: vtmHeaderStyle
 			},
-			{ title: "Version", field: "version",
+			{ title: "Version", field: "toscaModelRevisions[0].version",
 				cellStyle: vtmCellStyle,
 				headerStyle: vtmHeaderStyle
 			},
@@ -118,7 +118,7 @@ export default class ViewToscalModal extends React.Component {
 		return (
 			<ModalStyled size="xl" show={this.state.show} onHide={this.handleClose}>
 				<Modal.Header closeButton>
-					<Modal.Title className="title">View Tosca Model</Modal.Title>
+					<Modal.Title className="title">View Tosca ViewToscaModels</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<MaterialTable
