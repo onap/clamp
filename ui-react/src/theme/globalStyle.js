@@ -68,6 +68,16 @@ export const GlobalClampStyle = createGlobalStyle`
 		font-size: ${props => props.theme.fontSize};
 		font-weight: bold;
 	}
+	
+	textarea {
+		margin-top: 20px;
+		white-space:pre;
+		background-color: #E8E8E8;
+		text-align: justify;
+		font-size: 13px;
+		width: 100%;
+		height: 300px;
+	}
 `
 
 export const DefaultClampTheme = {

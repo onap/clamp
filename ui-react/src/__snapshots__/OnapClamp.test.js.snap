@@ -28,7 +28,11 @@ exports[`Verify OnapClamp Test the render method 1`] = `
     id="main_div"
   >
     <Route
-      path="/viewToscaModal"
+      path="/viewToscaModals"
+      render={[Function]}
+    />
+    <Route
+      path="/viewBPTempls"
       render={[Function]}
     />
     <Route
