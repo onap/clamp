@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac0d629_cea9c620",
+        "filename": "src/main/java/org/onap/clamp/loop/Loop.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T10:28:47Z",
+      "side": 1,
+      "message": "UI-React must be changed accordingly. Otherwise the code is broken as the json will be different",
+      "revId": "4f8fa2d156033c9fb164752c48c2d5c36b82074d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
