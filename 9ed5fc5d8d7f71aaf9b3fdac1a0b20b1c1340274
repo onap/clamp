@@ -1,0 +1,480 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "99837497_cc9bc002",
+        "filename": "ui-react/src/LoopUI.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "change the names accordingly as discussed previously",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce43e2cc_d0381a16",
+        "filename": "ui-react/src/LoopUI.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Why a S to modal ??? we have multiple modals displayed ?? not getting it",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e549769_e73ebebd",
+        "filename": "ui-react/src/api/TemplateMenuService.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Please rename that method to something we can understand. In camel case. Something like \"getBlueprintTemplates\"",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d06e5e8_bad90bb8",
+        "filename": "ui-react/src/api/TemplateMenuService.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Naming convention not respected  /loop/getAllLoopTemplates is not good, there no need to mention \"get...\" as this is defined by the HTTP method. Moreover we could introduce a PUT or POST on this endpoint to create or update templates.",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25c5a529_0ae0cf1e",
+        "filename": "ui-react/src/api/TemplateMenuService.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Here also change the name to the changed method name",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce443011_325fcb1b",
+        "filename": "ui-react/src/api/TemplateMenuService.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "same comment",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5a3c972_ff489a32",
+        "filename": "ui-react/src/api/TemplateMenuService.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "same comment",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57d4e70f_a0dff865",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Please rename that folder to follow the naming convention. we are talking about blueprint so a folder named Blueprint is enough then inside all the modals related to that.",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ed0a552_04bc4f48",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Remove that useless var",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2cb1358_0b1e99c3",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Remove that useless var",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a07a8ee_d1bfaa2e",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Please rename that var, vtmCellStyle what is \"vtm\" ?",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66028bac_57600ed2",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Same comment",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3ee349b_ea7b16ef",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Same comment",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f44a4db4_22bc39da",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Please rename that class to something we can understand like BlueprintTemplateModal (rename the filename as well)",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a48f4883_5f483975",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Indentation is not correct",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9d009dc_cee565c4",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Rename that method name so that we understand what we are talking about",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "467d4f9f_49b23428",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Change the method name accordingly",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "456cbc72_da16a5e6",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Remove that console log",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9bf9f78b_b6fc74d3",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Fix the title so that we know of what we are talking about",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50673259_0560a1ab",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Fix the global indentation of that file",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89f5bd91_2c746369",
+        "filename": "ui-react/src/components/dialogs/ViewBPTempls/ViewBPTempls.test.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Indentation is not correct in that file, please fix it",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "501b02ff_e7db5e5c",
+        "filename": "ui-react/src/components/dialogs/ViewToscaModals/ViewToscaModals.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Rename that var vtm for viewToscaModel i believe is not useful here, change that to cellStyle",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d083608b_f08471a6",
+        "filename": "ui-react/src/components/dialogs/ViewToscaModals/ViewToscaModals.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Same comment headerStyle instead",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edc47e95_6998e46b",
+        "filename": "ui-react/src/components/dialogs/ViewToscaModals/ViewToscaModals.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Same comment rowHeaderStyle",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52cf7720_d117a863",
+        "filename": "ui-react/src/components/dialogs/ViewToscaModals/ViewToscaModals.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Not sure to see what \"View Tosca ViewToscaModels\" mean ? Could we change that",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aaaac945_aa810c48",
+        "filename": "ui-react/src/components/menu/MenuBar.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "Rename that link to viewBlueprintTemplates",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bec97d31_0361a714",
+        "filename": "ui-react/src/theme/globalStyle.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "remove that useless tab please",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14d60475_f84ff1be",
+        "filename": "ui-react/src/theme/globalStyle.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-11-15T13:23:28Z",
+      "side": 1,
+      "message": "You are hardcoding the textarea attributes for the whole website.\nYou should have references to the defaultClampTheme instead, this to follow the way it has been defined so far.",
+      "revId": "9ed5fc5d8d7f71aaf9b3fdac1a0b20b1c1340274",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
