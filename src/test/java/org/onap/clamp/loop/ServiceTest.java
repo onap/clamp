@@ -40,12 +40,11 @@ public class ServiceTest {
         String serviceStr3 = "{\"name\": \"vLoadBalancerMS\",\"UUID\": \"63cac700-ab9a-4115-a74f-7eac85e3fc11\"}";
         String resourceStr = "{\"CP\": {}}";
 
-        Service service1 = new Service(JsonUtils.GSON.fromJson(serviceStr1, JsonObject.class), 
-                JsonUtils.GSON.fromJson(resourceStr, JsonObject.class));
+        Service service1 = new Service(serviceStr1, resourceStr);
 
         Service service2 = new Service(JsonUtils.GSON.fromJson(serviceStr2, JsonObject.class), null);
 
-        Service service3 = new Service(JsonUtils.GSON.fromJson(serviceStr3, JsonObject.class), 
+        Service service3 = new Service(JsonUtils.GSON.fromJson(serviceStr3, JsonObject.class),
                 JsonUtils.GSON.fromJson(resourceStr, JsonObject.class));
 
         assertThat(service1.equals(service2)).isEqualTo(true);

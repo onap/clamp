@@ -21,12 +21,11 @@
  *
  */
 
-package org.onap.clamp.policy.microservice;
+package org.onap.clamp.loop.template;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MicroServicePolicyRepository extends CrudRepository<MicroServicePolicy, String> {
-
+public interface MicroServiceModelsRepository extends CrudRepository<MicroServiceModel, String> {
 }

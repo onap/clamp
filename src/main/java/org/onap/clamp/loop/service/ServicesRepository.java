@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2019 AT&T Intellectual Property. All rights
+ * Copyright (C) 2020 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,12 +21,11 @@
  *
  */
 
-package org.onap.clamp.policy.microservice;
+package org.onap.clamp.loop.service;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MicroServicePolicyRepository extends CrudRepository<MicroServicePolicy, String> {
-
+public interface ServicesRepository extends CrudRepository<Service, String> {
 }

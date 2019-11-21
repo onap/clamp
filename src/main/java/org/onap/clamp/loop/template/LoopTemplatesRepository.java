@@ -21,12 +21,17 @@
  *
  */
 
-package org.onap.clamp.policy.microservice;
+package org.onap.clamp.loop.template;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MicroServicePolicyRepository extends CrudRepository<MicroServicePolicy, String> {
+public interface LoopTemplatesRepository extends CrudRepository<LoopTemplate, String> {
 
+    @Query("SELECT looptemplate.name FROM LoopTemplate as looptemplate")
+    List<String> getAllLoopTemplateNames();
 }

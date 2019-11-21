@@ -21,12 +21,18 @@
  *
  */
 
-package org.onap.clamp.policy.microservice;
+package org.onap.clamp.tosca;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MicroServicePolicyRepository extends CrudRepository<MicroServicePolicy, String> {
+public interface DictionaryRepository extends CrudRepository<Dictionary, String> {
+
+    @Query("SELECT dict.name FROM Dictionary as dict")
+    List<String> getAllDictionaryNames();
 
 }

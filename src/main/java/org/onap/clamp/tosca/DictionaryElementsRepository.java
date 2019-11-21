@@ -21,12 +21,12 @@
  *
  */
 
-package org.onap.clamp.policy.microservice;
+package org.onap.clamp.tosca;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MicroServicePolicyRepository extends CrudRepository<MicroServicePolicy, String> {
+public interface DictionaryElementsRepository extends CrudRepository<DictionaryElement, String> {
 
 }
