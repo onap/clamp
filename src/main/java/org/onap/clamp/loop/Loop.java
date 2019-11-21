@@ -31,6 +31,7 @@ import com.google.gson.annotations.Expose;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -53,16 +54,19 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 import org.onap.clamp.loop.components.external.DcaeComponent;
 import org.onap.clamp.loop.components.external.ExternalComponent;
 import org.onap.clamp.loop.components.external.PolicyComponent;
 import org.onap.clamp.loop.log.LoopLog;
 import org.onap.clamp.loop.service.Service;
+import org.onap.clamp.loop.template.LoopTemplate;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.onap.clamp.policy.operational.OperationalPolicy;
 import org.onap.clamp.policy.operational.OperationalPolicyRepresentationBuilder;
@@ -111,7 +115,7 @@ public class Loop implements Serializable {
     private JsonObject globalPropertiesJson;
 
     @Expose
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "service_uuid")
     private Service modelService;
 
@@ -140,6 +144,29 @@ public class Loop implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop")
     @SortNatural
     private SortedSet<LoopLog> loopLogs = new TreeSet<>();
+
+    @Expose
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "loop_template_name")
+    private LoopTemplate loopTemplate;
+
+    @Expose
+    @CreationTimestamp
+    @Column(name = "created_timestamp")
+    private Instant createdDate;
+
+    @Expose
+    @UpdateTimestamp
+    @Column(name = "updated_timestamp")
+    private Instant updatedDate;
+
+    @Expose
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Expose
+    @Column(name = "created_by")
+    private String createdBy;
 
     private void initializeExternalComponents() {
         this.addComponent(new PolicyComponent());
@@ -293,6 +320,46 @@ public class Loop implements Serializable {
 
     public void addComponent(ExternalComponent component) {
         this.components.put(component.getComponentName(), component);
+    }
+
+    public LoopTemplate getLoopTemplate() {
+        return loopTemplate;
+    }
+
+    public void setLoopTemplate(LoopTemplate loopTemplate) {
+        this.loopTemplate = loopTemplate;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Instant getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Instant updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     /**
