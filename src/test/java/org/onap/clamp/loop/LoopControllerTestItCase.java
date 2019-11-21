@@ -43,7 +43,7 @@ import org.onap.clamp.clds.Application;
 import org.onap.clamp.clds.util.JsonUtils;
 
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
-import org.onap.clamp.policy.microservice.MicroservicePolicyService;
+import org.onap.clamp.policy.microservice.MicroServicePolicyService;
 import org.onap.clamp.policy.operational.OperationalPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,7 +63,7 @@ public class LoopControllerTestItCase {
     LoopsRepository loopsRepository;
 
     @Autowired
-    MicroservicePolicyService microServicePolicyService;
+    MicroServicePolicyService microServicePolicyService;
 
     @Autowired
     LoopController loopController;
