@@ -44,6 +44,7 @@ import org.onap.clamp.loop.components.external.PolicyComponent;
 import org.onap.clamp.loop.log.LogType;
 import org.onap.clamp.loop.log.LoopLog;
 import org.onap.clamp.loop.service.Service;
+import org.onap.clamp.loop.template.LoopTemplate;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.onap.clamp.policy.operational.OperationalPolicy;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -65,6 +66,12 @@ public class LoopToJsonTest {
         loop.setDcaeDeploymentStatusUrl(dcaeUrl);
         loop.setDcaeBlueprintId(dcaeBlueprintId);
         return loop;
+    }
+
+    private LoopTemplate getLoopTemplate(String name, String blueprint) {
+        LoopTemplate loopTemplate = new LoopTemplate(name, blueprint, svgRepresentation, TemplateMicroServiceModel,
+                createdBy, maxInstancesAllowed);
+
     }
 
     private MicroServicePolicy getMicroServicePolicy(String name, String modelType, String jsonRepresentation,
@@ -132,13 +139,12 @@ public class LoopToJsonTest {
         String jsonSerialized = JsonUtils.GSON_JPA_MODEL.toJson(loopTest2);
         assertThat(jsonSerialized).isNotNull().isNotEmpty();
         System.out.println(jsonSerialized);
-        JSONAssert.assertEquals(ResourceFileUtil.getResourceAsString("tosca/loop.json"),
-                jsonSerialized, true);
+        JSONAssert.assertEquals(ResourceFileUtil.getResourceAsString("tosca/loop.json"), jsonSerialized, true);
 
         Loop loopTestDeserialized = JsonUtils.GSON_JPA_MODEL.fromJson(jsonSerialized, Loop.class);
         assertNotNull(loopTestDeserialized);
-        assertThat(loopTestDeserialized).isEqualToIgnoringGivenFields(loopTest2, "modelService", 
-            "svgRepresentation", "blueprint", "components");
+        assertThat(loopTestDeserialized).isEqualToIgnoringGivenFields(loopTest2, "modelService", "svgRepresentation",
+                "blueprint", "components");
     }
 
     @Test
