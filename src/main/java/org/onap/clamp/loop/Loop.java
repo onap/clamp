@@ -40,6 +40,7 @@ import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -63,6 +64,7 @@ import org.onap.clamp.loop.components.external.ExternalComponent;
 import org.onap.clamp.loop.components.external.PolicyComponent;
 import org.onap.clamp.loop.log.LoopLog;
 import org.onap.clamp.loop.service.Service;
+import org.onap.clamp.loop.template.LoopTemplate;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.onap.clamp.policy.operational.OperationalPolicy;
 import org.onap.clamp.policy.operational.OperationalPolicyRepresentationBuilder;
@@ -111,7 +113,7 @@ public class Loop implements Serializable {
     private JsonObject globalPropertiesJson;
 
     @Expose
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
     @JoinColumn(name = "service_uuid")
     private Service modelService;
 
@@ -128,18 +130,27 @@ public class Loop implements Serializable {
     private final Map<String, ExternalComponent> components = new HashMap<>();
 
     @Expose
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop", orphanRemoval = true)
     private Set<OperationalPolicy> operationalPolicies = new HashSet<>();
 
     @Expose
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @JoinTable(name = "loops_microservicepolicies", joinColumns = @JoinColumn(name = "loop_id"), inverseJoinColumns = @JoinColumn(name = "microservicepolicy_id"))
     private Set<MicroServicePolicy> microServicePolicies = new HashSet<>();
 
     @Expose
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop", orphanRemoval = true)
     @SortNatural
     private SortedSet<LoopLog> loopLogs = new TreeSet<>();
+
+    @Expose
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+    @JoinColumn(name = "loop_template_name")
+    private LoopTemplate loopTemplate;
+
+    @Expose
+    @Embedded
+    private AuditProperties auditProperties = new AuditProperties();
 
     private void initializeExternalComponents() {
         this.addComponent(new PolicyComponent());
@@ -203,6 +214,14 @@ public class Loop implements Serializable {
 
     void setBlueprint(String blueprint) {
         this.blueprint = blueprint;
+    }
+
+    public AuditProperties getAuditProperties() {
+        return auditProperties;
+    }
+
+    public void setAuditProperties(AuditProperties auditProperties) {
+        this.auditProperties = auditProperties;
     }
 
     public LoopState getLastComputedState() {
@@ -293,6 +312,14 @@ public class Loop implements Serializable {
 
     public void addComponent(ExternalComponent component) {
         this.components.put(component.getComponentName(), component);
+    }
+
+    public LoopTemplate getLoopTemplate() {
+        return loopTemplate;
+    }
+
+    public void setLoopTemplate(LoopTemplate loopTemplate) {
+        this.loopTemplate = loopTemplate;
     }
 
     /**
