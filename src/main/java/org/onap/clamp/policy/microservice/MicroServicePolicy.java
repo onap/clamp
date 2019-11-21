@@ -32,6 +32,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -40,18 +41,23 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONObject;
 import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 import org.onap.clamp.loop.Loop;
+import org.onap.clamp.loop.template.MicroServiceModel;
 import org.onap.clamp.policy.Policy;
 import org.yaml.snakeyaml.Yaml;
 
@@ -73,8 +79,16 @@ public class MicroServicePolicy implements Serializable, Policy {
     private String name;
 
     @Expose
-    @Column(nullable = false, name = "model_type")
+    @Column(nullable = false, name = "policy_model_type")
     private String modelType;
+
+    @Expose
+    @Column(name = "context")
+    private String context;
+
+    @Expose
+    @Column(name = "device_type_scope")
+    private String deviceTypeScope;
 
     @Expose
     @Type(type = "json")
@@ -95,6 +109,29 @@ public class MicroServicePolicy implements Serializable, Policy {
 
     @ManyToMany(mappedBy = "microServicePolicies", fetch = FetchType.EAGER)
     private Set<Loop> usedByLoops = new HashSet<>();
+
+    @Expose
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "micro_service_model_id")
+    private MicroServiceModel microServiceModel;
+
+    @Expose
+    @CreationTimestamp
+    @Column(name = "created_timestamp")
+    private Instant createdDate;
+
+    @Expose
+    @UpdateTimestamp
+    @Column(name = "updated_timestamp")
+    private Instant updatedDate;
+
+    @Expose
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Expose
+    @Column(name = "created_by")
+    private String createdBy;
 
     public MicroServicePolicy() {
         // serialization
@@ -201,6 +238,81 @@ public class MicroServicePolicy implements Serializable, Policy {
 
     void setUsedByLoops(Set<Loop> usedBy) {
         this.usedByLoops = usedBy;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    public String getDeviceTypeScope() {
+        return deviceTypeScope;
+    }
+
+    public void setDeviceTypeScope(String deviceTypeScope) {
+        this.deviceTypeScope = deviceTypeScope;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Instant getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Instant updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    /**
+     * microServiceModel getter.
+     * 
+     * @return the microServiceModel
+     */
+    public MicroServiceModel getMicroServiceModel() {
+        return microServiceModel;
+    }
+
+    /**
+     * microServiceModel setter.
+     * 
+     * @param microServiceModel the microServiceModel to set
+     */
+    public void setMicroServiceModel(MicroServiceModel microServiceModel) {
+        this.microServiceModel = microServiceModel;
+    }
+
+    /**
+     * name setter.
+     * 
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
