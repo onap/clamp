@@ -132,13 +132,12 @@ public class LoopToJsonTest {
         String jsonSerialized = JsonUtils.GSON_JPA_MODEL.toJson(loopTest2);
         assertThat(jsonSerialized).isNotNull().isNotEmpty();
         System.out.println(jsonSerialized);
-        JSONAssert.assertEquals(ResourceFileUtil.getResourceAsString("tosca/loop.json"),
-                jsonSerialized, true);
+        JSONAssert.assertEquals(ResourceFileUtil.getResourceAsString("tosca/loop.json"), jsonSerialized, true);
 
         Loop loopTestDeserialized = JsonUtils.GSON_JPA_MODEL.fromJson(jsonSerialized, Loop.class);
         assertNotNull(loopTestDeserialized);
-        assertThat(loopTestDeserialized).isEqualToIgnoringGivenFields(loopTest2, "modelService", 
-            "svgRepresentation", "blueprint", "components");
+        assertThat(loopTestDeserialized).isEqualToIgnoringGivenFields(loopTest2, "modelService", "svgRepresentation",
+                "blueprint", "components");
     }
 
     @Test
