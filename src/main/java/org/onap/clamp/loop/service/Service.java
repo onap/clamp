@@ -41,7 +41,6 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 
-
 @Entity
 @Table(name = "services")
 @TypeDefs({ @TypeDef(name = "json", typeClass = StringJsonUserType.class) })
@@ -73,7 +72,7 @@ public class Service implements Serializable {
     private JsonObject resourceDetails;
 
     /**
-     * Public constructor.
+     * Default constructor for serialization.
      */
     public Service() {
     }
