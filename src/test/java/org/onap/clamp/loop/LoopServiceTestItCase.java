@@ -42,7 +42,7 @@ import org.onap.clamp.loop.log.LogType;
 import org.onap.clamp.loop.log.LoopLog;
 import org.onap.clamp.loop.log.LoopLogService;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
-import org.onap.clamp.policy.microservice.MicroservicePolicyService;
+import org.onap.clamp.policy.microservice.MicroServicePolicyService;
 import org.onap.clamp.policy.operational.OperationalPolicy;
 import org.onap.clamp.policy.operational.OperationalPolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class LoopServiceTestItCase {
     LoopsRepository loopsRepository;
 
     @Autowired
-    MicroservicePolicyService microServicePolicyService;
+    MicroServicePolicyService microServicePolicyService;
 
     @Autowired
     OperationalPolicyService operationalPolicyService;
