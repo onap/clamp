@@ -31,7 +31,7 @@ import java.util.Set;
 import javax.persistence.EntityNotFoundException;
 
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
-import org.onap.clamp.policy.microservice.MicroservicePolicyService;
+import org.onap.clamp.policy.microservice.MicroServicePolicyService;
 import org.onap.clamp.policy.operational.OperationalPolicy;
 import org.onap.clamp.policy.operational.OperationalPolicyService;
 import org.springframework.stereotype.Component;
@@ -42,13 +42,13 @@ import org.springframework.stereotype.Service;
 public class LoopService {
 
     private final LoopsRepository loopsRepository;
-    private final MicroservicePolicyService microservicePolicyService;
+    private final MicroServicePolicyService microservicePolicyService;
     private final OperationalPolicyService operationalPolicyService;
 
     /**
      * Constructor.
      */
-    public LoopService(LoopsRepository loopsRepository, MicroservicePolicyService microservicePolicyService,
+    public LoopService(LoopsRepository loopsRepository, MicroServicePolicyService microservicePolicyService,
         OperationalPolicyService operationalPolicyService) {
         this.loopsRepository = loopsRepository;
         this.microservicePolicyService = microservicePolicyService;
