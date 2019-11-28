@@ -60,19 +60,19 @@ public class ClampCadiFilter extends CadiFilter {
     @Value("${server.ssl.key-store:#{null}}")
     private String keyStore;
 
-    @Value("${clamp.config.cadi.cadiKeystorePassword:#{null}}")
+    @Value("${server.ssl.key-store-password:#{null}}")
     private String keyStorePass;
 
     @Value("${server.ssl.trust-store:#{null}}")
     private String trustStore;
 
-    @Value("${clamp.config.cadi.cadiTruststorePassword:#{null}}")
+    @Value("${server.ssl.trust-store-password:#{null}}")
     private String trustStorePass;
 
     @Value("${server.ssl.key-alias:clamp@clamp.onap.org}")
     private String alias;
 
-    @Value("${clamp.config.cadi.keyFile:#{null}}")
+    @Value("${clamp.config.keyFile:#{null}}")
     private String keyFile;
 
     @Value("${clamp.config.cadi.cadiLoglevel:#{null}}")

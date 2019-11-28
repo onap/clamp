@@ -29,6 +29,7 @@ import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -39,6 +40,7 @@ import java.util.Enumeration;
 import org.apache.catalina.connector.Connector;
 import org.onap.clamp.clds.util.ClampVersioning;
 import org.onap.clamp.clds.util.ResourceFileUtil;
+import org.onap.clamp.util.PassDecoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -47,15 +49,20 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.Ssl;
+import org.springframework.boot.web.server.SslStoreProvider;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -135,6 +142,44 @@ public class Application extends SpringBootServletInitializer {
         return tomcat;
     }
 
+    @Bean
+    WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatCustomizer(ServerProperties serverProperties,
+            ResourceLoader resourceLoader) {
+        return (tomcat) -> tomcat.setSslStoreProvider(new SslStoreProvider() {
+            @Override
+            public KeyStore getKeyStore() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
+                return loadKeyStore();
+            }
+
+            @Override
+            public KeyStore getTrustStore() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
+                KeyStore truststore = KeyStore.getInstance("JKS");
+                InputStream is = ResourceFileUtil.getResourceAsStream(env.getProperty("clamp.config.keyFile")
+                        .replaceAll("classpath:", ""));
+                String password = PassDecoder.decode(env.getProperty("server.ssl.trust-store-password"), is);
+                truststore.load(
+                    Thread.currentThread().getContextClassLoader()
+                        .getResourceAsStream(env.getProperty("server.ssl.trust-store").replaceAll("classpath:", "")),
+                        password.toCharArray());
+                return truststore;
+            }
+        });
+    }
+
+    @Bean
+    WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatSslCustomizer(ServerProperties serverProperties,
+            ResourceLoader resourceLoader) {
+        return (tomcat) -> tomcat.setSsl(new Ssl() {
+            @Override
+            public String getKeyPassword() {
+                InputStream is = ResourceFileUtil.getResourceAsStream(env.getProperty("clamp.config.keyFile")
+                        .replaceAll("classpath:", ""));
+                String password = PassDecoder.decode(env.getProperty("server.ssl.key-password"), is);
+            	return password;
+            }
+        });
+    }
+
     private Connector createRedirectConnector(int redirectSecuredPort) {
         if (redirectSecuredPort <= 0) {
             eelfLogger.warn("HTTP port redirection to HTTPS is disabled because the HTTPS port is 0 (random port) or -1"
@@ -154,11 +199,7 @@ public class Application extends SpringBootServletInitializer {
         try {
             if (env.getProperty("server.ssl.key-store") != null) {
 
-                KeyStore keystore = KeyStore.getInstance(env.getProperty("server.ssl.key-store-type"));
-                keystore.load(
-                        ResourceFileUtil.getResourceAsStream(
-                                env.getProperty("server.ssl.key-store").replaceAll("classpath:", "")),
-                        env.getProperty("server.ssl.key-store-password").toCharArray());
+                KeyStore keystore = loadKeyStore();
                 Enumeration<String> aliases = keystore.aliases();
                 while (aliases.hasMoreElements()) {
                     String alias = aliases.nextElement();
@@ -176,5 +217,17 @@ public class Application extends SpringBootServletInitializer {
 
         }
         return result.toString();
+    }
+
+    private KeyStore loadKeyStore() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
+        KeyStore keystore = KeyStore.getInstance(env.getProperty("server.ssl.key-store-type"));
+        InputStream is = ResourceFileUtil.getResourceAsStream(env.getProperty("clamp.config.keyFile")
+                .replaceAll("classpath:", ""));
+        String password = PassDecoder.decode(env.getProperty("server.ssl.key-store-password"), is);
+        keystore.load(
+                ResourceFileUtil.getResourceAsStream(
+                        env.getProperty("server.ssl.key-store").replaceAll("classpath:", "")),
+                password.toCharArray());
+        return keystore;
     }
 }
