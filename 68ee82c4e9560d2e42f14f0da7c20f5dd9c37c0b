@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3285fdec_6563b60c",
+        "filename": "src/main/java/org/onap/clamp/loop/entity/DictionaryItem.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-12-05T12:21:15Z",
+      "side": 1,
+      "message": "Package convention: rename the package name to something related to the entity type.\n.\"entity\" does not exist in the project\n\nRename to org.onap.clamp.tosca",
+      "revId": "68ee82c4e9560d2e42f14f0da7c20f5dd9c37c0b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fce2b4a9_59358517",
+        "filename": "src/main/java/org/onap/clamp/loop/entity/ModelPolicyProperties.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-12-05T12:21:15Z",
+      "side": 1,
+      "message": "Remove that commented code",
+      "revId": "68ee82c4e9560d2e42f14f0da7c20f5dd9c37c0b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
