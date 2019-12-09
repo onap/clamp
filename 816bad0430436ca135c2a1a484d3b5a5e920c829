@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "de6aaa30_bc186fce",
+        "filename": "src/main/java/org/onap/clamp/loop/CsarInstaller.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-12-09T13:14:25Z",
+      "side": 1,
+      "message": "You can remove that variable and put the code directly in the installTheLoop method",
+      "revId": "816bad0430436ca135c2a1a484d3b5a5e920c829",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53de7deb_2b3d7fb0",
+        "filename": "src/main/java/org/onap/clamp/loop/CsarInstaller.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2019-12-09T13:14:25Z",
+      "side": 1,
+      "message": "You can remove that code, the loop is enough to know if we find blueprints in the csar",
+      "revId": "816bad0430436ca135c2a1a484d3b5a5e920c829",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
