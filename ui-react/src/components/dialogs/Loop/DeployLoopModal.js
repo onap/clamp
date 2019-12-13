@@ -26,6 +26,8 @@ import LoopService from '../../../api/LoopService';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 import styled from 'styled-components';
 
 const ModalStyled = styled(Modal)`
@@ -93,30 +95,39 @@ export default class DeployLoopModal extends React.Component {
 
 		this.setState({temporaryPropertiesJson:{dcaeDeployParameters: deploymentParam}});
 	}
-	renderDeployParam() {
+	renderDeployParamTabs() {
 		if (typeof (this.state.temporaryPropertiesJson) === "undefined") {
 			 return "";
 		}
 
-		const deployJson = this.state.temporaryPropertiesJson["dcaeDeployParameters"];
+		const deployJsonList = this.state.temporaryPropertiesJson["dcaeDeployParameters"];
+		var indents = [];
+		Object.keys(deployJsonList).map((item,key) =>
+			indents.push(<Tab eventKey={item} title={item}>
+				{this.renderDeployParam(deployJsonList[item])}
+				</Tab>)
+		);
+			return indents;
+	}
+
+	renderDeployParam(deployJson) {
 		var indents = [];
 		Object.keys(deployJson).map((item,key) =>
 		indents.push(<FormStyled>
 				<Form.Label>{item}</Form.Label>
 				<Form.Control type="text" name={item} onChange={this.handleChange} defaultValue={deployJson[item]}></Form.Control>
 			</FormStyled>));
-
-			return indents;
+		return indents;
 	}
-
-
 	render() {
 		return (
 					<ModalStyled size="lg" show={this.state.show} onHide={this.handleClose} >
 						<Modal.Header closeButton>
 							<Modal.Title>Deployment parameters</Modal.Title>
 						</Modal.Header>
-						{this.renderDeployParam()}
+						<Tabs id="uncontrolled-tab-example">
+						{this.renderDeployParamTabs()}
+						</Tabs>
 						<Modal.Footer>
 							<Button variant="secondary" type="null" onClick={this.handleClose}>Cancel</Button>
 							<Button variant="primary" type="submit" onClick={this.handleSave}>Deploy</Button>
