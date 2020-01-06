@@ -17,7 +17,23 @@
 			<stop />
 		</when>
 	</route>
-
+	<route id="refresh-oppolicy">
+		<from uri="direct:refresh-oppolicy" />
+		<setBody>
+			<simple>${header.loopName}</simple>
+		</setBody>
+		<setProperty propertyName="loopObject">
+			<method ref="org.onap.clamp.loop.LoopService" method="refreshOpPolicyJsonRepresentation" />
+		</setProperty>
+		<when>
+			<simple>${exchangeProperty[loopObject]} == null</simple>
+			<setHeader headerName="CamelHttpResponseCode">
+				<constant>404</constant>
+			</setHeader>
+			<log loggingLevel="WARN" message="Loop not found in database: ${body}" />
+			<stop />
+		</when>
+	</route>
 	<route id="update-policy-status-for-loop">
 		<from uri="direct:update-policy-status-for-loop" />
 		<setProperty propertyName="policyComponent">
