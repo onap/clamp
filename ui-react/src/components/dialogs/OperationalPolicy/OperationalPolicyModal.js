@@ -25,6 +25,7 @@ import React from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import styled from 'styled-components';
+import LoopCache from './api/LoopCache';
 import LoopService from '../../../api/LoopService';
 import JSONEditor from '@json-editor/json-editor';
 
@@ -45,6 +46,7 @@ export default class OperationalPolicyModal extends React.Component {
 		this.handleClose = this.handleClose.bind(this);
 		this.handleSave = this.handleSave.bind(this);
 		this.renderJsonEditor = this.renderJsonEditor.bind(this);
+		this.handleRefresh = this.handleRefresh.bind(this);
 		this.setDefaultJsonEditorOptions();
 	}
 
@@ -122,6 +124,24 @@ export default class OperationalPolicyModal extends React.Component {
 			})
 	}
 
+	handleRefresh() {
+		LoopService.refreshOpPolicyJson(this.state.loopCache.getLoopName()).then(data => {
+			var schema_json = data.getOperationalPolicyJsonSchema();
+			var operationalPoliciesData = data.getOperationalPoliciesNoJsonSchema();
+
+			this.setState({
+				loopCache: data,
+				jsonEditor: new JSONEditor(document.getElementById("editor"),
+					{ schema: schema_json.schema, startval: operationalPoliciesData })
+			})
+			this.props.refreshOpPolicyJson(data);
+			
+		})
+		.catch(error => {
+			console.error("Error while refreshing the Operational Policy Json Representation");
+		});
+	}
+
 	render() {
 		return (
 			<ModalStyled size="xl" show={this.state.show} onHide={this.handleClose}>
@@ -135,10 +155,13 @@ export default class OperationalPolicyModal extends React.Component {
 				<Modal.Footer>
 					<Button variant="secondary" onClick={this.handleClose}>
 						Close
-	            </Button>
+					</Button>
+					<Button variant="secondary" onClick={this.handleRefresh}>
+						Refresh
+					</Button>
 					<Button variant="primary" onClick={this.handleSave}>
 						Save Changes
-	            </Button>
+					</Button>
 				</Modal.Footer>
 			</ModalStyled>
 
