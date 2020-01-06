@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "66877723_4e2bc398",
+        "filename": "src/main/java/org/onap/clamp/loop/CsarInstaller.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-06T14:19:57Z",
+      "side": 1,
+      "message": "Small typo ParametersIn, capital I is required",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe2dc17f_190b1a86",
+        "filename": "src/main/java/org/onap/clamp/loop/deploy/DeployParameters.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-06T14:19:57Z",
+      "side": 1,
+      "message": "Please rename to DcaeDeployParameters and add a comment on the class to say it\u0027s to decode the blueprint input parameters",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74e71c35_76e7dc82",
+        "filename": "src/main/java/org/onap/clamp/loop/deploy/DeployParameters.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-06T14:19:57Z",
+      "side": 1,
+      "message": "I think we should remove that and change all the others methods to static. As we use that class like that:\nreturn new DeployParameters(blueprintArtifact, newLoop).getDeploymentParametersinJson();\n\nIt makes no sense to store anything in that class.",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbaa553a_8e830173",
+        "filename": "src/main/java/org/onap/clamp/loop/deploy/DeployParameters.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-06T14:19:57Z",
+      "side": 1,
+      "message": "Please rename the method to generateDcaeDeployParameters",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34b886c7_44b3624a",
+        "filename": "src/main/java/org/onap/clamp/loop/deploy/DeployParameters.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-06T14:19:57Z",
+      "side": 1,
+      "message": "Rename it to getDcaeDeploymentParametersInJson",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "223f5fc1_154d0681",
+        "filename": "src/test/java/org/onap/clamp/loop/deploy/DeployParametersTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-06T14:19:57Z",
+      "side": 1,
+      "message": "Rename it accordingly, to BlueprintInputParametersTest",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "302af21d_14e20710",
+        "filename": "ui-react/src/components/dialogs/Loop/DeployLoopModal.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-06T14:19:57Z",
+      "side": 1,
+      "message": "Not sure to see why we need to do something when the component \"did mount\" ?",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
