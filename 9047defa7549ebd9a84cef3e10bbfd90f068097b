@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9d1d26c9_e936f35c",
+        "filename": "src/main/java/org/onap/clamp/loop/CsarInstaller.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-01-07T10:31:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66877723_4e2bc398",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fe2dc17f_190b1a86",
         "filename": "src/main/java/org/onap/clamp/loop/deploy/DeployParameters.java",
         "patchSetId": 7
@@ -33,6 +51,24 @@
       "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cef81c70_80fea7d3",
+        "filename": "src/main/java/org/onap/clamp/loop/deploy/DeployParameters.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-01-07T10:31:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe2dc17f_190b1a86",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "72402d74_af1d640c",
+        "filename": "src/main/java/org/onap/clamp/loop/deploy/DeployParameters.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-01-07T10:31:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74e71c35_76e7dc82",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dbaa553a_8e830173",
         "filename": "src/main/java/org/onap/clamp/loop/deploy/DeployParameters.java",
         "patchSetId": 7
@@ -67,6 +121,24 @@
       "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d47e2b06_284f5735",
+        "filename": "src/main/java/org/onap/clamp/loop/deploy/DeployParameters.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-01-07T10:31:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbaa553a_8e830173",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "04f0fc60_276058a6",
+        "filename": "src/main/java/org/onap/clamp/loop/deploy/DeployParameters.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-01-07T10:31:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34b886c7_44b3624a",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "223f5fc1_154d0681",
         "filename": "src/test/java/org/onap/clamp/loop/deploy/DeployParametersTest.java",
         "patchSetId": 7
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "2734c71a_c7365bff",
+        "filename": "src/test/java/org/onap/clamp/loop/deploy/DeployParametersTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-01-07T10:31:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "223f5fc1_154d0681",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "302af21d_14e20710",
         "filename": "ui-react/src/components/dialogs/Loop/DeployLoopModal.js",
         "patchSetId": 7
@@ -115,6 +223,24 @@
       "writtenOn": "2020-01-06T14:19:57Z",
       "side": 1,
       "message": "Not sure to see why we need to do something when the component \"did mount\" ?",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c572295_1914f74c",
+        "filename": "ui-react/src/components/dialogs/Loop/DeployLoopModal.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-01-07T10:31:42Z",
+      "side": 1,
+      "message": "Because the Tabs component needs to set an initial active tab. This tab will be displayed when you first open the UI. The initial active tab is defined by attribute \"key\" and the \"key\" value should be a valid value(we use policy name as the key value here), not something random.\n\nThis method is to get the first policy name out of the policy list and set to the \"key\", so that the UI could be displayed correctly when opened.",
+      "parentUuid": "302af21d_14e20710",
       "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
