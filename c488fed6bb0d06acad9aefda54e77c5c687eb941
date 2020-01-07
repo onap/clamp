@@ -16,6 +16,24 @@
       "revId": "c488fed6bb0d06acad9aefda54e77c5c687eb941",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d31b9ee1_8457d188",
+        "filename": "ui-react/src/api/LoopCache.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-01-07T10:37:55Z",
+      "side": 1,
+      "message": "Because we pass the whole OperationalPolicies to the JSONEditor, not only the configurationJson attribute. If we don\u0027t delete jsonRepresentation attribute, it will be also rendered by the JSONEditor and shown in the UI.",
+      "parentUuid": "a8c4c48d_2180eea7",
+      "revId": "c488fed6bb0d06acad9aefda54e77c5c687eb941",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
