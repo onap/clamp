@@ -244,6 +244,24 @@
       "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d5bb857_09fe75b8",
+        "filename": "ui-react/src/components/dialogs/Loop/DeployLoopModal.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-10T13:27:47Z",
+      "side": 1,
+      "message": "It\u0027s not something we could do before DidMount ?\nBecause here, everything is loaded into the DOM then we force the component to be re-rendered again as we change the state of it.",
+      "parentUuid": "6c572295_1914f74c",
+      "revId": "9047defa7549ebd9a84cef3e10bbfd90f068097b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
