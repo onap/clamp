@@ -27,8 +27,10 @@ package org.onap.clamp.clds.client;
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
 
-import java.io.IOException;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
@@ -38,6 +40,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.onap.clamp.clds.config.ClampProperties;
+import org.onap.clamp.clds.model.dcae.DcaeInventoryCache;
 import org.onap.clamp.clds.model.dcae.DcaeInventoryResponse;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.LoggingUtils;
@@ -77,13 +80,19 @@ public class DcaeInventoryServices {
         return totalCount.intValue();
     }
 
-    private DcaeInventoryResponse getItemsFromDcaeInventoryResponse(String responseStr) throws ParseException {
+    private List<DcaeInventoryResponse> getItemsFromDcaeInventoryResponse(String responseStr) throws ParseException {
         JSONParser parser = new JSONParser();
         Object obj0 = parser.parse(responseStr);
         JSONObject jsonObj = (JSONObject) obj0;
         JSONArray itemsArray = (JSONArray) jsonObj.get("items");
-        JSONObject dcaeServiceType0 = (JSONObject) itemsArray.get(0);
-        return JsonUtils.GSON.fromJson(dcaeServiceType0.toString(), DcaeInventoryResponse.class);
+        Iterator it = itemsArray.iterator();
+        List<DcaeInventoryResponse> inventoryResponseList = new LinkedList<DcaeInventoryResponse>();
+        while (it.hasNext()) {
+            JSONObject item = (JSONObject) it.next();
+            DcaeInventoryResponse response = JsonUtils.GSON.fromJson(item.toString(), DcaeInventoryResponse.class);
+            inventoryResponseList.add(response);
+        }
+        return inventoryResponseList;
     }
 
     /**
@@ -92,12 +101,11 @@ public class DcaeInventoryServices {
      * @param artifactName The artifact Name
      * @param serviceUuid  The service UUID
      * @param resourceUuid The resource UUID
-     * @return The DCAE inventory for the artifact in DcaeInventoryResponse
-     * @throws IOException    In case of issues with the stream
+     * @return List of DCAE inventory for the artifact in DcaeInventoryResponse
      * @throws ParseException In case of issues with the Json parsing
      */
-    public DcaeInventoryResponse getDcaeInformation(String artifactName, String serviceUuid, String resourceUuid)
-            throws IOException, ParseException, InterruptedException {
+    public List<DcaeInventoryResponse> getDcaeInformation(String artifactName, String serviceUuid, String resourceUuid)
+            throws ParseException, InterruptedException {
         LoggingUtils.setTargetContext("DCAE", "getDcaeInformation");
 
         int retryInterval = 0;
@@ -109,13 +117,19 @@ public class DcaeInventoryServices {
             retryInterval = Integer.valueOf(refProp.getStringValue(DCAE_INVENTORY_RETRY_INTERVAL));
         }
         for (int i = 0; i < retryLimit; i++) {
-            Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext)
-                    .withProperty("blueprintResourceId", resourceUuid).withProperty("blueprintServiceId", serviceUuid)
-                    .withProperty("blueprintName", artifactName).build();
-            metricsLogger.info("Attempt n°" + i + " to contact DCAE inventory");
-
-            Exchange exchangeResponse = camelContext.createProducerTemplate()
-                    .send("direct:get-dcae-blueprint-inventory", myCamelExchange);
+            Exchange exchangeResponse;
+            if (serviceUuid == null) {
+                Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext).build();
+                exchangeResponse = camelContext.createProducerTemplate()
+                        .send("direct:get-all-dcae-blueprint-inventory", myCamelExchange);
+            } else {
+                Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext)
+                        .withProperty("blueprintResourceId", resourceUuid).withProperty("blueprintServiceId", serviceUuid)
+                        .withProperty("blueprintName", artifactName).build();
+                metricsLogger.info("Attempt n°" + i + " to contact DCAE inventory");
+                exchangeResponse = camelContext.createProducerTemplate()
+                        .send("direct:get-dcae-blueprint-inventory", myCamelExchange);
+            }
 
             if (Integer.valueOf(200).equals(exchangeResponse.getIn().getHeader("CamelHttpResponseCode"))) {
                 String dcaeResponse = (String) exchangeResponse.getIn().getBody();
@@ -137,5 +151,21 @@ public class DcaeInventoryServices {
         }
         logger.warn("Dcae inventory totalCount returned is still 0, after " + retryLimit + " attempts, returning NULL");
         return null;
+    }
+
+    /**
+     * Updates DCAE inventory cache with dcae inventory response.
+     *
+     * @throws ParseException In case of issues with the Json parsing
+     */
+    public void updateDcaeInventoryCache() throws ParseException, InterruptedException {
+        List<DcaeInventoryResponse> dcaeResponse = getDcaeInformation(null, null, null);
+        if (dcaeResponse == null || dcaeResponse.isEmpty())
+            return;
+
+        DcaeInventoryCache cache = DcaeInventoryCache.getInstance();
+        for (DcaeInventoryResponse response : dcaeResponse) {
+            cache.addDcaeInventoryResponse(response);
+        }
     }
 }

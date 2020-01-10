@@ -30,7 +30,7 @@ import org.junit.Test;
 
 public class DcaeInventoryResponseCacheTest {
 
-    public static DcaeInventoryCache inventoryCache = new DcaeInventoryCache();
+    public static DcaeInventoryCache inventoryCache = DcaeInventoryCache.getInstance();
 
     @BeforeClass
     public static void createExample() {

@@ -2,7 +2,9 @@
   "name": "ControlLoopTest",
   "dcaeDeploymentId": "123456789",
   "dcaeDeploymentStatusUrl": "https://dcaetest.org",
-  "dcaeBlueprintId": "UUID-blueprint",
+  "dcaeBlueprintId": [
+    "UUID-blueprint"
+  ],
   "operationalPolicySchema": {
     "schema": {
       "uniqueItems": "true",

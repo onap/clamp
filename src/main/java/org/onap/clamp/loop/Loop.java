@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -52,6 +53,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.ElementCollection;
+import javax.persistence.CollectionTable;
 
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.annotations.Type;
@@ -94,8 +97,10 @@ public class Loop implements Serializable {
     private String dcaeDeploymentStatusUrl;
 
     @Expose
+    @ElementCollection
+    @CollectionTable(name = "loops_dcae_blueprint_ids", joinColumns = @JoinColumn(name = "loop_id"))
     @Column(name = "dcae_blueprint_id")
-    private String dcaeBlueprintId;
+    private List<String> dcaeBlueprintId;
 
     @Column(columnDefinition = "MEDIUMTEXT", name = "svg_representation")
     private String svgRepresentation;
@@ -260,11 +265,11 @@ public class Loop implements Serializable {
         this.loopLogs.add(log);
     }
 
-    public String getDcaeBlueprintId() {
+    public List<String> getDcaeBlueprintId() {
         return dcaeBlueprintId;
     }
 
-    void setDcaeBlueprintId(String dcaeBlueprintId) {
+    void setDcaeBlueprintId(List<String> dcaeBlueprintId) {
         this.dcaeBlueprintId = dcaeBlueprintId;
     }
 

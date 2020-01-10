@@ -25,6 +25,7 @@ package org.onap.clamp.loop.components.external;
 
 import com.google.gson.JsonObject;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.camel.Exchange;
@@ -115,10 +116,11 @@ public class DcaeComponent extends ExternalComponent {
         JsonObject globalProp = loop.getGlobalPropertiesJson();
         JsonObject deploymentProp = globalProp.getAsJsonObject(DEPLOYMENT_PARAMETER);
 
-        String serviceTypeId = loop.getDcaeBlueprintId();
+        List<String> serviceTypeId = loop.getDcaeBlueprintId();
 
         JsonObject rootObject = new JsonObject();
-        rootObject.addProperty(DCAE_SERVICETYPE_ID, serviceTypeId);
+        // TODO: not clear about how the deploy payload should be
+        //rootObject.addProperty(DCAE_SERVICETYPE_ID, serviceTypeId);
         if (deploymentProp != null) {
             rootObject.add(DCAE_INPUTS, deploymentProp);
         }
@@ -133,7 +135,8 @@ public class DcaeComponent extends ExternalComponent {
      */
     public static String getUndeployPayload(Loop loop) {
         JsonObject rootObject = new JsonObject();
-        rootObject.addProperty(DCAE_SERVICETYPE_ID, loop.getDcaeBlueprintId());
+        // TODO: not clear about how the deploy payload should be
+        // rootObject.addProperty(DCAE_SERVICETYPE_ID, loop.getDcaeBlueprintId());
         return rootObject.toString();
     }
 

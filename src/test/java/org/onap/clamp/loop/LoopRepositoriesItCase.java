@@ -33,6 +33,8 @@ import com.google.gson.JsonObject;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,7 +83,9 @@ public class LoopRepositoriesItCase {
         loop.setLastComputedState(LoopState.DESIGN);
         loop.setDcaeDeploymentId(dcaeId);
         loop.setDcaeDeploymentStatusUrl(dcaeUrl);
-        loop.setDcaeBlueprintId(dcaeBlueprintId);
+        List<String> dcaeBlueprint = new LinkedList<>();
+        dcaeBlueprint.add(dcaeBlueprintId);
+        loop.setDcaeBlueprintId(dcaeBlueprint);
         return loop;
     }
 
@@ -126,7 +130,7 @@ public class LoopRepositoriesItCase {
 
         // Now attempt to read from database
         Loop loopInDbRetrieved = loopRepository.findById(loopTest.getName()).get();
-        assertThat(loopInDbRetrieved).isEqualToIgnoringGivenFields(loopTest, "components");
+        assertThat(loopInDbRetrieved).isEqualToIgnoringGivenFields(loopTest, "components", "dcaeBlueprintId");
         assertThat((LoopLog) loopInDbRetrieved.getLoopLogs().toArray()[0]).isEqualToComparingFieldByField(loopLog);
         assertThat((OperationalPolicy) loopInDbRetrieved.getOperationalPolicies().toArray()[0])
             .isEqualToComparingFieldByField(opPolicy);

@@ -36,6 +36,17 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DcaeInventoryCache {
 
+    private static DcaeInventoryCache dcaeInventoryCache = null;
+
+    private DcaeInventoryCache() {
+    }
+
+    public static DcaeInventoryCache getInstance() {
+        if (dcaeInventoryCache == null)
+            dcaeInventoryCache = new DcaeInventoryCache();
+        return dcaeInventoryCache;
+    }
+
     private Map<String, Set<DcaeInventoryResponse>> blueprintsMap = new ConcurrentHashMap<>();
 
     public void addDcaeInventoryResponse(DcaeInventoryResponse inventoryResponse) {

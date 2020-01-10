@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -207,8 +208,12 @@ public class CsarInstaller {
         newLoop.setSvgRepresentation(svgFacade.getSvgImage(microServicesChain));
         newLoop.setGlobalPropertiesJson(createGlobalPropertiesJson(blueprintArtifact, newLoop));
 
-        DcaeInventoryResponse dcaeResponse = queryDcaeToGetServiceTypeId(blueprintArtifact);
-        newLoop.setDcaeBlueprintId(dcaeResponse.getTypeId());
+        List<DcaeInventoryResponse> dcaeResponseList = queryDcaeToGetServiceTypeId(blueprintArtifact);
+        List<String> blueprintIdList = new LinkedList<>();
+        for (DcaeInventoryResponse dcaeResponse : dcaeResponseList) {
+            blueprintIdList.add(dcaeResponse.getTypeId());
+        }
+        newLoop.setDcaeBlueprintId(blueprintIdList);
         return newLoop;
     }
 
@@ -304,7 +309,7 @@ public class CsarInstaller {
      *
      * @return The DcaeInventoryResponse object containing the dcae values
      */
-    private DcaeInventoryResponse queryDcaeToGetServiceTypeId(BlueprintArtifact blueprintArtifact)
+    private List<DcaeInventoryResponse> queryDcaeToGetServiceTypeId(BlueprintArtifact blueprintArtifact)
             throws IOException, ParseException, InterruptedException {
         return dcaeInventoryService.getDcaeInformation(blueprintArtifact.getBlueprintArtifactName(),
                 blueprintArtifact.getBlueprintInvariantServiceUuid(),

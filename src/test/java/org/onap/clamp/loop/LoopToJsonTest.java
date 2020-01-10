@@ -35,6 +35,8 @@ import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
@@ -63,7 +65,9 @@ public class LoopToJsonTest {
         loop.setLastComputedState(LoopState.DESIGN);
         loop.setDcaeDeploymentId(dcaeId);
         loop.setDcaeDeploymentStatusUrl(dcaeUrl);
-        loop.setDcaeBlueprintId(dcaeBlueprintId);
+        List<String> dcaeBlueprintIds = new LinkedList<>();
+        dcaeBlueprintIds.add(dcaeBlueprintId);
+        loop.setDcaeBlueprintId(dcaeBlueprintIds);
         return loop;
     }
 
