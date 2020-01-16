@@ -655,5 +655,63 @@
 				</doTry>
 			</route>
 		</get>
+		<get
+			uri="/v2/loop/templates"
+			outType="org.onap.clamp.loop.template.LoopTemplate"
+			produces="application/json">
+			<route>
+				<removeHeaders pattern="*" />
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET ALL Templates')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'cl','','read')" />
+					<to
+						uri="bean:org.onap.clamp.loop.service.LoopTemplateService?method=getAllLoopTemplates" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>true</constant>
+						</handled>
+						<setHeader headerName="CamelHttpResponseCode">
+							<constant>500</constant>
+						</setHeader>
+						<transform>
+							<simple>ERROR: ${exception.message}</simple>
+						</transform> 
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+					</doCatch>
+				</doTry>
+			</route>
+		</get>
+		<get
+			uri="/v2/loop/getAllLoopTemplateNames"
+			outType="java.lang.String[]"
+			produces="application/json">
+			<route>
+				<removeHeaders pattern="*" />
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET ALL Templates')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'cl','','read')" />
+					<to
+						uri="bean:org.onap.clamp.loop.service.LoopTemplateService?method=getLoopTemplateNames" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>false</constant>
+						</handled>
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+					</doCatch>
+				</doTry>
+			</route>
+		</get>
 	</rest>
 </rests>
