@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e6e9ec0f_c9643f29",
+        "filename": "src/main/java/org/onap/clamp/loop/service/LoopTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "It must be At\u0026T 2020",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a639af2d_47c2438a",
+        "filename": "src/main/java/org/onap/clamp/loop/service/LoopTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "Component can be ommited, @service is enough",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1180665_e7fb7e64",
+        "filename": "src/main/java/org/onap/clamp/loop/service/LoopTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "Not sure that I understand why we inherit from from SecureServiceBase ?? this is not required at all",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d32b73c_66601870",
+        "filename": "src/main/java/org/onap/clamp/loop/service/LoopTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "This is useless remove that",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a4db093_5c5bd9df",
+        "filename": "src/main/java/org/onap/clamp/loop/service/LoopTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "This is useless remove that",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab786f5e_42e69445",
+        "filename": "src/main/java/org/onap/clamp/loop/service/LoopTemplateService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "Rename to saveOrUpdateLoopTemplate",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77f3db26_86e8a1dd",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "Rename the url to /v2/loopTemplates",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f58af9d3_aa2a0711",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "Do not handle the exception, let camel manage that",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "966562d5_96b64a76",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "Do not always return a 500, so remove that",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f2b9462_8baf6967",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "Add a Camel log, something like that:\n\u003clog\n\t\t\t\t\t\t\tloggingLevel\u003d\"ERROR\"\n\t\t\t\t\t\t\tmessage\u003d\"Get Status request failed for getAllLoopTemplates\" /\u003e",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00e23812_6ab7802c",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "Look the others methods here to know how to have a better log",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f9a4d84_2701f122",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "Rename the Url to /v2/loopTemplate/getAllNames",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd14bdc2_7f718c13",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-17T10:29:10Z",
+      "side": 1,
+      "message": "Same comments as the above method",
+      "revId": "1192540a1de20e33a237605d3689dd94603d5ac9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
