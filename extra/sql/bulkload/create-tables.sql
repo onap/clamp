@@ -30,6 +30,19 @@
 
     insert into hibernate_sequence values ( 1 );
 
+    create table loop_element_models (
+       name varchar(255) not null,
+        created_by varchar(255),
+        created_timestamp datetime(6) not null,
+        updated_by varchar(255),
+        updated_timestamp datetime(6) not null,
+        blueprint_yaml varchar(255) not null,
+        loop_element_type varchar(255) not null,
+        policy_model_type varchar(255),
+        policy_model_version varchar(255),
+        primary key (name)
+    ) engine=InnoDB;
+
     create table loop_logs (
        id bigint not null,
         log_component varchar(255) not null,
@@ -51,6 +64,13 @@
         svg_representation MEDIUMTEXT,
         service_uuid varchar(255),
         primary key (name)
+    ) engine=InnoDB;
+
+    create table loop_templates_loop_element_models (
+       loop_element_model_name varchar(255) not null,
+        loop_template_name varchar(255) not null,
+        flow_order integer not null,
+        primary key (loop_element_model_name, loop_template_name)
     ) engine=InnoDB;
 
     create table loops (
@@ -77,42 +97,34 @@
         primary key (loop_id, microservicepolicy_id)
     ) engine=InnoDB;
 
-    create table micro_service_models (
-       name varchar(255) not null,
-        created_by varchar(255),
-        created_timestamp datetime(6) not null,
-        updated_by varchar(255),
-        updated_timestamp datetime(6) not null,
-        blueprint_yaml varchar(255) not null,
-        policy_type varchar(255) not null,
-        policy_model_type varchar(255),
-        policy_model_version varchar(255),
-        primary key (name)
-    ) engine=InnoDB;
-
     create table micro_service_policies (
        name varchar(255) not null,
         created_by varchar(255),
         created_timestamp datetime(6) not null,
         updated_by varchar(255),
         updated_timestamp datetime(6) not null,
+        configurations_json json,
+        json_representation json not null,
         context varchar(255),
         dcae_deployment_id varchar(255),
         dcae_deployment_status_url varchar(255),
         device_type_scope varchar(255),
-        json_representation json not null,
         policy_model_type varchar(255) not null,
         policy_tosca MEDIUMTEXT not null,
-        properties json,
         shared bit not null,
-        micro_service_model_id varchar(255),
+        loop_element_model_id varchar(255),
         primary key (name)
     ) engine=InnoDB;
 
     create table operational_policies (
        name varchar(255) not null,
+        created_by varchar(255),
+        created_timestamp datetime(6) not null,
+        updated_by varchar(255),
+        updated_timestamp datetime(6) not null,
         configurations_json json,
         json_representation json not null,
+        loop_element_model_id varchar(255),
         loop_id varchar(255) not null,
         policy_model_type varchar(255),
         policy_model_version varchar(255),
@@ -141,13 +153,6 @@
         primary key (service_uuid)
     ) engine=InnoDB;
 
-    create table templates_microservicemodels (
-       loop_template_name varchar(255) not null,
-        micro_service_model_name varchar(255) not null,
-        flow_order integer not null,
-        primary key (loop_template_name, micro_service_model_name)
-    ) engine=InnoDB;
-
     alter table dictionary_elements 
        add constraint UK_qxkrvsrhp26m60apfvxphpl3d unique (short_name);
 
@@ -155,6 +160,11 @@
        add constraint FKn87bpgpm9i56w7uko585rbkgn 
        foreign key (dictionary_id) 
        references dictionary (name);
+
+    alter table loop_element_models 
+       add constraint FKeuy2dio3fjg2qb75kpdd7xm32 
+       foreign key (policy_model_type, policy_model_version) 
+       references policy_models (policy_model_type, version);
 
     alter table loop_logs 
        add constraint FK1j0cda46aickcaoxqoo34khg2 
@@ -165,6 +175,16 @@
        add constraint FKn692dk6281wvp1o95074uacn6 
        foreign key (service_uuid) 
        references services (service_uuid);
+
+    alter table loop_templates_loop_element_models 
+       add constraint FK71kye1frq4uxgvoncvjdf19ci 
+       foreign key (loop_element_model_name) 
+       references loop_element_models (name);
+
+    alter table loop_templates_loop_element_models 
+       add constraint FKo9mvx8lxpvtvy39jf9hn3ksj8 
+       foreign key (loop_template_name) 
+       references loop_templates (name);
 
     alter table loops 
        add constraint FK844uwy82wt0l66jljkjqembpj 
@@ -186,15 +206,15 @@
        foreign key (loop_id) 
        references loops (name);
 
-    alter table micro_service_models 
-       add constraint FKlkcffpnuavcg65u5o4tr66902 
-       foreign key (policy_model_type, policy_model_version) 
-       references policy_models (policy_model_type, version);
-
     alter table micro_service_policies 
-       add constraint FK5p7lipy9m2v7d4n3fvlclwse 
-       foreign key (micro_service_model_id) 
-       references micro_service_models (name);
+       add constraint FKqvvdypacbww07fuv8xvlvdjgl 
+       foreign key (loop_element_model_id) 
+       references loop_element_models (name);
+
+    alter table operational_policies 
+       add constraint FKi9kh7my40737xeuaye9xwbnko 
+       foreign key (loop_element_model_id) 
+       references loop_element_models (name);
 
     alter table operational_policies 
        add constraint FK1ddoggk9ni2bnqighv6ecmuwu 
@@ -205,13 +225,3 @@
        add constraint FKlsyhfkoqvkwj78ofepxhoctip 
        foreign key (policy_model_type, policy_model_version) 
        references policy_models (policy_model_type, version);
-
-    alter table templates_microservicemodels 
-       add constraint FKq2gqg5q9jrkx8voosn7x5plqo 
-       foreign key (loop_template_name) 
-       references loop_templates (name);
-
-    alter table templates_microservicemodels 
-       add constraint FKphn3m81suxavmj9c4u06cchju 
-       foreign key (micro_service_model_name) 
-       references micro_service_models (name);
