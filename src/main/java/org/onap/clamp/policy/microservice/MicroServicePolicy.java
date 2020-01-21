@@ -55,7 +55,7 @@ import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 import org.onap.clamp.loop.Loop;
 import org.onap.clamp.loop.common.AuditEntity;
-import org.onap.clamp.loop.template.MicroServiceModel;
+import org.onap.clamp.loop.template.LoopElementModel;
 import org.onap.clamp.policy.Policy;
 import org.yaml.snakeyaml.Yaml;
 
@@ -110,8 +110,8 @@ public class MicroServicePolicy extends AuditEntity implements Serializable, Pol
 
     @Expose
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "micro_service_model_id")
-    private MicroServiceModel microServiceModel;
+    @JoinColumn(name = "loop_element_model_id")
+    private LoopElementModel loopElementModel;
 
     @Expose
     @Column(name = "dcae_deployment_id")
@@ -245,21 +245,21 @@ public class MicroServicePolicy extends AuditEntity implements Serializable, Pol
     }
 
     /**
-     * microServiceModel getter.
+     * loopElementModel getter.
      * 
-     * @return the microServiceModel
+     * @return the loopElementModel
      */
-    public MicroServiceModel getMicroServiceModel() {
-        return microServiceModel;
+    public LoopElementModel getLoopElementModel() {
+        return loopElementModel;
     }
 
     /**
-     * microServiceModel setter.
+     * loopElementModel setter.
      * 
-     * @param microServiceModel the microServiceModel to set
+     * @param loopElementModel the loopElementModel to set
      */
-    public void setMicroServiceModel(MicroServiceModel microServiceModel) {
-        this.microServiceModel = microServiceModel;
+    public void setLoopElementModel(LoopElementModel loopElementModel) {
+        this.loopElementModel = loopElementModel;
     }
 
     /**
