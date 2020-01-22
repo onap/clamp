@@ -655,5 +655,67 @@
 				</doTry>
 			</route>
 		</get>
+		<get
+			uri="/v2/loopTemplates"
+			outType="org.onap.clamp.loop.template.LoopTemplate"
+			produces="application/json">
+			<route>
+				<removeHeaders pattern="*" />
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET ALL Templates')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'cl','','read')" />
+					<to
+						uri="bean:org.onap.clamp.loop.service.LoopTemplateService?method=getAllLoopTemplates" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>false</constant>
+						</handled>
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+						<log
+							loggingLevel="ERROR"
+							message="Status request failed for getAllLoopTemplates" />
+						<to
+							uri="bean:org.onap.clamp.loop.log.LoopLogService?method=addLog('Status request failed, Error reported: ${exception} - Body: ${exception.responseBody}','ERROR','')" />
+					</doCatch>
+				</doTry>
+			</route>
+		</get>
+		<get
+			uri="/v2/loopTemplate/getAllNames"
+			outType="java.lang.String[]"
+			produces="application/json">
+			<route>
+				<removeHeaders pattern="*" />
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET ALL Templates')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'cl','','read')" />
+					<to
+						uri="bean:org.onap.clamp.loop.service.LoopTemplateService?method=getLoopTemplateNames" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>false</constant>
+						</handled>
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+						<log
+							loggingLevel="ERROR"
+							message="Status request failed for getLoopTemplateNames" />
+						<to
+							uri="bean:org.onap.clamp.loop.log.LoopLogService?method=addLog('Status request failed, Error reported: ${exception} - Body: ${exception.responseBody}','ERROR','')" />
+					</doCatch>
+				</doTry>
+			</route>
+		</get>
 	</rest>
 </rests>
