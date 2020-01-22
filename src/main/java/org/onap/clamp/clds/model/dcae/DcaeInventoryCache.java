@@ -38,6 +38,23 @@ public class DcaeInventoryCache {
 
     private Map<String, Set<DcaeInventoryResponse>> blueprintsMap = new ConcurrentHashMap<>();
 
+    private static DcaeInventoryCache dcaeInventoryCache = null;
+
+    private DcaeInventoryCache() {
+    }
+
+    /**
+     * Returns instance of DcaeInventoryCache.
+     *
+     * @return instance of DcaeInventoryCache
+     */
+    public static DcaeInventoryCache getInstance() {
+        if (dcaeInventoryCache == null) {
+            dcaeInventoryCache = new DcaeInventoryCache();
+        }
+        return dcaeInventoryCache;
+    }
+
     /**
      * Add Dcae inventory response.
      * 
