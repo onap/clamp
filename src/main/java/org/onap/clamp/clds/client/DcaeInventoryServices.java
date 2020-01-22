@@ -29,6 +29,7 @@ import com.att.eelf.configuration.EELFManager;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
@@ -38,6 +39,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.onap.clamp.clds.config.ClampProperties;
+import org.onap.clamp.clds.model.dcae.DcaeInventoryCache;
 import org.onap.clamp.clds.model.dcae.DcaeInventoryResponse;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.LoggingUtils;
@@ -137,5 +139,21 @@ public class DcaeInventoryServices {
         }
         logger.warn("Dcae inventory totalCount returned is still 0, after " + retryLimit + " attempts, returning NULL");
         return null;
+    }
+
+    /**
+     * Updates DCAE inventory cache with dcae inventory response.
+     *
+     * @param dcaeResponse dcae response list
+     */
+    public void updateDcaeInventoryCache(List<DcaeInventoryResponse> dcaeResponse)  {
+        if (dcaeResponse == null || dcaeResponse.isEmpty()) {
+            return;
+        }
+
+        DcaeInventoryCache cache = DcaeInventoryCache.getInstance();
+        for (DcaeInventoryResponse response : dcaeResponse) {
+            cache.addDcaeInventoryResponse(response);
+        }
     }
 }
