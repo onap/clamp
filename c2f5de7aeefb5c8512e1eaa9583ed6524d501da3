@@ -46,6 +46,30 @@
       "revId": "c2f5de7aeefb5c8512e1eaa9583ed6524d501da3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6305f169_bbb94d7b",
+        "filename": "src/main/resources/clds/camel/routes/policy-flows.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-01-23T12:14:49Z",
+      "side": 1,
+      "message": "Sorry, just noticed, indeed the uri defined below is missing deployed in the url. I will correct it in another PR.",
+      "parentUuid": "e2af2876_36e4a904",
+      "range": {
+        "startLine": 101,
+        "startChar": 40,
+        "endLine": 101,
+        "endChar": 64
+      },
+      "revId": "c2f5de7aeefb5c8512e1eaa9583ed6524d501da3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
