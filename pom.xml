@@ -94,8 +94,8 @@
 		<!-- <sonar.language>java</sonar.language> -->
 		<!-- Parameters for Javascript coverage -->
 		<sonar.sources>src/main,${project.build.directory}/${ui.react.src}/src</sonar.sources>
+		<sonar.scm.exclusions.disabled>true</sonar.scm.exclusions.disabled>
 		<sonar.javascript.lcov.reportPaths>${project.build.directory}/${ui.react.src}/coverage/lcov.info</sonar.javascript.lcov.reportPaths>
-
 		<sonar.exclusions>src/main/resources/**</sonar.exclusions>
 		<sonar.coverage.exclusions>src/main/resources/**,target/ui-react/src/**/*.test.js,target/ui-react/src/setupTests.js,src/main/docker/kibana/*.py</sonar.coverage.exclusions>
 		<docker.push.registry>localhost:5000</docker.push.registry>
