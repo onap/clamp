@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.onap.clamp.exception.ObjectNotExistException;
 import org.onap.clamp.loop.Loop;
 import org.onap.clamp.policy.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,5 +79,25 @@ public class MicroServicePolicyService implements PolicyService<MicroServicePoli
             oldPolicy.getUsedByLoops().add(loop);
         }
         return oldPolicy;
+    }
+
+    /**
+     * Update the MicroService policy deployment related parameters.
+     *
+     * @param microServicePolicy The micro service policy
+     * @param deploymentId       The deployment ID as returned by DCAE
+     * @param deploymentUrl      The Deployment URL as returned by DCAE
+     * @throws MicroServicePolicy doesn't exist in DB
+     */
+    public void updateDcaeDeploymentFields(MicroServicePolicy microServicePolicy, String deploymentId,
+            String deploymentUrl) {
+        if (repository.existsById(microServicePolicy.getName())) {
+            microServicePolicy.setDcaeDeploymentId(deploymentId);
+            microServicePolicy.setDcaeDeploymentStatusUrl(deploymentUrl);
+            repository.save(microServicePolicy);
+        } else {
+            throw new ObjectNotExistException("MicroServicePolicy:" + microServicePolicy.getName()
+                + " doesn't exist in DB");
+        }
     }
 }
