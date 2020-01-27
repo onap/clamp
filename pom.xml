@@ -104,6 +104,7 @@
 		<python.http.proxy.param />
 		<tomcat.version>9.0.27</tomcat.version>
 		<ui.react.src>ui-react</ui.react.src>
+        <ui.react.lib.src>ui-react-lib</ui.react.lib.src>
 		<npm.publish.url>https://nexus3.onap.org/repository/npm.release/</npm.publish.url>
 	</properties>
 
@@ -607,6 +608,9 @@
 			</resource>
 			<resource>
 				<directory>${ui.react.src}</directory>
+                <excludes>
+                    <exclude>node_modules</exclude>
+                </excludes>
 				<includes>
 					<include>src/**</include>
 					<include>public/**</include>
@@ -616,6 +620,30 @@
 				<filtering>true</filtering>
 				<targetPath>${project.build.directory}/${ui.react.src}</targetPath>
 			</resource>
+            <resource>
+                <directory>${ui.react.src}</directory>
+                <includes>
+                    <include>src/**</include>
+                </includes>
+                <excludes>
+                    <exclude>**/__snapshots__/**</exclude>
+                    <exclude>**/**.test.js</exclude>
+                </excludes>
+                <filtering>true</filtering>
+                <targetPath>${project.build.directory}/${ui.react.lib.src}</targetPath>
+            </resource>
+            <resource>
+                <directory>${ui.react.lib.src}</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <excludes>
+                    <exclude>node_modules/**</exclude>
+                    <exclude>package-lock.json</exclude>
+                </excludes>
+                <filtering>true</filtering>
+                <targetPath>${project.build.directory}/${ui.react.lib.src}</targetPath>
+            </resource>
 		</resources>
 
 		<plugins>
@@ -1153,7 +1181,6 @@
 				<version>1.8.0</version>
 				<configuration>
 					<installDirectory>${project.build.directory}/${ui.react.src}</installDirectory>
-					<workingDirectory>${project.build.directory}/${ui.react.src}</workingDirectory>
 				</configuration>
 				<executions>
 					<execution>
@@ -1174,6 +1201,7 @@
 						</goals>
 						<phase>compile</phase>
 						<configuration>
+                            <workingDirectory>${project.build.directory}/${ui.react.src}</workingDirectory>
 							<arguments>install</arguments>
 						</configuration>
 					</execution>
@@ -1185,8 +1213,31 @@
 						<phase>test</phase>
 						<configuration>
 							<arguments>run-script test:coverage</arguments>
+                            <workingDirectory>${project.build.directory}/${ui.react.src}</workingDirectory>
 						</configuration>
 					</execution>
+                    <execution>
+                        <id>npm_install_lib</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <workingDirectory>${project.build.directory}/${ui.react.lib.src}</workingDirectory>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm_build_lib</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <workingDirectory>${project.build.directory}/${ui.react.lib.src}</workingDirectory>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
 					<execution>
 						<id>npm_publish</id>
 						<goals>
@@ -1194,6 +1245,7 @@
 						</goals>
 						<phase>deploy</phase>
 						<configuration>
+                            <workingDirectory>${project.build.directory}/${ui.react.lib.src}</workingDirectory>
 							<arguments>publish</arguments>
 						</configuration>
 					</execution>
