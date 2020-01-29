@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c41ad7fd_1b60afe1",
+        "filename": "src/main/java/org/onap/clamp/policy/microservice/MicroServicePolicyService.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-01-29T09:25:00Z",
+      "side": 1,
+      "message": "Not sure why we want an exception only for that case ?\nYou can remove that, let the system throw the right exception. Never absorb an exception.\nYou can also remove that new exception",
+      "revId": "c7309fec88a9aec6f21ed2c4fb6c00fc1085ddeb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
