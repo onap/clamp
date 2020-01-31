@@ -29,17 +29,32 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.onap.clamp.tosca.DictionaryElement;
+import org.onap.clamp.tosca.DictionaryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * Tosca Model Yaml parser and convertor to JSON Schema consumable for JSON
  * Editor.
  *
  */
+@Component
 public class ToscaYamlToJsonConvertor {
+    
+    @Autowired
+    private DictionaryService dictionaryService;
 
     private int simpleTypeOrder = 1000;
     private int complexTypeOrder = 10000;
@@ -56,6 +71,45 @@ public class ToscaYamlToJsonConvertor {
     private int incrementComplexSimpleTypeOrder() {
         complexSimpleTypeOrder++;
         return complexTypeOrder + complexSimpleTypeOrder;
+    }
+    
+    /**
+     * Parses Tosca YAML string and Converts to JsonObject
+     *
+     * @param yamlString     YAML string
+     * @return JsonObject
+     */
+    public JsonObject ValidateAndConvertToJson(String yamlString) {
+
+        Yaml yaml = new Yaml();
+        LinkedHashMap<String, Object> loadedYaml = yaml.load(yamlString);
+        if (loadedYaml == null) {
+            return null;
+        }
+        
+        JSONObject jsonObject = new JSONObject(loadedYaml);
+        return new Gson().fromJson(jsonObject.toString(), JsonObject.class);
+    }
+    
+    
+    
+    public String getValueFromMetadata(JsonObject obj, String key) {
+        JsonElement jsonElement = obj.get(ToscaSchemaConstants.NODE_TYPES);
+        if (jsonElement.isJsonObject()) {
+            Iterator<Entry<String, JsonElement>> itr = jsonElement.getAsJsonObject().entrySet().iterator();
+            while (itr.hasNext()) {
+                Entry<String, JsonElement> entry = itr.next();
+                if (entry.getValue() != null && entry.getValue().isJsonObject()
+                        && entry.getValue().getAsJsonObject().has(ToscaSchemaConstants.METADATA)) {
+                    JsonObject metadatas =
+                            entry.getValue().getAsJsonObject().get(ToscaSchemaConstants.METADATA).getAsJsonObject();
+                    if (metadatas.has(key)) {
+                        return metadatas.get(key).getAsString();
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -463,9 +517,119 @@ public class ToscaYamlToJsonConvertor {
             });
         }
     }
+    
+    private void parseMetadataPossibleValues(LinkedHashMap<String, Object> childNodeMap, JSONObject childObject) {
+        if (childNodeMap.containsKey(ToscaSchemaConstants.METADATA)
+                && childNodeMap.get(ToscaSchemaConstants.METADATA) != null) {
+            List<LinkedHashMap<String, Object>> constraintsList = (List<LinkedHashMap<String, Object>>) childNodeMap
+                    .get(ToscaSchemaConstants.CONSTRAINTS);
+            constraintsList.stream().forEach(c -> {
+                if (c instanceof Map) {
+                    c.entrySet().stream().forEach(constraint -> {
+                        if (constraint.getKey().equalsIgnoreCase(ToscaSchemaConstants.METADATA_CLAMP_POSSIBLE_VALUES)) {
+                            JSONArray validValuesArray = new JSONArray();
+
+                            if (constraint.getValue() instanceof ArrayList<?>) {
+                                boolean processDictionary = ((ArrayList<?>) constraint.getValue()).stream()
+                                        .anyMatch(value -> (value instanceof String
+                                                && ((String) value).contains(ToscaSchemaConstants.DICTIONARY)));
+                                if (!processDictionary) {
+                                    ((ArrayList<?>) constraint.getValue()).stream().forEach(value -> {
+                                        validValuesArray.put(value);
+                                    });
+                                    childObject.put(JsonEditorSchemaConstants.ENUM, validValuesArray);
+                                } else {
+                                    ((ArrayList<?>) constraint.getValue()).stream().forEach(value -> {
+                                        if ((value instanceof String
+                                                && ((String) value).contains(ToscaSchemaConstants.DICTIONARY))) {
+                                            processDictionaryElements(childObject, (String) value);
+                                        }
+
+                                    });
+
+                                }
+                            }
+
+                        }
+                    });
+                }
+            });
+        }
+    }
 
     private void processDictionaryElements(JSONObject childObject, String dictionaryReference) {
+        if (dictionaryReference.contains("#")) {
+            String[] dictionaryKeyArray = dictionaryReference
+                .substring(dictionaryReference.indexOf(ToscaSchemaConstants.DICTIONARY) + 11,
+                    dictionaryReference.length())
+                .split("#");
+            // We support only one # as of now.
+            List<DictionaryElement> cldsDictionaryElements = null;
+            List<DictionaryElement> subDictionaryElements = null;
+            if (dictionaryKeyArray != null && dictionaryKeyArray.length == 2) {
+                cldsDictionaryElements = dictionaryService.getDictionary(dictionaryKeyArray[0]).getDictionaryElements().stream().collect(Collectors.toList());
+                subDictionaryElements = dictionaryService.getDictionary(dictionaryKeyArray[1]).getDictionaryElements().stream().collect(Collectors.toList());
 
+                if (cldsDictionaryElements != null) {
+                    List<String> subCldsDictionaryNames = subDictionaryElements.stream()
+                        .map(DictionaryElement::getShortName).collect(Collectors.toList());
+                    JSONArray jsonArray = new JSONArray();
+
+                    Optional.ofNullable(cldsDictionaryElements).get().stream().forEach(c -> {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put(JsonEditorSchemaConstants.TYPE, getJsonType(c.getType()));
+                        if (c.getType() != null &&
+                                c.getType().equalsIgnoreCase(ToscaSchemaConstants.TYPE_STRING)) {
+                                jsonObject.put(JsonEditorSchemaConstants.MIN_LENGTH, 1);
+                                
+                        }
+                        jsonObject.put(JsonEditorSchemaConstants.ID, c.getName());
+                        jsonObject.put(JsonEditorSchemaConstants.LABEL, c.getShortName());
+                        jsonObject.put(JsonEditorSchemaConstants.OPERATORS, subCldsDictionaryNames);
+                        jsonArray.put(jsonObject); }); ; JSONObject filterObject = new JSONObject();
+                        filterObject.put(JsonEditorSchemaConstants.FILTERS, jsonArray);
+
+                        childObject.put(JsonEditorSchemaConstants.TYPE,
+                                JsonEditorSchemaConstants.TYPE_QBLDR);
+                        // TO invoke validation on such parameters
+                        childObject.put(JsonEditorSchemaConstants.MIN_LENGTH, 1);
+                        childObject.put(JsonEditorSchemaConstants.QSSCHEMA, filterObject);
+
+                }
+            }
+        } else {
+            String dictionaryKey = dictionaryReference.substring(
+                    dictionaryReference.indexOf(ToscaSchemaConstants.DICTIONARY) + 11,
+                    dictionaryReference.length());
+            if (dictionaryKey != null) {
+                List<DictionaryElement> cldsDictionaryElements =
+                        dictionaryService.getDictionary(dictionaryKey).getDictionaryElements().stream().collect(Collectors.toList());
+                if (cldsDictionaryElements != null) {
+                    List<String> cldsDictionaryNames = new
+                            ArrayList<>(); List<String> cldsDictionaryFullNames = new ArrayList<>();
+                            cldsDictionaryElements.stream().forEach(c -> {
+                                // Json type will be translated before Policy creation
+                                if (c.getType() != null &&
+                                        !c.getType().equalsIgnoreCase("json")) {
+                                    cldsDictionaryFullNames.add(c.getName());
+                                }
+                                cldsDictionaryNames.add(c.getShortName());
+                            });
+
+                            if (!cldsDictionaryFullNames.isEmpty()) {
+                                childObject.put(JsonEditorSchemaConstants.ENUM, cldsDictionaryFullNames);
+                                // Add Enum titles for generated translated values during JSON instance
+                                // generation
+                                JSONObject enumTitles = new JSONObject();
+                                enumTitles.put(JsonEditorSchemaConstants.ENUM_TITLES, cldsDictionaryNames);
+                                childObject.put(JsonEditorSchemaConstants.OPTIONS, enumTitles);
+                            } else {
+                                childObject.put(JsonEditorSchemaConstants.ENUM, cldsDictionaryNames);
+                            }
+
+                }
+            }
+        }
     }
 
     private String getJsonType(String toscaType) {
