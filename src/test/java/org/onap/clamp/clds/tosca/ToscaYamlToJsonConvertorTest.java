@@ -25,12 +25,15 @@
 package org.onap.clamp.clds.tosca;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 
 import org.junit.Test;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.skyscreamer.jsonassert.JSONAssert;
+
+import com.google.gson.JsonObject;
 
 public class ToscaYamlToJsonConvertorTest {
 
@@ -87,5 +90,28 @@ public class ToscaYamlToJsonConvertorTest {
         assertNotNull(parsedJsonSchema);
         JSONAssert.assertEquals(ResourceFileUtil.getResourceAsString("tosca/policy-yaml-to-json-with-datatypes.json"),
                 parsedJsonSchema, true);
+    }
+    
+    /**
+     * This Test validates Tosca yaml with metadata tag that contains policy_model_type and acronym parameters which
+     * defines the Tosca Policy name and its short name
+     * 
+     * @throws IOException In case of issue when opening the tosca yaml file and
+     *         converted json file
+     */
+    @Test
+    public final void testParseToscaYamlWithMetadata() throws IOException {
+        String toscaModelYaml =
+                ResourceFileUtil.getResourceAsString("tosca/tosca_with_metadata_policy_model_type.yaml");
+        ToscaYamlToJsonConvertor convertor = new ToscaYamlToJsonConvertor();
+
+        JsonObject jsonObject = convertor.ValidateAndConvertToJson(toscaModelYaml);
+        assertNotNull(jsonObject);
+        String policyModelType =
+                convertor.getValueFromMetadata(jsonObject, ToscaSchemaConstants.METADATA_POLICY_MODEL_TYPE);
+        String acronym = convertor.getValueFromMetadata(jsonObject, ToscaSchemaConstants.METADATA_ACRONYM);
+
+        assertEquals("onap.policies.monitoring.cdap.tca.hi.lo.app", policyModelType);
+        assertEquals("tca", acronym);
     }
 }

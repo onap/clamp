@@ -70,7 +70,7 @@ public class LoopElementModel extends AuditEntity implements Serializable {
     /**
      * Here we store the blueprint coming from DCAE.
      */
-    @Column(columnDefinition = "MEDIUMTEXT", nullable = false, name = "blueprint_yaml")
+    @Column(columnDefinition = "MEDIUMTEXT", name = "blueprint_yaml")
     private String blueprint;
 
     /**
@@ -78,6 +78,14 @@ public class LoopElementModel extends AuditEntity implements Serializable {
      */
     @Column(nullable = false, name = "loop_element_type")
     private String loopElementType;
+    
+    /**
+     * This variable is used to display the micro-service name in the SVG
+     */
+    @Expose
+    @Column(name = "short_name")
+    private String shortName;
+
 
     /**
      * This variable is used to store the type mentioned in the micro-service
@@ -184,6 +192,21 @@ public class LoopElementModel extends AuditEntity implements Serializable {
      */
     public void setLoopElementType(String loopElementType) {
         this.loopElementType = loopElementType;
+    }
+    
+    /**
+     * shortName getter
+     * @return the shortName
+     */
+    public String getShortName() {
+        return shortName;
+    }
+
+    /**
+     * @param shortName the shortName to set
+     */
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     /**
