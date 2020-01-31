@@ -87,6 +87,13 @@ public class LoopTemplate extends AuditEntity implements Serializable {
     @Expose
     @Column(name = "maximum_instances_allowed")
     private Integer maximumInstancesAllowed;
+    
+    /**
+     * Type of Loop allowed to be created
+     */
+    @Expose
+    @Column(name = "allowed_loop_type")
+    private String allowedLoopType;
 
     /**
      * name getter.
@@ -187,6 +194,25 @@ public class LoopTemplate extends AuditEntity implements Serializable {
         this.maximumInstancesAllowed = maximumInstancesAllowed;
     }
 
+
+    /**
+     * allowedLoopType getter
+     * 
+     * @return the allowedLoopType Type of Loop allowed to be created
+     */
+    public String getAllowedLoopType() {
+        return allowedLoopType;
+    }
+
+    /**
+     * allowedLoopType setter
+     * 
+     * @param allowedLoopType the allowedLoopType to set
+     */
+    public void setAllowedLoopType(String allowedLoopType) {
+        this.allowedLoopType = allowedLoopType;
+    }
+    
     /**
      * Add list of loopElements to the current template, each loopElementModel is
      * added at the end of the list so the flowOrder is computed automatically.

@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2019 AT&T Intellectual Property. All rights
+ * Copyright (C) 2020 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,21 +23,23 @@
 
 package org.onap.clamp.tosca;
 
-import com.google.gson.annotations.Expose;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.onap.clamp.loop.common.AuditEntity;
+
+import com.google.gson.annotations.Expose;
 
 /**
  * Represents Dictionary.
@@ -59,15 +61,20 @@ public class Dictionary extends AuditEntity implements Serializable {
 
     @Expose
     @Column(name = "dictionary_second_level")
-    private int secondLevelDictionary;
+    private int secondLevelDictionary = 0;
 
     @Expose
     @Column(name = "dictionary_type")
     private String subDictionaryType;
 
     @Expose
-    @OneToMany(mappedBy = "dictionary", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<DictionaryElement> dictionaryElements = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "dictionary_to_dictionaryelements",
+            joinColumns = @JoinColumn(name = "dictionary_name", referencedColumnName = "name"),
+            inverseJoinColumns = {
+                    @JoinColumn(name = "dictionary_element_short_name", referencedColumnName = "short_name")})
+    private Set<DictionaryElement> dictionaryElements = new HashSet<>();
 
     /**
      * name getter.
@@ -128,17 +135,28 @@ public class Dictionary extends AuditEntity implements Serializable {
      * 
      * @return the dictionaryElements
      */
-    public List<DictionaryElement> getDictionaryElements() {
+    public Set<DictionaryElement> getDictionaryElements() {
         return dictionaryElements;
     }
 
     /**
-     * dictionaryElements setter.
+     * Method to add a new dictionaryElement to the list.
      * 
-     * @param dictionaryElements the dictionaryElements to set
+     * @param dictionaryElement
      */
-    public void setDictionaryElements(List<DictionaryElement> dictionaryElements) {
-        this.dictionaryElements = dictionaryElements;
+    public void addDictionaryElements(DictionaryElement dictionaryElement) {
+        dictionaryElements.add(dictionaryElement);
+        dictionaryElement.getUsedByDictionaries().add(this);
+    }
+
+    /**
+     * Method to delete a dictionaryElement from the list.
+     * 
+     * @param dictionaryElement
+     */
+    public void removeDictionaryElement(DictionaryElement dictionaryElement) {
+        dictionaryElements.remove(dictionaryElement);
+        dictionaryElement.getUsedByDictionaries().remove(this);
     }
 
     @Override
