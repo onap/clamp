@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2019 AT&T Intellectual Property. All rights
+ * Copyright (C) 2020 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,22 +23,54 @@
 
 package org.onap.clamp.loop.template;
 
+import com.google.gson.JsonObject;
 import java.util.List;
-
+import org.onap.clamp.clds.tosca.ToscaSchemaConstants;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
+import org.onap.clamp.util.SemanticVersioning;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PolicyModelsService {
     private final PolicyModelsRepository policyModelsRepository;
+    private ToscaYamlToJsonConvertor toscaYamlToJsonConvertor;
 
     @Autowired
-    public PolicyModelsService(PolicyModelsRepository policyModelrepo) {
+    public PolicyModelsService(PolicyModelsRepository policyModelrepo,
+        ToscaYamlToJsonConvertor convertor) {
         policyModelsRepository = policyModelrepo;
+        toscaYamlToJsonConvertor = convertor;
     }
 
     public PolicyModel saveOrUpdatePolicyModel(PolicyModel policyModel) {
         return policyModelsRepository.save(policyModel);
+    }
+
+    /**
+     * Creates or updates the Tosca Policy Model.
+     *
+     * @param policyModelType
+     *        The policyModeltype in Tosca yaml
+     * @param policyModel
+     *        The Policymodel object
+     * @return The Policy Model
+     */
+    public PolicyModel saveOrUpdateByPolicyModelType(String policyModelType,
+        PolicyModel policyModel) {
+        JsonObject jsonObject =
+            toscaYamlToJsonConvertor.validateAndConvertToJson(policyModel.getPolicyModelTosca());
+
+        String policyModelTypeName = toscaYamlToJsonConvertor.getValueFromMetadata(jsonObject,
+            ToscaSchemaConstants.METADATA_POLICY_MODEL_TYPE);
+        String acronym = toscaYamlToJsonConvertor.getValueFromMetadata(jsonObject,
+            ToscaSchemaConstants.METADATA_ACRONYM);
+        PolicyModel model = getPolicyModelByType(policyModelType);
+        policyModel.setVersion(
+            SemanticVersioning.incrementMajorVersion(model != null ? model.getVersion() : null));
+        policyModel.setPolicyModelType(policyModelTypeName);
+        policyModel.setPolicyAcronym(acronym);
+        return saveOrUpdatePolicyModel(policyModel);
     }
 
     public List<String> getAllPolicyModelTypes() {
@@ -55,5 +87,10 @@ public class PolicyModelsService {
 
     public Iterable<PolicyModel> getAllPolicyModelsByType(String type) {
         return policyModelsRepository.findByPolicyModelType(type);
+    }
+
+    public PolicyModel getPolicyModelByType(String type) {
+        List<PolicyModel> list = policyModelsRepository.findByPolicyModelType(type);
+        return list.stream().sorted().findFirst().orElse(null);
     }
 }

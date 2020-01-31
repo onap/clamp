@@ -38,6 +38,38 @@ export default class TemplateMenuService {
       });
   }
 
+  static uploadToscaPolicyModal(policyModelType, jsonData) {
+    var svcRequest = {
+      policyModelType: policyModelType,
+      policyModelTosca: jsonData
+    };
+    return fetch('/restservices/clds/v2/loop/tosca/models/' + policyModelType, {
+        method: 'PUT',
+        credentials: 'same-origin',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(svcRequest)
+      })
+      .then(function(response) {
+        console.debug("uploadToscaPolicyModal response received: ", response.status);
+        if (response.ok) {
+          var message = {
+            status: response.status,
+            message: 'Tosca Policy Model successfully uploaded'
+          };
+          return message;
+        } else {
+          console.error("uploadToscaModel failed");
+          return response.text();
+        }
+      })
+      .catch(function(error) {
+        console.error("uploadToscaModal error received", error);
+        return "";
+      });
+  }
+
   static getBlueprintMicroServiceTemplates() {
     return fetch('restservices/clds/v2/loop/templates', { method: 'GET', credentials: 'same-origin', })
       .then(function (response) {

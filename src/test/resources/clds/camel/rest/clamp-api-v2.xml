@@ -238,6 +238,48 @@
 			</route>
 		</put>
 		<put
+			uri="/v2/loop/refreshOpPolicyJsonSchema/{loopName}"
+			outType="org.onap.clamp.loop.Loop"
+			produces="application/json">
+			<route>
+				<removeHeaders
+					pattern="*"
+					excludePattern="loopName" />
+				<doTry>
+					<log
+						loggingLevel="INFO"
+						message="Refresh Operational Policy UI for loop: ${header.loopName}" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'REFRESH OP Policy UI request')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'cl','','update')" />
+					<to uri="direct:load-loop" />
+					<to
+						uri="bean:org.onap.clamp.loop.LoopController?method=refreshOpPolicyJsonRepresentation(${header.loopName})" />
+					<log
+						loggingLevel="INFO"
+						message="REFRESH request successfully executed for loop: ${header.loopName}" />
+					<to
+						uri="bean:org.onap.clamp.loop.log.LoopLogService?method=addLog('REFRESH request successfully executed','INFO',${exchangeProperty[loopObject]})" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>false</constant>
+						</handled>
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+						<log
+							loggingLevel="ERROR"
+							message="REFRESH request failed for loop: ${header.loopName}" />
+						<to
+							uri="bean:org.onap.clamp.loop.log.LoopLogService?method=addLog('REFRESH request failed, Error reported: ${exception} - Body: ${exception.responseBody}','ERROR',${exchangeProperty[loopObject]})" />
+					</doCatch>
+				</doTry>
+			</route>
+		</put>
+		<put
 			uri="/v2/loop/undeploy/{loopName}"
 			outType="org.onap.clamp.loop.Loop"
 			produces="application/json">
@@ -610,6 +652,341 @@
 							<simple>${exchangeProperty[loopObject]}</simple>
 						</setBody>
 					</doFinally>
+				</doTry>
+			</route>
+		</get>
+		<get uri="/v2/loop/dictionary" outType="org.onap.clamp.tosca.Dictionary" produces="application/json">							
+			<route>
+				<removeHeaders pattern="*" />
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET ALL Dictionaries')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','read')" />
+					<to
+						uri="bean:org.onap.clamp.tosca.DictionaryService?method=getAllDictionaries()" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>false</constant>
+						</handled>
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+					</doCatch>
+				</doTry>
+			</route>						 
+		</get>			
+		<get uri="/v2/loop/dictionary/{dictionaryName}" outType="org.onap.clamp.tosca.Dictionary" produces="application/json">						
+			<route>
+				<removeHeaders pattern="*" 
+				excludePattern="dictionaryName"/>
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET ALL Dictionary Elements')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','read')" />
+					<to
+						uri="bean:org.onap.clamp.tosca.DictionaryService?method=getDictionary(${header.dictionaryName})" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>false</constant>
+						</handled>
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+					</doCatch>
+				</doTry>
+			</route>
+		</get>
+		 <put uri="/v2/loop/dictionary" type="org.onap.clamp.tosca.Dictionary" outType="org.onap.clamp.tosca.Dictionary" consumes="application/json" produces="application/json"> 
+		   <route> 		       
+		      <doTry> 
+					<to 
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'Add New or Update Dictionary')" /> 
+					<to 
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','update')" />
+					<setProperty propertyName="DictionaryObject">
+					   <simple>${body}</simple>
+					</setProperty> 
+					<to 
+				        uri="bean:org.onap.clamp.tosca.DictionaryService?method=saveOrUpdateDictionary(${exchangeProperty[DictionaryObject]})" /> 
+				    <to 
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" /> 
+					<doCatch> 
+						<exception>java.lang.Exception</exception> 
+						<handled> 
+							<constant>false</constant> 
+						</handled> 
+						<to 
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" /> 
+					</doCatch> 
+				</doTry> 
+		   </route> 
+		</put>
+		
+		 <put uri="/v2/loop/dictionary/{name}" type="org.onap.clamp.tosca.Dictionary" outType="org.onap.clamp.tosca.Dictionary" consumes="application/json" produces="application/json"> 
+		   <route>
+		   	<removeHeaders pattern="*" 
+		      excludePattern="name" /> 	       
+		      <doTry> 
+					<to 
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'Add New or Update Dictionary Element')" /> 
+					<to 
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','update')" />
+					<setProperty propertyName="DictionaryObject">
+					   <simple>${body}</simple>
+					</setProperty> 
+					<to 
+				        uri="bean:org.onap.clamp.tosca.DictionaryService?method=saveOrUpdateDictionaryElement(${header.name}, ${exchangeProperty[DictionaryObject]})" /> 
+				    <to 
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" /> 
+					<doCatch> 
+						<exception>java.lang.Exception</exception> 
+						<handled> 
+							<constant>false</constant> 
+						</handled> 
+						<to 
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" /> 
+					</doCatch> 
+				</doTry> 
+		   </route> 
+		</put>
+			
+		<delete uri="/v2/loop/dictionary/{name}" produces="application/json">
+		  <route> 
+		      <removeHeaders pattern="*" 
+		      excludePattern="name" /> 
+		      <doTry> 
+					<to 
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'Delete Dictionary')" /> 
+					<to 
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','update')" />
+					<to 
+				        uri="bean:org.onap.clamp.tosca.DictionaryService?method=deleteDictionary(${header.name})" /> 
+				    <to 
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" /> 
+					<doCatch> 
+						<exception>java.lang.Exception</exception> 
+						<handled> 
+							<constant>false</constant> 
+						</handled> 
+						<to 
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" /> 
+					</doCatch> 
+				</doTry> 
+		   </route>
+	    </delete>
+	    
+		<delete uri="/v2/loop/dictionary/{name}/elements/{shortName}" produces="application/json">
+		  <route> 
+		      <removeHeaders pattern="*" 
+		      excludePattern="name|shortName" /> 
+		      <doTry> 
+					<to 
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'Delete Dictionary')" /> 
+					<to 
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','update')" />
+					<to 
+				        uri="bean:org.onap.clamp.tosca.DictionaryService?method=deleteDictionaryElement(${header.name}, ${header.shortName})" /> 
+				    <to 
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" /> 
+					<doCatch> 
+						<exception>java.lang.Exception</exception> 
+						<handled> 
+							<constant>false</constant> 
+						</handled> 
+						<to 
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" /> 
+					</doCatch> 
+				</doTry> 
+		   </route>
+	    </delete>
+		
+	    <get uri="/v2/loop/tosca/models" outType="org.onap.clamp.loop.template.PolicyModel" produces="application/json">			
+			<route>
+				<removeHeaders pattern="*" />
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET ALL Tosca Policy Models')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','read')" />
+					<to
+						uri="bean:org.onap.clamp.loop.template.PolicyModelsService?method=getAllPolicyModels()" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>true</constant>
+						</handled>
+						<setHeader headerName="CamelHttpResponseCode">
+							<constant>500</constant>
+						</setHeader>
+						<transform>
+							<simple>ERROR: ${exception.message}</simple>
+						</transform> 
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+					</doCatch>
+				</doTry>
+			</route>	 
+		</get>
+		<get uri="/v2/loop/tosca/models/{policyModelType}" outType="org.onap.clamp.loop.template.PolicyModel" produces="application/json">						
+			 <route>
+				<removeHeaders pattern="*"
+				excludePattern="policyModelType" />
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET Tosca Policy Model by Name')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','read')" />                    					
+					<to
+						uri="bean:org.onap.clamp.loop.template.PolicyModelsService?method=getPolicyModelByType(${header.policyModelType})" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />																
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>true</constant>
+						</handled>
+						<setHeader headerName="CamelHttpResponseCode">
+							<constant>500</constant>
+						</setHeader>
+						<transform>
+							<simple>ERROR: ${exception.message}</simple>
+						</transform> 
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+					</doCatch>
+				</doTry>
+			</route>
+		</get>
+		<put uri="/v2/loop/tosca/models/{policyModelType}" type="org.onap.clamp.loop.template.PolicyModel" outType="org.onap.clamp.loop.template.PolicyModel" consumes="application/json" produces="application/json"> 
+		   <route> 
+		      <removeHeaders pattern="*" 
+		      excludePattern="policyModelType" /> 
+		      <doTry> 
+					<to 
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'Upload New or Update Tosca Policy Model')" /> 
+					<to 
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','update')" />										
+					<setProperty propertyName="PolicyModelObject">
+						<simple>${body}</simple>
+					</setProperty>					
+					<to 
+				        uri="bean:org.onap.clamp.loop.template.PolicyModelsService?method=saveOrUpdateByPolicyModelType(${exchangeProperty[PolicyModelObject]})" /> 
+				    <to 
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch> 
+						<exception>java.lang.Exception</exception> 
+						<handled> 
+							<constant>true</constant> 
+						</handled>
+						<setHeader headerName="CamelHttpResponseCode">
+							<constant>404</constant>
+						</setHeader>
+						<transform>
+							<simple>ERROR: ${exception.message}</simple>
+						</transform>
+						<to 
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" /> 
+					</doCatch> 	 					
+				</doTry> 
+		   </route> 
+		</put>
+		
+		
+		<get
+			uri="/v2/loop/templates"
+			outType="org.onap.clamp.loop.template.LoopTemplate"
+			produces="application/json">
+			<route>
+				<removeHeaders pattern="*" />
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET ALL Templates')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'template','','read')" />
+					<to
+						uri="bean:org.onap.clamp.loop.template.LoopTemplateService?method=getAllLoopTemplates" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>true</constant>
+						</handled>
+						<setHeader headerName="CamelHttpResponseCode">
+							<constant>500</constant>
+						</setHeader>
+						<transform>
+							<simple>ERROR: ${exception.message}</simple>
+						</transform> 
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+					</doCatch>
+				</doTry>
+			</route>
+		</get>
+		<get
+			uri="/v2/loop/templates/{templateName}"
+			outType="org.onap.clamp.loop.template.LoopTemplate"
+			produces="application/json">
+			<route>
+				<removeHeaders pattern="*" excludePattern="templateName"/>
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET a Template by NAME')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'template','','read')" />
+					<to
+						uri="bean:org.onap.clamp.loop.template.LoopTemplateService?method=getLoopTemplate(${header.templateName})" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>true</constant>
+						</handled>
+						<setHeader headerName="CamelHttpResponseCode">
+							<constant>500</constant>
+						</setHeader>
+						<transform>
+							<simple>ERROR: ${exception.message}</simple>
+						</transform> 
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+					</doCatch>
+				</doTry>
+			</route>
+		</get>		
+		<get
+			uri="/v2/loop/templates/names"
+			outType="java.lang.String[]"
+			produces="application/json">
+			<route>
+				<removeHeaders pattern="*" />
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET ALL Loop Template Names')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'template','','read')" />
+					<to
+						uri="bean:org.onap.clamp.loop.template.LoopTemplateService?method=getLoopTemplateNames" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>false</constant>
+						</handled>
+						<to
+							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+					</doCatch>
 				</doTry>
 			</route>
 		</get>
