@@ -38,6 +38,54 @@ export default class TemplateMenuService {
       });
   }
 
+	static getToscaPolicyModelYaml(policyModelType) {
+		return fetch('/restservices/clds/v2/loop/tosca/models/yaml/' + policyModelType, {
+			method: 'GET',
+			credentials: 'same-origin'
+		})
+			.then(function (response) {
+				console.debug("getToscaPolicyModelYaml response received: ", response.status);
+				if (response.ok) {
+					return response.json();
+				} else {
+					console.error("getToscaPolicyModelYaml query failed");
+					return "";
+				}
+			})
+			.catch(function (error) {
+				console.error("getToscaPolicyModelYaml error received", error);
+				return "";
+			});
+	}
+
+  static uploadToscaPolicyModal(policyModelType, jsonData) {
+    return fetch('/restservices/clds/v2/loop/tosca/models/' + policyModelType, {
+        method: 'PUT',
+        credentials: 'same-origin',
+        headers: {
+          "Content-Type": "a",
+        },
+        body: JSON.stringify(jsonData)
+      })
+      .then(function(response) {
+        console.debug("uploadToscaPolicyModal response received: ", response.status);
+        if (response.ok) {
+          var message = {
+            status: response.status,
+            message: 'Tosca Policy Model successfully uploaded'
+          };
+          return message;
+        } else {
+          console.error("uploadToscaModel failed");
+          return response.text();
+        }
+      })
+      .catch(function(error) {
+        console.error("uploadToscaModal error received", error);
+        return "";
+      });
+  }
+
   static getBlueprintMicroServiceTemplates() {
     return fetch('restservices/clds/v2/loop/templates', { method: 'GET', credentials: 'same-origin', })
       .then(function (response) {
