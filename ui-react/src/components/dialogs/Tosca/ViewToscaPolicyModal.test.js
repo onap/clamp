@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2019 AT&T Intellectual Property. All rights
+ * Copyright (C) 2020 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,12 +39,14 @@ describe('Verify ViewToscaPolicyModal', () => {
 				json: () => {
 					return Promise.resolve({
 						"index": "1",
-						"toscaModelYaml":"MTCA",
-						"toscaModelName":"DCAE_MTCAConfig",
-						"version":"16",
-						"userId":"aj928f",
-						"policyType":"mtca",
-						"lastUpdatedDate":"05-07-2019 19:09:42"
+						"policyModelTosca":"TCA",
+						"policyModelType":"onap.policies.monitoring.cdap.tca.hi.lo.app",
+						"version":"1.0.0",
+						"policyAcronym": "TCA",
+						"createdDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedBy": "admin",
+						"createdBy": "admin"
 					});
 				}
 			});
@@ -60,11 +62,14 @@ describe('Verify ViewToscaPolicyModal', () => {
 				json: () => {
 					return Promise.resolve({
 						"index": "1",
-						"toscaModelName":"DCAE_MTCAConfig",
-						"version":"16",
-						"userId":"aj928f",
-						"policyType":"mtca",
-						"lastUpdatedDate":"05-07-2019 19:09:42"
+						"policyModelTosca":"TCA",
+						"policyModelType":"onap.policies.monitoring.cdap.tca.hi.lo.app",
+						"version":"1.0.0",
+						"policyAcronym": "TCA",
+						"createdDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedBy": "admin",
+						"createdBy": "admin"
 					});
 				}
 			});
@@ -95,12 +100,14 @@ describe('Verify ViewToscaPolicyModal', () => {
 				json: () => {
 					return Promise.resolve({
 						"index": "1",
-						"toscaModelYaml":"MTCA",
-						"toscaModelName":"DCAE_MTCAConfig",
-						"version":"16",
-						"userId":"aj928f",
-						"policyType":"mtca",
-						"lastUpdatedDate":"05-07-2019 19:09:42"
+						"policyModelTosca":"TCA",
+						"policyModelType":"onap.policies.monitoring.cdap.tca.hi.lo.app",
+						"version":"1.0.0",
+						"policyAcronym": "TCA",
+						"createdDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedBy": "admin",
+						"createdBy": "admin"
 					});
 				}
 			});
@@ -108,12 +115,14 @@ describe('Verify ViewToscaPolicyModal', () => {
 		const component = shallow(<ViewToscaPolicyModal/>);
 		component.setState({ toscaNames: {
 			"index": "1",
-			"toscaModelYaml": "MTCA",
-			"toscaModelName": "DCAE_MTCAConfig",
-			"version" : "16",
-			"userId" : "aj928f",
-			"policyType" : "mtca",
-			"lastUpdatedDate" : "05-07-2019 19:09:42"
+			"policyModelTosca":"TCA",
+			"policyModelType":"onap.policies.monitoring.cdap.tca.hi.lo.app",
+			"version":"1.0.0",
+			"policyAcronym": "TCA",
+			"createdDate": "2020-01-31T20:49:48.658795600Z",
+			"updatedDate": "2020-01-31T20:49:48.658795600Z",
+			"updatedBy": "admin",
+			"createdBy": "admin"
 		}
 	});
   expect(component).toMatchSnapshot();
@@ -127,12 +136,14 @@ describe('Verify ViewToscaPolicyModal', () => {
 				json: () => {
 					return Promise.resolve({
 						"index": "1",
-						"toscaModelYaml":"MTCA",
-						"toscaModelName":"DCAE_MTCAConfig",
-						"version":"16",
-						"userId":"aj928f",
-						"policyType":"mtca",
-						"lastUpdatedDate":"05-07-2019 19:09:42"
+						"policyModelTosca":"TCA",
+						"policyModelType":"onap.policies.monitoring.cdap.tca.hi.lo.app",
+						"version":"1.0.0",
+						"policyAcronym": "TCA",
+						"createdDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedBy": "admin",
+						"createdBy": "admin"
 					});
 				}
 			});
@@ -149,17 +160,19 @@ describe('Verify ViewToscaPolicyModal', () => {
 				json: () => {
 					return Promise.resolve({
 						"index": "1",
-						"toscaModelYaml":"MTCA",
-						"toscaModelName":"DCAE_MTCAConfig",
-						"version":"16",
-						"userId":"aj928f",
-						"policyType":"mtca",
-						"lastUpdatedDate":"05-07-2019 19:09:42"
+						"policyModelTosca":"TCA",
+						"policyModelType":"onap.policies.monitoring.cdap.tca.hi.lo.app",
+						"version":"1.0.0",
+						"policyAcronym": "TCA",
+						"createdDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedBy": "admin",
+						"createdBy": "admin"
 					});
 				}
 			});
 		});
-		const yamlContent = 'MTCA Tosca model details';
+		const yamlContent = 'TCA Tosca model details';
 		const component = shallow(<ViewToscaPolicyModal/>);
 		component.find('[value="Please select Tosca model to view the details"]').prop('onChange')({ target: { value: yamlContent }});
     expect(component.state('content')).toEqual(yamlContent);
@@ -173,12 +186,14 @@ describe('Verify ViewToscaPolicyModal', () => {
 				json: () => {
 					return Promise.resolve({
 						"index": "1",
-						"toscaModelYaml":"MTCA",
-						"toscaModelName":"DCAE_MTCAConfig",
-						"version":"16",
-						"userId":"aj928f",
-						"policyType":"mtca",
-						"lastUpdatedDate":"05-07-2019 19:09:42"
+						"policyModelTosca":"TCA",
+						"policyModelType":"onap.policies.monitoring.cdap.tca.hi.lo.app",
+						"version":"1.0.0",
+						"policyAcronym": "TCA",
+						"createdDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedDate": "2020-01-31T20:49:48.658795600Z",
+						"updatedBy": "admin",
+						"createdBy": "admin"
 					});
 				}
 			});
