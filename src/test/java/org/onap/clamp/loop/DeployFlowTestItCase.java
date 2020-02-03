@@ -98,7 +98,7 @@ public class DeployFlowTestItCase {
                 "tosca_definitions_version: tosca_simple_yaml_1_0_0", "{\"param1\":\"value1\"}", true);
         loopTest2.addMicroServicePolicy(microServicePolicy1);
         loopTest2.addMicroServicePolicy(microServicePolicy2);
-        loopService.saveOrUpdateLoop(loopTest2);
+        loopTest2 = loopService.saveOrUpdateLoop(loopTest2);
         Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest2)
                 .build();
 
@@ -129,7 +129,7 @@ public class DeployFlowTestItCase {
                 "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
                 "{\"param1\":\"value1\"}", true);
         loopTest.addMicroServicePolicy(microServicePolicy);
-        loopService.saveOrUpdateLoop(loopTest);
+        loopTest = loopService.saveOrUpdateLoop(loopTest);
         Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest)
                 .build();
 
@@ -157,7 +157,7 @@ public class DeployFlowTestItCase {
                 "testDeploymentId2", "testDeploymentStatusUrl2");
         loopTest2.addMicroServicePolicy(microServicePolicy1);
         loopTest2.addMicroServicePolicy(microServicePolicy2);
-        loopService.saveOrUpdateLoop(loopTest2);
+        loopTest2 = loopService.saveOrUpdateLoop(loopTest2);
         Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest2)
                 .build();
 
