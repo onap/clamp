@@ -44,6 +44,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.onap.clamp.clds.Application;
+import org.onap.clamp.clds.exception.sdc.controller.BlueprintParserException;
 import org.onap.clamp.clds.exception.sdc.controller.CsarHandlerException;
 import org.onap.clamp.clds.exception.sdc.controller.SdcArtifactInstallerException;
 import org.onap.clamp.clds.sdc.controller.installer.BlueprintArtifact;
@@ -73,10 +74,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-@ActiveProfiles(profiles = "clamp-default,clamp-default-user,clamp-sdc-controller-new")
+@ActiveProfiles(profiles = "clamp-default,clamp-default-user,clamp-sdc-controller")
 public class CsarInstallerItCase {
 
-    private static final String CSAR_ARTIFACT_NAME = "example/sdc/service_Vloadbalancerms_csar.csar";
+    private static final String CSAR_ARTIFACT_NAME = "example/sdc/service_Vloadbalanbcerms_csar.csar";
     private static final String INVARIANT_SERVICE_UUID = "4cc5b45a-1f63-4194-8100-cd8e14248c92";
     private static final String INVARIANT_RESOURCE1_UUID = "07e266fc-49ab-4cd7-8378-ca4676f1b9ec";
     private static final String INVARIANT_RESOURCE2_UUID = "023a3f0d-1161-45ff-b4cf-8918a8ccf3ad";
@@ -180,7 +181,7 @@ public class CsarInstallerItCase {
     @Test
     @Transactional
     public void testIsCsarAlreadyDeployedTca() throws SdcArtifactInstallerException, SdcToscaParserException,
-            CsarHandlerException, IOException, InterruptedException {
+            CsarHandlerException, IOException, InterruptedException, BlueprintParserException {
         String generatedName = RandomStringUtils.randomAlphanumeric(5);
         CsarHandler csarHandler = buildFakeCsarHandler(generatedName);
         assertThat(csarInstaller.isCsarAlreadyDeployed(csarHandler)).isFalse();
@@ -192,7 +193,7 @@ public class CsarInstallerItCase {
     @Transactional
     @Commit
     public void testInstallTheCsarTca() throws SdcArtifactInstallerException, SdcToscaParserException,
-            CsarHandlerException, IOException, JSONException, InterruptedException {
+            CsarHandlerException, IOException, JSONException, InterruptedException, BlueprintParserException {
         String generatedName = RandomStringUtils.randomAlphanumeric(5);
         CsarHandler csar = buildFakeCsarHandler(generatedName);
         csarInstaller.installTheCsar(csar);
@@ -238,8 +239,8 @@ public class CsarInstallerItCase {
 
     @Test(expected = SdcArtifactInstallerException.class)
     @Transactional
-    public void shouldThrowSdcArtifactInstallerException()
-            throws SdcArtifactInstallerException, SdcToscaParserException, IOException, InterruptedException {
+    public void shouldThrowSdcArtifactInstallerException() throws SdcArtifactInstallerException,
+            SdcToscaParserException, IOException, InterruptedException, BlueprintParserException {
         String generatedName = RandomStringUtils.randomAlphanumeric(5);
         CsarHandler csarHandler = buildFakeCsarHandler(generatedName);
         Mockito.when(csarHandler.getPolicyModelYaml()).thenThrow(IOException.class);
