@@ -28,10 +28,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-
 import com.google.gson.JsonElement;
+
 import java.io.IOException;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,10 +63,10 @@ public class CldsReferencePropertiesItCase {
 
     @Test
     public void shouldReturnJsonFromTemplate() throws IOException {
-        //when
+        // when
         JsonElement root = refProp.getJsonTemplate("ui.location.default");
 
-        //then
+        // then
         assertNotNull(root);
         assertTrue(root.isJsonObject());
         assertEquals("Data Center 1", root.getAsJsonObject().get("DC1").getAsString());
@@ -75,10 +74,10 @@ public class CldsReferencePropertiesItCase {
 
     @Test
     public void shouldReturnJsonFromTemplate_2() throws IOException {
-        //when
+        // when
         JsonElement root = refProp.getJsonTemplate("ui.location", "default");
 
-        //then
+        // then
         assertNotNull(root);
         assertTrue(root.isJsonObject());
         assertEquals("Data Center 1", root.getAsJsonObject().get("DC1").getAsString());
@@ -86,18 +85,17 @@ public class CldsReferencePropertiesItCase {
 
     @Test
     public void shouldReturnNullIfPropertyNotFound() throws IOException {
-        //when
+        // when
         JsonElement root = refProp.getJsonTemplate("ui.location", "");
 
-        //then
+        // then
         assertNull(root);
     }
 
     /**
      * Test getting prop value as a JSON Node / template.
      *
-     * @throws IOException
-     *         when JSON parsing fails
+     * @throws IOException when JSON parsing fails
      */
     @Test
     public void testGetFileContent() throws IOException {
@@ -108,14 +106,5 @@ public class CldsReferencePropertiesItCase {
         // Test composite key
         content = refProp.getFileContent("ui.location", "default");
         assertEquals(location, content);
-    }
-
-    @Test
-    public void testGetStringList() {
-        List<String> profileList = refProp.getStringList("policy.pdpUrl1", ",");
-        assertEquals(3, profileList.size());
-        assertTrue(profileList.get(0).trim().startsWith("http://localhost:"));
-        assertEquals("testpdp", profileList.get(1).trim());
-        assertEquals("alpha123", profileList.get(2).trim());
     }
 }
