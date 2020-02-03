@@ -39,39 +39,39 @@ public class ChainGeneratorTest {
 
     @Test
     public void getChainOfMicroServicesTest() {
-        MicroService ms1 = new MicroService(FIRST_APPP, "", "", "");
-        MicroService ms2 = new MicroService(SECOND_APPP, "", FIRST_APPP, "");
-        MicroService ms3 = new MicroService(THIRD_APPP, "", SECOND_APPP, "");
-        MicroService ms4 = new MicroService(FOURTH_APPP, "", THIRD_APPP, "");
+        BlueprintMicroService ms1 = new BlueprintMicroService(FIRST_APPP, "", "");
+        BlueprintMicroService ms2 = new BlueprintMicroService(SECOND_APPP, "", FIRST_APPP);
+        BlueprintMicroService ms3 = new BlueprintMicroService(THIRD_APPP, "", SECOND_APPP);
+        BlueprintMicroService ms4 = new BlueprintMicroService(FOURTH_APPP, "", THIRD_APPP);
 
-        List<MicroService> expectedList = Arrays.asList(ms1, ms2, ms3, ms4);
-        Set<MicroService> inputSet = new HashSet<>(expectedList);
+        List<BlueprintMicroService> expectedList = Arrays.asList(ms1, ms2, ms3, ms4);
+        Set<BlueprintMicroService> inputSet = new HashSet<>(expectedList);
 
-        List<MicroService> actualList = new ChainGenerator().getChainOfMicroServices(inputSet);
+        List<BlueprintMicroService> actualList = new ChainGenerator().getChainOfMicroServices(inputSet);
         Assert.assertEquals(expectedList, actualList);
     }
 
     @Test
     public void getChainOfMicroServicesTwiceNoInputTest() {
-        MicroService ms1 = new MicroService(FIRST_APPP, "", "", "");
-        MicroService ms2 = new MicroService(SECOND_APPP, "", "", "");
-        MicroService ms3 = new MicroService(THIRD_APPP, "", SECOND_APPP, "");
-        MicroService ms4 = new MicroService(FOURTH_APPP, "", FIRST_APPP, "");
+        BlueprintMicroService ms1 = new BlueprintMicroService(FIRST_APPP, "", "");
+        BlueprintMicroService ms2 = new BlueprintMicroService(SECOND_APPP, "", "");
+        BlueprintMicroService ms3 = new BlueprintMicroService(THIRD_APPP, "", SECOND_APPP);
+        BlueprintMicroService ms4 = new BlueprintMicroService(FOURTH_APPP, "", FIRST_APPP);
 
-        Set<MicroService> inputSet = new HashSet<>(Arrays.asList(ms1, ms2, ms3, ms4));
-        List<MicroService> actualList = new ChainGenerator().getChainOfMicroServices(inputSet);
+        Set<BlueprintMicroService> inputSet = new HashSet<>(Arrays.asList(ms1, ms2, ms3, ms4));
+        List<BlueprintMicroService> actualList = new ChainGenerator().getChainOfMicroServices(inputSet);
         Assert.assertTrue(actualList.isEmpty());
     }
 
     @Test
     public void getChainOfMicroServicesBranchingTest() {
-        MicroService ms1 = new MicroService(FIRST_APPP, "", "", "");
-        MicroService ms2 = new MicroService(SECOND_APPP, "", FIRST_APPP, "");
-        MicroService ms3 = new MicroService(THIRD_APPP, "", FIRST_APPP, "");
-        MicroService ms4 = new MicroService(FOURTH_APPP, "", FIRST_APPP, "");
+        BlueprintMicroService ms1 = new BlueprintMicroService(FIRST_APPP, "", "");
+        BlueprintMicroService ms2 = new BlueprintMicroService(SECOND_APPP, "", FIRST_APPP);
+        BlueprintMicroService ms3 = new BlueprintMicroService(THIRD_APPP, "", FIRST_APPP);
+        BlueprintMicroService ms4 = new BlueprintMicroService(FOURTH_APPP, "", FIRST_APPP);
 
-        Set<MicroService> inputSet = new HashSet<>(Arrays.asList(ms1, ms2, ms3, ms4));
-        List<MicroService> actualList = new ChainGenerator().getChainOfMicroServices(inputSet);
+        Set<BlueprintMicroService> inputSet = new HashSet<>(Arrays.asList(ms1, ms2, ms3, ms4));
+        List<BlueprintMicroService> actualList = new ChainGenerator().getChainOfMicroServices(inputSet);
         Assert.assertTrue(actualList.isEmpty());
     }
 }

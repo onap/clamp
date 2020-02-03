@@ -73,7 +73,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-@ActiveProfiles(profiles = "clamp-default,clamp-default-user,clamp-sdc-controller-new")
+@ActiveProfiles(profiles = "clamp-default,clamp-default-user,clamp-sdc-controller")
 public class CsarInstallerItCase {
 
     private static final String CSAR_ARTIFACT_NAME = "example/sdc/service_Vloadbalancerms_csar.csar";
