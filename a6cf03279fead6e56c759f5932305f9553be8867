@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ce94819_94aae6a3",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/ToscaSchemaConstants.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-03T11:56:19Z",
+      "side": 1,
+      "message": "Not sure to see why we need this entry ? it should not be part of the metadata ?",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf898144_23634159",
+        "filename": "src/main/java/org/onap/clamp/loop/template/LoopTemplate.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-03T11:56:19Z",
+      "side": 1,
+      "message": "Could you remind me the use of that ?",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60365160_e01cd9d7",
+        "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModel.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-03T11:56:19Z",
+      "side": 1,
+      "message": "We don\u0027t want to return a Yaml or Xml in a Json, if you want to expose that you need to create rest api that exposes that content only (like it is the case for the Svg)",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66aa4184_f23e3a6e",
+        "filename": "src/test/resources/tosca/tosca_with_metadata_policy_model_type.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-03T11:56:19Z",
+      "side": 1,
+      "message": "This has no sense to me ? You have the value in the policy_type key already",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
