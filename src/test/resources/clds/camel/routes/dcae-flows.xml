@@ -74,12 +74,18 @@
 					</setProperty>
 					<to
 						uri="bean:org.onap.clamp.policy.microservice.MicroServicePolicyService?method=updateDcaeDeploymentFields(${exchangeProperty[microServicePolicy]},${exchangeProperty[dcaeDeploymentId]},${exchangeProperty[dcaeStatusUrl]})" />
+					<setProperty propertyName="logMessage">
+						<simple>DEPLOY loop status
+							(Dep-id:${exchangeProperty[dcaeDeploymentId]},
+							StatusUrl:${exchangeProperty[dcaeStatusUrl]})
+						</simple>
+					</setProperty>
+					<setProperty propertyName="logComponent">
+						<simple>DCAE</simple>
+					</setProperty>
+					<to uri="direct:dump-loop-log-http-response" />
 			</split>
 			<doCatch>
-				<exception>java.lang.Exception</exception>
-				<handled>
-					<constant>false</constant>
-				</handled>
 				<setProperty propertyName="logMessage">
 					<simple>DEPLOY micro service failed 
 						(MicroService name:${exchangeProperty[microServicePolicy].getName()}),
@@ -238,6 +244,15 @@
 						</setProperty>
 						<to
 							uri="bean:org.onap.clamp.policy.microservice.MicroServicePolicyService?method=updateDcaeDeploymentFields(${exchangeProperty[microServicePolicy]},${exchangeProperty[microServicePolicy].getDcaeDeploymentId()},${exchangeProperty[dcaeStatusUrl]})" />
+						<setProperty propertyName="logMessage">
+							<simple>UNDEPLOY micro service successful
+								(MicroService name:${exchangeProperty[microServicePolicy].getName()})
+							</simple>
+						</setProperty>
+						<setProperty propertyName="logComponent">
+							<simple>DCAE</simple>
+						</setProperty>
+						<to uri="direct:dump-loop-log-http-response" />
 					</when>
 					<otherwise>
 						<log loggingLevel="WARNING"
@@ -248,10 +263,6 @@
 				</choice>
 			</split>
 			<doCatch>
-				<exception>java.lang.Exception</exception>
-				<handled>
-					<constant>false</constant>
-				</handled>
 				<setProperty propertyName="logMessage">
 					<simple>UNDEPLOY micro service failed
 						(MicroService name:${exchangeProperty[microServicePolicy].getName()})
@@ -448,9 +459,9 @@
 			<split>
 				<simple>${exchangeProperty[dcaeResponseList]}</simple>
 				<convertBodyTo type="org.onap.clamp.clds.model.dcae.DcaeInventoryResponse" />
-					<setProperty propertyName="dcaeResponse">
-						<simple>${body}</simple>
-					</setProperty>
+				<setProperty propertyName="dcaeResponse">
+					<simple>${body}</simple>
+				</setProperty>
 				<to uri="bean:org.onap.clamp.clds.model.dcae.DcaeInventoryCache?method=addDcaeInventoryResponse(${exchangeProperty[dcaeResponse]})" />
 			</split>
 			<doFinally>
