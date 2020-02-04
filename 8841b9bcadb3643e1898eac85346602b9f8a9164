@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f936bde_6f15e4a8",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-04T17:14:17Z",
+      "side": 1,
+      "message": "Indentation issue",
+      "revId": "8841b9bcadb3643e1898eac85346602b9f8a9164",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f8f1cc5_1dcdaa4f",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 601,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-04T17:14:17Z",
+      "side": 1,
+      "message": "Indentation issue",
+      "revId": "8841b9bcadb3643e1898eac85346602b9f8a9164",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c47f6e32_52ee4894",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-04T17:14:17Z",
+      "side": 1,
+      "message": "Indentation issue",
+      "revId": "8841b9bcadb3643e1898eac85346602b9f8a9164",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54da768e_97a15a41",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1194,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-04T17:14:17Z",
+      "side": 1,
+      "message": "Indentation issue",
+      "revId": "8841b9bcadb3643e1898eac85346602b9f8a9164",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08ba2501_74355e3a",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1214,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-04T17:14:17Z",
+      "side": 1,
+      "message": "Could we put that under the deploy phase instead, so that by default we do not Build 2 times the UI code.",
+      "revId": "8841b9bcadb3643e1898eac85346602b9f8a9164",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8130ce43_5623a69c",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-04T17:14:17Z",
+      "side": 1,
+      "message": "ould we put that under the deploy phase instead, so that by default we do not Build 2 times the UI code",
+      "revId": "8841b9bcadb3643e1898eac85346602b9f8a9164",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
