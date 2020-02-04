@@ -62,6 +62,7 @@
         dcae_blueprint_id varchar(255),
         maximum_instances_allowed integer,
         svg_representation MEDIUMTEXT,
+        unique_blueprint boolean default false,
         service_uuid varchar(255),
         primary key (name)
     ) engine=InnoDB;
