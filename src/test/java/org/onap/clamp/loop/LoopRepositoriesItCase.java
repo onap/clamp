@@ -110,7 +110,7 @@ public class LoopRepositoriesItCase {
 
     private LoopTemplate getLoopTemplate(String name, String blueprint, String svgRepresentation, String createdBy,
             Integer maxInstancesAllowed) {
-        LoopTemplate template = new LoopTemplate(name, blueprint, svgRepresentation, maxInstancesAllowed, null);
+        LoopTemplate template = new LoopTemplate(name, blueprint, svgRepresentation, maxInstancesAllowed, null, true);
         template.addLoopElementModel(getLoopElementModel("yaml", "microService1", "org.onap.policy.drools", createdBy,
                 getPolicyModel("org.onap.policy.drools", "yaml", "1.0.0", "Drools", "type1", createdBy)));
         return template;

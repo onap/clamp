@@ -148,6 +148,11 @@ public class CsarInstaller {
             Service service) throws IOException, ParseException, InterruptedException {
         LoopTemplate newLoopTemplate = new LoopTemplate();
         newLoopTemplate.setBlueprint(blueprintArtifact.getDcaeBlueprint());
+        if (null != blueprintArtifact.getDcaeBlueprint()) {
+            newLoopTemplate.setUniqueBlueprint(true);
+        } else {
+            newLoopTemplate.setUniqueBlueprint(false);
+        }
         newLoopTemplate.setName(LoopTemplate.generateLoopTemplateName(csar.getSdcNotification().getServiceName(),
                 csar.getSdcNotification().getServiceVersion(),
                 blueprintArtifact.getResourceAttached().getResourceInstanceName(),

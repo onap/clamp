@@ -60,7 +60,7 @@ public class DcaeComponentTest {
         microServicePolicy.setConfigurationsJson(new Gson().fromJson("{\"param1\":\"value1\"}", JsonObject.class));
 
         loopTest.addMicroServicePolicy(microServicePolicy);
-        LoopTemplate loopTemplate = new LoopTemplate("test", "yaml", "svg", 1, null);
+        LoopTemplate loopTemplate = new LoopTemplate("test", "yaml", "svg", 1, null, true);
         loopTemplate.setDcaeBlueprintId("UUID-blueprint");
         loopTest.setLoopTemplate(loopTemplate);
 
@@ -69,8 +69,8 @@ public class DcaeComponentTest {
 
     @Test
     public void convertDcaeResponseTest() throws IOException {
-        String dcaeFakeResponse = "{'requestId':'testId','operationType':'install','status':'state','error':'errorMessage', "
-                + "'links':{'self':'selfUrl','uninstall':'uninstallUrl'}}";
+        String dcaeFakeResponse = "{'requestId':'testId','operationType':'install','status':'state',"
+                + "'error':'errorMessage', 'links':{'self':'selfUrl','uninstall':'uninstallUrl'}}";
         DcaeOperationStatusResponse responseObject = DcaeComponent.convertDcaeResponse(dcaeFakeResponse);
         assertThat(responseObject.getRequestId()).isEqualTo("testId");
         assertThat(responseObject.getOperationType()).isEqualTo("install");
