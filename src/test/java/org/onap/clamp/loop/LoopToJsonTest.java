@@ -93,7 +93,7 @@ public class LoopToJsonTest {
 
     private LoopTemplate getLoopTemplate(String name, String blueprint, String svgRepresentation,
             Integer maxInstancesAllowed) {
-        LoopTemplate template = new LoopTemplate(name, blueprint, svgRepresentation, maxInstancesAllowed, null);
+        LoopTemplate template = new LoopTemplate(name, blueprint, svgRepresentation, maxInstancesAllowed, null, true);
         template.addLoopElementModel(getLoopElementModel("yaml", "microService1",
                 getPolicyModel("org.onap.policy.drools", "yaml", "1.0.0", "Drools", "type1")));
         return template;

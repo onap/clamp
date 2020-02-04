@@ -70,7 +70,6 @@ public class LoopTemplate extends AuditEntity implements Serializable {
     @Column(columnDefinition = "MEDIUMTEXT", name = "blueprint_yaml")
     private String blueprint;
 
-    @Expose
     @Column(columnDefinition = "MEDIUMTEXT", name = "svg_representation")
     private String svgRepresentation;
 
@@ -87,6 +86,10 @@ public class LoopTemplate extends AuditEntity implements Serializable {
     @Expose
     @Column(name = "maximum_instances_allowed")
     private Integer maximumInstancesAllowed;
+
+    @Expose
+    @Column(name = "unique_blueprint", columnDefinition = "boolean default false")
+    private boolean uniqueBlueprint;
 
     /**
      * name getter.
@@ -245,6 +248,24 @@ public class LoopTemplate extends AuditEntity implements Serializable {
     }
 
     /**
+     * uniqueBlueprint getter.
+     * 
+     * @return the uniqueBlueprint
+     */
+    public boolean getUniqueBlueprint() {
+        return uniqueBlueprint;
+    }
+
+    /**
+     * uniqueBlueprint setter.
+     * 
+     * @param uniqueBlueprint the uniqueBlueprint to set
+     */
+    public void setUniqueBlueprint(boolean uniqueBlueprint) {
+        this.uniqueBlueprint = uniqueBlueprint;
+    }
+
+    /**
      * Default constructor for serialization.
      */
     public LoopTemplate() {
@@ -263,9 +284,10 @@ public class LoopTemplate extends AuditEntity implements Serializable {
      * @param service             The service associated to that loop template
      */
     public LoopTemplate(String name, String blueprint, String svgRepresentation, Integer maxInstancesAllowed,
-            Service service) {
+            Service service, boolean uniqueBlueprint) {
         this.name = name;
         this.blueprint = blueprint;
+        this.uniqueBlueprint = uniqueBlueprint;
         this.svgRepresentation = svgRepresentation;
 
         this.maximumInstancesAllowed = maxInstancesAllowed;
@@ -312,10 +334,10 @@ public class LoopTemplate extends AuditEntity implements Serializable {
      * @return The generated loop template name
      */
     public static String generateLoopTemplateName(String serviceName, String serviceVersion, String resourceName,
-            String blueprintFilename) {
+            String blueprintFileName) {
         StringBuilder buffer = new StringBuilder("LOOP_TEMPLATE_").append(serviceName).append("_v")
                 .append(serviceVersion).append("_").append(resourceName).append("_")
-                .append(blueprintFilename.replaceAll(".yaml", ""));
+                .append(blueprintFileName.replaceAll(".yaml", ""));
         return buffer.toString().replace('.', '_').replaceAll(" ", "");
     }
 }
