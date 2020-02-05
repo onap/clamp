@@ -1,8 +1,8 @@
 tosca_definitions_version: cloudify_dsl_1_3
 imports:
-- http://dockercentral.it.att.com:8093/nexus/repository/rawcentral/com.att.dcae.controller/type_files/dockerplugin/2.4.0+t.0.8/node-type.yaml
-- http://dockercentral.it.att.com:8093/nexus/repository/rawcentral/com.att.dcae.controller/type_files/dmaap/1.2.0+t.0.9/dmaap.yaml
-- http://dockercentral.it.att.com:8093/nexus/repository/rawcentral/com.att.dcae.controller/type_files/relationship/1.0.0+t.0.1/relationship-types.yaml
+- http://nexus:8843/nexus/repository/rawcentral/com.att.dcae.controller/type_files/dockerplugin/2.4.0+t.0.8/node-type.yaml
+- http://nexus:8843/nexus/repository/rawcentral/com.att.dcae.controller/type_files/dmaap/1.2.0+t.0.9/dmaap.yaml
+- http://nexus:8843/nexus/repository/rawcentral/com.att.dcae.controller/type_files/relationship/1.0.0+t.0.1/relationship-types.yaml
 inputs:
   commonEventHeader.domain:
     type: string
@@ -89,7 +89,7 @@ node_templates:
             bind: /opt/app/vec/archive/data
           host:
             path: /opt/data/DCAE/dockermap/dockermap-archive
-      image: dockercentral.it.att.com:5100/com.att.dcae.controller/dcae-controller-dockermap:18.02-004
+      image: nexus:8843/com.att.dcae.controller/dcae-controller-dockermap:18.02-004
       location_id:
         get_input: dcae_service_location
       service_component_type: dcae.collectors.docker.map.pm
