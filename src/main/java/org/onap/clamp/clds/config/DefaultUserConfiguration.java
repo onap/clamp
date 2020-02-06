@@ -27,9 +27,7 @@ package org.onap.clamp.clds.config;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
-
 import java.io.IOException;
-
 import org.onap.clamp.clds.exception.CldsConfigException;
 import org.onap.clamp.clds.exception.CldsUsersException;
 import org.onap.clamp.clds.service.CldsUser;
@@ -134,7 +132,8 @@ public class DefaultUserConfiguration extends WebSecurityConfigurerAdapter {
     private PasswordEncoder getPasswordEncoder() {
         if ("bcrypt".equals(cldsEncoderMethod)) {
             return new BCryptPasswordEncoder(cldsBcryptEncoderStrength);
-        } else {
+        }
+        else {
             throw new CldsConfigException(
                     "Invalid clamp.config.security.encoder value. 'bcrypt' is the only option at this time.");
         }
