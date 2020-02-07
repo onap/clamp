@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4a853f20_3879c772",
+        "filename": "src/main/java/org/onap/clamp/loop/Loop.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T13:13:28Z",
+      "side": 1,
+      "message": "we can probably add a nullable \u003d false, here",
+      "revId": "eaf4efea8f70693b41a4567ba56da4493609f632",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5f7c3a1_f5e2cd63",
+        "filename": "src/main/java/org/onap/clamp/loop/Loop.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T13:13:28Z",
+      "side": 1,
+      "message": "LoopTemplate can never be null, this should crash if it happens (let it crash)",
+      "revId": "eaf4efea8f70693b41a4567ba56da4493609f632",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f1073b2_b6502267",
+        "filename": "src/main/java/org/onap/clamp/loop/template/LoopTemplate.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T13:13:28Z",
+      "side": 1,
+      "message": "Recall your blueprint setter to replace that code",
+      "revId": "eaf4efea8f70693b41a4567ba56da4493609f632",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c532406_93daa4f4",
+        "filename": "src/main/resources/clds/camel/routes/dcae-flows.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T13:13:28Z",
+      "side": 1,
+      "message": "Not sure to get why we have changed that and why we give a microservice object to the code, this will crash ? Obviously the loop object must be used",
+      "revId": "eaf4efea8f70693b41a4567ba56da4493609f632",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3c947b0_975b4ad6",
+        "filename": "src/main/resources/clds/camel/routes/dcae-flows.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T13:13:28Z",
+      "side": 1,
+      "message": "Same comment as before, this will crash ?",
+      "revId": "eaf4efea8f70693b41a4567ba56da4493609f632",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57c14566_3a32bbb5",
+        "filename": "src/main/resources/clds/camel/routes/dcae-flows.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T13:13:28Z",
+      "side": 1,
+      "message": "again same comment",
+      "revId": "eaf4efea8f70693b41a4567ba56da4493609f632",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c9ed11b_2886d14d",
+        "filename": "src/main/resources/clds/camel/routes/dcae-flows.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T13:13:28Z",
+      "side": 1,
+      "message": "We should probably have the loop name and the microservice associated",
+      "revId": "eaf4efea8f70693b41a4567ba56da4493609f632",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ec4bffb_46599644",
+        "filename": "src/main/resources/clds/camel/routes/loop-flows.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T13:13:28Z",
+      "side": 1,
+      "message": "There is a typo in getUniqueBlueprint method name",
+      "revId": "eaf4efea8f70693b41a4567ba56da4493609f632",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
