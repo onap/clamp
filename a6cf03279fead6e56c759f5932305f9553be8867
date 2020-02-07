@@ -54,6 +54,41 @@
     },
     {
       "key": {
+        "uuid": "8db81da4_a2cfd45d",
+        "filename": "src/main/java/org/onap/clamp/loop/template/LoopTemplate.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "could you enfore the possible values in the db by using a @Enumerated(EnumType.STRING) and an enum. I think it makes sense here",
+      "parentUuid": "812901d3_1ff6a9e8",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3771f5d0_d12a55c0",
+        "filename": "src/main/java/org/onap/clamp/loop/template/LoopTemplatesService.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Format this file properly, you have blank tabs everywhere",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "60365160_e01cd9d7",
         "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModel.java",
         "patchSetId": 4
@@ -89,6 +124,312 @@
     },
     {
       "key": {
+        "uuid": "16367b9d_ac39a36e",
+        "filename": "src/main/java/org/onap/clamp/tosca/DictionaryElementId.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "I probably missed it but where do we use that class, and what is the purpose of it ?",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89f8609d_4fc91832",
+        "filename": "src/main/java/org/onap/clamp/util/SemanticVersioning.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "This method must be reworked do not use conditions, a loop is enough. Moreover when you increase the major, do we want to keep the minor/patchet ?? that looks strange to me ?",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75b3f7da_a6e7059c",
+        "filename": "src/main/java/org/onap/clamp/util/SemanticVersioning.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Also can we add tests in SemanticVersioningTest class please",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51be9e4a_70df4e0b",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Reformat that file properly",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25f35f47_77ef53f6",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "This should not be under /loop, it\u0027s not related to loop ;-)",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e472c24f_525715e8",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 682,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Remove /loop",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c899fbec_78448fb6",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Same comment, this should not be under /loop",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fa31a54_18995188",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Again should not be under /loop",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78c7727f_b9f46e5c",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Again remove /loop",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fd460b3_34fdd9a5",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Same comment /loop",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8a78068_c72f0d94",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "same comment remove /loop and rename as /policyToscaModels",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2e42fc2_a4872941",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "remove /loop and rename as /policyToscaModels/",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a129d3c_102847a2",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "remove /loop and rename as /policyToscaModels",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42b6717d_5e492e51",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "remove /loop and rename and keep /templates",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb401824_5b2ce60d",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Same comment remove /loop but put /template instead",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf5ae0a0_eff04445",
+        "filename": "src/main/resources/clds/camel/rest/clamp-api-v2.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Again remove /loop and put /templates/names",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99ce8fc9_86eeb1b8",
+        "filename": "src/test/java/org/onap/clamp/loop/LoopTemplateItCase.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Rename as LoopTemplateServiceItCase because this is what you are testing",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "191c6747_7fa0b89a",
+        "filename": "src/test/java/org/onap/clamp/loop/LoopTemplateItCase.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "This variable is totally useless",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "66aa4184_f23e3a6e",
         "filename": "src/test/resources/tosca/tosca_with_metadata_policy_model_type.yaml",
         "patchSetId": 4
@@ -118,6 +459,126 @@
       "side": 1,
       "message": "policy_model_type allows us to define the mS name exactly what we want and it should also match with what we may be getting from the DCAE Inventory. This provides easy way to handle the mS name.",
       "parentUuid": "66aa4184_f23e3a6e",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1aae1cb7_900e2d9c",
+        "filename": "src/test/resources/tosca/tosca_with_metadata_policy_model_type.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "The id mentioned in DCAE is already defined by the policy_types key, and that\u0027s what we search to get the right policy type so I\u0027m still not getting it, it sounds like a duplicate to me",
+      "parentUuid": "4470d386_09db9b1b",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19cec4d9_e71b517d",
+        "filename": "ui-react/src/api/TemplateMenuService.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "update the url accordingly (change in Backend)",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "670ee3d7_81ef2192",
+        "filename": "ui-react/src/api/TemplateMenuService.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Change the log accordingly",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19e24860_5ffb37e9",
+        "filename": "ui-react/src/api/TemplateMenuService.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Change the error accordingly",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14179e7e_6850cd86",
+        "filename": "ui-react/src/api/TemplateMenuService.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Again change the error accordingly",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3ee425f_76c2025c",
+        "filename": "ui-react/src/components/dialogs/Tosca/UploadToscaPolicyModal.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "I\u0027m not sure to see why we filter on onap.policies.monitoring  (config policies only ?) ?",
+      "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25a8dc39_060470a4",
+        "filename": "ui-react/src/components/dialogs/Tosca/UploadToscaPolicyModal.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-07T15:05:55Z",
+      "side": 1,
+      "message": "Change the method name accordingly",
       "revId": "a6cf03279fead6e56c759f5932305f9553be8867",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
