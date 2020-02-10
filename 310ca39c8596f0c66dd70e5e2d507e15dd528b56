@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a2c1b9e_79799413",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/Component.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2020-02-10T09:43:01Z",
+      "side": 1,
+      "message": "Small nitpick :) What about returning an array that would have the necessary data at initialization ? along the lines of ```return new ArrayList(properties.keySet());```",
+      "revId": "310ca39c8596f0c66dd70e5e2d507e15dd528b56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07a0c80b_5ab61db8",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/Extractor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2020-02-10T09:43:01Z",
+      "side": 1,
+      "message": "Are those imports used ?",
+      "revId": "310ca39c8596f0c66dd70e5e2d507e15dd528b56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1c70b71_0721a631",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/Extractor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2020-02-10T09:43:01Z",
+      "side": 1,
+      "message": "Very nitpicky, starting with java 7 you can use the diamond operator and omit the explicit types. Like so: ```new LinkedHashMap\u003c\u003e();```\nBut to each is own :)",
+      "revId": "310ca39c8596f0c66dd70e5e2d507e15dd528b56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ac95099_46a50cf9",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/JsonComponent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2020-02-10T09:43:01Z",
+      "side": 1,
+      "message": "The jvm would probably optimize that, but it\u0027s using a Boolean, with a capital b :)\nand maybe it could just return the result of the directly like this ?:\n```\nreturn property.getFields().has(\"metadata\");\n```",
+      "revId": "310ca39c8596f0c66dd70e5e2d507e15dd528b56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1f1fd7d_3b8516cb",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/JsonProperty.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2020-02-10T09:43:01Z",
+      "side": 1,
+      "message": "I believe you meant metadata :)",
+      "revId": "310ca39c8596f0c66dd70e5e2d507e15dd528b56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd0aa307_eee3c1d2",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/ParserToJSON.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2020-02-10T09:43:01Z",
+      "side": 1,
+      "message": "General informative comment :) \nThese loops and filter could fit nicely into streams, taking this one as an example as it is a fairly simple one:\n```\n\t\tproperty.getItems().keySet().stream()\n\t\t\t\t.filter(template::hasFields)\n\t\t\t\t.forEach(propertyField -\u003e {\n\t\t\t\t\tObject fieldValue \u003d property.getItems().get(propertyField);\n....\n\t\t\t\t\t}\n\t\t\t\t});\n```",
+      "revId": "310ca39c8596f0c66dd70e5e2d507e15dd528b56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37422a04_e98d648d",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/Template.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2020-02-10T09:43:01Z",
+      "side": 1,
+      "message": "It might be simplified to ```return fields.contains(name);``` :)",
+      "revId": "310ca39c8596f0c66dd70e5e2d507e15dd528b56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d99726f_e31d6bc6",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/TemplateManagment.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2020-02-10T09:43:01Z",
+      "side": 1,
+      "message": "You meant `TemplateManagement` ? :)",
+      "revId": "310ca39c8596f0c66dd70e5e2d507e15dd528b56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
