@@ -30,6 +30,8 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.ExchangeBuilder;
 import org.onap.clamp.clds.config.ClampProperties;
+import org.onap.clamp.clds.sdc.controller.installer.BlueprintMicroService;
+import org.onap.clamp.loop.template.PolicyModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,18 +59,53 @@ public class PolicyEngineServices {
         this.camelContext = camelContext;
     }
 
-    private void downloadAllPolicies() {
-        /*
-         * Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext)
-         * .withProperty("blueprintResourceId",
-         * resourceUuid).withProperty("blueprintServiceId", serviceUuid)
-         * .withProperty("blueprintName", artifactName).build();
-         * metricsLogger.info("Attempt n°" + i + " to contact DCAE inventory");
-         * 
-         * Exchange exchangeResponse =
-         * camelContext.createProducerTemplate().send("direct:get-all-policy-models",
-         * myCamelExchange);
-         */
+    public PolicyModel createPolicyModelFromPolicyEngine(String policyType, String policyVersion)
+            throws InterruptedException {
+        return new PolicyModel(policyType, this.downloadOnePolicy(policyType, policyVersion), policyVersion,
+                createPolicyAcronym(policyType));
+    }
+
+    public PolicyModel createPolicyModelFromPolicyEngine(BlueprintMicroService microService)
+            throws InterruptedException {
+        return createPolicyModelFromPolicyEngine(microService.getModelType(), microService.getModelVersion());
+    }
+
+    private static String createPolicyAcronym(String policyType) {
+        String[] policyNameArray = policyType.split("\\.");
+        return policyNameArray[policyNameArray.length - 1];
+    }
+
+    /**
+     * This method can be used to download all policy types + data types defined in
+     * policy engine.
+     * 
+     * @return A yaml containing all policy Types and all data types
+     * @throws InterruptedException In case of issue when sleeping during the retry
+     */
+    public String downloadAllPolicies() throws InterruptedException {
+        int retryInterval = 0;
+        int retryLimit = 1;
+        if (refProp.getStringValue(POLICY_RETRY_LIMIT) != null) {
+            retryLimit = Integer.valueOf(refProp.getStringValue(POLICY_RETRY_LIMIT));
+        }
+        if (refProp.getStringValue(POLICY_RETRY_INTERVAL) != null) {
+            retryInterval = Integer.valueOf(refProp.getStringValue(POLICY_RETRY_INTERVAL));
+        }
+        for (int i = 0; i < retryLimit; i++) {
+            Exchange paramExchange = ExchangeBuilder.anExchange(camelContext).build();
+
+            Exchange exchangeResponse = camelContext.createProducerTemplate().send("direct:get-all-policy-models",
+                    paramExchange);
+
+            if (Integer.valueOf(200).equals(exchangeResponse.getIn().getHeader("CamelHttpResponseCode"))) {
+                return (String) exchangeResponse.getIn().getBody();
+            } else {
+                logger.info("Policy query " + retryInterval + "ms before retrying ...");
+                // wait for a while and try to connect to DCAE again
+                Thread.sleep(retryInterval);
+            }
+        }
+        return "";
     }
 
     /**
@@ -77,7 +114,7 @@ public class PolicyEngineServices {
      * @param policyType    The policy type (id)
      * @param policyVersion The policy version
      * @return A string with the whole policy tosca model
-     * @throws InterruptedException in case of issue when sleeping during the retry
+     * @throws InterruptedException In case of issue when sleeping during the retry
      */
     public String downloadOnePolicy(String policyType, String policyVersion) throws InterruptedException {
         int retryInterval = 0;
@@ -99,7 +136,7 @@ public class PolicyEngineServices {
             if (Integer.valueOf(200).equals(exchangeResponse.getIn().getHeader("CamelHttpResponseCode"))) {
                 return (String) exchangeResponse.getIn().getBody();
             } else {
-                logger.info("Policy " + retryInterval + "ms before retrying ...");
+                logger.info("Policy query " + retryInterval + "ms before retrying ...");
                 // wait for a while and try to connect to DCAE again
                 Thread.sleep(retryInterval);
             }
