@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "385e8dd5_8cff64b9",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/Component.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-11T14:06:37Z",
+      "side": 1,
+      "message": "Reformat properly the code, useless blank tabs and end of line",
+      "revId": "508d72d9d7bb3fee541298c8ff7522ca5e143332",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12697fef_43180260",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/Component.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-11T14:06:37Z",
+      "side": 1,
+      "message": "Kick that comment",
+      "revId": "508d72d9d7bb3fee541298c8ff7522ca5e143332",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd54e682_b9255202",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/Component.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-11T14:06:37Z",
+      "side": 1,
+      "message": "Replace \\n by System.getProperty(\"line.separator\")",
+      "revId": "508d72d9d7bb3fee541298c8ff7522ca5e143332",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bac0941e_57788741",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/Extractor.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-11T14:06:37Z",
+      "side": 1,
+      "message": "Initialize it directly line 38 and put it as final, also use the diamond operator, no need to specify \u003cString, Component\u003e",
+      "revId": "508d72d9d7bb3fee541298c8ff7522ca5e143332",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
