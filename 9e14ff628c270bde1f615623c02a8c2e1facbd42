@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8152b9ef_0cb43824",
+        "filename": "src/main/java/org/onap/clamp/clds/client/PolicyEngineServices.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-11T09:26:29Z",
+      "side": 1,
+      "message": "Shall we create 2 static final variable for default retry limit and interval values? These variables could be used in downloadOnePolicy as well.",
+      "revId": "9e14ff628c270bde1f615623c02a8c2e1facbd42",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5e5c174_b8b6d5a4",
+        "filename": "src/main/resources/clds/camel/routes/policy-flows.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-11T09:26:29Z",
+      "side": 1,
+      "message": "The policy-flows.xml under test folder seems not synchronized",
+      "revId": "9e14ff628c270bde1f615623c02a8c2e1facbd42",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
