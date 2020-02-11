@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "24d26327_012e9521",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/Component.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-11T14:06:37Z",
+      "side": 1,
+      "message": "Kick TODO",
+      "revId": "310ca39c8596f0c66dd70e5e2d507e15dd528b56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "07a0c80b_5ab61db8",
         "filename": "src/main/java/org/onap/clamp/clds/tosca/update/Extractor.java",
         "patchSetId": 2
