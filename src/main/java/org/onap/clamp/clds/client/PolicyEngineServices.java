@@ -38,6 +38,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.yaml.snakeyaml.Yaml;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The class implements the communication with the Policy Engine to retrieve
@@ -87,6 +93,25 @@ public class PolicyEngineServices {
                 .existsById(new PolicyModelId(policyModel.getPolicyModelType(), policyModel.getVersion()))) {
             policyModelsRepository.save(policyModel);
         }
+    }
+
+    public void synchronizeAllPolicies() {
+        LinkedHashMap<String, Object> loadedYaml;
+        loadedYaml = new Yaml().load(downloadAllPolicies());
+        if (loadedYaml == null || loadedYaml.isEmpty()) {
+            logger.warn("getAllPolicyType yaml returned by policy engine could not be decoded, as it's null or empty");
+            return;
+        }
+
+        List<LinkedHashMap<String, Object>> policyTypesList = (List<LinkedHashMap<String, Object>>) loadedYaml
+                .get("policy_types");
+        policyTypesList.parallelStream().forEach(policyType -> {
+            Map.Entry<String, Object> policyTypeEntry = (Map.Entry<String, Object>) new ArrayList(policyType.entrySet()).get(0);
+
+            createPolicyInDbIfNeeded(
+                    createPolicyModelFromPolicyEngine(policyTypeEntry.getKey(),
+                            ((String) ((LinkedHashMap<String, Object>) policyTypeEntry.getValue()).get("version"))));
+        });
     }
 
     /**
