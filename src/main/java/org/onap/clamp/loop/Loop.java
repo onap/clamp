@@ -55,6 +55,7 @@ import org.hibernate.annotations.SortNatural;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.onap.clamp.clds.util.drawing.SvgLoopGenerator;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 import org.onap.clamp.loop.common.AuditEntity;
 import org.onap.clamp.loop.components.external.DcaeComponent;
@@ -232,11 +233,13 @@ public class Loop extends AuditEntity implements Serializable {
     void addOperationalPolicy(OperationalPolicy opPolicy) {
         operationalPolicies.add(opPolicy);
         opPolicy.setLoop(this);
+        this.setSvgRepresentation(SvgLoopGenerator.getSvgImage(this));
     }
 
     void addMicroServicePolicy(MicroServicePolicy microServicePolicy) {
         microServicePolicies.add(microServicePolicy);
         microServicePolicy.getUsedByLoops().add(this);
+        this.setSvgRepresentation(SvgLoopGenerator.getSvgImage(this));
     }
 
     public void addLog(LoopLog log) {

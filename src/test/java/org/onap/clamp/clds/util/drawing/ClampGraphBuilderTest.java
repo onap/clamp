@@ -26,12 +26,8 @@
 
 package org.onap.clamp.clds.util.drawing;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +36,11 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.onap.clamp.clds.sdc.controller.installer.BlueprintMicroService;
+import org.onap.clamp.policy.microservice.MicroServicePolicy;
+import org.onap.clamp.policy.operational.OperationalPolicy;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClampGraphBuilderTest {
@@ -58,14 +59,14 @@ public class ClampGraphBuilderTest {
     @Test
     public void clampGraphBuilderCompleteChainTest() {
         String collector = "VES";
-        BlueprintMicroService ms1 = new BlueprintMicroService("ms1", "", "", "1.0.0");
-        BlueprintMicroService ms2 = new BlueprintMicroService("ms2", "", "", "1.0.0");
+        MicroServicePolicy ms1 = new MicroServicePolicy("ms1", "", "", false,null);
+        MicroServicePolicy ms2 = new MicroServicePolicy("ms2", "", "", false,null);
 
-        String policy = "OperationalPolicy";
-        final List<BlueprintMicroService> microServices = Arrays.asList(ms1, ms2);
+        OperationalPolicy opPolicy = new OperationalPolicy("OperationalPolicy");
+        final List<MicroServicePolicy> microServices = Arrays.asList(ms1, ms2);
 
         ClampGraphBuilder clampGraphBuilder = new ClampGraphBuilder(mockPainter);
-        clampGraphBuilder.collector(collector).addMicroService(ms1).addMicroService(ms2).policy(policy).build();
+        clampGraphBuilder.collector(collector).addMicroService(ms1).addMicroService(ms2).addPolicy(policy).build();
 
         verify(mockPainter, times(1)).doPaint(collectorCaptor.capture(), microServicesCaptor.capture(),
                 policyCaptor.capture());
@@ -91,6 +92,6 @@ public class ClampGraphBuilderTest {
         String policy = "OperationalPolicy";
 
         ClampGraphBuilder clampGraphBuilder = new ClampGraphBuilder(mockPainter);
-        clampGraphBuilder.collector(collector).policy(policy).build();
+        clampGraphBuilder.collector(collector).addPolicy(policy).build();
     }
 }
