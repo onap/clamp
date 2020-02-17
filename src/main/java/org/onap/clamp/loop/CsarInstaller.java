@@ -25,32 +25,20 @@ package org.onap.clamp.loop;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
-
 import org.json.simple.parser.ParseException;
 import org.onap.clamp.clds.client.DcaeInventoryServices;
 import org.onap.clamp.clds.client.PolicyEngineServices;
 import org.onap.clamp.clds.exception.sdc.controller.BlueprintParserException;
 import org.onap.clamp.clds.exception.sdc.controller.SdcArtifactInstallerException;
 import org.onap.clamp.clds.model.dcae.DcaeInventoryResponse;
-import org.onap.clamp.clds.sdc.controller.installer.BlueprintArtifact;
-import org.onap.clamp.clds.sdc.controller.installer.BlueprintMicroService;
-import org.onap.clamp.clds.sdc.controller.installer.BlueprintParser;
-import org.onap.clamp.clds.sdc.controller.installer.ChainGenerator;
-import org.onap.clamp.clds.sdc.controller.installer.CsarHandler;
-import org.onap.clamp.clds.util.drawing.SvgFacade;
+import org.onap.clamp.clds.sdc.controller.installer.*;
 import org.onap.clamp.loop.service.CsarServiceInstaller;
 import org.onap.clamp.loop.service.Service;
-import org.onap.clamp.loop.template.LoopElementModel;
-import org.onap.clamp.loop.template.LoopTemplate;
-import org.onap.clamp.loop.template.LoopTemplatesRepository;
-import org.onap.clamp.loop.template.PolicyModel;
-import org.onap.clamp.loop.template.PolicyModelId;
-import org.onap.clamp.loop.template.PolicyModelsRepository;
+import org.onap.clamp.loop.template.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -77,9 +65,6 @@ public class CsarInstaller {
 
     @Autowired
     private DcaeInventoryServices dcaeInventoryService;
-
-    @Autowired
-    private SvgFacade svgFacade;
 
     @Autowired
     private CsarServiceInstaller csarServiceInstaller;
@@ -165,7 +150,6 @@ public class CsarInstaller {
         newLoopTemplate.setModelService(service);
         newLoopTemplate.addLoopElementModels(createMicroServiceModels(microServicesChain));
         newLoopTemplate.setMaximumInstancesAllowed(0);
-        newLoopTemplate.setSvgRepresentation(svgFacade.getSvgImage(microServicesChain));
         DcaeInventoryResponse dcaeResponse = queryDcaeToGetServiceTypeId(blueprintArtifact);
         newLoopTemplate.setDcaeBlueprintId(dcaeResponse.getTypeId());
         return newLoopTemplate;
@@ -175,7 +159,7 @@ public class CsarInstaller {
             throws InterruptedException {
         HashSet<LoopElementModel> newSet = new HashSet<>();
         for (BlueprintMicroService microService : microServicesChain) {
-            LoopElementModel loopElementModel = new LoopElementModel(microService.getModelType(), "CONFIG_POLICY",
+            LoopElementModel loopElementModel = new LoopElementModel(microService.getModelType(), LoopElementModel.MICRO_SERVICE_TYPE,
                     null);
             newSet.add(loopElementModel);
             loopElementModel.addPolicyModel(getPolicyModel(microService));
