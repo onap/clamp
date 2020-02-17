@@ -25,15 +25,11 @@
 
 package org.onap.clamp.loop;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
 import java.time.Instant;
 import java.util.HashSet;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.onap.clamp.clds.Application;
@@ -42,13 +38,7 @@ import org.onap.clamp.loop.log.LoopLog;
 import org.onap.clamp.loop.log.LoopLogRepository;
 import org.onap.clamp.loop.service.Service;
 import org.onap.clamp.loop.service.ServicesRepository;
-import org.onap.clamp.loop.template.LoopElementModel;
-import org.onap.clamp.loop.template.LoopElementModelsRepository;
-import org.onap.clamp.loop.template.LoopTemplate;
-import org.onap.clamp.loop.template.LoopTemplatesRepository;
-import org.onap.clamp.loop.template.PolicyModel;
-import org.onap.clamp.loop.template.PolicyModelId;
-import org.onap.clamp.loop.template.PolicyModelsRepository;
+import org.onap.clamp.loop.template.*;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.onap.clamp.policy.microservice.MicroServicePolicyService;
 import org.onap.clamp.policy.operational.OperationalPolicy;
@@ -57,6 +47,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -92,32 +84,33 @@ public class LoopRepositoriesItCase {
         return new Service(serviceDetails, resourceDetails);
     }
 
-    private OperationalPolicy getOperationalPolicy(String configJson, String name) {
-        return new OperationalPolicy(name, null, new Gson().fromJson(configJson, JsonObject.class));
+    private OperationalPolicy getOperationalPolicy(String configJson, String name, PolicyModel policyModel) {
+        return new OperationalPolicy(name, null, new Gson().fromJson(configJson, JsonObject.class), policyModel);
     }
 
     private LoopElementModel getLoopElementModel(String yaml, String name, String policyType, String createdBy,
-            PolicyModel policyModel) {
+                                                 PolicyModel policyModel) {
         LoopElementModel model = new LoopElementModel(name, policyType, yaml);
         model.addPolicyModel(policyModel);
         return model;
     }
 
-    private PolicyModel getPolicyModel(String policyType, String policyModelTosca, String version, String policyAcronym,
-            String policyVariant, String createdBy) {
+    private PolicyModel getPolicyModel(String policyType, String policyModelTosca, String version,
+                                       String policyAcronym) {
         return new PolicyModel(policyType, policyModelTosca, version, policyAcronym);
     }
 
     private LoopTemplate getLoopTemplate(String name, String blueprint, String svgRepresentation, String createdBy,
-            Integer maxInstancesAllowed) {
+                                         Integer maxInstancesAllowed) {
         LoopTemplate template = new LoopTemplate(name, blueprint, svgRepresentation, maxInstancesAllowed, null);
         template.addLoopElementModel(getLoopElementModel("yaml", "microService1", "org.onap.policy.drools", createdBy,
-                getPolicyModel("org.onap.policy.drools", "yaml", "1.0.0", "Drools", "type1", createdBy)));
+                getPolicyModel("org.onap.policy.drools", "yaml", "1.0.0", "Drools")));
+        loopTemplateRepository.save(template);
         return template;
     }
 
     private Loop getLoop(String name, String svgRepresentation, String blueprint, String globalPropertiesJson,
-            String dcaeId, String dcaeUrl, String dcaeBlueprintId) {
+                         String dcaeId, String dcaeUrl, String dcaeBlueprintId) {
         Loop loop = new Loop();
         loop.setName(name);
         loop.setSvgRepresentation(svgRepresentation);
@@ -129,9 +122,9 @@ public class LoopRepositoriesItCase {
         return loop;
     }
 
-    private MicroServicePolicy getMicroServicePolicy(String name, String modelType, String jsonRepresentation,
-            String policyTosca, String jsonProperties, boolean shared) {
-        MicroServicePolicy microService = new MicroServicePolicy(name, modelType, policyTosca, shared,
+    private MicroServicePolicy getMicroServicePolicy(String name, String jsonRepresentation, String jsonProperties,
+                                                     boolean shared, PolicyModel policyModel) {
+        MicroServicePolicy microService = new MicroServicePolicy(name, policyModel, shared,
                 gson.fromJson(jsonRepresentation, JsonObject.class), new HashSet<>());
         microService.setConfigurationsJson(new Gson().fromJson(jsonProperties, JsonObject.class));
         return microService;
@@ -147,11 +140,11 @@ public class LoopRepositoriesItCase {
         // Setup
         Loop loopTest = getLoop("ControlLoopTest", "<xml></xml>", "yamlcontent", "{\"testname\":\"testvalue\"}",
                 "123456789", "https://dcaetest.org", "UUID-blueprint");
-        OperationalPolicy opPolicy = this.getOperationalPolicy("{\"type\":\"GUARD\"}", "GuardOpPolicyTest");
+        OperationalPolicy opPolicy = this.getOperationalPolicy("{\"type\":\"GUARD\"}", "GuardOpPolicyTest",
+                getPolicyModel("org.onap.policy.drools", "yaml", "1.0.0", "Drools"));
         loopTest.addOperationalPolicy(opPolicy);
-        MicroServicePolicy microServicePolicy = getMicroServicePolicy("configPolicyTest", "",
-                "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
-                "{\"param1\":\"value1\"}", true);
+        MicroServicePolicy microServicePolicy = getMicroServicePolicy("configPolicyTest", "{\"configtype\":\"json\"}",
+                "{\"param1\":\"value1\"}", true, getPolicyModel("org.onap.policy.drools", "yaml", "1.0.0", "Drools"));
         loopTest.addMicroServicePolicy(microServicePolicy);
         LoopLog loopLog = getLoopLog(LogType.INFO, "test message", loopTest);
         loopTest.addLog(loopLog);
@@ -182,7 +175,7 @@ public class LoopRepositoriesItCase {
         assertThat(servicesRepository.existsById(loopInDb.getModelService().getServiceUuid())).isEqualTo(true);
         assertThat(microServiceModelsRepository.existsById(
                 loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel().getName()))
-                        .isEqualTo(true);
+                .isEqualTo(true);
         assertThat(policyModelsRepository.existsById(new PolicyModelId(
                 loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel().getPolicyModels()
                         .first().getPolicyModelType(),
@@ -238,7 +231,7 @@ public class LoopRepositoriesItCase {
         assertThat(servicesRepository.existsById(loopInDb.getModelService().getServiceUuid())).isEqualTo(true);
         assertThat(microServiceModelsRepository.existsById(
                 loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel().getName()))
-                        .isEqualTo(true);
+                .isEqualTo(true);
 
         assertThat(policyModelsRepository.existsById(new PolicyModelId(
                 loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel().getPolicyModels()
