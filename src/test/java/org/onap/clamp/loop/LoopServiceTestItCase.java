@@ -23,15 +23,10 @@
 
 package org.onap.clamp.loop;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.gson.JsonObject;
-
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.transaction.Transactional;
-
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +43,8 @@ import org.onap.clamp.policy.operational.OperationalPolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -99,7 +96,7 @@ public class LoopServiceTestItCase {
         // given
         saveTestLoopToDb();
         OperationalPolicy operationalPolicy = new OperationalPolicy("policyName", null,
-                JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class));
+                JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class), null);
 
         // when
         Loop actualLoop = loopService.updateAndSaveOperationalPolicies(EXAMPLE_LOOP_NAME,
@@ -176,7 +173,7 @@ public class LoopServiceTestItCase {
     private void saveTestLoopToDb() {
         Loop testLoop = createTestLoop(EXAMPLE_LOOP_NAME, "blueprint", "representation");
         testLoop.setGlobalPropertiesJson(JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class));
-        LoopTemplate template =  new LoopTemplate();
+        LoopTemplate template = new LoopTemplate();
         template.setName("testTemplate");
         testLoop.setLoopTemplate(template);
         loopService.saveOrUpdateLoop(testLoop);
@@ -219,11 +216,11 @@ public class LoopServiceTestItCase {
         JsonObject newJsonConfiguration = JsonUtils.GSON.fromJson("{}", JsonObject.class);
 
         OperationalPolicy firstOperationalPolicy = new OperationalPolicy("firstPolicyName", null,
-                JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class));
+                JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class), null);
         loopService.updateAndSaveOperationalPolicies(EXAMPLE_LOOP_NAME, Lists.newArrayList(firstOperationalPolicy));
 
         OperationalPolicy secondOperationalPolicy = new OperationalPolicy("secondPolicyName", null,
-                newJsonConfiguration);
+                newJsonConfiguration, null);
 
         // when
         firstOperationalPolicy.setConfigurationsJson(newJsonConfiguration);
@@ -250,11 +247,11 @@ public class LoopServiceTestItCase {
         saveTestLoopToDb();
 
         OperationalPolicy firstOperationalPolicy = new OperationalPolicy("firstPolicyName", null,
-                JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class));
+                JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class), null);
         loopService.updateAndSaveOperationalPolicies(EXAMPLE_LOOP_NAME, Lists.newArrayList(firstOperationalPolicy));
 
         OperationalPolicy secondOperationalPolicy = new OperationalPolicy("policyName", null,
-                JsonUtils.GSON.fromJson("{}", JsonObject.class));
+                JsonUtils.GSON.fromJson("{}", JsonObject.class), null);
 
         // when
         Loop actualLoop = loopService.updateAndSaveOperationalPolicies(EXAMPLE_LOOP_NAME,
@@ -300,13 +297,13 @@ public class LoopServiceTestItCase {
         // Add log
         Loop loop = loopsRepository.findById(EXAMPLE_LOOP_NAME).orElse(null);
         loop.addLog(new LoopLog("test", LogType.INFO, "CLAMP", loop));
-        LoopTemplate template =  new LoopTemplate();
+        LoopTemplate template = new LoopTemplate();
         template.setName("testTemplate");
         loop.setLoopTemplate(template);
         loop = loopService.saveOrUpdateLoop(loop);
         // Add op policy
         OperationalPolicy operationalPolicy = new OperationalPolicy("opPolicy", null,
-                JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class));
+                JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class), null);
         loopService.updateAndSaveOperationalPolicies(EXAMPLE_LOOP_NAME, Lists.newArrayList(operationalPolicy));
 
         // Add Micro service policy

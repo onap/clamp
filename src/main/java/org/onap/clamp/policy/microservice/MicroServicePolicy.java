@@ -36,13 +36,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -51,6 +45,7 @@ import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 import org.onap.clamp.loop.Loop;
+import org.onap.clamp.loop.template.PolicyModel;
 import org.onap.clamp.policy.Policy;
 import org.yaml.snakeyaml.Yaml;
 
@@ -104,6 +99,12 @@ public class MicroServicePolicy extends Policy implements Serializable {
     @Expose
     @Column(name = "dcae_blueprint_id")
     private String dcaeBlueprintId;
+
+    @Expose
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumns({@JoinColumn(name = "policy_model_type", referencedColumnName = "policy_model_type"),
+            @JoinColumn(name = "policy_model_version", referencedColumnName = "version")})
+    private PolicyModel policyModel;
 
     public MicroServicePolicy() {
         // serialization

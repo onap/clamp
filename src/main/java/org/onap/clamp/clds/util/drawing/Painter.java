@@ -24,14 +24,11 @@
 
 package org.onap.clamp.clds.util.drawing;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.util.List;
-
+import java.awt.*;
+import java.util.Set;
 import org.apache.batik.svggen.SVGGraphics2D;
-import org.onap.clamp.clds.sdc.controller.installer.BlueprintMicroService;
+import org.onap.clamp.policy.microservice.MicroServicePolicy;
+import org.onap.clamp.policy.operational.OperationalPolicy;
 
 public class Painter {
     private final int canvasSize;
@@ -57,7 +54,7 @@ public class Painter {
         this.canvasSize = DEFALUT_CANVAS_SIZE;
     }
 
-    DocumentBuilder doPaint(String collector, List<BlueprintMicroService> microServices, String policy) {
+    DocumentBuilder doPaint(String collector, Set<MicroServicePolicy> microServices, Set<OperationalPolicy> policies) {
         int numOfRectangles = 2 + microServices.size();
         int numOfArrows = numOfRectangles + 1;
         int baseLength = (canvasSize - 2 * CIRCLE_RADIUS) / (numOfArrows + numOfRectangles);
@@ -71,20 +68,23 @@ public class Painter {
         Point origin = new Point(1, rectHeight / 2);
         ImageBuilder ib = new ImageBuilder(g2d, documentBuilder, origin, baseLength, rectHeight);
 
-        doTheActualDrawing(collector, microServices, policy, ib);
+        doTheActualDrawing(collector, microServices, policies, ib);
 
         return ib.getDocumentBuilder();
     }
 
-    private void doTheActualDrawing(String collector, List<BlueprintMicroService> microServices, String policy,
-            ImageBuilder ib) {
+    private void doTheActualDrawing(String collector, Set<MicroServicePolicy> microServices,
+                                    Set<OperationalPolicy> policies,
+                                    ImageBuilder ib) {
         ib.circle("start-circle", SLIM_LINE).arrow().rectangle(collector, RectTypes.COLECTOR, collector);
 
-        for (BlueprintMicroService ms : microServices) {
+        for (MicroServicePolicy ms : microServices) {
             ib.arrow().rectangle(ms.getModelType(), RectTypes.MICROSERVICE, ms.getName());
         }
-
-        ib.arrow().rectangle(policy, RectTypes.POLICY, policy).arrow().circle("stop-circle", THICK_LINE);
+        for (OperationalPolicy policy : policies) {
+            ib.arrow().rectangle(policy.getName(), RectTypes.POLICY, policy.getName()).arrow();
+        }
+        ib.circle("stop-circle", THICK_LINE)
     }
 
     private void adjustGraphics2DProperties() {
