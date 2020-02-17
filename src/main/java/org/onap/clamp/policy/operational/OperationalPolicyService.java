@@ -45,12 +45,14 @@ public class OperationalPolicyService implements PolicyService<OperationalPolicy
     @Override
     public Set<OperationalPolicy> updatePolicies(Loop loop, List<OperationalPolicy> operationalPolicies) {
         return operationalPolicies
-            .stream()
+            .parallelStream()
             .map(policy ->
                 repository
                     .findById(policy.getName())
                     .map(p -> setConfigurationJson(p, policy.getConfigurationsJson()))
-                    .orElse(new OperationalPolicy(policy.getName(), loop, policy.getConfigurationsJson())))
+                    .orElse(new OperationalPolicy(policy.getName(), loop,
+                            policy.getConfigurationsJson(),
+                            policy.getPolicyModel())))
             .collect(Collectors.toSet());
     }
 
