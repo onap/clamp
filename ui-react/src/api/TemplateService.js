@@ -21,56 +21,56 @@
  */
 
 export default class TemplateService {
-	static getTemplateNames() {
-		return fetch('/restservices/clds/v2/templates/names', { method: 'GET', credentials: 'same-origin' })
-			.then(function (response) {
-				console.debug("GetTemplateNames response received: ", response.status);
-				if (response.ok) {
-					return response.json();
-				} else {
-					console.error("GetTemplateNames query failed");
-					return {};
-				}
-			})
-			.catch(function (error) {
-				console.error("GetTemplateNames error received", error);
-				return {};
-			});
-	}
-
-	static getBlueprintMicroServiceTemplates() {
-	    return fetch('restservices/clds/v2/templates', { method: 'GET', credentials: 'same-origin', })
-	        .then(function (response) {
-	            console.debug("getBlueprintMicroServiceTemplates response received: ", response.status);
-	            if (response.ok) {
-	                return response.json();
-	            } else {
-	                console.error("getBlueprintMicroServiceTemplates query failed");
-	                return {};
-	            }
-	        })
-	        .catch(function (error) {
-	            console.error("getBlueprintMicroServiceTemplates error received", error);
-	            return {};
-	        });
-	    }
+      static getLoopTemplates() {
+          return fetch('restservices/clds/v2/templates', { method: 'GET', credentials: 'same-origin', })
+            .then(function (response) {
+              console.debug("getLoopTemplates response received: ", response.status);
+              if (response.ok) {
+                return response.json();
+              } else {
+                console.error("getLoopTemplates query failed");
+                return {};
+              }
+            })
+            .catch(function (error) {
+              console.error("getLoopTemplates error received", error);
+              return {};
+            });
+        }
+      
+      static getSVGRepresentation(templateName) {
+          return fetch('restservices/clds/v2/templates/' + templateName + '/svgRepresentation', { method: 'GET', credentials: 'same-origin', })
+            .then(function (response) {
+              console.debug("getSVGRepresentation response received: ", response.status);
+              if (response.ok) {
+                return response.text();
+              } else {
+                console.error("getSVGRepresentation query failed");
+                return {};
+              }
+            })
+            .catch(function (error) {
+              console.error("getSVGRepresentation error received", error);
+              return {};
+            });
+      }
 	
-	static getDictionary() {
-	    return fetch('restservices/clds/v2/dictionary/', { method: 'GET', credentials: 'same-origin', })
-	      .then(function (response) {
-	        console.debug("getDictionary response received: ", response.status);
-	        if (response.ok) {
-	          return response.json();
-	        } else {
-	          console.error("getDictionary query failed");
-	          return {};
-	        }
-	      })
-	      .catch(function (error) {
-	        console.error("getDictionary error received", error);
-	        return {};
-	      });
-	  }
+      static getDictionary() {
+          return fetch('restservices/clds/v2/dictionary/', { method: 'GET', credentials: 'same-origin', })
+            .then(function (response) {
+              console.debug("getDictionary response received: ", response.status);
+              if (response.ok) {
+                return response.json();
+              } else {
+                console.error("getDictionary query failed");
+                return {};
+              }
+            })
+            .catch(function (error) {
+              console.error("getDictionary error received", error);
+              return {};
+            });
+      }
 
 	  static getDictionaryElements(dictionaryName) {
 	    return fetch('restservices/clds/v2/dictionary/' + dictionaryName, {
