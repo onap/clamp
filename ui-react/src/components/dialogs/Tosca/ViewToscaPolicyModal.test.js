@@ -23,6 +23,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ViewToscaPolicyModal from './ViewToscaPolicyModal';
+import PolicyToscaService from '../../../api/PolicyToscaService'
 import { mount } from 'enzyme';
 
 
@@ -193,4 +194,21 @@ describe('Verify ViewToscaPolicyModal', () => {
 		expect(historyMock.push.mock.calls[0]).toEqual([ '/']);
 		handleClose.mockClear();
 	});
+	  
+		test('Test getToscaPolicyModelYaml', async () => {
+	        const historyMock = { push: jest.fn() };
+	        PolicyToscaService.getToscaPolicyModels = jest.fn().mockImplementation(() => {
+	            return Promise.resolve({toscaPolicyModelNames: "MTCA"});
+	        });
+	        PolicyToscaService.getToscaPolicyModelYaml = jest.fn().mockImplementation(() => {
+	            return Promise.resolve("<xml><text test</text></xml>");
+	        });
+	        const flushPromises = () => new Promise(setImmediate);
+	        const component = shallow(<ViewToscaPolicyModal history={historyMock}/>)
+	        const instance = component.instance();
+	        instance.getToscaPolicyModelYaml("MTCA");
+	        await flushPromises();
+	        expect(component.state('content')).toEqual("<xml><text test</text></xml>");
+	    });
 });
+		

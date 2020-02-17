@@ -38,14 +38,14 @@ import MaterialTable from "material-table";
 const ModalStyled = styled(Modal)`
 	background-color: transparent;
 `
-const TextModal = styled.textarea`
-margin-top: 20px;
-white-space:pre;
-background-color: ${props => props.theme.toscaTextareaBackgroundColor};;
-text-align: justify;
-font-size: ${props => props.theme.toscaTextareaFontSize};;
-width: 100%;
-height: 300px;
+const LoopViewSvgDivStyled = styled.div`
+overflow: hidden;
+background-color: ${props => (props.theme.loopViewerBackgroundColor)};
+border: 1px solid;
+border-color: ${props => (props.theme.loopViewerHeaderColor)};
+margin-left: auto;
+margin-right:auto;
+text-align: center;
 `
 const cellStyle = { border: '1px solid black' };
 const headerStyle = { backgroundColor: '#ddd',	border: '2px solid black'	};
@@ -54,9 +54,10 @@ const rowHeaderStyle = {backgroundColor:'#ddd',  fontSize: '15pt', text: 'bold',
 export default class ViewLoopTemplatesModal extends React.Component {
   state = {
     show: true,
-		content: 'Please select a loop template to display it',
+		content: 'Please select Blue print template to view the details',
 		selectedRow: -1,
 		loopTemplateData: [],
+		svgRepresentation: [],
 		loopTemplateColumnsDefinition: [
 			{ title: "#", field: "index", render: rowData => rowData.tableData.id + 1,
 				cellStyle: cellStyle,
@@ -66,19 +67,23 @@ export default class ViewLoopTemplatesModal extends React.Component {
 				cellStyle: cellStyle,
 				headerStyle: headerStyle
 			},
-			{ title: "Service Model Name", field: "modelService.serviceDetails.name",
+			{ title: "Maximum Instances Allowed", field: "maximumInstancesAllowed",
 				cellStyle: cellStyle,
 				headerStyle: headerStyle
 			},
-			{ title: "Loop Type Allowed", field: "allowedLoopType",
+			{ title: "Loop Type Allowed ", field: "allowedLoopType",
 				cellStyle: cellStyle,
 				headerStyle: headerStyle
 			},
-			{ title: "# Instances Allowed", field: "maximumInstancesAllowed",
+			{ title: "Unique Blueprint", field: "uniqueBlueprint", lookup: {false: 'No', true: 'Yes'},
 				cellStyle: cellStyle,
 				headerStyle: headerStyle
 			},
-			{ title: "Modified Date", field: "updatedDate", editable: 'never',
+			{ title: "Modified By", field: "updatedBy",
+				cellStyle: cellStyle,
+				headerStyle: headerStyle
+			},
+			{ title: "Modified Date", field: "updatedDate",
 				cellStyle: cellStyle,
 				headerStyle: headerStyle
 			}
@@ -97,16 +102,33 @@ export default class ViewLoopTemplatesModal extends React.Component {
 	constructor(props, context) {
 		super(props, context);
 		this.handleClose = this.handleClose.bind(this);
-		this.getBlueprintMicroServiceTemplates = this.getBlueprintMicroServiceTemplates.bind(this);
+		this.getLoopTemplates = this.getLoopTemplates.bind(this);
+		this.getSVGRepresentation = this.getSVGRepresentation.bind(this);
 		this.handleYamlContent = this.handleYamlContent.bind(this);
-		this.getBlueprintMicroServiceTemplates();
 	}
 
-	getBlueprintMicroServiceTemplates() {
-		TemplateService.getBlueprintMicroServiceTemplates().then(loopTemplateData => {
-		this.setState({ loopTemplateData: loopTemplateData })
+
+	componentWillMount() {
+		this.getLoopTemplates();
+	}
+
+	getLoopTemplates() {
+		TemplateService.getLoopTemplates().then(loopTemplateData => {
+			var TemplNames = loopTemplateData;
+			for(var item in TemplNames) {
+				if(TemplNames[item].maximumInstancesAllowed === -1) {
+					TemplNames[item].maximumInstancesAllowed = 'No Limit';
+				}
+			}
+		this.setState({ loopTemplateData: TemplNames })
 		});
 	}
+
+	getSVGRepresentation(templateName) {
+		TemplateService.getSVGRepresentation(templateName).then(svgRepresentation => {
+				this.setState({ content: svgRepresentation});
+			});
+		}
 
 	handleYamlContent = event => {
 		this.setState({
@@ -130,7 +152,7 @@ export default class ViewLoopTemplatesModal extends React.Component {
             data={this.state.loopTemplateData}
 					  columns={this.state.loopTemplateColumnsDefinition}
 					  icons={this.state.tableIcons}
-					  onRowClick={(event, rowData) => {this.setState({content: rowData.name, selectedRow: rowData.tableData.id})}}
+					  onRowClick={(event, rowData) => {this.getSVGRepresentation(rowData.name);this.setState({selectedRow: rowData.tableData.id})}}
 					  options={{
 					  headerStyle:rowHeaderStyle,
 					  rowStyle: rowData => ({
@@ -138,9 +160,9 @@ export default class ViewLoopTemplatesModal extends React.Component {
             })
           }}
           />
-          <div>
-            <TextModal value={this.state.content} onChange={this.handleYamlContent} />
-          </div>
+					<LoopViewSvgDivStyled
+						dangerouslySetInnerHTML={{ __html: this.state.content }} onChange={this.handleYamlContent}>
+          </LoopViewSvgDivStyled>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={this.handleClose}>Close</Button>
