@@ -24,6 +24,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ViewLoopTemplatesModal from './ViewLoopTemplatesModal';
 import { mount } from 'enzyme';
+import TemplateMenuService from '../../../api/TemplateMenuService'
 
 describe('Verify ViewLoopTemplatesModal', () => {
 	beforeEach(() => {
@@ -39,10 +40,11 @@ describe('Verify ViewLoopTemplatesModal', () => {
 				json: () => {
 					return Promise.resolve({
 						"index": "1",
-						"name": "MTCA version 1",
-						"modelService.serviceDetails.name": "MTCA",
-						"allowedLoopType" : "CLOSED",
-						"maximumInstancesAllowed":1,
+						"name": "TOSCA_MTCA",
+						"maximumInstancesAllowed": "1",
+						"allowedLoopType" : "OPEN",
+						"uniqueBlueprint":"No",
+						"updatedBy":"admin",
 						"updatedDate":"2019-09-06 19:09:42"
 					});
 				}
@@ -50,7 +52,7 @@ describe('Verify ViewLoopTemplatesModal', () => {
 		});
 		const component = shallow(<ViewLoopTemplatesModal/>);
 	});
-  	
+
 	it('Test API Exception', () => {
 		fetch.mockImplementationOnce(() => {
 			return Promise.resolve({
@@ -59,10 +61,11 @@ describe('Verify ViewLoopTemplatesModal', () => {
 				json: () => {
 					return Promise.resolve({
 						"index": "1",
-						"name": "MTCA version 1",
-						"modelService.serviceDetails.name": "MTCA",
-						"allowedLoopType" : "CLOSED",
-						"maximumInstancesAllowed":1,
+						"name": "TOSCA_MTCA",
+						"maximumInstancesAllowed": "1",
+						"allowedLoopType" : "OPEN",
+						"uniqueBlueprint":"No",
+						"updatedBy":"admin",
 						"updatedDate":"2019-09-06 19:09:42"
 					});
 				}
@@ -83,7 +86,7 @@ describe('Verify ViewLoopTemplatesModal', () => {
 		expect(myMockFunc.mock.calls.length).toBe(1);
 	});
 
-	it('Test the tosca model view render method', () => {
+	it('Test the BP template render method', () => {
 		fetch.mockImplementationOnce(() => {
 			return Promise.resolve({
 				ok: true,
@@ -91,10 +94,11 @@ describe('Verify ViewLoopTemplatesModal', () => {
 				json: () => {
 					return Promise.resolve({
 						"index": "1",
-						"name": "MTCA version 1",
-						"modelService.serviceDetails.name": "MTCA",
-						"allowedLoopType" : "CLOSED",
-						"maximumInstancesAllowed":1,
+						"name": "TOSCA_MTCA",
+						"maximumInstancesAllowed": "1",
+						"allowedLoopType" : "OPEN",
+						"uniqueBlueprint":"No",
+						"updatedBy":"admin",
 						"updatedDate":"2019-09-06 19:09:42"
 					});
 				}
@@ -102,12 +106,13 @@ describe('Verify ViewLoopTemplatesModal', () => {
 		});
 		const component = shallow(<ViewLoopTemplatesModal/>);
 		component.setState({ loopTemplateData: {
-						"index": "1",
-						"name": "MTCA version 1",
-						"modelService.serviceDetails.name": "MTCA",
-						"allowedLoopType" : "CLOSED",
-						"maximumInstancesAllowed":1,
-						"updatedDate":"2019-09-06 19:09:42"
+			"index": "1",
+			"name": "TOSCA_MTCA",
+			"maximumInstancesAllowed": "1",
+			"allowedLoopType" : "OPEN",
+			"uniqueBlueprint":"No",
+			"updatedBy":"admin",
+			"updatedDate":"2019-09-06 19:09:42"
 		  }
 		});
 		expect(component).toMatchSnapshot();
@@ -120,12 +125,13 @@ describe('Verify ViewLoopTemplatesModal', () => {
 					status: 200,
 					json: () => {
 						return Promise.resolve({
-						"index": "1",
-						"name": "MTCA version 1",
-						"modelService.serviceDetails.name": "MTCA",
-						"allowedLoopType" : "CLOSED",
-						"maximumInstancesAllowed":1,
-						"updatedDate":"2019-09-06 19:09:42"
+							"index": "1",
+							"name": "TOSCA_MTCA",
+							"maximumInstancesAllowed": "1",
+							"allowedLoopType" : "OPEN",
+							"uniqueBlueprint":"No",
+							"updatedBy":"admin",
+							"updatedDate":"2019-09-06 19:09:42"
 						});
 					}
 				});
@@ -141,22 +147,23 @@ describe('Verify ViewLoopTemplatesModal', () => {
 					status: 200,
 					json: () => {
 						return Promise.resolve({
-						"index": "1",
-						"name": "MTCA version 1",
-						"modelService.serviceDetails.name": "MTCA",
-						"allowedLoopType" : "CLOSED",
-						"maximumInstancesAllowed":1,
-						"updatedDate":"2019-09-06 19:09:42"
+							"index": "1",
+							"name": "TOSCA_MTCA",
+							"maximumInstancesAllowed": "1",
+							"allowedLoopType" : "OPEN",
+							"uniqueBlueprint":"No",
+							"updatedBy":"admin",
+							"updatedDate":"2019-09-06 19:09:42"
 						});
 					}
 				});
 			});
-			const yamlContent = 'MTCA version 1';
+			const yamlContent = 'Please select Blue print template to view the details';
 			const component = shallow(<ViewLoopTemplatesModal/>);
-			component.find('[value="Please select a loop template to display it"]').prop('onChange')({ target: { value: yamlContent }});
+			expect(component.find('[className="sc-kAzzGY fzcWwp"]')).toBeTruthy();
 			expect(component.state('content')).toEqual(yamlContent);
 		});
-		
+
 		it('Test handleClose', () => {
 			fetch.mockImplementationOnce(() => {
 				return Promise.resolve({
@@ -164,12 +171,13 @@ describe('Verify ViewLoopTemplatesModal', () => {
 					status: 200,
 					json: () => {
 						return Promise.resolve({
-						"index": "1",
-						"name": "MTCA version 1",
-						"modelService.serviceDetails.name": "MTCA",
-						"allowedLoopType" : "CLOSED",
-						"maximumInstancesAllowed":1,
-						"updatedDate":"2019-09-06 19:09:42"
+							"index": "1",
+							"name": "TOSCA_MTCA",
+							"maximumInstancesAllowed": "1",
+							"allowedLoopType" : "OPEN",
+							"uniqueBlueprint":"No",
+							"updatedBy":"admin",
+							"updatedDate":"2019-09-06 19:09:42"
 						});
 					}
 				});
@@ -183,4 +191,20 @@ describe('Verify ViewLoopTemplatesModal', () => {
 			expect(historyMock.push.mock.calls[0]).toEqual([ '/']);
 			handleClose.mockClear();
 		});
+
+		test('Test getSVGRepresentation', async () => {
+			const historyMock = { push: jest.fn() };
+			TemplateMenuService.getLoopTemplates = jest.fn().mockImplementation(() => {
+				return Promise.resolve({loopTemplateData: "TOSCA_MTCA"});
+			});
+			TemplateMenuService.getSVGRepresentation = jest.fn().mockImplementation(() => {
+				return Promise.resolve("<svg><text test</text></svg>");
+			});
+			const flushPromises = () => new Promise(setImmediate);
+			const component = shallow(<ViewLoopTemplatesModal history={historyMock}/>)
+			const instance = component.instance();
+			instance.getSVGRepresentation("TOSCA_MTCA");
+			await flushPromises();
+			expect(component.state('content')).toEqual("<svg><text test</text></svg>");
+		})
 	});
