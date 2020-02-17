@@ -23,15 +23,11 @@
 
 package org.onap.clamp.loop;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.json.simple.parser.ParseException;
@@ -42,7 +38,10 @@ import org.onap.clamp.clds.model.dcae.DcaeOperationStatusResponse;
 import org.onap.clamp.loop.components.external.DcaeComponent;
 import org.onap.clamp.loop.components.external.ExternalComponentState;
 import org.onap.clamp.loop.template.LoopTemplate;
+import org.onap.clamp.loop.template.PolicyModel;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DcaeComponentTest {
 
@@ -54,8 +53,8 @@ public class DcaeComponentTest {
         loopTest.setDcaeDeploymentId("123456789");
         loopTest.setDcaeDeploymentStatusUrl("http4://localhost:8085");
 
-        MicroServicePolicy microServicePolicy = new MicroServicePolicy("configPolicyTest", "",
-                "tosca_definitions_version: tosca_simple_yaml_1_0_0", true,
+        MicroServicePolicy microServicePolicy = new MicroServicePolicy("configPolicyTest", new PolicyModel("policy1",
+                "tosca_definitions_version: tosca_simple_yaml_1_0_0","1.0.0"), true,
                 new Gson().fromJson("{\"configtype\":\"json\"}", JsonObject.class), new HashSet<>());
         microServicePolicy.setConfigurationsJson(new Gson().fromJson("{\"param1\":\"value1\"}", JsonObject.class));
 
