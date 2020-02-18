@@ -23,10 +23,13 @@
 
 package org.onap.clamp.loop.template;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.List;
 import org.onap.clamp.clds.tosca.ToscaSchemaConstants;
 import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
+import org.onap.clamp.clds.util.JsonUtils;
+import org.onap.clamp.policy.pdpgroup.PdpGroup;
 import org.onap.clamp.util.SemanticVersioning;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,8 +46,26 @@ public class PolicyModelsService {
         toscaYamlToJsonConvertor = convertor;
     }
 
+    /**
+     * Save or Update Policy Model.
+     *
+     * @param policyModel
+     *        The policyModel
+     * @return The Policy Model
+     */
     public PolicyModel saveOrUpdatePolicyModel(PolicyModel policyModel) {
         return policyModelsRepository.save(policyModel);
+    }
+
+    /**
+     * Verify whether Policy Model exist by ID.
+     *
+     * @param policyModelId
+     *        The policyModel Id
+     * @return The flag indicates whether Policy Model exist
+     */
+    public boolean existsById(PolicyModelId policyModelId) {
+        return policyModelsRepository.existsById(policyModelId);
     }
 
     /**
@@ -109,5 +130,28 @@ public class PolicyModelsService {
     public String getPolicyModelTosca(String type) {
         PolicyModel policyModel = getPolicyModelByType(type);
         return policyModel != null ? policyModel.getPolicyModelTosca() : null;
+    }
+
+    /**
+     * Update the Pdp Group info in Policy Model DB.
+     *
+     * @param pdpGroupList The list of Pdp Group info received from Policy Engine
+     */
+    public void updatePdpGroupInfo(List<PdpGroup> pdpGroupList) {
+        List<PolicyModel> policyModelList = policyModelsRepository.findAll();
+        for (PolicyModel policyModel :  policyModelList) {
+            JsonArray supportedPdpGroups = new JsonArray();
+            for (PdpGroup pdpGroup : pdpGroupList) {
+                JsonObject supportedPdpGroup = pdpGroup.getSupportedSubgroups(policyModel.getPolicyModelType(),
+                        policyModel.getVersion());
+                if (supportedPdpGroup != null) {
+                    supportedPdpGroups.add(supportedPdpGroup);
+                }
+            }
+            if (supportedPdpGroups.size() > 0) {
+                policyModel.setPolicyPdpGroup(JsonUtils.GSON_JPA_MODEL.toJson(supportedPdpGroups));
+                policyModelsRepository.save(policyModel);
+            }
+        }
     }
 }
