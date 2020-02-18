@@ -25,6 +25,8 @@ package org.onap.clamp.loop.template;
 
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -39,6 +41,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.SortNatural;
+import org.onap.clamp.clds.model.cds.CdsBlueprintWorkflowInfo;
 import org.onap.clamp.loop.common.AuditEntity;
 import org.onap.clamp.loop.service.Service;
 
@@ -102,6 +105,8 @@ public class LoopTemplate extends AuditEntity implements Serializable {
     @Column(name = "allowed_loop_type")
     @Convert(converter = LoopTypeConvertor.class)
     private LoopType allowedLoopType = LoopType.CLOSED;
+
+    private List<CdsBlueprintWorkflowInfo> cdsWorkflowList;
 
     /**
      * name getter.
@@ -364,5 +369,20 @@ public class LoopTemplate extends AuditEntity implements Serializable {
             .append(serviceVersion).append("_").append(resourceName).append("_")
             .append(blueprintFileName.replaceAll(".yaml", ""));
         return buffer.toString().replace('.', '_').replaceAll(" ", "");
+    }
+
+    public List<CdsBlueprintWorkflowInfo> getCdsWorkflowList() {
+        return cdsWorkflowList;
+    }
+
+    public void setCdsWorkflowList(List<CdsBlueprintWorkflowInfo> cdsWorkflowInfoList) {
+        this.cdsWorkflowList = cdsWorkflowInfoList;
+    }
+
+    public void addToCdsWorkFlowList(CdsBlueprintWorkflowInfo cdsWorkflowInfo) {
+        if (this.cdsWorkflowList == null) {
+            this.cdsWorkflowList = new LinkedList<CdsBlueprintWorkflowInfo>();
+        }
+        this.cdsWorkflowList.add(cdsWorkflowInfo);
     }
 }

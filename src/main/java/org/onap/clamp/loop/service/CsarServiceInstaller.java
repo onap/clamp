@@ -25,10 +25,13 @@ package org.onap.clamp.loop.service;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+import io.swagger.util.Json;
 import org.onap.clamp.clds.exception.sdc.controller.SdcArtifactInstallerException;
 import org.onap.clamp.clds.sdc.controller.installer.CsarHandler;
 import org.onap.clamp.clds.util.JsonUtils;
@@ -69,6 +72,9 @@ public class CsarServiceInstaller {
         JsonObject resourcesProp = createServicePropertiesByType(csar);
         resourcesProp.add("VFModule", createVfModuleProperties(csar));
 
+        // get cds blueprint information and save in resources Prop
+        createCdsBlueprintProperties(csar, resourcesProp);
+
         Service modelService = new Service(serviceDetails, resourcesProp,
                 csar.getSdcNotification().getServiceVersion());
 
@@ -90,6 +96,32 @@ public class CsarServiceInstaller {
             resourcesProp.add(type.getValue(), resourcesPropByType);
         }
         return resourcesProp;
+    }
+
+    /**
+     * Retrive CDS blueprint information from CSAR and save in resource object.
+     *
+     * @param csar CSAR from sdc
+     * @param resourceObj resource object
+     * @return Returns required information from csar
+     */
+    private static JsonObject createCdsBlueprintProperties(CsarHandler csar, JsonObject resourceObj) {
+
+        // Iterate on all types defined in the tosca lib
+        for (SdcTypes type : SdcTypes.values()) {
+            JsonObject resourceProps = new JsonObject();
+            for (NodeTemplate nodeTemplate : csar.getSdcCsarHelper().getServiceNodeTemplateBySdcType(type)) {
+                LinkedHashMap<String, Property> properties = nodeTemplate.getProperties();
+                JsonElement cdsBpName = JsonUtils.GSON.toJsonTree(properties.get("sdnc_model_name").getValue()
+                                                                          .toString());
+                JsonElement cdsBpVersion = JsonUtils.GSON.toJsonTree(properties.get("sdnc_model_version").getValue()
+                                                                             .toString());
+                resourceProps.add("sdnc_model_name", cdsBpName);
+                resourceProps.add("sdnc_model_version", cdsBpVersion);
+                resourceObj.getAsJsonObject(nodeTemplate.getName()).add("cdsProperties", resourceProps);
+            }
+        }
+        return resourceObj;
     }
 
     private static JsonObject createVfModuleProperties(CsarHandler csar) {
