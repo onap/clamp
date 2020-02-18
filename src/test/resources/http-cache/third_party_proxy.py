@@ -249,6 +249,22 @@ class Proxy(SimpleHTTPServer.SimpleHTTPRequestHandler):
         with open(cached_file_content, 'w') as f:
             f.write(jsonGenerated)
         return True
+     elif self.path.startswith("/policy/pap/v1/pdps") and http_type == "GET":
+        if not _file_available:
+            self.path = "/policy/pap/v1/pdps"
+            cached_file_folder = '%s/%s' % (TMP_ROOT, self.path)
+            cached_file_content = self._get_cached_content_file_name(cached_file_folder)
+            cached_file_header = self._get_cached_header_file_name(cached_file_folder)
+            print "self.path start with /dcae-service-types, generating response json..."
+            response = "{ \"groups\": {\"description\": \"This group should be used for managing all control loop related policies and pdps\", \"name\": \"controlloop\", \"pdpGroupState\": \"ACTIVE\",\"pdpSubgroups\": [{\"pdpInstances\": [],\"pdpType\": \"apex\",\"supportedPolicyTypes\": [{\"name\": \"onap.policies.controlloop.Operational\",\"version\": \"1.0.0\"}]},{\"pdpInstances\": [], \"pdpType\": \"xacml\",\"policies\": [],\"supportedPolicyTypes\": [{\"name\": \"onap.policies.controlloop.Guard\",\"version\": \"1.0.0\"}]}],\"properties\": {}},{\"description\": \"This group should be used for managing all monitoring related policies and pdps\",\"name\": \"monitoring\",\"pdpGroupState\": \"ACTIVE\",\"pdpSubgroups\": [{\"pdpType\": \"xacml\",\"policies\": [],\"supportedPolicyTypes\": [ {\"name\": \"onap.policies.Monitoring\",\"version\": \"1.0.0\"}]}],\"properties\": {}}]}";
+            print "json reply for get pdp groups: " + response
+
+            os.makedirs(cached_file_folder, 0777)
+            with open(cached_file_header, 'w') as f:
+                f.write("{\"Content-Length\": \"" + str(len(response)) + "\", \"Content-Type\": \"application/json\"}")
+            with open(cached_file_content, 'w') as f:
+                f.write(response)
+        return True
      elif self.path.startswith("/dcae-service-types") and http_type == "GET":
         if not _file_available:
             self.path = "/dcae-service-types"

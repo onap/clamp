@@ -25,6 +25,7 @@ package org.onap.clamp.loop;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -39,6 +40,8 @@ import org.onap.clamp.loop.template.PolicyModel;
 import org.onap.clamp.loop.template.PolicyModelId;
 import org.onap.clamp.loop.template.PolicyModelsRepository;
 import org.onap.clamp.loop.template.PolicyModelsService;
+import org.onap.clamp.policy.pdpgroup.PdpGroup;
+import org.onap.clamp.policy.pdpgroup.PdpSubgroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -165,5 +168,70 @@ public class PolicyModelServiceItCase {
         assertThat(listToCheck.get(0)).isEqualByComparingTo(policyModel2);
         assertThat(listToCheck.get(1)).isEqualByComparingTo(policyModel1);
         assertThat(listToCheck.get(2)).isEqualByComparingTo(policyModel3);
+    }
+
+    @Test
+    @Transactional
+    public void shouldAddPdpGroupInfo() {
+        PolicyModel policyModel1 = getPolicyModel(POLICY_MODEL_TYPE_1, "yaml", POLICY_MODEL_TYPE_1_VERSION_1, "TEST",
+                "VARIANT", "user");
+        policyModelsService.saveOrUpdatePolicyModel(policyModel1);
+        PolicyModel policyModel2 = getPolicyModel(POLICY_MODEL_TYPE_2, "yaml", POLICY_MODEL_TYPE_2_VERSION_2, "TEST",
+                "VARIANT", "user");
+        policyModelsService.saveOrUpdatePolicyModel(policyModel2);
+        PolicyModel policyModel3 = getPolicyModel(POLICY_MODEL_TYPE_3, "yaml", POLICY_MODEL_TYPE_3_VERSION_1, "TEST",
+                "VARIANT", "user");
+        policyModelsService.saveOrUpdatePolicyModel(policyModel3);
+
+
+        PolicyModelId type1 = new PolicyModelId("org.onap.testos", "1.0.0");
+        PolicyModelId type2 = new PolicyModelId("org.onap.testos2", "2.0.0");
+        PolicyModelId type3 = new PolicyModelId("org.onap.testos3", "2.0.0");
+
+        PdpSubgroup pdpSubgroup1 = new PdpSubgroup();
+        pdpSubgroup1.setSubPdpGroup("subGroup1");
+        List<PolicyModelId> pdpTypeList = new LinkedList<PolicyModelId>();
+        pdpTypeList.add(type1);
+        pdpTypeList.add(type2);
+        pdpSubgroup1.setSupportedPolicyTypes(pdpTypeList);
+
+        PdpSubgroup pdpSubgroup2 = new PdpSubgroup();
+        pdpSubgroup2.setSubPdpGroup("subGroup2");
+        List<PolicyModelId> pdpTypeList2 = new LinkedList<PolicyModelId>();
+        pdpTypeList2.add(type2);
+        pdpTypeList2.add(type3);
+        pdpSubgroup2.setSupportedPolicyTypes(pdpTypeList2);
+
+        List<PdpSubgroup> pdpSubgroupList = new LinkedList<PdpSubgroup>();
+        pdpSubgroupList.add(pdpSubgroup1);
+
+        PdpGroup pdpGroup1 = new PdpGroup();
+        pdpGroup1.setName("pdpGroup1");
+        pdpGroup1.setPdpGroupState("ACTIVE");
+        pdpGroup1.setPdpSubgroups(pdpSubgroupList);
+
+        List<PdpSubgroup> pdpSubgroupList2 = new LinkedList<PdpSubgroup>();
+        pdpSubgroupList2.add(pdpSubgroup1);
+        pdpSubgroupList2.add(pdpSubgroup2);
+        PdpGroup pdpGroup2 = new PdpGroup();
+        pdpGroup2.setName("pdpGroup2");
+        pdpGroup2.setPdpGroupState("ACTIVE");
+        pdpGroup2.setPdpSubgroups(pdpSubgroupList2);
+
+        List<PdpGroup> pdpGroupList = new LinkedList<PdpGroup>();
+        pdpGroupList.add(pdpGroup1);
+        pdpGroupList.add(pdpGroup2);
+        policyModelsService.updatePdpGroupInfo(pdpGroupList);
+
+        String res1 = policyModelsService.getPolicyModel("org.onap.testos", "1.0.0").getPolicyPdpGroup();
+        String expectedRes1 = "[{\"pdpGroup1\":[\"subGroup1\"]},{\"pdpGroup2\":[\"subGroup1\"]}]";
+        assertThat(res1.replaceAll("\\s+","")).isEqualToIgnoringNewLines(expectedRes1);
+
+        String res2 = policyModelsService.getPolicyModel("org.onap.testos2", "2.0.0").getPolicyPdpGroup();
+        String expectedRes2 = "[{\"pdpGroup1\":[\"subGroup1\"]},{\"pdpGroup2\":[\"subGroup1\",\"subGroup2\"]}]";
+        assertThat(res2.replaceAll("\\s+","")).isEqualToIgnoringNewLines(expectedRes2);
+
+        String res3 = policyModelsService.getPolicyModel("org.onap.testos3", "1.0.0").getPolicyPdpGroup();
+        assertThat(res3).isNull();
     }
 }

@@ -156,6 +156,7 @@
         updated_timestamp datetime(6) not null,
         policy_acronym varchar(255),
         policy_tosca MEDIUMTEXT,
+        policy_pdp_group MEDIUMTEXT,
         primary key (policy_model_type, version)
     ) engine=InnoDB;
 
