@@ -65,7 +65,7 @@ public class PolicyModel extends AuditEntity implements Serializable, Comparable
      */
     @Id
     @Expose
-    @Column(name = "version")
+    @Column(name = "version",nullable = false)
     private String version;
 
     @Column(columnDefinition = "MEDIUMTEXT", name = "policy_tosca")
