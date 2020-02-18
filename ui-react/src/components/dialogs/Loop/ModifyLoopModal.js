@@ -52,10 +52,11 @@ const cellStyle = { border: '1px solid black' };
 const headerStyle = { backgroundColor: '#ddd',	border: '2px solid black'	};
 const rowHeaderStyle = {backgroundColor:'#ddd',  fontSize: '15pt', text: 'bold', border: '1px solid black'};
 
-export default class ViewToscalPolicyModal extends React.Component {
+export default class ModifyLoopModal extends React.Component {
 
 	state = {
 		show: true,
+		loopCache: this.props.loopCache,
 		content: 'Please select Tosca model to view the details',
 		selectedRow: -1,
 		toscaPolicyModelNames: [],
@@ -83,7 +84,11 @@ export default class ViewToscalPolicyModal extends React.Component {
 			{ title: "Uploaded Date", field: "updatedDate", editable: 'never',
 				cellStyle: cellStyle,
 				headerStyle: headerStyle
-			}
+			},
+             { title: "Add", field: "updatedDate", editable: 'never',
+             	cellStyle: cellStyle,
+             	headerStyle: headerStyle
+             }
 		],
 		tableIcons: {
 		    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
@@ -102,10 +107,15 @@ export default class ViewToscalPolicyModal extends React.Component {
 		this.getPolicyToscaModels = this.getToscaPolicyModels.bind(this);
 		this.handleYamlContent = this.handleYamlContent.bind(this);
 		this.getToscaPolicyModelYaml = this.getToscaPolicyModelYaml.bind(this);
+		this.handleAdd = this.handleAdd.bind(this);
+		this.getToscaPolicyModels();
 	}
 
-	componentWillMount() {
-		this.getToscaPolicyModels();
+	componentWillReceiveProps(newProps) {
+		this.setState({
+			loopCache: newProps.loopCache,
+			temporaryPropertiesJson: JSON.parse(JSON.stringify(newProps.loopCache.getGlobalProperties()))
+		});
 	}
 
 	getToscaPolicyModels() {
@@ -114,13 +124,13 @@ export default class ViewToscalPolicyModal extends React.Component {
 		});
 	}
 
-	getToscaPolicyModelYaml(policyModelType, policyModelVersion) {
+	getToscaPolicyModelYaml(policyModelType) {
 		if (typeof policyModelType !== "undefined") {
-			PolicyToscaService.getToscaPolicyModelYaml(policyModelType, policyModelVersion).then(toscaYaml => {
+			PolicyToscaService.getToscaPolicyModelYaml(policyModelType).then(toscaYaml => {
 				if (toscaYaml.length !== 0) {
 					this.setState({content: toscaYaml})
 				} else {
-					this.setState({ content: 'Please select Tosca model to view the details' })
+					this.setState({ content: 'No Tosca model Yaml available' })
 				}
 			});
 		} else {
@@ -137,6 +147,10 @@ export default class ViewToscalPolicyModal extends React.Component {
 		this.props.history.push('/');
 	}
 
+	handleAdd() {
+
+	}
+
 	render() {
 		return (
 			<ModalStyled size="xl" show={this.state.show} onHide={this.handleClose}>
@@ -148,7 +162,7 @@ export default class ViewToscalPolicyModal extends React.Component {
 					data={this.state.toscaPolicyModelNames}
 					columns={this.state.toscaColumns}
 					icons={this.state.tableIcons}
-					onRowClick={(event, rowData) => {this.getToscaPolicyModelYaml(rowData.policyModelType,rowData.version);this.setState({selectedRow: rowData.tableData.id})}}
+					onRowClick={(event, rowData) => {this.getToscaPolicyModelYaml(rowData.policyModelType);this.setState({selectedRow: rowData.tableData.id})}}
 					options={{
 						headerStyle: rowHeaderStyle,
 						rowStyle: rowData => ({
@@ -161,7 +175,8 @@ export default class ViewToscalPolicyModal extends React.Component {
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant="secondary" onClick={this.handleClose}>Close</Button>
+					<Button variant="secondary" type="null" onClick={this.handleClose}>Cancel</Button>
+					<Button variant="primary"  type="submit" onClick={this.handleAdd}>Add</Button>
 				</Modal.Footer>
 			</ModalStyled>
 		);
