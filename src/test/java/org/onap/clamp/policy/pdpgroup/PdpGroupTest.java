@@ -33,7 +33,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-import org.onap.clamp.loop.template.PolicyModelId;
 
 public class PdpGroupTest {
 
@@ -49,20 +48,20 @@ public class PdpGroupTest {
         pdpGroup2.setName("pdpGroup2");
         pdpGroup2.setPdpGroupState("ACTIVE");
 
-        PolicyModelId type1 = new PolicyModelId("type1", "1.0.0");
-        PolicyModelId type2 = new PolicyModelId("type2", "2.0.0");
-        PolicyModelId type3 = new PolicyModelId("type3", "1.0.0");
+        PolicyModelKey type1 = new PolicyModelKey("type1", "1.0.0");
+        PolicyModelKey type2 = new PolicyModelKey("type2", "2.0.0");
+        PolicyModelKey type3 = new PolicyModelKey("type3", "1.0.0");
 
         PdpSubgroup pdpSubgroup1 = new PdpSubgroup();
-        pdpSubgroup1.setSubPdpGroup("subGroup1");
-        List<PolicyModelId> pdpTypeList = new LinkedList<PolicyModelId>();
+        pdpSubgroup1.setPdpType("subGroup1");
+        List<PolicyModelKey> pdpTypeList = new LinkedList<PolicyModelKey>();
         pdpTypeList.add(type1);
         pdpTypeList.add(type2);
         pdpSubgroup1.setSupportedPolicyTypes(pdpTypeList);
 
         PdpSubgroup pdpSubgroup2 = new PdpSubgroup();
-        pdpSubgroup2.setSubPdpGroup("subGroup2");
-        List<PolicyModelId> pdpTypeList2 = new LinkedList<PolicyModelId>();
+        pdpSubgroup2.setPdpType("subGroup2");
+        List<PolicyModelKey> pdpTypeList2 = new LinkedList<PolicyModelKey>();
         pdpTypeList2.add(type2);
         pdpTypeList2.add(type3);
         pdpSubgroup2.setSupportedPolicyTypes(pdpTypeList2);

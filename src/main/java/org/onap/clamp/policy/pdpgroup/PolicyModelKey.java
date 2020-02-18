@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2019 AT&T Intellectual Property. All rights
+ * Copyright (C) 2020 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,56 +21,49 @@
  *
  */
 
-package org.onap.clamp.loop.template;
+package org.onap.clamp.policy.pdpgroup;
 
 import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 
-public class PolicyModelId implements Serializable {
+public class PolicyModelKey implements Serializable {
 
     /**
-     * Serial Id.
+     * The serial version ID.
      */
-    private static final long serialVersionUID = -2846526482064334745L;
+	private static final long serialVersionUID = 3307410842013230886L;
 
     @Expose
-    private String policyModelType;
+    private String name;
 
     @Expose
     private String version;
 
     /**
-     * Default constructor for serialization.
-     */
-    public PolicyModelId() {
-
-    }
-
-    /**
      * Constructor.
      */
-    public PolicyModelId(String policyModelType, String version) {
-        this.policyModelType = policyModelType;
+    public PolicyModelKey(String name, String version) {
+        this.name = name;
         this.version = version;
     }
 
     /**
-     * policyModelType getter.
+     * name getter.
      * 
-     * @return the policyModelType
+     * @return the name
      */
-    public String getPolicyModelType() {
-        return policyModelType;
+    public String getName() {
+        return name;
     }
 
     /**
-     * policyModelType setter.
+     * name setter.
      * 
-     * @param policyModelType the policyModelType to set
+     * @param name the name to set
      */
-    public void setPolicyModelType(String policyModelType) {
-        this.policyModelType = policyModelType;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -90,4 +83,38 @@ public class PolicyModelId implements Serializable {
     public void setVersion(String version) {
         this.version = version;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((version == null) ? 0 : version.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PolicyModelKey other = (PolicyModelKey) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name)) {
+			if (!name.matches(other.name)) {
+				return false;
+			}
+		}
+		if (version == null) {
+			if (other.version != null)
+				return false;
+		} else if (!version.equals(other.version))
+			return false;
+		return true;
+	}
 }

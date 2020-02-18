@@ -25,8 +25,6 @@ package org.onap.clamp.policy.pdpgroup;
 
 import java.util.List;
 
-import org.onap.clamp.loop.template.PolicyModelId;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
@@ -75,8 +73,8 @@ public class PdpGroup {
         }
         JsonArray supportedSubgroups =  new JsonArray();
         for (PdpSubgroup subGroup : pdpSubgroups) {
-            if (subGroup.getSupportedPolicyTypes().contains(new PolicyModelId(policyType, version))) {
-                supportedSubgroups.add(subGroup.getSubPdpGroup());
+            if (subGroup.getSupportedPolicyTypes().contains(new PolicyModelKey(policyType, version))) {
+                supportedSubgroups.add(subGroup.getPdpType());
             }
         }
         if(supportedSubgroups.size() > 0) {

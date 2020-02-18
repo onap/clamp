@@ -25,8 +25,6 @@ package org.onap.clamp.policy.pdpgroup;
 
 import java.util.List;
 
-import org.onap.clamp.loop.template.PolicyModelId;
-
 import com.google.gson.annotations.Expose;
 
 /**
@@ -35,24 +33,24 @@ import com.google.gson.annotations.Expose;
 public class PdpSubgroup {
 
     @Expose
-    private String subPdpGroup;
+    private String pdpType;
 
     @Expose
-    private List<PolicyModelId> supportedPolicyTypes;
+    private List<PolicyModelKey> supportedPolicyTypes;
 
-    public String getSubPdpGroup() {
-        return subPdpGroup;
+    public String getPdpType() {
+        return pdpType;
     }
 
-    public void setSubPdpGroup(String subPdpGroup) {
-        this.subPdpGroup = subPdpGroup;
+    public void setPdpType(String pdpType) {
+        this.pdpType = pdpType;
     }
 
-    public List<PolicyModelId> getSupportedPolicyTypes() {
+    public List<PolicyModelKey> getSupportedPolicyTypes() {
         return supportedPolicyTypes;
     }
 
-    public void setSupportedPolicyTypes(List<PolicyModelId> supportedPolicyTypes) {
+    public void setSupportedPolicyTypes(List<PolicyModelKey> supportedPolicyTypes) {
         this.supportedPolicyTypes = supportedPolicyTypes;
     }
 
