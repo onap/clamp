@@ -78,6 +78,9 @@ public class PolicyModel extends AuditEntity implements Serializable, Comparable
     @ManyToMany(mappedBy = "policyModels", fetch = FetchType.EAGER)
     private Set<LoopElementModel> usedByElementModels = new HashSet<>();
 
+    @Column(columnDefinition = "MEDIUMTEXT", name = "policy_pdp_group")
+    private String policyPdpGroup;
+
     /**
      * usedByElementModels getter.
      *
@@ -85,6 +88,24 @@ public class PolicyModel extends AuditEntity implements Serializable, Comparable
      */
     public Set<LoopElementModel> getUsedByElementModels() {
         return usedByElementModels;
+    }
+
+    /**
+     * policyPdpGroup getter.
+     *
+     * @return the policyPdpGroup
+     */
+    public String getPolicyPdpGroup() {
+        return policyPdpGroup;
+    }
+
+    /**
+     * policyPdpGroup setter.
+     *
+     * @param policyPdpGroup the policyPdpGroup to set
+     */
+    public void setPolicyPdpGroup(String policyPdpGroup) {
+        this.policyPdpGroup = policyPdpGroup;
     }
 
     /**
