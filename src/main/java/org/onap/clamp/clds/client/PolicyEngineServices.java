@@ -27,18 +27,26 @@ import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.ExchangeBuilder;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.sdc.controller.installer.BlueprintMicroService;
+import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.loop.template.PolicyModel;
 import org.onap.clamp.loop.template.PolicyModelId;
-import org.onap.clamp.loop.template.PolicyModelsRepository;
+import org.onap.clamp.loop.template.PolicyModelsService;
+import org.onap.clamp.policy.pdpgroup.PdpGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -58,11 +66,9 @@ import org.yaml.snakeyaml.Yaml;
 public class PolicyEngineServices {
     private final CamelContext camelContext;
 
-    private final PolicyModelsRepository policyModelsRepository;
+    private final PolicyModelsService policyModelsService;
 
     private static final EELFLogger logger = EELFManager.getInstance().getLogger(PolicyEngineServices.class);
-    private static final EELFLogger auditLogger = EELFManager.getInstance().getAuditLogger();
-    private static final EELFLogger metricsLogger = EELFManager.getInstance().getMetricsLogger();
     private static int retryInterval = 0;
     private static int retryLimit = 1;
 
@@ -78,9 +84,9 @@ public class PolicyEngineServices {
      */
     @Autowired
     public PolicyEngineServices(CamelContext camelContext, ClampProperties clampProperties,
-            PolicyModelsRepository policyModelsRepository) {
+        PolicyModelsService policyModelsService) {
         this.camelContext = camelContext;
-        this.policyModelsRepository = policyModelsRepository;
+        this.policyModelsService = policyModelsService;
         if (clampProperties.getStringValue(POLICY_RETRY_LIMIT) != null) {
             retryLimit = Integer.valueOf(clampProperties.getStringValue(POLICY_RETRY_LIMIT));
         }
@@ -117,9 +123,9 @@ public class PolicyEngineServices {
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void createPolicyInDbIfNeeded(PolicyModel policyModel) {
-        if (!policyModelsRepository
+        if (!policyModelsService
                 .existsById(new PolicyModelId(policyModel.getPolicyModelType(), policyModel.getVersion()))) {
-            policyModelsRepository.save(policyModel);
+        	policyModelsService.saveOrUpdatePolicyModel(policyModel);
         }
     }
 
@@ -168,6 +174,38 @@ public class PolicyEngineServices {
     public String downloadOnePolicy(String policyType, String policyVersion) {
         return callCamelRoute(ExchangeBuilder.anExchange(camelContext).withProperty("policyModelName", policyType)
                 .withProperty("policyModelVersion", policyVersion).build(), "direct:get-policy-model");
+    }
+
+    /**
+     * This method can be used to download all Pdp Groups data from policy engine.
+     * 
+     * @throws ParseException Exception while parse the response
+     * 
+     */
+    public void downloadPdpGroups() throws ParseException {
+        Exchange exchangeResponse = camelContext.createProducerTemplate()
+                .send("direct:get-all-pdp-groups", ExchangeBuilder.anExchange(camelContext).build());
+        String responseBody = (String) exchangeResponse.getIn().getBody();
+
+        if (responseBody == null || responseBody.isEmpty()) {
+            logger.warn("getPdpGroups returned by policy engine could not be decoded, as it's null or empty");
+            return;
+        }
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObj;
+        List<PdpGroup> pdpGroupList = new LinkedList<>();
+
+        jsonObj = (JSONObject) parser.parse(responseBody);
+        JSONArray itemsArray = (JSONArray) jsonObj.get("groups");
+        Iterator it = itemsArray.iterator();
+
+        while (it.hasNext()) {
+            JSONObject item = (JSONObject) it.next();
+            PdpGroup pdpGroup = JsonUtils.GSON.fromJson(item.toString(), PdpGroup.class);
+            pdpGroupList.add(pdpGroup);
+        }
+
+        policyModelsService.updatePdpGroupInfo(pdpGroupList);
     }
 
     private String callCamelRoute(Exchange exchange, String camelFlow) {

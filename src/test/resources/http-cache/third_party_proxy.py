@@ -252,17 +252,19 @@ class Proxy(SimpleHTTPServer.SimpleHTTPRequestHandler):
      elif self.path.startswith("/policy/pap/v1/pdps") and http_type == "GET":
         if not _file_available:
             self.path = "/policy/pap/v1/pdps"
-            cached_file_folder = '%s/%s' % (TMP_ROOT, self.path)
-            cached_file_content = self._get_cached_content_file_name(cached_file_folder)
-            cached_file_header = self._get_cached_header_file_name(cached_file_folder)
-            print "self.path start with /dcae-service-types, generating response json..."
-            response = "{ \"groups\": {\"description\": \"This group should be used for managing all control loop related policies and pdps\", \"name\": \"controlloop\", \"pdpGroupState\": \"ACTIVE\",\"pdpSubgroups\": [{\"pdpInstances\": [],\"pdpType\": \"apex\",\"supportedPolicyTypes\": [{\"name\": \"onap.policies.controlloop.Operational\",\"version\": \"1.0.0\"}]},{\"pdpInstances\": [], \"pdpType\": \"xacml\",\"policies\": [],\"supportedPolicyTypes\": [{\"name\": \"onap.policies.controlloop.Guard\",\"version\": \"1.0.0\"}]}],\"properties\": {}},{\"description\": \"This group should be used for managing all monitoring related policies and pdps\",\"name\": \"monitoring\",\"pdpGroupState\": \"ACTIVE\",\"pdpSubgroups\": [{\"pdpType\": \"xacml\",\"policies\": [],\"supportedPolicyTypes\": [ {\"name\": \"onap.policies.Monitoring\",\"version\": \"1.0.0\"}]}],\"properties\": {}}]}";
-            print "json reply for get pdp groups: " + response
+        print "self.path start with /policy/pap/v1/pdps, generating response json..."
+        cached_file_folder = '%s/%s' % (TMP_ROOT, self.path)
+        cached_file_content = self._get_cached_content_file_name(cached_file_folder)
+        cached_file_header = self._get_cached_header_file_name(cached_file_folder)
 
+        response = "{ \"groups\": [{\"description\": \"This group should be used for managing all control loop related policies and pdps\", \"name\": \"controlloop\", \"pdpGroupState\": \"ACTIVE\",\"pdpSubgroups\": [{\"pdpInstances\": [],\"pdpType\": \"apex\",\"supportedPolicyTypes\": [{\"name\": \"onap.policies.controlloop.Operational\",\"version\": \"1.0.0\"}]},{\"pdpInstances\": [], \"pdpType\": \"xacml\",\"policies\": [],\"supportedPolicyTypes\": [{\"name\": \"onap.policies.controlloop.Guard\",\"version\": \"1.0.0\"}]}],\"properties\": {}},{\"description\": \"This group should be used for managing all monitoring related policies and pdps\",\"name\": \"monitoring\",\"pdpGroupState\": \"ACTIVE\",\"pdpSubgroups\": [{\"pdpType\": \"xacml\",\"policies\": [],\"supportedPolicyTypes\": [ {\"name\": \"onap.policies.monitoring.*\",\"version\": \"1.0.0\"}]}],\"properties\": {}}]}";
+        print "json reply for get pdp groups: " + response
+
+        if not os.path.exists(cached_file_folder):
             os.makedirs(cached_file_folder, 0777)
-            with open(cached_file_header, 'w') as f:
+        with open(cached_file_header, 'w') as f:
                 f.write("{\"Content-Length\": \"" + str(len(response)) + "\", \"Content-Type\": \"application/json\"}")
-            with open(cached_file_content, 'w') as f:
+        with open(cached_file_content, 'w') as f:
                 f.write(response)
         return True
      elif self.path.startswith("/dcae-service-types") and http_type == "GET":
@@ -313,6 +315,7 @@ class Proxy(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 self.send_response(404)
                 self.end_headers()
                 self.wfile.write('404 Not found, no remote HOST specified on the emulator !!!')
+                print("HOST value is: %s " % (options.proxy))
                 return "404 Not found, no remote HOST specified on the emulator !!!"
 
             url = '%s%s' % (HOST, self.path)
@@ -331,6 +334,7 @@ class Proxy(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 return response.content
         else:
             print("Request for data currently present in cache: %s" % (cached_file_folder,))
+            print("HOST value is: %s " % (HOST))
 
         self._send_content(cached_file_header, cached_file_content)
 
