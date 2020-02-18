@@ -32,10 +32,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.onap.clamp.clds.Application;
 import org.onap.clamp.loop.template.PolicyModel;
+import org.onap.clamp.loop.template.PolicyModelId;
 import org.onap.clamp.loop.template.PolicyModelsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -67,9 +69,33 @@ public class PolicyEngineControllerTestItCase {
         // Re-do it to check that there is no issue with duplicate key
         policyController.synchronizeAllPolicies();
         Instant secondExecution = policyController.getLastInstantExecuted();
-        assertThat (secondExecution).isNotNull();
+        assertThat(secondExecution).isNotNull();
 
         assertThat(firstExecution).isBefore(secondExecution);
     }
 
+    @Test
+    @Transactional
+    public void downloadPdpGroupsTest() throws JsonSyntaxException, IOException, InterruptedException, ParseException {
+        PolicyModel policyModel1 = new PolicyModel("onap.policies.monitoring.test", null, "1.0.0");
+        policyModelsRepository.saveAndFlush(policyModel1);
+        PolicyModel policyModel2 = new PolicyModel("onap.policies.controlloop.Operational", null, "1.0.0");
+        policyModelsRepository.saveAndFlush(policyModel2);
+
+        policyController.downloadPdpGroups();
+
+        List<PolicyModel> policyModelsList = policyModelsRepository.findAll();
+        assertThat(policyModelsList.size()).isGreaterThanOrEqualTo(2);
+
+        PolicyModel policy1 = policyModelsRepository
+                .getOne(new PolicyModelId("onap.policies.monitoring.test", "1.0.0"));
+        PolicyModel policy2 = policyModelsRepository
+                .getOne(new PolicyModelId("onap.policies.controlloop.Operational", "1.0.0"));
+
+        String expectedRes1 = "[{\"monitoring\":[\"xacml\"]}]";
+        assertThat(policy1.getPolicyPdpGroup().replaceAll("\\s+","")).isEqualToIgnoringNewLines(expectedRes1);
+        String expectedRes2 = "[{\"controlloop\":[\"apex\"]}]";
+        assertThat(policy2.getPolicyPdpGroup().replaceAll("\\s+","")).isEqualToIgnoringNewLines(expectedRes2);
+
+    }
 }

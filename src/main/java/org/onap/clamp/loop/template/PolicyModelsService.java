@@ -142,12 +142,13 @@ public class PolicyModelsService {
         for (PolicyModel policyModel :  policyModelList) {
             JsonArray supportedPdpGroups = new JsonArray();
             for (PdpGroup pdpGroup : pdpGroupList) {
-                JsonObject supportedPdpGroup = pdpGroup.getSupportedSubgroups(policyModel.getPolicyModelType(), policyModel.getVersion());
+                JsonObject supportedPdpGroup = pdpGroup.getSupportedSubgroups(policyModel.getPolicyModelType(),
+                        policyModel.getVersion());
                 if (supportedPdpGroup != null) {
                     supportedPdpGroups.add(supportedPdpGroup);
                 }
             }
-            if(supportedPdpGroups.size() > 0) {
+            if (supportedPdpGroups.size() > 0) {
                 policyModel.setPolicyPdpGroup(JsonUtils.GSON_JPA_MODEL.toJson(supportedPdpGroups));
                 policyModelsRepository.save(policyModel);
             }

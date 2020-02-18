@@ -42,6 +42,7 @@ import org.onap.clamp.loop.template.PolicyModelsRepository;
 import org.onap.clamp.loop.template.PolicyModelsService;
 import org.onap.clamp.policy.pdpgroup.PdpGroup;
 import org.onap.clamp.policy.pdpgroup.PdpSubgroup;
+import org.onap.clamp.policy.pdpgroup.PolicyModelKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -184,20 +185,20 @@ public class PolicyModelServiceItCase {
         policyModelsService.saveOrUpdatePolicyModel(policyModel3);
 
 
-        PolicyModelId type1 = new PolicyModelId("org.onap.testos", "1.0.0");
-        PolicyModelId type2 = new PolicyModelId("org.onap.testos2", "2.0.0");
-        PolicyModelId type3 = new PolicyModelId("org.onap.testos3", "2.0.0");
+        PolicyModelKey type1 = new PolicyModelKey("org.onap.testos", "1.0.0");
+        PolicyModelKey type2 = new PolicyModelKey("org.onap.testos2", "2.0.0");
 
         PdpSubgroup pdpSubgroup1 = new PdpSubgroup();
-        pdpSubgroup1.setSubPdpGroup("subGroup1");
-        List<PolicyModelId> pdpTypeList = new LinkedList<PolicyModelId>();
+        pdpSubgroup1.setPdpType("subGroup1");
+        List<PolicyModelKey> pdpTypeList = new LinkedList<PolicyModelKey>();
         pdpTypeList.add(type1);
         pdpTypeList.add(type2);
         pdpSubgroup1.setSupportedPolicyTypes(pdpTypeList);
 
+        PolicyModelKey type3 = new PolicyModelKey("org.onap.testos3", "2.0.0");
         PdpSubgroup pdpSubgroup2 = new PdpSubgroup();
-        pdpSubgroup2.setSubPdpGroup("subGroup2");
-        List<PolicyModelId> pdpTypeList2 = new LinkedList<PolicyModelId>();
+        pdpSubgroup2.setPdpType("subGroup2");
+        List<PolicyModelKey> pdpTypeList2 = new LinkedList<PolicyModelKey>();
         pdpTypeList2.add(type2);
         pdpTypeList2.add(type3);
         pdpSubgroup2.setSupportedPolicyTypes(pdpTypeList2);

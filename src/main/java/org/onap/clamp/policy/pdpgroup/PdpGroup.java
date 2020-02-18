@@ -23,13 +23,11 @@
 
 package org.onap.clamp.policy.pdpgroup;
 
-import java.util.List;
-
-import org.onap.clamp.loop.template.PolicyModelId;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+
+import java.util.List;
 
 /**
  * This class maps the get Pdp Group response to a nice pojo.
@@ -69,17 +67,23 @@ public class PdpGroup {
         this.pdpSubgroups = pdpSubgroups;
     }
 
+    /**
+     * Get supported subGroups based on the defined policy type and version.
+     * @param policyType The policy type
+     * @param version The version
+     * @return The supported subGroup list in Json format
+     */
     public JsonObject getSupportedSubgroups(String policyType, String version) {
-        if(!pdpGroupState.equalsIgnoreCase("ACTIVE")) {
+        if (!pdpGroupState.equalsIgnoreCase("ACTIVE")) {
             return null;
         }
         JsonArray supportedSubgroups =  new JsonArray();
         for (PdpSubgroup subGroup : pdpSubgroups) {
-            if (subGroup.getSupportedPolicyTypes().contains(new PolicyModelId(policyType, version))) {
-                supportedSubgroups.add(subGroup.getSubPdpGroup());
+            if (subGroup.getSupportedPolicyTypes().contains(new PolicyModelKey(policyType, version))) {
+                supportedSubgroups.add(subGroup.getPdpType());
             }
         }
-        if(supportedSubgroups.size() > 0) {
+        if (supportedSubgroups.size() > 0) {
             JsonObject supportedPdpGroup = new JsonObject();
             supportedPdpGroup.add(this.name, supportedSubgroups);
             return supportedPdpGroup;
