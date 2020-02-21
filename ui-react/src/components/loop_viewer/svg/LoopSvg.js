@@ -89,7 +89,14 @@ class LoopViewSvg extends React.Component {
 		console.debug("svg click event received");
 		var elementName = event.target.parentNode.parentNode.parentNode.getAttribute('data-element-id');
 		console.info("SVG element clicked", elementName);
-		this.props.history.push(this.state.componentModalMapping.get(elementName));
+		if(elementName !== null && elementName !== 'start-circle' && elementName !== 'stop-circle' && elementName.indexOf('Arrow-') < 0) {
+			if (this.state.componentModalMapping.has(elementName)) {
+				this.props.history.push(this.state.componentModalMapping.get(elementName));
+			} else {
+				// if element not found in map, this CL is based on the Template
+				this.props.history.push("/configurationPolicyModal/" + elementName);
+			}
+		}
 	}
 
 	render() {

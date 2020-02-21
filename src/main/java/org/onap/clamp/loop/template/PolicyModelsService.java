@@ -75,6 +75,7 @@ public class PolicyModelsService {
                 .incrementMajorVersion(model.getVersion() != null ? model.getVersion() : null));
             model.setPolicyModelType(policyModelTypeName);
             model.setPolicyAcronym(acronym);
+            model.setPolicyModelTosca(policyModelTosca);
         }
         return saveOrUpdatePolicyModel(model);
     }
@@ -110,4 +111,19 @@ public class PolicyModelsService {
         PolicyModel policyModel = getPolicyModelByType(type);
         return policyModel != null ? policyModel.getPolicyModelTosca() : null;
     }
+
+    /**
+     * Retrieves the Tosca model Json Schema string.
+     *
+     * @param type The PolicyModelType
+     * @return The Tosca model Json Schema string
+     */
+    public String getPolicyModelJsonSchema(String type) {
+        PolicyModel policyModel = getPolicyModelByType(type);
+        return policyModel != null
+            ? toscaYamlToJsonConvertor.parseToscaYaml(policyModel.getPolicyModelTosca(),
+                policyModel.getPolicyModelType())
+            : null;
+    }
+
 }
