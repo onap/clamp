@@ -25,15 +25,12 @@ package org.onap.clamp.policy;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-
 import java.io.UnsupportedEncodingException;
-
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -79,6 +76,10 @@ public abstract class Policy extends AuditEntity {
 
     /**
      * Name setter.
+     * <<<<<<< 7658007d67c5c2bc1d81bff4bf972b315cb5bea6
+     * =======
+     *
+     * >>>>>>> UI and Backend changes to support creation of Control Loop using a Loop Template.
      */
     public abstract void setName(String name);
 
@@ -157,19 +158,29 @@ public abstract class Policy extends AuditEntity {
     /**
      * Generate the policy name.
      *
-     * @param policyType        The policy type
-     * @param serviceName       The service name
-     * @param serviceVersion    The service version
-     * @param resourceName      The resource name
+     * @param policyType The policy type
+     * @param serviceName The service name
+     * @param serviceVersion The service version
+     * @param resourceName The resource name
      * @param blueprintFilename The blueprint file name
      * @return The generated policy name
      */
-    public static String generatePolicyName(String policyType, String serviceName, String serviceVersion,
-                                            String resourceName, String blueprintFilename) {
-        StringBuilder buffer = new StringBuilder(policyType).append("_").append(serviceName).append("_v")
-                .append(serviceVersion).append("_").append(resourceName).append("_")
-                .append(blueprintFilename.replaceAll(".yaml", ""));
+    public static String generatePolicyName(String policyType, String serviceName,
+        String serviceVersion, String resourceName, String blueprintFilename) {
+        StringBuilder buffer = new StringBuilder(policyType).append("_").append(serviceName)
+            .append("_v").append(serviceVersion).append("_").append(resourceName).append("_")
+            .append(blueprintFilename.replaceAll(".yaml", ""));
         return buffer.toString().replace('.', '_').replaceAll(" ", "");
+    }
+
+    /**
+     * Replace all '-' with '_' within policy scope and name.
+     *
+     * @param inName Policy Name string
+     * @return String with replaced hyphens to underscores
+     */
+    public static String normalizePolicyScopeName(String inName) {
+        return inName.replaceAll("-", "_");
     }
 
 }
