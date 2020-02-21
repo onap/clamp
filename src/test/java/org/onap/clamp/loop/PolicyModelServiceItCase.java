@@ -25,6 +25,7 @@ package org.onap.clamp.loop;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.gson.JsonObject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
@@ -45,8 +46,6 @@ import org.onap.clamp.policy.pdpgroup.PolicyModelKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.google.gson.JsonObject;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -229,12 +228,14 @@ public class PolicyModelServiceItCase {
         policyModelsService.updatePdpGroupInfo(pdpGroupList);
 
         JsonObject res1 = policyModelsService.getPolicyModel("org.onap.testos", "1.0.0").getPolicyPdpGroup();
-        String expectedRes1 = "{\"supportedPdpGroups\":[{\"pdpGroup1\":[\"subGroup1\"]},{\"pdpGroup2\":[\"subGroup1\"]}]}";
+        String expectedRes1 = "{\"supportedPdpGroups\":[{\"pdpGroup1\":[\"subGroup1\"]},"
+                + "{\"pdpGroup2\":[\"subGroup1\"]}]}";
         JsonObject expectedJson1 = JsonUtils.GSON.fromJson(expectedRes1, JsonObject.class);
         assertThat(res1).isEqualTo(expectedJson1);
 
         JsonObject res2 = policyModelsService.getPolicyModel("org.onap.testos2", "2.0.0").getPolicyPdpGroup();
-        String expectedRes2 = "{\"supportedPdpGroups\":[{\"pdpGroup1\":[\"subGroup1\"]},{\"pdpGroup2\":[\"subGroup1\",\"subGroup2\"]}]}";
+        String expectedRes2 = "{\"supportedPdpGroups\":[{\"pdpGroup1\":[\"subGroup1\"]},"
+                + "{\"pdpGroup2\":[\"subGroup1\",\"subGroup2\"]}]}";
         JsonObject expectedJson2 = JsonUtils.GSON.fromJson(expectedRes2, JsonObject.class);
         assertThat(res2).isEqualTo(expectedJson2);
 

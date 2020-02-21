@@ -165,20 +165,4 @@ public class LoopToJsonTest {
         assertThat(loopTestDeserialized).isEqualToIgnoringGivenFields(loopTest2, "modelService", "svgRepresentation",
                 "blueprint", "components");
     }
-
-    @Test
-    public void createPoliciesPayloadPdpGroupTest() throws IOException {
-        Loop loopTest = getLoop("ControlLoopTest", "<xml></xml>", "yamlcontent", "{\"testname\":\"testvalue\"}",
-                "123456789", "https://dcaetest.org", "UUID-blueprint");
-        OperationalPolicy opPolicy = this.getOperationalPolicy(
-                ResourceFileUtil.getResourceAsString("tosca/operational-policy-properties.json"), "GuardOpPolicyTest");
-        loopTest.addOperationalPolicy(opPolicy);
-        MicroServicePolicy microServicePolicy = getMicroServicePolicy("configPolicyTest", "",
-                "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
-                "{\"param1\":\"value1\"}", true);
-        loopTest.addMicroServicePolicy(microServicePolicy);
-
-        JSONAssert.assertEquals(ResourceFileUtil.getResourceAsString("tosca/pdp-group-policy-payload.json"),
-                PolicyComponent.createPoliciesPayloadPdpGroup(loopTest), false);
-    }
 }
