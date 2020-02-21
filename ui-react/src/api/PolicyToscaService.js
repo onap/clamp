@@ -78,12 +78,12 @@ export default class PolicyToscaService {
  			});
   }
 
-  static createPolicyModelFromToscaModel(policyModelType, jsonData) {
-       return fetch('/restservices/clds/v2/policyToscaModels/' + policyModelType, {
+  static createPolicyModelFromToscaModel(jsonData) {
+       return fetch('/restservices/clds/v2/policyToscaModels', {
            method: 'POST',
            credentials: 'same-origin',
            headers: {
-             "Content-Type": "a",
+             "Content-Type": "plain/text",
            },
            body: JSON.stringify(jsonData)
          })
@@ -111,7 +111,7 @@ export default class PolicyToscaService {
              method: 'PUT',
              credentials: 'same-origin',
              headers: {
-               "Content-Type": "a",
+               "Content-Type": "plain/text",
              },
              body: JSON.stringify(jsonData)
            })
@@ -133,4 +133,24 @@ export default class PolicyToscaService {
              return "";
            });
        }
+     
+  	static getPolicyModelTypeJsonSchema(policyType) {
+		return fetch('/restservices/clds/v2/policyToscaModels/jsonSchema/' + policyType, {
+			method: 'GET',
+			credentials: 'same-origin'
+		})
+			.then(function (response) {
+				console.debug("getPolicyModelTypeJsonSchema response received: ", response.status);
+				if (response.ok) {
+					return response.json();
+				} else {
+					console.error("getPolicyModelTypeJsonSchema query failed");
+					return "";
+				}
+			})
+			.catch(function (error) {
+				console.error("getPolicyModelTypeJsonSchema error received", error);
+				return "";
+			});
+	}
 }

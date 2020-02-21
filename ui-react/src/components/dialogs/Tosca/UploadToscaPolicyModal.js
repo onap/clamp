@@ -74,8 +74,8 @@ export default class UploadToscaPolicyModal extends React.Component {
 	handleCreateFromToscaPolicyModel(e) {
         e.preventDefault();
 		console.log("Policy Model Type is", this.state.policyModelType);
-		if(this.state.policyModelType && this.state.policyModelTosca) {
- 		PolicyToscaService.createPolicyModelFromToscaModel(this.state.policyModelType, this.state.policyModelTosca).then(resp => {
+		if(this.state.policyModelTosca) {
+ 		PolicyToscaService.createPolicyModelFromToscaModel(this.state.policyModelTosca).then(resp => {
 			if(resp.status === 200) {
 			this.setState({apiResponseStatus: resp.status, apiResponseMessage: resp.message, upldBtnClicked: true});
 		} else {
@@ -102,23 +102,18 @@ export default class UploadToscaPolicyModal extends React.Component {
 				<Modal.Body>
 					<Form.Group as={Row} controlId="formPlaintextEmail">
 						<Col sm="10">
-						<input style={{display: 'none'}} type="file" name="file" accept=".yaml" onChange={this.fileSelectedHandler}
+						<input style={{display: 'none'}} type="file" name="file" accept=".yaml,.yml" onChange={this.fileSelectedHandler}
 							ref={fileInput => this.fileInput = fileInput}/>
 						<button onClick={() => this.fileInput.click()}>Pick Tosca File</button>
 							<Alert variant="secondary">
 								<p>{this.state.selectedFile.name}</p>
 							</Alert>
-							<Form.Label column sm="2">Policy Model Type:</Form.Label>
-							<input type="text" style={{width: '50%'}}
-								value={this.state.policyModelType}
-								onChange={this.handlePolicyModelType}
-							/>
 						</Col>
 					</Form.Group>
 				</Modal.Body>
 				<Modal.Footer>
 					{!this.state.apiResponseStatus?<Button variant="secondary" type="null" onClick={this.handleClose}>Cancel</Button>:""}
-				  {!this.state.apiResponseStatus?<Button disabled={!this.state.selectedFile.name || this.state.upldBtnClicked} variant="primary" type="submit" onClick={this.handleCreateFromToscaPolicyModel.bind(this)}>Create</Button>:""}
+				  {!this.state.apiResponseStatus?<Button disabled={!this.state.selectedFile.name || this.state.upldBtnClicked} variant="primary" type="submit" onClick={this.handleCreateFromToscaPolicyModel.bind(this)}>Upload</Button>:""}
 					{this.state.apiResponseStatus?<Alert variant={this.state.apiResponseStatus === 200?"success":"danger"}>
 							<p>{this.state.apiResponseMessage}</p>
 								<Button onClick={this.handleClose} variant={this.state.apiResponseStatus === 200?"outline-success":"danger"}>

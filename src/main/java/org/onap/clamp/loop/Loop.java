@@ -99,7 +99,9 @@ public class Loop extends AuditEntity implements Serializable {
     private JsonObject globalPropertiesJson;
 
     @Expose
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(
+        fetch = FetchType.EAGER,
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "service_uuid")
     private Service modelService;
 
@@ -113,22 +115,34 @@ public class Loop extends AuditEntity implements Serializable {
     private final Map<String, ExternalComponent> components = new HashMap<>();
 
     @Expose
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop", orphanRemoval = true)
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER,
+        mappedBy = "loop",
+        orphanRemoval = true)
     private Set<OperationalPolicy> operationalPolicies = new HashSet<>();
 
     @Expose
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinTable(name = "loops_to_microservicepolicies", joinColumns = @JoinColumn(name = "loop_name"),
-            inverseJoinColumns = @JoinColumn(name = "microservicepolicy_name"))
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "loops_to_microservicepolicies",
+        joinColumns = @JoinColumn(name = "loop_name"),
+        inverseJoinColumns = @JoinColumn(name = "microservicepolicy_name"))
     private Set<MicroServicePolicy> microServicePolicies = new HashSet<>();
 
     @Expose
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop", orphanRemoval = true)
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER,
+        mappedBy = "loop",
+        orphanRemoval = true)
     @SortNatural
     private SortedSet<LoopLog> loopLogs = new TreeSet<>();
 
     @Expose
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToOne(
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
+        fetch = FetchType.EAGER)
     @JoinColumn(name = "loop_template_name", nullable = false)
     private LoopTemplate loopTemplate;
 
@@ -300,16 +314,17 @@ public class Loop extends AuditEntity implements Serializable {
     /**
      * Generate the loop name.
      *
-     * @param serviceName       The service name
-     * @param serviceVersion    The service version
-     * @param resourceName      The resource name
+     * @param serviceName The service name
+     * @param serviceVersion The service version
+     * @param resourceName The resource name
      * @param blueprintFileName The blueprint file name
      * @return The generated loop name
      */
-    public static String generateLoopName(String serviceName, String serviceVersion, String resourceName,
-                                          String blueprintFileName) {
-        StringBuilder buffer = new StringBuilder("LOOP_").append(serviceName).append("_v").append(serviceVersion)
-                .append("_").append(resourceName).append("_").append(blueprintFileName.replaceAll(".yaml", ""));
+    public static String generateLoopName(String serviceName, String serviceVersion,
+        String resourceName, String blueprintFileName) {
+        StringBuilder buffer = new StringBuilder("LOOP_").append(serviceName).append("_v")
+            .append(serviceVersion).append("_").append(resourceName).append("_")
+            .append(blueprintFileName.replaceAll(".yaml", ""));
         return buffer.toString().replace('.', '_').replaceAll(" ", "");
     }
 
