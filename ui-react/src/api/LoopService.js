@@ -21,6 +21,23 @@
  */
 
 export default class LoopService {
+	static getTemplateNames() {
+		return fetch('/restservices/clds/v2/templates/names', { method: 'GET', credentials: 'same-origin' })
+			.then(function (response) {
+				console.debug("GetTemplateNames response received: ", response.status);
+				if (response.ok) {
+					return response.json();
+				} else {
+					console.error("GetTemplateNames query failed");
+					return {};
+				}
+			})
+			.catch(function (error) {
+				console.error("GetTemplateNames error received", error);
+				return {};
+			});
+	}
+	
 	static getLoopNames() {
 		return fetch('/restservices/clds/v2/loop/getAllNames', { method: 'GET', credentials: 'same-origin' })
 			.then(function (response) {
@@ -60,6 +77,44 @@ export default class LoopService {
 				return {};
 			});
 	}
+	
+	static createLoop(loopName, templateName) {
+		return fetch('/restservices/clds/v2/loop/create/' + loopName + '?templateName=' + templateName, {
+			method: 'POST',
+			headers: {
+				"Content-Type": "application/json"
+			},
+			credentials: 'same-origin'
+		})
+			.then(function (response) {
+				console.debug("CreateLoop response received: ", response.status);
+				return response.json();
+			})
+			.catch(function (error) {
+				console.error("CreateLoop error received", error);
+				return "";
+			});
+	}
+	
+	static getPolicyModelTypeJsonSchema(policyType) {
+		return fetch('/restservices/clds/v2/policyToscaModels/jsonSchema/' + policyType, {
+			method: 'GET',
+			credentials: 'same-origin'
+		})
+			.then(function (response) {
+				console.debug("getPolicyModelTypeJsonSchema response received: ", response.status);
+				if (response.ok) {
+					return response.json();
+				} else {
+					console.error("getPolicyModelTypeJsonSchema query failed");
+					return "";
+				}
+			})
+			.catch(function (error) {
+				console.error("getPolicyModelTypeJsonSchema error received", error);
+				return "";
+			});
+	}
 
 	static getSvg(loopName) {
 		return fetch('/restservices/clds/v2/loop/svgRepresentation/' + loopName, {
@@ -93,7 +148,7 @@ export default class LoopService {
 			.then(function (response) {
 				console.debug("updateMicroservicePolicy response received: ", response.status);
 				if (response.ok) {
-					return response.text();
+					return response.json();
 				} else {
 					console.error("updateMicroservicePolicy query failed");
 					return "";
