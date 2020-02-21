@@ -26,13 +26,19 @@ package org.onap.clamp.loop;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
-
+import java.util.HashSet;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.onap.clamp.loop.components.external.ExternalComponentState;
 import org.onap.clamp.loop.components.external.PolicyComponent;
+import org.onap.clamp.loop.template.LoopTemplate;
+import org.onap.clamp.loop.template.PolicyModel;
+import org.onap.clamp.policy.microservice.MicroServicePolicy;
+import org.onap.clamp.policy.operational.OperationalPolicy;
 
 public class PolicyComponentTest {
 
@@ -242,5 +248,70 @@ public class PolicyComponentTest {
         ExternalComponentState state4 = policy.computeState(exchange);
 
         assertThat(state4.getStateName()).isEqualTo("IN_ERROR");
+    }
+
+    /**
+     * Test the create policies payload PdpGroup test.
+     */
+    @Test
+    public void createPoliciesPayloadPdpGroupTest() {
+        Loop loopTest = new Loop("ControlLoopTest", "<xml></xml>");
+        PolicyModel policyModel1 = new PolicyModel("onap.policies.monitoring.test", null, "1.0.0");
+
+        MicroServicePolicy microServicePolicy = new MicroServicePolicy("configPolicyTest", policyModel1, true,
+                new Gson().fromJson("{\"configtype\":\"json\"}", JsonObject.class), null);
+        microServicePolicy.setPdpGroup("pdpGroup1");
+        microServicePolicy.setPdpSubGroup("pdpSubgroup1");
+
+        loopTest.addMicroServicePolicy(microServicePolicy);
+
+        PolicyModel policyModel2 = new PolicyModel("onap.policies.controlloop.Operational", null, "1.0.0");
+        OperationalPolicy opPolicy = new OperationalPolicy("opPolicy", loopTest,
+                new Gson().fromJson("{\"configtype\":\"json\"}", JsonObject.class), policyModel2, null);
+        opPolicy.setPdpGroup("pdpGroup2");
+        opPolicy.setPdpSubGroup("pdpSubgroup2");
+
+        loopTest.addOperationalPolicy(opPolicy);
+
+        LoopTemplate loopTemplate = new LoopTemplate("test", "yaml", "svg", 1, null);
+        loopTemplate.setDcaeBlueprintId("UUID-blueprint");
+        loopTest.setLoopTemplate(loopTemplate);
+
+        String payload = PolicyComponent.createPoliciesPayloadPdpGroup(loopTest);
+        String expectedRes = "{\n"
+                + "  \"groups\": [\n"
+                + "    {\n"
+                + "      \"name\": \"pdpGroup2\",\n"
+                + "      \"deploymentSubgroups\": [\n"
+                + "        {\n"
+                + "          \"pdpType\": \"pdpSubgroup2\",\n"
+                + "          \"action\": \"POST\",\n"
+                + "          \"policies\": [\n"
+                + "            {\n"
+                + "              \"name\": \"onap.policies.controlloop.Operational\",\n"
+                + "              \"version\": \"1.0.0\"\n"
+                + "            }\n"
+                + "          ]\n"
+                + "        }\n"
+                + "      ]\n"
+                + "    },\n"
+                + "    {\n"
+                + "      \"name\": \"pdpGroup1\",\n"
+                + "      \"deploymentSubgroups\": [\n"
+                + "        {\n"
+                + "          \"pdpType\": \"pdpSubgroup1\",\n"
+                + "          \"action\": \"POST\",\n"
+                + "          \"policies\": [\n"
+                + "            {\n"
+                + "              \"name\": \"onap.policies.monitoring.test\",\n"
+                + "              \"version\": \"1.0.0\"\n"
+                + "            }\n"
+                + "          ]\n"
+                + "        }\n"
+                + "      ]\n"
+                + "    }\n"
+                + "  ]\n"
+                + "}";
+        assertThat(payload).isEqualTo(expectedRes);
     }
 }
