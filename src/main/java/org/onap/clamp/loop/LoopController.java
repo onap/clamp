@@ -26,10 +26,8 @@ package org.onap.clamp.loop;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.List;
-
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.onap.clamp.policy.operational.OperationalPolicy;
@@ -40,10 +38,10 @@ import org.springframework.stereotype.Controller;
 public class LoopController {
 
     private final LoopService loopService;
-    private static final Type OPERATIONAL_POLICY_TYPE = new TypeToken<List<OperationalPolicy>>() {}
-        .getType();
-    private static final Type MICROSERVICE_POLICY_TYPE = new TypeToken<List<MicroServicePolicy>>() {}
-        .getType();
+    private static final Type OPERATIONAL_POLICY_TYPE =
+        new TypeToken<List<OperationalPolicy>>() {}.getType();
+    private static final Type MICROSERVICE_POLICY_TYPE =
+        new TypeToken<List<MicroServicePolicy>>() {}.getType();
 
     @Autowired
     public LoopController(LoopService loopService) {
@@ -54,6 +52,10 @@ public class LoopController {
         return loopService.getClosedLoopNames();
     }
 
+    public Loop createLoop(String loopName, String templateName) {
+        return loopService.createLoop(loopName, templateName);
+    }
+
     public Loop getLoop(String loopName) {
         return loopService.getLoop(loopName);
     }
@@ -61,34 +63,34 @@ public class LoopController {
     /**
      * Update the Operational Policy properties.
      *
-     * @param loopName                The loop name
+     * @param loopName The loop name
      * @param operationalPoliciesJson The new Operational Policy properties
      * @return The updated loop
      */
     public Loop updateOperationalPolicies(String loopName, JsonArray operationalPoliciesJson) {
-        List<OperationalPolicy> operationalPolicies = JsonUtils.GSON.fromJson(operationalPoliciesJson,
-                OPERATIONAL_POLICY_TYPE);
+        List<OperationalPolicy> operationalPolicies =
+            JsonUtils.GSON.fromJson(operationalPoliciesJson, OPERATIONAL_POLICY_TYPE);
         return loopService.updateAndSaveOperationalPolicies(loopName, operationalPolicies);
     }
 
     /**
      * Update the whole array of MicroService policies properties.
      *
-     * @param loopName                 The loop name
+     * @param loopName The loop name
      * @param microServicePoliciesJson The array of all MicroService policies
-     *                                 properties
+     *        properties
      * @return The updated loop
      */
     public Loop updateMicroservicePolicies(String loopName, JsonArray microServicePoliciesJson) {
-        List<MicroServicePolicy> microservicePolicies = JsonUtils.GSON.fromJson(microServicePoliciesJson,
-                MICROSERVICE_POLICY_TYPE);
+        List<MicroServicePolicy> microservicePolicies =
+            JsonUtils.GSON.fromJson(microServicePoliciesJson, MICROSERVICE_POLICY_TYPE);
         return loopService.updateAndSaveMicroservicePolicies(loopName, microservicePolicies);
     }
 
     /**
      * Update the global properties.
      *
-     * @param loopName         The loop name
+     * @param loopName The loop name
      * @param globalProperties The updated global properties
      * @return The updated loop
      */
@@ -99,12 +101,26 @@ public class LoopController {
     /**
      * Update one MicroService policy properties.
      *
-     * @param loopName              The loop name
+     * @param loopName The loop name
      * @param newMicroservicePolicy The new MicroService policy properties
      * @return The updated MicroService policy
      */
-    public MicroServicePolicy updateMicroservicePolicy(String loopName, MicroServicePolicy newMicroservicePolicy) {
+    public MicroServicePolicy updateMicroservicePolicy(String loopName,
+        MicroServicePolicy newMicroservicePolicy) {
         return loopService.updateMicroservicePolicy(loopName, newMicroservicePolicy);
+    }
+
+    /**
+     * Update list of MicroService policy properties.
+     *
+     * @param loopName The loop name
+     * @param microservicePoliciesJson JsonArray of MicroService policy properties
+     */
+    public Loop updateMicroservicePolicyProperties(String loopName,
+        JsonArray microservicePoliciesJson) {
+        List<MicroServicePolicy> newMicroservicePolicies =
+            JsonUtils.GSON.fromJson(microservicePoliciesJson, MICROSERVICE_POLICY_TYPE);
+        return loopService.updateMicroservicePolicyProperties(loopName, newMicroservicePolicies);
     }
 
     /**

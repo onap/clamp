@@ -60,7 +60,25 @@ export default class LoopService {
 				return {};
 			});
 	}
-
+	
+	static createLoop(loopName, templateName) {
+		return fetch('/restservices/clds/v2/loop/create/' + loopName + '?templateName=' + templateName, {
+			method: 'POST',
+			headers: {
+				"Content-Type": "application/json"
+			},
+			credentials: 'same-origin'
+		})
+			.then(function (response) {
+				console.debug("CreateLoop response received: ", response.status);
+				return response.json();
+			})
+			.catch(function (error) {
+				console.error("CreateLoop error received", error);
+				return "";
+			});
+	}
+	
 	static getSvg(loopName) {
 		return fetch('/restservices/clds/v2/loop/svgRepresentation/' + loopName, {
 			method: 'GET',
@@ -93,7 +111,7 @@ export default class LoopService {
 			.then(function (response) {
 				console.debug("updateMicroservicePolicy response received: ", response.status);
 				if (response.ok) {
-					return response.text();
+					return response.json();
 				} else {
 					console.error("updateMicroservicePolicy query failed");
 					return "";

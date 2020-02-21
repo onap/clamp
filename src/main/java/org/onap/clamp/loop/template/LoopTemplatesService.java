@@ -64,4 +64,15 @@ public class LoopTemplatesService {
     public void deleteLoopTemplate(String name) {
         loopTemplatesRepository.deleteById(name);
     }
+
+    /**
+     * Get the SVG representation of the loopTemplate.
+     *
+     * @param name The loopTemplate name
+     * @return The SVG representation
+     */
+    public String getSvgRepresentation(String name) {
+        LoopTemplate loopTemplate = getLoopTemplate(name);
+        return loopTemplate != null ? loopTemplate.getSvgRepresentation() : null;
+    }
 }

@@ -38,7 +38,8 @@ export default class OperationalPolicyModal extends React.Component {
 	state = {
 		show: true,
 		loopCache: this.props.loopCache,
-		jsonEditor: null
+		jsonEditor: null,
+		isOpenLoopTemplate: false,
 	};
 
 	constructor(props, context) {
@@ -75,7 +76,8 @@ export default class OperationalPolicyModal extends React.Component {
 	}
 
 	componentDidMount() {
-		this.renderJsonEditor();
+		var isOpenLoop = this.props.loopCache.isOpenLoopTemplate();
+		this.setState({ isOpenLoopTemplate: isOpenLoop }, () => this.renderJsonEditor());
 	}
 
 	setDefaultJsonEditorOptions() {
@@ -109,7 +111,13 @@ export default class OperationalPolicyModal extends React.Component {
 	}
 	
 	renderJsonEditor() {
-		console.debug("Rendering OperationalPolicyModal");
+		if(this.state.isOpenLoopTemplate) {
+			console.debug("Rendering OperationalPolicyModal skipped due to Open Loop");
+			return;
+		} else {
+			console.debug("Rendering OperationalPolicyModal");
+		}
+		
 		var schema_json = this.state.loopCache.getOperationalPolicyJsonSchema();
 		
 		if (schema_json == null) {
@@ -144,6 +152,14 @@ export default class OperationalPolicyModal extends React.Component {
 	}
 
 	render() {
+		var openLoopMessage, refreshButton, saveButton;
+		if(this.state.isOpenLoopTemplate) {
+			openLoopMessage = "Operational Policy cannot be configured as only Open Loop is supported for this Template!";
+		} else {
+			refreshButton = <Button variant="secondary" onClick={this.handleRefresh}>Refresh</Button>;
+			saveButton = <Button variant="primary" onClick={this.handleSave}>Save Changes</Button>;
+		}
+		
 		return (
 			<ModalStyled size="xl" show={this.state.show} onHide={this.handleClose}>
 				<Modal.Header closeButton>
@@ -151,18 +167,14 @@ export default class OperationalPolicyModal extends React.Component {
 				</Modal.Header>
 				<Modal.Body>
 					<div id="editor" />
-
+				    {openLoopMessage}
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={this.handleClose}>
 						Close
 					</Button>
-					<Button variant="secondary" onClick={this.handleRefresh}>
-						Refresh
-					</Button>
-					<Button variant="primary" onClick={this.handleSave}>
-						Save Changes
-					</Button>
+					{refreshButton}
+					{saveButton}
 				</Modal.Footer>
 			</ModalStyled>
 
