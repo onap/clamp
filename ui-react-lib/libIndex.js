@@ -22,6 +22,7 @@
  */
 
 export { default as ConfigurationPolicyModal } from './src/components/dialogs/ConfigurationPolicy/ConfigurationPolicyModal';
+export { default as CreateLoopModal } from './src/components/dialogs/Loop/CreateLoopModal';
 export { default as DeployLoopModal } from './src/components/dialogs/Loop/DeployLoopModal';
 export { default as LoopActionService } from './src/api/LoopActionService';
 export { default as LoopCache }  from './src/api/LoopCache';
@@ -36,10 +37,9 @@ export { default as MenuBar } from './src/components/menu/MenuBar';
 export { default as NotFound } from './src/NotFound';
 export { default as OpenLoopModal } from './src/components/dialogs/Loop/OpenLoopModal';
 export { default as OperationalPolicyModal } from './src/components/dialogs/OperationalPolicy/OperationalPolicyModal';
-export { default as PerformActions } from './src/components/dialogs/PerformActions';
+export { default as PerformAction } from './src/components/dialogs/PerformActions';
 export { default as RefreshStatus } from './src/components/dialogs/RefreshStatus';
 export { default as TemplateMenuService } from './src/api/TemplateMenuService';
 export { default as UserInfoModal } from './src/components/dialogs/UserInfoModal';
 export { default as UserService } from './src/api/UserService';
-export { default as ViewBlueprintMicroServiceTemplatesModal } from './src/components/dialogs/Tosca/ViewBlueprintMicroServiceTemplatesModal';
 export { default as ViewToscaPolicyModal } from './src/components/dialogs/Tosca/ViewToscaPolicyModal';

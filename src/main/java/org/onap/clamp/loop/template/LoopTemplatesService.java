@@ -108,4 +108,15 @@ public class LoopTemplatesService {
         }
         return loopTemplate;
     }
+
+    /**
+     * Get the SVG representation of the loopTemplate.
+     *
+     * @param name The loopTemplate name
+     * @return The SVG representation
+     */
+    public String getSvgRepresentation(String name) {
+        LoopTemplate loopTemplate = getLoopTemplate(name);
+        return loopTemplate != null ? loopTemplate.getSvgRepresentation() : null;
+    }
 }
