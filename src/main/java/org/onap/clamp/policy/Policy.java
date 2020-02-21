@@ -25,15 +25,12 @@ package org.onap.clamp.policy;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-
 import java.io.UnsupportedEncodingException;
-
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -42,7 +39,7 @@ import org.onap.clamp.loop.common.AuditEntity;
 import org.onap.clamp.loop.template.LoopElementModel;
 
 @MappedSuperclass
-@TypeDefs({ @TypeDef(name = "json", typeClass = StringJsonUserType.class) })
+@TypeDefs({@TypeDef(name = "json", typeClass = StringJsonUserType.class)})
 public abstract class Policy extends AuditEntity {
 
     @Expose
@@ -68,20 +65,20 @@ public abstract class Policy extends AuditEntity {
 
     /**
      * Name getter.
-     * 
+     *
      * @return the name
      */
     public abstract String getName();
 
     /**
      * Name setter.
-     * 
+     *
      */
     public abstract void setName(String name);
 
     /**
      * jsonRepresentation getter.
-     * 
+     *
      * @return the jsonRepresentation
      */
     public JsonObject getJsonRepresentation() {
@@ -90,7 +87,7 @@ public abstract class Policy extends AuditEntity {
 
     /**
      * jsonRepresentation setter.
-     * 
+     *
      * @param jsonRepresentation The jsonRepresentation to set
      */
     public void setJsonRepresentation(JsonObject jsonRepresentation) {
@@ -99,7 +96,7 @@ public abstract class Policy extends AuditEntity {
 
     /**
      * configurationsJson getter.
-     * 
+     *
      * @return The configurationsJson
      */
     public JsonObject getConfigurationsJson() {
@@ -108,7 +105,7 @@ public abstract class Policy extends AuditEntity {
 
     /**
      * configurationsJson setter.
-     * 
+     *
      * @param configurationsJson the configurationsJson to set
      */
     public void setConfigurationsJson(JsonObject configurationsJson) {
@@ -117,7 +114,7 @@ public abstract class Policy extends AuditEntity {
 
     /**
      * loopElementModel getter.
-     * 
+     *
      * @return the loopElementModel
      */
     public LoopElementModel getLoopElementModel() {
@@ -126,7 +123,7 @@ public abstract class Policy extends AuditEntity {
 
     /**
      * loopElementModel setter.
-     * 
+     *
      * @param loopElementModel the loopElementModel to set
      */
     public void setLoopElementModel(LoopElementModel loopElementModel) {
@@ -135,7 +132,7 @@ public abstract class Policy extends AuditEntity {
 
     /**
      * pdpGroup getter.
-     * 
+     *
      * @return the pdpGroup
      */
     public String getPdpGroup() {
@@ -144,7 +141,7 @@ public abstract class Policy extends AuditEntity {
 
     /**
      * pdpGroup setter.
-     * 
+     *
      * @param pdpGroup the pdpGroup to set
      */
     public void setPdpGroup(String pdpGroup) {
@@ -154,19 +151,29 @@ public abstract class Policy extends AuditEntity {
     /**
      * Generate the policy name.
      *
-     * @param policyType        The policy type
-     * @param serviceName       The service name
-     * @param serviceVersion    The service version
-     * @param resourceName      The resource name
+     * @param policyType The policy type
+     * @param serviceName The service name
+     * @param serviceVersion The service version
+     * @param resourceName The resource name
      * @param blueprintFilename The blueprint file name
      * @return The generated policy name
      */
-    public static String generatePolicyName(String policyType, String serviceName, String serviceVersion,
-            String resourceName, String blueprintFilename) {
-        StringBuilder buffer = new StringBuilder(policyType).append("_").append(serviceName).append("_v")
-                .append(serviceVersion).append("_").append(resourceName).append("_")
-                .append(blueprintFilename.replaceAll(".yaml", ""));
+    public static String generatePolicyName(String policyType, String serviceName,
+        String serviceVersion, String resourceName, String blueprintFilename) {
+        StringBuilder buffer = new StringBuilder(policyType).append("_").append(serviceName)
+            .append("_v").append(serviceVersion).append("_").append(resourceName).append("_")
+            .append(blueprintFilename.replaceAll(".yaml", ""));
         return buffer.toString().replace('.', '_').replaceAll(" ", "");
+    }
+
+    /**
+     * Replace all '-' with '_' within policy scope and name.
+     *
+     * @param inName Policy Name string
+     * @return String with replaced hyphens to underscores
+     */
+    public static String normalizePolicyScopeName(String inName) {
+        return inName.replaceAll("-", "_");
     }
 
 }

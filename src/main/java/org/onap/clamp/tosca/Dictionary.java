@@ -65,9 +65,7 @@ public class Dictionary extends AuditEntity implements Serializable {
     private String subDictionaryType;
 
     @Expose
-    @ManyToMany(
-        fetch = FetchType.EAGER,
-        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(
         name = "dictionary_to_dictionaryelements",
         joinColumns = @JoinColumn(name = "dictionary_name", referencedColumnName = "name"),

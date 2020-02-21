@@ -25,13 +25,13 @@ package org.onap.clamp.clds.tosca;
 
 public class JsonEditorSchemaConstants {
 
-    //Data types in JSON Schema
+    // Data types in JSON Schema
     public static final String TYPE_OBJECT = "object";
     public static final String TYPE_ARRAY = "array";
     public static final String TYPE_STRING = "string";
     public static final String TYPE_INTEGER = "integer";
 
-    //Key elements in JSON Schema
+    // Key elements in JSON Schema
     public static final String TYPE = "type";
     public static final String TITLE = "title";
     public static final String REQUIRED = "required";
@@ -43,6 +43,8 @@ public class JsonEditorSchemaConstants {
     public static final String ITEMS = "items";
     public static final String PROPERTIES = "properties";
     public static final String PROPERTY_ORDER = "propertyOrder";
+    public static final String HEADER_TEMPLATE = "headerTemplate";
+    public static final String HEADER_TEMPLATE_VALUE = "{{self.name}}";
 
     public static final String MINIMUM = "minimum";
     public static final String MAXIMUM = "maximum";
@@ -66,6 +68,5 @@ public class JsonEditorSchemaConstants {
 
     public static final String SCHEMA = "schema";
     public static final String CURRENT_VALUES = "currentValues";
-
 
 }

@@ -23,17 +23,37 @@
 
 export default class LoopCache {
 	loopJsonCache;
+	jsonRepresentationMap;
+	
 
 	constructor(loopJson) {
 		this.loopJsonCache=loopJson;
+		this.jsonRepresentationMap = new Map([])
 	}
 
 	updateMicroServiceProperties(name, newMsProperties) {
-			for (var policy in this.loopJsonCache["microServicePolicies"]) {
-				if (this.loopJsonCache["microServicePolicies"][policy]["name"] === name) {
-					this.loopJsonCache["microServicePolicies"][policy]["properties"] = newMsProperties;
-				}
+		var existingMSProperty = false;
+		for (var policy in this.loopJsonCache["microServicePolicies"]) {
+			if (this.loopJsonCache["microServicePolicies"][policy]["name"] === name) {
+				this.loopJsonCache["microServicePolicies"][policy]["configurationsJson"] = newMsProperties;
+				existingMSProperty = true;
+				break;
 			}
+		}
+		return existingMSProperty;
+	}
+	
+	updateMicroServicePropertiesByPolicyModelType(modelType, newMsProperties) {
+		var existingMSProperty = false;
+		for (var policy in this.loopJsonCache["microServicePolicies"]) {
+			if (this.loopJsonCache["microServicePolicies"][policy]["modelType"] === modelType 
+					&& this.loopJsonCache["microServicePolicies"][policy]["name"].indexOf(newMsProperties["name"]) >= 0) {
+				this.loopJsonCache["microServicePolicies"][policy]["configurationsJson"] = newMsProperties;
+				existingMSProperty = true;
+				break;
+			}
+		}
+		return existingMSProperty;
 	}
 
 	updateGlobalProperties(newGlobalProperties) {
@@ -77,7 +97,40 @@ export default class LoopCache {
 	getMicroServicePolicies() {
 		return this.loopJsonCache["microServicePolicies"];
 	}
+	
+	getLoopTemplate() {
+		return this.loopJsonCache["loopTemplate"];
+	}
+	
+	getLoopElementModelsUsed() {
+		return this.loopJsonCache["loopTemplate"]["loopElementModelsUsed"];
+	}
+	
+	getPolicyModelVariants(componentName) {
+		var loopElementModelsUsed = this.getLoopElementModelsUsed()
+		var policyModels = null;
+		for (var i=0; i< loopElementModelsUsed.length ; i++) {
+			var loopElementModel = loopElementModelsUsed[i]["loopElementModel"];
+			if(loopElementModel["name"] === componentName) {
+				policyModels = loopElementModel["policyModels"];
+				break;
+			}
+		}
+		return policyModels;
+	}
 
+	updateJsonRepresentationMap(policyModelType, jsonRepresentation) {
+		this.jsonRepresentationMap.set(policyModelType, jsonRepresentation);
+	}
+	
+	getJsonRepresentationFromMap(policyModelType) {
+		if(this.jsonRepresentationMap.has(policyModelType)) {
+			return this.jsonRepresentationMap.get(policyModelType);
+		} else {
+			return null;
+		}
+	}
+	
 	getMicroServiceForName(name) {
 		var msProperties=this.getMicroServicePolicies();
 		for (var policy in msProperties) {
@@ -91,11 +144,33 @@ export default class LoopCache {
 	getMicroServicePropertiesForName(name) {
 		var msConfig = this.getMicroServiceForName(name);
 		if (msConfig !== null) {
-			return msConfig["properties"];
+			return msConfig["configurationsJson"];
 		}
 		return null;
 	}
-
+	
+	getMicroServiceByModelType(policyModelType, name) {
+		var msProperties = this.getMicroServicePolicies();
+		var matchingMicroservices = [];
+		for (var policy in msProperties) {
+			if (msProperties[policy]["modelType"] === policyModelType && msProperties[policy]["name"].indexOf(name) >= 0) {
+				matchingMicroservices.push(msProperties[policy]);
+			}
+		}
+		return matchingMicroservices;
+	}
+	
+	getMicroServicePropertiesForModelType(policyModelType, name) {
+		var msConfig = this.getMicroServiceByModelType(policyModelType, name);
+		var msConfigArray = [];
+		if (msConfig !== [] && msConfig !== null) {
+			for(var config in msConfig) {
+				msConfigArray.push(msConfig[config]["configurationsJson"])
+			}
+		}
+		return msConfigArray;
+	}
+	
 	getMicroServiceJsonRepresentationForName(name) {
 		var msConfig = this.getMicroServiceForName(name);
 		if (msConfig !== null) {
@@ -122,5 +197,14 @@ export default class LoopCache {
 
 	getComponentStates() {
 		return this.loopJsonCache.components;
+	}
+	
+	isOpenLoopTemplate() {
+		var loopTemplate = this.getLoopTemplate();
+		if(loopTemplate != null && loopTemplate["allowedLoopType"] === "OPEN") {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

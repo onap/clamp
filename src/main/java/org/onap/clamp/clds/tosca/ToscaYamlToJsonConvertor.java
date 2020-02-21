@@ -231,6 +231,9 @@ public class ToscaYamlToJsonConvertor {
                                             (LinkedHashMap<String, Object>) ntPropertiesElement
                                                 .getValue(),
                                             jsonTempObject);
+                                        jsonParentObject.put(
+                                            JsonEditorSchemaConstants.HEADER_TEMPLATE,
+                                            JsonEditorSchemaConstants.HEADER_TEMPLATE_VALUE);
                                         jsonTempObject.put(JsonEditorSchemaConstants.ITEMS,
                                             jsonParentObject);
                                         jsonTempObject.put(JsonEditorSchemaConstants.FORMAT,
