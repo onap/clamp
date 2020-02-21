@@ -103,6 +103,8 @@
 		<ui.react.src>ui-react</ui.react.src>
 		<ui.react.lib.src>ui-react-lib</ui.react.lib.src>
 		<npm.publish.url>https://nexus3.onap.org/repository/npm.snapshot/</npm.publish.url>
+		<docker.mariadb.port.host>3306</docker.mariadb.port.host>
+								<docker.http-cache.port.host>8085</docker.http-cache.port.host>
 	</properties>
 
 	<profiles>
@@ -832,7 +834,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+		<!-- 	<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>3.0.0</version>
@@ -869,7 +871,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
