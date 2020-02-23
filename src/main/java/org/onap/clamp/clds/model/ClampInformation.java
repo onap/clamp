@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2019 Nokia Intellectual Property. All rights
+ * Copyright (C) 2017 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,25 +21,41 @@
  *
  */
 
-package org.onap.clamp.clds.service;
+package org.onap.clamp.clds.model;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import java.lang.reflect.Type;
+import com.google.gson.annotations.Expose;
+import java.util.List;
+import org.onap.clamp.clds.util.ClampVersioning;
 
-public class SecureServicePermissionDeserializer implements JsonDeserializer<SecureServicePermission> {
+public class ClampInformation {
+    @Expose
+    private String userName;
+    @Expose
+    private String cldsVersion = ClampVersioning.getCldsVersionFromProps();
+    @Expose
+    List<String> allPermissions;
 
-    @Override
-    public SecureServicePermission deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-        throws JsonParseException {
-        if (json.isJsonPrimitive()) {
-            return new SecureServicePermission(json.getAsString());
-        } else {
-            // if not string try default deserialization
-            return new Gson().fromJson(json, SecureServicePermission.class);
-        }
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getCldsVersion() {
+        return cldsVersion;
+    }
+
+    public void setCldsVersion(String cldsVersion) {
+        this.cldsVersion = cldsVersion;
+    }
+
+    public List<String> getAllPermissions() {
+        return allPermissions;
+    }
+
+    public void setAllPermissions(List<String> allPermissions) {
+        this.allPermissions = allPermissions;
     }
 }
