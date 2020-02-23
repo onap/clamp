@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2017-2018 AT&T Intellectual Property. All rights
+ * Copyright (C) 2017-2020 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,31 +18,45 @@
  * limitations under the License.
  * ============LICENSE_END============================================
  * ===================================================================
+ *
  */
 
-package org.onap.clamp.clds.service;
+package org.onap.clamp.clds.model;
 
+import com.google.gson.annotations.Expose;
+import java.util.ArrayList;
+import java.util.List;
+import org.onap.clamp.clds.util.ClampVersioning;
 
+public class ClampInformation {
+    @Expose
+    private String userName;
+    @Expose
+    private String cldsVersion = ClampVersioning.getCldsVersionFromProps();
+    @Expose
+    List<String> allPermissions = new ArrayList<>();
 
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
+    public String getUserName() {
+        return userName;
+    }
 
-/**
- * User service used for authorization verification at the login page. Do not
- * remove this class.
- */
-@Controller
-public class UserService {
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-    private SecurityContext           securityContext = SecurityContextHolder.getContext();
+    public String getCldsVersion() {
+        return cldsVersion;
+    }
 
-    /**
-     * REST service that returns the username.
-     *
-     * @return the user name
-     */
-    public String getUser() {
-        return new DefaultUserNameHandler().retrieveUserName(securityContext);
+    public void setCldsVersion(String cldsVersion) {
+        this.cldsVersion = cldsVersion;
+    }
+
+    public List<String> getAllPermissions() {
+        return allPermissions;
+    }
+
+    public void setAllPermissions(List<String> allPermissions) {
+        this.allPermissions = allPermissions;
     }
 }

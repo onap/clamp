@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
- * Copyright (C) 2019 Nokia Intellectual Property. All rights
+ * Copyright (C) 2017-2018 AT&T Intellectual Property. All rights
  *                             reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,28 +18,30 @@
  * limitations under the License.
  * ============LICENSE_END============================================
  * ===================================================================
- *
  */
 
-package org.onap.clamp.clds.service;
+package org.onap.clamp.authorization;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import java.lang.reflect.Type;
 
-public class SecureServicePermissionDeserializer implements JsonDeserializer<SecureServicePermission> {
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 
-    @Override
-    public SecureServicePermission deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-        throws JsonParseException {
-        if (json.isJsonPrimitive()) {
-            return new SecureServicePermission(json.getAsString());
-        } else {
-            // if not string try default deserialization
-            return new Gson().fromJson(json, SecureServicePermission.class);
-        }
+/**
+ * User service used for authorization verification at the login page. Do not
+ * remove this class.
+ */
+@Controller
+public class UserService {
+
+    private SecurityContext securityContext = SecurityContextHolder.getContext();
+
+    /**
+     * REST service that returns the username.
+     *
+     * @return the user name
+     */
+    public String getUser() {
+        return AuthorizationController.getPrincipalName(securityContext);
     }
 }
