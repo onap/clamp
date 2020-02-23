@@ -74,7 +74,7 @@ export default class UserService {
 	}
 
 	static getUserInfo() {
-		return fetch('/restservices/clds/v1/clds/cldsInfo', {
+		return fetch('/restservices/clds/v2/clampInformation', {
 				method: 'GET',
 				credentials: 'same-origin'
 			})
