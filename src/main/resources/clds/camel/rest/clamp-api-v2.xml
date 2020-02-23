@@ -1006,5 +1006,10 @@
 				</doTry>
 			</route>
 		</get>
+		<get uri="/v2/clampInformation" outType="org.onap.clamp.clds.model.ClampInformation"
+			 produces="application/json">
+			<to
+					uri="bean:org.onap.clamp.authorization.AuthorizationController?method=getClampInformation()" />
+		</get>
 	</rest>
 </rests>
