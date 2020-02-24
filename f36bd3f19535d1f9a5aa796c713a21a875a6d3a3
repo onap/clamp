@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f5cc785f_c47b23b9",
+        "filename": "src/main/java/org/onap/clamp/loop/template/LoopTemplate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-24T15:17:32Z",
+      "side": 1,
+      "message": "Probably the setSvgRepresentation method needs to be triggered here as well",
+      "revId": "f36bd3f19535d1f9a5aa796c713a21a875a6d3a3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
