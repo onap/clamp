@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "09b4037b_58694f50",
+        "filename": "src/main/java/org/onap/clamp/authorization/SecureServicePermissionDeserializer.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T15:42:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed8d4dcc_bebba006",
+      "revId": "751f619ab7b2982e3b0d8af1a776e6a90d0151ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b77d7486_595495d7",
         "filename": "src/main/java/org/onap/clamp/clds/model/ClampInformation.java",
         "patchSetId": 5
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "ae3ea46d_119c6488",
+        "filename": "src/main/java/org/onap/clamp/clds/model/ClampInformation.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T15:42:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b77d7486_595495d7",
+      "revId": "751f619ab7b2982e3b0d8af1a776e6a90d0151ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b296cd88_05fb9bd4",
         "filename": "src/test/java/org/onap/clamp/clds/it/AuthorizationControllerItCase.java",
         "patchSetId": 5
@@ -50,6 +86,24 @@
       "revId": "751f619ab7b2982e3b0d8af1a776e6a90d0151ff",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c4de615_cfaf6172",
+        "filename": "src/test/java/org/onap/clamp/clds/it/AuthorizationControllerItCase.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T15:42:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b296cd88_05fb9bd4",
+      "revId": "751f619ab7b2982e3b0d8af1a776e6a90d0151ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
