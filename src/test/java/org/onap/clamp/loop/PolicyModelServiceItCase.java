@@ -29,9 +29,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-
 import javax.transaction.Transactional;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.onap.clamp.clds.Application;
@@ -74,6 +72,9 @@ public class PolicyModelServiceItCase {
         return policyModel;
     }
 
+    /**
+     * This test the create policy Model.
+     */
     @Test
     @Transactional
     public void shouldCreatePolicyModel() {
