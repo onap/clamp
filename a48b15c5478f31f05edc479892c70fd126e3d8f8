@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c6edd71_895adb56",
+        "filename": "src/main/java/org/onap/clamp/clds/client/PolicyEngineServices.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T14:15:10Z",
+      "side": 1,
+      "message": "Call the CallCamelRoute instead, this method is there for that.\n\nThere is a retry mechanism in place for all calls to policy",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8002ee4e_43e8b9f2",
+        "filename": "src/main/java/org/onap/clamp/clds/client/PolicyEngineServices.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T14:15:10Z",
+      "side": 1,
+      "message": "We could use the GSON parser instead.\nit\u0027s better than using 2 different parsers here i believe",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2aa9a634_137dbf10",
+        "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModel.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T14:15:10Z",
+      "side": 1,
+      "message": "Add that on top of the class\n@TypeDefs({@TypeDef(name \u003d \"json\", typeClass \u003d StringJsonUserType.class)})",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "974c669e_4fe9a15f",
+        "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModel.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T14:15:10Z",
+      "side": 1,
+      "message": "change by that \n@Column(columnDefinition \u003d \"json\", name \u003d \"policy_pdp_group\")",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "653bcb78_e9d76ca5",
+        "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModel.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T14:15:10Z",
+      "side": 1,
+      "message": "And set it to JsonObject directly",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b7ea834_14b81772",
+        "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModelsService.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T14:15:10Z",
+      "side": 1,
+      "message": "You should not have to scan all the pdpdGroup each time for each policy\nfor a specific policy type/version, your memory structure should return the pdp group and subtype per policy type/version",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8306aeb0_5bacfecf",
+        "filename": "src/main/java/org/onap/clamp/policy/pdpgroup/PolicyModelKey.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T14:15:10Z",
+      "side": 1,
+      "message": "This class exists already org.onap.clamp.loop.template.PolicyModelId",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72320dbb_3a1acbb3",
+        "filename": "src/test/resources/http-cache/third_party_proxy.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-25T14:15:10Z",
+      "side": 1,
+      "message": "Do not put that code here, it\u0027s only if you need a complex logic.\nPut the content directly in a file and with a header under the right paths in http-cache",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
