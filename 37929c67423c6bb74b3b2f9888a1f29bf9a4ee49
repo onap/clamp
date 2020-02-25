@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce019ff6_4ab8b741",
+        "filename": "ui-react/src/api/LoopService.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-25T10:12:41Z",
+      "side": 1,
+      "message": "guess it should be loopName not \u0027test\u0027 in the url",
+      "revId": "37929c67423c6bb74b3b2f9888a1f29bf9a4ee49",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12b392d7_27b98f1b",
+        "filename": "ui-react/src/components/menu/MenuBar.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-25T10:12:41Z",
+      "side": 1,
+      "message": "To make it consistent, it is better to use \u0027Close Loop\u0027, \u0027Modify Loop\u0027, since you use \u0027Open Loop\u0027 on line 98",
+      "revId": "37929c67423c6bb74b3b2f9888a1f29bf9a4ee49",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
