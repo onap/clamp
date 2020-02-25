@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ed8d4dcc_bebba006",
+        "filename": "src/main/java/org/onap/clamp/authorization/SecureServicePermissionDeserializer.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-25T13:54:37Z",
+      "side": 1,
+      "message": "we could use * here? I think it is against check style rule.",
+      "revId": "751f619ab7b2982e3b0d8af1a776e6a90d0151ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b77d7486_595495d7",
+        "filename": "src/main/java/org/onap/clamp/clds/model/ClampInformation.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-25T13:54:37Z",
+      "side": 1,
+      "message": "it is 2020 not 2017",
+      "revId": "751f619ab7b2982e3b0d8af1a776e6a90d0151ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b296cd88_05fb9bd4",
+        "filename": "src/test/java/org/onap/clamp/clds/it/AuthorizationControllerItCase.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-25T13:54:37Z",
+      "side": 1,
+      "message": "can we use * in the import?",
+      "revId": "751f619ab7b2982e3b0d8af1a776e6a90d0151ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
