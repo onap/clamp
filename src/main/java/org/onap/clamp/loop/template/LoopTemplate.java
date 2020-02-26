@@ -27,7 +27,6 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
