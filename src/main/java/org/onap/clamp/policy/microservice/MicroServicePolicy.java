@@ -110,6 +110,21 @@ public class MicroServicePolicy extends Policy implements Serializable {
     }
 
     /**
+     * The constructor that creates the json representation from the policyTosca
+     * using the ToscaYamlToJsonConvertor.
+     *
+     * @param name        The name of the MicroService
+     * @param policyModel The policy model of the MicroService
+     * @param shared      The flag indicate whether the MicroService is shared
+     */
+    public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared) {
+        this(name,policyModel,shared,JsonUtils.GSON_JPA_MODEL
+                .fromJson(new ToscaYamlToJsonConvertor().parseToscaYaml(policyModel.getPolicyModelTosca(),
+                        policyModel.getPolicyModelType()), JsonObject.class),null);
+        this.usedByLoops = new HashSet<>();
+    }
+
+    /**
      * The constructor that create the json representation from the policyTosca
      * using the ToscaYamlToJsonConvertor.
      *
@@ -120,13 +135,9 @@ public class MicroServicePolicy extends Policy implements Serializable {
      */
     public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared,
                               Set<Loop> usedByLoops) {
-        this.name = name;
-        this.policyModel = policyModel;
-        this.shared = shared;
-        this.setJsonRepresentation(JsonUtils.GSON_JPA_MODEL
+          this(name,policyModel,shared,JsonUtils.GSON_JPA_MODEL
                 .fromJson(new ToscaYamlToJsonConvertor().parseToscaYaml(policyModel.getPolicyModelTosca(),
-                        policyModel.getPolicyModelType()), JsonObject.class));
-        this.usedByLoops = usedByLoops;
+                        policyModel.getPolicyModelType()), JsonObject.class),usedByLoops);
     }
 
     private JsonObject createJsonFromPolicyTosca() {
