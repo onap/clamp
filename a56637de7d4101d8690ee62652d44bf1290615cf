@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b3d16f5_74e44af6",
+        "filename": "src/main/java/org/onap/clamp/clds/client/PolicyEngineServices.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-26T13:17:05Z",
+      "side": 1,
+      "message": "i think you can remove that exception",
+      "revId": "a56637de7d4101d8690ee62652d44bf1290615cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b9f6cfb_bee26d17",
+        "filename": "src/test/resources/http-cache/third_party_proxy.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-02-26T13:17:05Z",
+      "side": 1,
+      "message": "You can remove that code normally now",
+      "revId": "a56637de7d4101d8690ee62652d44bf1290615cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
