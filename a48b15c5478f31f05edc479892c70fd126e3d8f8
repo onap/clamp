@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a898a16b_fb2ba8ea",
+        "filename": "src/main/java/org/onap/clamp/clds/client/PolicyEngineServices.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-26T11:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c6edd71_895adb56",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8002ee4e_43e8b9f2",
         "filename": "src/main/java/org/onap/clamp/clds/client/PolicyEngineServices.java",
         "patchSetId": 8
@@ -33,6 +51,24 @@
       "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3fb079af_cf51169c",
+        "filename": "src/main/java/org/onap/clamp/clds/client/PolicyEngineServices.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-26T11:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8002ee4e_43e8b9f2",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "379d7583_9632730f",
+        "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModel.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-26T11:25:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2aa9a634_137dbf10",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "974c669e_4fe9a15f",
         "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModel.java",
         "patchSetId": 8
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "65779668_bf66ed48",
+        "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModel.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-26T11:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "974c669e_4fe9a15f",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "653bcb78_e9d76ca5",
         "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModel.java",
         "patchSetId": 8
@@ -84,6 +156,24 @@
       "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bebd02a1_3c6d6cd3",
+        "filename": "src/main/java/org/onap/clamp/loop/template/PolicyModel.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-02-26T11:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "653bcb78_e9d76ca5",
+      "revId": "a48b15c5478f31f05edc479892c70fd126e3d8f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
