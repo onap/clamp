@@ -87,7 +87,6 @@
                                         "basicCategoryTitle": "recipe",
                                         "required": [
                                             "id",
-                                            "recipe",
                                             "retry",
                                             "timeout",
                                             "actor",
@@ -105,20 +104,6 @@
                                                 "title": "Policy ID",
                                                 "type": "string"
                                             },
-                                            "recipe": {
-                                                "title": "Recipe",
-                                                "type": "string",
-                                                "enum": [
-                                                    "Restart",
-                                                    "Rebuild",
-                                                    "Migrate",
-                                                    "Health-Check",
-                                                    "ModifyConfig",
-                                                    "VF Module Create",
-                                                    "VF Module Delete",
-                                                    "Reroute"
-                                                ]
-                                            },
                                             "retry": {
                                                 "default": "0",
                                                 "title": "Number of Retry",
@@ -132,20 +117,116 @@
                                                 "format": "number"
                                             },
                                             "actor": {
+                                                "type": "object",
                                                 "title": "Actor",
-                                                "type": "string",
-                                                "enum": [
-                                                    "APPC",
-                                                    "SO",
-                                                    "VFC",
-                                                    "SDNC",
-                                                    "SDNR"
+                                                "required": [
+                                                    "recipe"
+                                                ],
+                                                "anyOf": [
+                                                    {
+                                                        "title": "APPC",
+                                                        "properties": {
+                                                            "type": {
+                                                                "title": "recipe",
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "enum": [
+                                                                    "Restart",
+                                                                    "Rebuild",
+                                                                    "Migrate",
+                                                                    "Health-Check",
+                                                                    "ModifyConfig"
+                                                                ]
+                                                            },
+                                                            "Payload": {
+                                                                "title": "Payload (YAML)",
+                                                                "type": "string",
+                                                                "format": "textarea"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "title": "SO",
+                                                        "properties": {
+                                                            "type": {
+                                                                "title": "recipe",
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "enum": [
+                                                                    "VF Module Create",
+                                                                    "VF Module Delete"
+                                                                ]
+                                                            },
+                                                            "Payload": {
+                                                                "title": "Payload (YAML)",
+                                                                "type": "string",
+                                                                "format": "textarea"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "title": "SDNC",
+                                                        "properties": {
+                                                            "type": {
+                                                                "title": "recipe",
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "enum": [
+                                                                    "Reroute",
+                                                                    "BandwidthOnDemand"
+                                                                ]
+                                                            },
+                                                            "Payload": {
+                                                                "title": "Payload (YAML)",
+                                                                "type": "string",
+                                                                "format": "textarea"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "title": "VFC",
+                                                        "properties": {
+                                                            "type": {
+                                                                "title": "recipe",
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "enum": [
+                                                                    "ModifyConfig"
+                                                                ]
+                                                            },
+                                                            "Payload": {
+                                                                "title": "Payload (YAML)",
+                                                                "type": "string",
+                                                                "format": "textarea"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "title": "CDS",
+                                                        "properties": {
+                                                            "type": {
+                                                                "title": "recipe",
+                                                                "type": "object",
+                                                                "required": [
+                                                                    "payload"
+                                                                ],
+                                                                "anyOf": [
+                                                                    {
+                                                                        "title": "User defined",
+                                                                        "properties": {
+                                                                            "type": {
+                                                                                "title": "Payload (YAML)",
+                                                                                "type": "string",
+                                                                                "default" : "",
+                                                                                "format" : "textarea"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
                                                 ]
-                                            },
-                                            "payload": {
-                                                "title": "Payload (YAML)",
-                                                "type": "string",
-                                                "format": "textarea"
                                             },
                                             "success": {
                                                 "default": "final_success",
@@ -186,7 +267,7 @@
                                                 "anyOf": [
                                                     {
                                                         "title": "User Defined",
-                                                        "additionalProperties":"True",
+                                                        "additionalProperties": "True",
                                                         "properties": {
                                                             "type": {
                                                                 "title": "Target type",
@@ -345,7 +426,14 @@
                                                     },
                                                     "timeUnits": {
                                                         "type": "string",
-                                                        "enum":["minute","hour","day","week","month","year"]
+                                                        "enum": [
+                                                            "minute",
+                                                            "hour",
+                                                            "day",
+                                                            "week",
+                                                            "month",
+                                                            "year"
+                                                        ]
                                                     }
                                                 }
                                             }
