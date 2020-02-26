@@ -105,20 +105,6 @@
                                                 "title": "Policy ID",
                                                 "type": "string"
                                             },
-                                            "recipe": {
-                                                "title": "Recipe",
-                                                "type": "string",
-                                                "enum": [
-                                                    "Restart",
-                                                    "Rebuild",
-                                                    "Migrate",
-                                                    "Health-Check",
-                                                    "ModifyConfig",
-                                                    "VF Module Create",
-                                                    "VF Module Delete",
-                                                    "Reroute"
-                                                ]
-                                            },
                                             "retry": {
                                                 "default": "0",
                                                 "title": "Number of Retry",
@@ -139,13 +125,149 @@
                                                     "SO",
                                                     "VFC",
                                                     "SDNC",
-                                                    "SDNR"
+                                                    "SDNR",
+                                                    "CDS"
                                                 ]
                                             },
-                                            "payload": {
+                                            "recipe_APPC": {
+                                                "title": "Recipe",
+                                                "type": "string",
+                                                "enum": [
+                                                    "Restart",
+                                                    "Rebuild",
+                                                    "Migrate",
+                                                    "ModifyConfig"
+                                                ],
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "APPC"
+                                                    }
+                                                }
+                                            },
+                                            "recipe_SO": {
+                                                "title": "Recipe",
+                                                "type": "string",
+                                                "enum": [
+                                                    "VF Module Create",
+                                                    "VF Module Delete"
+                                                ],
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "SO"
+                                                    }
+                                                }
+                                            },
+                                            "recipe_VFC": {
+                                                "title": "Recipe",
+                                                "type": "string",
+                                                "enum": [
+                                                    "Restart"
+                                                ],
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "VFC"
+                                                    }
+                                                }
+                                            },
+                                            "recipe_SDNC": {
+                                                "title": "Recipe",
+                                                "type": "string",
+                                                "enum": [
+                                                    "Reroute",
+                                                    "BandwidthOnDemand"
+                                                ],
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "SDNC"
+                                                    }
+                                                }
+                                            },
+                                            "recipe_SDNR": {
+                                                "title": "Recipe",
+                                                "type": "string",
+                                                "enum": [
+                                                    "ModifyConfig"
+                                                ],
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "SDNR"
+                                                    }
+                                                }
+                                            },
+                                            "recipe_CDS": {
+                                                "title": "Recipe",
+                                                "type": "string",
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "CDS"
+                                                    }
+                                                }
+                                            },
+                                            "payload_APPC": {
                                                 "title": "Payload (YAML)",
                                                 "type": "string",
-                                                "format": "textarea"
+                                                "format": "textarea",
+                                                "default": "",
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "APPC"
+                                                    }
+                                                }
+                                            },
+                                            "payload_SO": {
+                                                "title": "Payload (YAML)",
+                                                "type": "string",
+                                                "format": "textarea",
+                                                "default": "",
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "SO"
+                                                    }
+                                                }
+                                            },
+                                            "payload_VFC": {
+                                                "title": "Payload (YAML)",
+                                                "type": "string",
+                                                "format": "textarea",
+                                                "default": "",
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "VFC"
+                                                    }
+                                                }
+                                            },
+                                            "payload_SDNC": {
+                                                "title": "Payload (YAML)",
+                                                "type": "string",
+                                                "format": "textarea",
+                                                "default": "",
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "SDNC"
+                                                    }
+                                                }
+                                            },
+                                            "payload_SDNR": {
+                                                "title": "Payload (YAML)",
+                                                "type": "string",
+                                                "format": "textarea",
+                                                "default": "",
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "SDNR"
+                                                    }
+                                                }
+                                            },
+                                            "payload_CDS": {
+                                                "title": "Payload (YAML)",
+                                                "type": "string",
+                                                "format": "textarea",
+                                                "default": "",
+                                                "options": {
+                                                    "dependencies" : {
+                                                        "actor": "CDS"
+                                                    }
+                                                }
                                             },
                                             "success": {
                                                 "default": "final_success",

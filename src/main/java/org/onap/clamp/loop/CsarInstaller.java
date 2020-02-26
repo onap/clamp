@@ -29,11 +29,15 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+
+import com.google.gson.JsonObject;
 import org.json.simple.parser.ParseException;
+import org.onap.clamp.clds.client.CdsServices;
 import org.onap.clamp.clds.client.DcaeInventoryServices;
 import org.onap.clamp.clds.client.PolicyEngineServices;
 import org.onap.clamp.clds.exception.sdc.controller.BlueprintParserException;
 import org.onap.clamp.clds.exception.sdc.controller.SdcArtifactInstallerException;
+import org.onap.clamp.clds.model.cds.CdsBpWorkFlowListResponse;
 import org.onap.clamp.clds.model.dcae.DcaeInventoryResponse;
 import org.onap.clamp.clds.sdc.controller.installer.BlueprintArtifact;
 import org.onap.clamp.clds.sdc.controller.installer.BlueprintMicroService;
@@ -42,6 +46,7 @@ import org.onap.clamp.clds.sdc.controller.installer.ChainGenerator;
 import org.onap.clamp.clds.sdc.controller.installer.CsarHandler;
 import org.onap.clamp.loop.service.CsarServiceInstaller;
 import org.onap.clamp.loop.service.Service;
+import org.onap.clamp.loop.template.CdsBlueprintInfo;
 import org.onap.clamp.loop.template.LoopElementModel;
 import org.onap.clamp.loop.template.LoopTemplate;
 import org.onap.clamp.loop.template.LoopTemplatesRepository;
@@ -80,6 +85,9 @@ public class CsarInstaller {
 
     @Autowired
     private PolicyEngineServices policyEngineServices;
+
+    @Autowired
+    private CdsServices cdsServices;
 
     /**
      * Verify whether Csar is deployed.
@@ -162,6 +170,14 @@ public class CsarInstaller {
         newLoopTemplate.setMaximumInstancesAllowed(0);
         DcaeInventoryResponse dcaeResponse = queryDcaeToGetServiceTypeId(blueprintArtifact);
         newLoopTemplate.setDcaeBlueprintId(dcaeResponse.getTypeId());
+
+        // Query CDS and get action name and input properties and save in loop template
+        CdsBpWorkFlowListResponse response = queryCdsToGetWorkFlowList(service.getResourceDetails());
+        for (String workFlow : response.getWorkflows()) {
+            CdsBlueprintInfo blueprintInfo = queryCdsToGetWorkFlowInputProperties(response.getBlueprintName(),
+                                                                                             response.getVersion(), workFlow);
+            newLoopTemplate.addCdsBlueprintInfo(blueprintInfo);
+        }
         return newLoopTemplate;
     }
 
@@ -194,6 +210,21 @@ public class CsarInstaller {
         return dcaeInventoryService.getDcaeInformation(blueprintArtifact.getBlueprintArtifactName(),
                 blueprintArtifact.getBlueprintInvariantServiceUuid(),
                 blueprintArtifact.getResourceAttached().getResourceInvariantUUID());
+    }
+
+    private CdsBpWorkFlowListResponse queryCdsToGetWorkFlowList(JsonObject resourceDetails) {
+        // TODO: there could be multiple nodes in node templates ?
+        // TODO: get cds properties from resource details
+        String blueprintName = null;
+        String blueprintVersion = null;
+        return cdsServices.getBlueprintWorkflowList(blueprintName, blueprintVersion);
+    }
+
+
+    private CdsBlueprintInfo queryCdsToGetWorkFlowInputProperties(String blueprintName,
+                                                                  String version,
+                                                                  String workFlow) {
+        return cdsServices.getWorkflowInputProperties(blueprintName, version, workFlow);
     }
 
 }

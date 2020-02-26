@@ -25,6 +25,8 @@ package org.onap.clamp.loop.template;
 
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -103,6 +105,11 @@ public class LoopTemplate extends AuditEntity implements Serializable {
     @Column(name = "allowed_loop_type")
     @Convert(converter = LoopTypeConvertor.class)
     private LoopType allowedLoopType = LoopType.CLOSED;
+
+    @Expose
+    @OneToMany(mappedBy = "loopTemplate")
+    @Column(name = "cds_blueprint_infos")
+    private List<CdsBlueprintInfo> cdsBlueprintInfos;
 
     /**
      * name getter.
@@ -363,5 +370,21 @@ public class LoopTemplate extends AuditEntity implements Serializable {
                 .append(serviceVersion).append("_").append(resourceName).append("_")
                 .append(blueprintFileName.replaceAll(".yaml", ""));
         return buffer.toString().replace('.', '_').replaceAll(" ", "");
+    }
+
+    public List<CdsBlueprintInfo> getCdsBlueprintInfos() {
+        return cdsBlueprintInfos;
+    }
+
+    public void setCdsBlueprintInfos(List<CdsBlueprintInfo> cdsBlueprintInfos) {
+        this.cdsBlueprintInfos = cdsBlueprintInfos;
+    }
+
+    public void addCdsBlueprintInfo(CdsBlueprintInfo info) {
+        if (cdsBlueprintInfos == null) {
+            cdsBlueprintInfos = new LinkedList<CdsBlueprintInfo>();
+        }
+        cdsBlueprintInfos.add(info);
+        info.setLoopTemplate(this);
     }
 }
