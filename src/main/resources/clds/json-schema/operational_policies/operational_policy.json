@@ -87,7 +87,6 @@
                                         "basicCategoryTitle": "recipe",
                                         "required": [
                                             "id",
-                                            "recipe",
                                             "retry",
                                             "timeout",
                                             "actor",
@@ -105,20 +104,6 @@
                                                 "title": "Policy ID",
                                                 "type": "string"
                                             },
-                                            "recipe": {
-                                                "title": "Recipe",
-                                                "type": "string",
-                                                "enum": [
-                                                    "Restart",
-                                                    "Rebuild",
-                                                    "Migrate",
-                                                    "Health-Check",
-                                                    "ModifyConfig",
-                                                    "VF Module Create",
-                                                    "VF Module Delete",
-                                                    "Reroute"
-                                                ]
-                                            },
                                             "retry": {
                                                 "default": "0",
                                                 "title": "Number of Retry",
@@ -132,20 +117,263 @@
                                                 "format": "number"
                                             },
                                             "actor": {
+                                                "type": "object",
                                                 "title": "Actor",
-                                                "type": "string",
-                                                "enum": [
-                                                    "APPC",
-                                                    "SO",
-                                                    "VFC",
-                                                    "SDNC",
-                                                    "SDNR"
+                                                "required": [
+                                                    "recipe"
+                                                ],
+                                                "anyOf": [
+                                                    {
+                                                        "title": "APPC",
+                                                        "properties": {
+                                                            "type": {
+                                                                "title": "recipe",
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "enum": [
+                                                                    "Restart",
+                                                                    "Rebuild",
+                                                                    "Migrate",
+                                                                    "Health-Check",
+                                                                    "ModifyConfig"
+                                                                ]
+                                                            },
+                                                            "Payload": {
+                                                                "title": "Payload (YAML)",
+                                                                "type": "string",
+                                                                "format": "textarea"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "title": "SO",
+                                                        "properties": {
+                                                            "type": {
+                                                                "title": "recipe",
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "enum": [
+                                                                    "VF Module Create",
+                                                                    "VF Module Delete"
+                                                                ]
+                                                            },
+                                                            "Payload": {
+                                                                "title": "Payload (YAML)",
+                                                                "type": "string",
+                                                                "format": "textarea"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "title": "SDNC",
+                                                        "properties": {
+                                                            "type": {
+                                                                "title": "recipe",
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "enum": [
+                                                                    "Reroute",
+                                                                    "BandwidthOnDemand"
+                                                                ]
+                                                            },
+                                                            "Payload": {
+                                                                "title": "Payload (YAML)",
+                                                                "type": "string",
+                                                                "format": "textarea"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "title": "VFC",
+                                                        "properties": {
+                                                            "type": {
+                                                                "title": "recipe",
+                                                                "type": "string",
+                                                                "default": "",
+                                                                "enum": [
+                                                                    "ModifyConfig"
+                                                                ]
+                                                            },
+                                                            "Payload": {
+                                                                "title": "Payload (YAML)",
+                                                                "type": "string",
+                                                                "format": "textarea"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "title": "CDS",
+                                                        "properties": {
+                                                            "type": {
+                                                                "title": "recipe",
+                                                                "type": "object",
+                                                                "required": [
+                                                                    "payload"
+                                                                ],
+                                                                "anyOf": [
+                                                                    {
+                                                                        "title": "resource-assignment",
+                                                                        "properties": {
+                                                                            "type": {
+                                                                                "title": "Payload",
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "artifact_name": {
+                                                                                        "title": "Artifact name",
+                                                                                        "type": "string",
+                                                                                        "default": "baseconfiguration"
+                                                                                    },
+                                                                                    "artifact_version": {
+                                                                                        "title": "Artifact version",
+                                                                                        "type": "string",
+                                                                                        "default": "1.0.0"
+                                                                                    },
+                                                                                    "mode": {
+                                                                                        "title": "Artifact mode",
+                                                                                        "type": "string",
+                                                                                        "default": "",
+                                                                                        "format": "textarea"
+                                                                                    },
+                                                                                    "data": {
+                                                                                        "title": "data",
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "resource-assignment-properties": {
+                                                                                                "title": "resource-assignment-properties",
+                                                                                                "type": "object",
+                                                                                                "properties": {
+                                                                                                    "request-id": {
+                                                                                                        "title": "request-id",
+                                                                                                        "type": "string",
+                                                                                                        "default": "",
+                                                                                                        "format": "textarea"
+                                                                                                    },
+                                                                                                    "service-instance-id": {
+                                                                                                        "title": "service-instance-id",
+                                                                                                        "type": "string",
+                                                                                                        "default": "",
+                                                                                                        "format": "textarea"
+                                                                                                    },
+                                                                                                    "vnf-id": {
+                                                                                                        "title": "vnf-id",
+                                                                                                        "type": "string",
+                                                                                                        "default": "",
+                                                                                                        "format": "textarea"
+                                                                                                    },
+                                                                                                    "action-name": {
+                                                                                                        "title": "action-name",
+                                                                                                        "type": "string",
+                                                                                                        "default": "",
+                                                                                                        "format": "textarea"
+                                                                                                    },
+                                                                                                    "scope-type": {
+                                                                                                        "title": "scope-type",
+                                                                                                        "type": "string",
+                                                                                                        "default": "",
+                                                                                                        "format": "textarea"
+                                                                                                    },
+                                                                                                    "hostname": {
+                                                                                                        "title": "hostname",
+                                                                                                        "type": "string",
+                                                                                                        "default": "",
+                                                                                                        "format": "textarea"
+                                                                                                    },
+                                                                                                    "vnf_name": {
+                                                                                                        "title": "vnf_name",
+                                                                                                        "type": "string",
+                                                                                                        "default": "",
+                                                                                                        "format": "textarea"
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "title": "activate",
+                                                                        "properties": {
+                                                                            "type": {
+                                                                                "title": "Payload",
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "artifact_name": {
+                                                                                        "title": "Artifact name",
+                                                                                        "type": "string",
+                                                                                        "default": "baseconfiguration"
+                                                                                    },
+                                                                                    "artifact_version": {
+                                                                                        "title": "Artifact version",
+                                                                                        "type": "string",
+                                                                                        "default": "1.0.0"
+                                                                                    },
+                                                                                    "mode": {
+                                                                                        "title": "Artifact mode",
+                                                                                        "type": "string",
+                                                                                        "default": "",
+                                                                                        "format": "textarea"
+                                                                                    },
+                                                                                    "data" :{
+                                                                                        "title": "data",
+                                                                                        "type": "string",
+                                                                                        "default": '{\"resource-assignment-properties\": {\"request-id\":\"\",\"service-instance-id\": \"\",\"vnf-id\": \"\",\"action-name\":\"\",\"scope-type\": \"\",\"hostname\": \"\",\"vnf_name\": \"\"}}',
+                                                                                        "format": "textarea"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "title": "activate-restconf",
+                                                                        "properties": {
+                                                                            "type": {
+                                                                                "title": "Payload (YAML)",
+                                                                                "type": "string",
+                                                                                "default" : 'artificate_name: baseconfiguration\nartifact_version: 1.0.0\nmode: \ndata:{\"resource-assignment-properties\": {\"request-id\":\"\",\"service-instance-id\": \"\",\"vnf-id\": \"\",\"action-name\":\"\",\"scope-type\": \"\",\"hostname\": \"\",\"vnf_name\": \"\"}}',
+                                                                                "format" : "textarea"
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "title": "activate-cli",
+                                                                        "properties": {
+                                                                            "type": {
+                                                                                "title": "Payload (YAML)",
+                                                                                "type": "string",
+                                                                                "default" : 'artificate_name: baseconfiguration\nartifact_version: 1.0.0\nmode: \ndata:{\"resource-assignment-properties\": {\"request-id\":\"\",\"service-instance-id\": \"\",\"vnf-id\": \"\",\"action-name\":\"\",\"scope-type\": \"\",\"hostname\": \"\",\"vnf_name\": \"\"}}',
+                                                                                "format" : "textarea"
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "title": "assign-activate",
+                                                                        "properties": {
+                                                                            "type": {
+                                                                                "title": "Payload (YAML)",
+                                                                                "type": "string",
+                                                                                "default" : 'artificate_name: baseconfiguration\nartifact_version: 1.0.0\nmode: \ndata:{\"resource-assignment-properties\": {\"request-id\":\"\",\"service-instance-id\": \"\",\"vnf-id\": \"\",\"action-name\":\"\",\"scope-type\": \"\",\"hostname\": \"\",\"vnf_name\": \"\"}}',
+                                                                                "format" : "textarea"
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "title": "imperative-test-wf",
+                                                                        "properties": {
+                                                                            "type": {
+                                                                                "title": "Payload (YAML)",
+                                                                                "type": "string",
+                                                                                "default" : 'artificate_name: baseconfiguration\nartifact_version: 1.0.0\nmode: \ndata:{\"resource-assignment-properties\": {\"request-id\":\"\",\"service-instance-id\": \"\",\"vnf-id\": \"\",\"action-name\":\"\",\"scope-type\": \"\",\"hostname\": \"\",\"vnf_name\": \"\"}}',
+                                                                                "format" : "textarea"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
                                                 ]
-                                            },
-                                            "payload": {
-                                                "title": "Payload (YAML)",
-                                                "type": "string",
-                                                "format": "textarea"
                                             },
                                             "success": {
                                                 "default": "final_success",
@@ -186,7 +414,7 @@
                                                 "anyOf": [
                                                     {
                                                         "title": "User Defined",
-                                                        "additionalProperties":"True",
+                                                        "additionalProperties": "True",
                                                         "properties": {
                                                             "type": {
                                                                 "title": "Target type",
@@ -345,7 +573,14 @@
                                                     },
                                                     "timeUnits": {
                                                         "type": "string",
-                                                        "enum":["minute","hour","day","week","month","year"]
+                                                        "enum": [
+                                                            "minute",
+                                                            "hour",
+                                                            "day",
+                                                            "week",
+                                                            "month",
+                                                            "year"
+                                                        ]
                                                     }
                                                 }
                                             }

@@ -29,11 +29,17 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
+import io.swagger.util.Json;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.onap.clamp.loop.service.Service;
+import org.onap.clamp.loop.template.CdsBlueprintInfo;
+import org.onap.clamp.loop.template.CdsBlueprintWorkflowInfo;
+import org.onap.clamp.loop.template.LoopTemplate;
 
 public class OperationalPolicyRepresentationBuilder {
 
@@ -48,7 +54,7 @@ public class OperationalPolicyRepresentationBuilder {
      * @throws JsonSyntaxException If the schema template cannot be parsed
      * @throws IOException         In case of issue when opening the schema template
      */
-    public static JsonObject generateOperationalPolicySchema(Service modelJson)
+    public static JsonObject generateOperationalPolicySchema(Service modelJson, LoopTemplate loopTemplate)
             throws JsonSyntaxException, IOException {
         JsonObject jsonSchema = JsonUtils.GSON.fromJson(
                 ResourceFileUtil.getResourceAsString("clds/json-schema/operational_policies/operational_policy.json"),
@@ -58,6 +64,38 @@ public class OperationalPolicyRepresentationBuilder {
                 .get("operational_policy").getAsJsonObject().get("properties").getAsJsonObject().get("policies")
                 .getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject().get("target")
                 .getAsJsonObject().get("anyOf").getAsJsonArray().addAll(createAnyOfArray(modelJson));
+
+        List<String> enumList = new LinkedList<String>();
+        List<CdsBlueprintInfo> cdsBlueprintInfoList = loopTemplate.getCdsBlueprintInfos();
+
+        for (CdsBlueprintInfo info : cdsBlueprintInfoList) {
+            List<CdsBlueprintWorkflowInfo> blueprintWorkflowInfoList = info
+                    .getBlueprintWorkflowInfoList();
+            for (CdsBlueprintWorkflowInfo cdsBlueprintWorkflowInfo : blueprintWorkflowInfoList) {
+                String workflow = cdsBlueprintWorkflowInfo.getWorkFlow();
+                enumList.add(workflow);
+                JsonObject payload = createPayloadProperty(workflow,
+                                                           cdsBlueprintWorkflowInfo.getInputProperties());
+                jsonSchema.get("schema").getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject()
+                        .get("configurationsJson").getAsJsonObject().get("properties").getAsJsonObject()
+                        .get("operational_policy").getAsJsonObject().get("properties").getAsJsonObject().get("policies")
+                        .getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject().add
+                        ("payload_" + workflow, payload);
+            }
+        }
+
+        if (enumList != null) {
+            JsonArray jsonArray = new JsonArray();
+            for (String val : enumList) {
+                jsonArray.add(val);
+            }
+            jsonSchema.get("schema").getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject()
+                    .get("configurationsJson").getAsJsonObject().get("properties").getAsJsonObject()
+                    .get("operational_policy").getAsJsonObject().get("properties").getAsJsonObject().get("policies")
+                    .getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject()
+                    .get("recipe_cds").getAsJsonObject().add("enum", jsonArray);
+        }
+
         return jsonSchema;
     }
 
@@ -76,6 +114,23 @@ public class OperationalPolicyRepresentationBuilder {
                 jsonArray.add(val);
             }
         }
+        return property;
+    }
+
+    private static JsonObject createPayloadProperty(String receipe, JsonObject defaultValue) {
+        JsonObject property = new JsonObject();
+        property.addProperty("title", "Payload (YAML)");
+        property.addProperty("type", "string");
+        property.addProperty("format", "textarea");
+        property.addProperty("default", defaultValue.toString());
+
+
+        JsonObject dependencies = new JsonObject();
+        dependencies.addProperty("receipe_cds", receipe);
+        JsonObject options = new JsonObject();
+        options.add("dependencies", dependencies);
+        property.add("options", options);
+
         return property;
     }
 

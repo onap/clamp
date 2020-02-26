@@ -108,7 +108,8 @@ public class OperationalPolicy extends Policy implements Serializable {
         LegacyOperationalPolicy.preloadConfiguration(configurationsJson, loop);
         try {
             this.setJsonRepresentation(
-                    OperationalPolicyRepresentationBuilder.generateOperationalPolicySchema(loop.getModelService()));
+                    OperationalPolicyRepresentationBuilder.generateOperationalPolicySchema(loop.getModelService(),
+                                                                                           loop.getLoopTemplate()));
         } catch (JsonSyntaxException | IOException | NullPointerException e) {
             logger.error("Unable to generate the operational policy Schema ... ", e);
             this.setJsonRepresentation(new JsonObject());
