@@ -58,6 +58,21 @@ public class OperationalPolicyRepresentationBuilder {
                 .get("operational_policy").getAsJsonObject().get("properties").getAsJsonObject().get("policies")
                 .getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject().get("target")
                 .getAsJsonObject().get("anyOf").getAsJsonArray().addAll(createAnyOfArray(modelJson));
+
+        // update CDS recipe and payload information to schema
+        JsonArray actors = jsonSchema.get("schema").getAsJsonObject().get("items").getAsJsonObject().get("properties")
+                .getAsJsonObject().get("configurationsJson").getAsJsonObject().get("properties").getAsJsonObject()
+                .get("operational_policy").getAsJsonObject().get("properties").getAsJsonObject().get("policies")
+                .getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject().get("actor")
+                .getAsJsonObject().get("anyOf").getAsJsonArray();
+
+        for (JsonElement actor : actors) {
+            if (actor.getAsJsonObject().get("title").toString().equals("CDS")) {
+                actor.getAsJsonObject().get("properties").getAsJsonObject().get("type").getAsJsonObject()
+                        .get("anyOf").getAsJsonArray().addAll(createAnyOfArrayForCdsRecipe(modelJson));
+            }
+        }
+
         return jsonSchema;
     }
 
@@ -142,5 +157,10 @@ public class OperationalPolicyRepresentationBuilder {
         targetOneOfStructure.addAll(createVnfSchema(modelJson));
         targetOneOfStructure.addAll(createVfModuleSchema(modelJson));
         return targetOneOfStructure;
+    }
+
+    private static JsonArray createAnyOfArrayForCdsRecipe(Service service) {
+        // TODO: return jsonArray as required
+        return new JsonArray();
     }
 }

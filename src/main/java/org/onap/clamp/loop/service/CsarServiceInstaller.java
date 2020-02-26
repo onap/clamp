@@ -27,9 +27,12 @@ import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
 import com.google.gson.JsonObject;
 
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+import org.onap.clamp.clds.client.CdsServices;
 import org.onap.clamp.clds.exception.sdc.controller.SdcArtifactInstallerException;
+import org.onap.clamp.clds.model.cds.CdsBpWorkFlowListResponse;
 import org.onap.clamp.clds.sdc.controller.installer.CsarHandler;
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.sdc.tosca.parser.api.IEntityDetails;
@@ -53,6 +56,9 @@ public class CsarServiceInstaller {
     @Autowired
     ServiceRepository serviceRepository;
 
+    @Autowired
+    CdsServices cdsServices;
+
     /**
      * Install the Service from the csar.
      * 
@@ -68,6 +74,9 @@ public class CsarServiceInstaller {
         // Add properties details for each type, VfModule, VF, VFC, ....
         JsonObject resourcesProp = createServicePropertiesByType(csar);
         resourcesProp.add("VFModule", createVfModuleProperties(csar));
+
+        // get cds blueprint information and save in resources Prop
+        createCdsBlueprintProperties(csar, resourcesProp);
 
         Service modelService = new Service(serviceDetails, resourcesProp,
                 csar.getSdcNotification().getServiceVersion());
@@ -127,4 +136,52 @@ public class CsarServiceInstaller {
 
         return alreadyInstalled;
     }
+
+    /**
+     * Retrive CDS blueprint information from CSAR and save in resource object.
+     *
+     * @param csar CSAR from sdc
+     * @param resourceObj resource object
+     * @return Returns required information from csar
+     */
+    private JsonObject createCdsBlueprintProperties(CsarHandler csar, JsonObject resourceObj) {
+
+        // Iterate on all types defined in the tosca lib
+        for (SdcTypes type : SdcTypes.values()) {
+            JsonObject resourceProps = new JsonObject();
+            for (NodeTemplate nodeTemplate : csar.getSdcCsarHelper().getServiceNodeTemplateBySdcType(type)) {
+                LinkedHashMap<String, Property> properties = nodeTemplate.getProperties();
+                String artifactName = properties.get("sdnc_model_name").getValue().toString();
+                String artifactVersion = properties.get("sdnc_model_version").getValue().toString();
+
+                resourceProps.addProperty("sdnc_model_name", artifactName);
+                resourceProps.addProperty("sdnc_model_version", artifactVersion);
+
+                CdsBpWorkFlowListResponse response = queryCdsToGetWorkFlowList(artifactName, artifactVersion);
+                JsonObject workFlowProps = new JsonObject();
+                for (String workFlow : response.getWorkflows()) {
+                    JsonObject inputs = queryCdsToGetWorkFlowInputProperties(response.getBlueprintName(),
+                                                                response.getVersion(), workFlow);
+                    workFlowProps.add(workFlow, inputs);
+                }
+                resourceProps.add("workflows", workFlowProps);
+                resourceObj.getAsJsonObject(nodeTemplate.getName()).add("controllerProperties", resourceProps);
+            }
+        }
+        return resourceObj;
+    }
+
+    private CdsBpWorkFlowListResponse queryCdsToGetWorkFlowList(String artifactName,
+                                                                String artifactVersion) {
+        return cdsServices.getBlueprintWorkflowList(artifactName, artifactVersion);
+    }
+
+
+    private JsonObject queryCdsToGetWorkFlowInputProperties(String artifactName,
+                                                                  String artifactVersion,
+                                                                  String workFlow) {
+        return cdsServices.getWorkflowInputProperties(artifactName, artifactVersion, workFlow);
+    }
+
+
 }

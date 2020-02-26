@@ -182,4 +182,22 @@ public class LegacyOperationalPolicy {
             configurationsJson.add("operational_policy", controlLoop);
         }
     }
+
+    public static String getRecipe(JsonElement policy) {
+        String actor = policy.getAsJsonObject().get("actor").toString();
+        switch (actor) {
+            case "APPC":
+                return policy.getAsJsonObject().get("recipe_APPC").toString();
+            case "SDNC":
+                return policy.getAsJsonObject().get("recipe_SDNC").toString();
+            case "SDNR":
+                return policy.getAsJsonObject().get("recipe_SDNR").toString();
+            case "VFC":
+                return policy.getAsJsonObject().get("recipe_VFC").toString();
+            case "CDS":
+                return policy.getAsJsonObject().get("recipe_CDS").toString();
+            case "SO":
+                return policy.getAsJsonObject().get("recipe_SO").toString();
+        }
+    }
 }
