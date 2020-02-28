@@ -54,7 +54,7 @@ public class LoopToJsonTest {
 
     private OperationalPolicy getOperationalPolicy(String configJson, String name) {
         return new OperationalPolicy(name, null, gson.fromJson(configJson, JsonObject.class),
-                getPolicyModel("org.onap.policy.drools", "yaml", "1.0.0", "Drools", "type1"), null);
+                getPolicyModel("org.onap.policy.drools.legacy", "yaml", "1.0.0", "Drools", "type1"), null);
     }
 
     private Loop getLoop(String name, String svgRepresentation, String blueprint, String globalPropertiesJson,
