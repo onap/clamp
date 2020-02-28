@@ -35,6 +35,7 @@ import java.io.IOException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.onap.clamp.clds.config.ClampProperties;
+import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -95,12 +96,9 @@ public class CldsReferencePropertiesItCase {
      */
     @Test
     public void testGetFileContent() throws IOException {
-        String location = "{\n\t\"DC1\": \"Data Center 1\","
-                + "\n\t\"DC2\": \"Data Center 2\",\n\t\"DC3\": \"Data Center 3\"\n}\n";
-        String content = refProp.getFileContent("ui.location.default");
-        assertEquals(location, content);
+        String users = ResourceFileUtil.getResourceAsString("clds/clds-users.json");
+        assertEquals(users, refProp.getFileContent("files.cldsUsers"));
         // Test composite key
-        content = refProp.getFileContent("ui.location", "default");
-        assertEquals(location, content);
+        assertEquals(users, refProp.getFileContent("files", "cldsUsers"));
     }
 }
