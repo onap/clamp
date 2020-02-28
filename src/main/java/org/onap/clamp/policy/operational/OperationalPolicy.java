@@ -50,6 +50,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
+import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 import org.onap.clamp.loop.Loop;
 import org.onap.clamp.loop.template.LoopElementModel;
@@ -106,16 +108,29 @@ public class OperationalPolicy extends Policy implements Serializable {
         this.setPolicyModel(policyModel);
         this.setConfigurationsJson(configurationsJson);
         this.setLoopElementModel(loopElementModel);
-        if (policyModel != null && policyModel.getPolicyModelType().contains("legacy")) {
-            LegacyOperationalPolicy.preloadConfiguration(configurationsJson, loop);
-        }
+        this.setJsonRepresentation(this.generateJsonRepresentation(policyModel));
+
+    }
+
+    private JsonObject generateJsonRepresentation(PolicyModel policyModel) {
+        JsonObject jsonReturned = new JsonObject();
         try {
-            this.setJsonRepresentation(
-                    OperationalPolicyRepresentationBuilder.generateOperationalPolicySchema(loop.getModelService()));
+            if (policyModel != null && policyModel.getPolicyModelType().contains("legacy")) {
+                // Op policy Legacy case
+                LegacyOperationalPolicy.preloadConfiguration(jsonReturned, loop);
+                this.setJsonRepresentation(
+                        OperationalPolicyRepresentationBuilder.generateOperationalPolicySchema(loop.getModelService()));
+            } else {
+                // Generic Case
+                this.setJsonRepresentation(JsonUtils.GSON
+                        .fromJson(new ToscaYamlToJsonConvertor().parseToscaYaml(policyModel.getPolicyModelTosca(),
+                                policyModel.getPolicyModelType()), JsonObject.class));
+            }
         } catch (JsonSyntaxException | IOException | NullPointerException e) {
             logger.error("Unable to generate the operational policy Schema ... ", e);
             this.setJsonRepresentation(new JsonObject());
         }
+        return jsonReturned;
     }
 
     public void setLoop(Loop loopName) {
