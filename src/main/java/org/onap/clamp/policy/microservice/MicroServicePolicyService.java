@@ -26,7 +26,10 @@ package org.onap.clamp.policy.microservice;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.loop.Loop;
+import org.onap.clamp.loop.template.PolicyModelsService;
+import org.onap.clamp.policy.Policy;
 import org.onap.clamp.policy.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,16 +38,23 @@ import org.springframework.stereotype.Service;
 public class MicroServicePolicyService implements PolicyService<MicroServicePolicy> {
 
     private final MicroServicePolicyRepository repository;
+    private PolicyModelsService policyModelsService;
+    private final ClampProperties refProperties;
 
     @Autowired
-    public MicroServicePolicyService(MicroServicePolicyRepository repository) {
+    public MicroServicePolicyService(MicroServicePolicyRepository repository,
+        ClampProperties refProperties, PolicyModelsService policyModelsService) {
         this.repository = repository;
+        this.refProperties = refProperties;
+        this.policyModelsService = policyModelsService;
     }
 
     @Override
-    public Set<MicroServicePolicy> updatePolicies(Loop loop, List<MicroServicePolicy> newMicroservicePolicies) {
-        return newMicroservicePolicies.stream().map(policy -> getAndUpdateMicroServicePolicy(loop, policy))
-                .collect(Collectors.toSet());
+    public Set<MicroServicePolicy> updatePolicies(Loop loop,
+        List<MicroServicePolicy> newMicroservicePolicies) {
+        return newMicroservicePolicies.stream()
+            .map(policy -> getAndUpdateMicroServicePolicy(loop, policy))
+            .collect(Collectors.toSet());
     }
 
     @Override
@@ -55,35 +65,51 @@ public class MicroServicePolicyService implements PolicyService<MicroServicePoli
     /**
      * Get and update the MicroService policy properties.
      *
-     * @param loop   The loop
+     * @param loop The loop
      * @param policy The new MicroService policy
      * @return The updated MicroService policy
      */
     public MicroServicePolicy getAndUpdateMicroServicePolicy(Loop loop, MicroServicePolicy policy) {
-        return repository.save(
-                repository.findById(policy.getName()).map(p -> updateMicroservicePolicyProperties(p, policy, loop))
-                        .orElse(new MicroServicePolicy(policy.getName(), policy.getPolicyModel(),
-                                policy.getShared(), policy.getJsonRepresentation(),null)));
+        return repository.save(repository.findById(policy.getName())
+            .map(p -> updateMicroservicePolicyProperties(p, policy, loop))
+            .orElse(createMicroservicePolicy(policy, loop, refProperties)));
     }
 
     private MicroServicePolicy updateMicroservicePolicyProperties(MicroServicePolicy oldPolicy,
-            MicroServicePolicy newPolicy, Loop loop) {
+        MicroServicePolicy newPolicy, Loop loop) {
         oldPolicy.setConfigurationsJson(newPolicy.getConfigurationsJson());
+        oldPolicy.setJsonRepresentation(newPolicy.getJsonRepresentation());
         if (!oldPolicy.getUsedByLoops().contains(loop)) {
             oldPolicy.getUsedByLoops().add(loop);
         }
         return oldPolicy;
     }
 
+    private MicroServicePolicy createMicroservicePolicy(MicroServicePolicy policy, Loop loop,
+        ClampProperties refProperties) {
+
+        policy.setPolicyModel(policy.getPolicyModel() == null
+            ? policyModelsService.getPolicyModelByType(policy.getName())
+            : policy.getPolicyModel());
+
+        MicroServicePolicy newPolicy = new MicroServicePolicy(
+            Policy.generateMicroservicePolicyNameWithPrefix(null, policy, loop, refProperties),
+            policy.getPolicyModel(), policy.getShared(), policy.getJsonRepresentation(), null);
+        newPolicy.setConfigurationsJson(policy.getConfigurationsJson());
+        newPolicy.getUsedByLoops().add(loop);
+        return newPolicy;
+
+    }
+
     /**
      * Update the MicroService policy deployment related parameters.
      *
      * @param microServicePolicy The micro service policy
-     * @param deploymentId       The deployment ID as returned by DCAE
-     * @param deploymentUrl      The Deployment URL as returned by DCAE
+     * @param deploymentId The deployment ID as returned by DCAE
+     * @param deploymentUrl The Deployment URL as returned by DCAE
      */
-    public void updateDcaeDeploymentFields(MicroServicePolicy microServicePolicy, String deploymentId,
-            String deploymentUrl) {
+    public void updateDcaeDeploymentFields(MicroServicePolicy microServicePolicy,
+        String deploymentId, String deploymentUrl) {
         microServicePolicy.setDcaeDeploymentId(deploymentId);
         microServicePolicy.setDcaeDeploymentStatusUrl(deploymentUrl);
         repository.save(microServicePolicy);

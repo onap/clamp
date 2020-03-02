@@ -133,4 +133,24 @@ export default class PolicyToscaService {
              return "";
            });
        }
+     
+   	static getPolicyModelTypeJsonSchema(policyType) {
+		return fetch('/restservices/clds/v2/policyToscaModels/jsonSchema/' + policyType, {
+			method: 'GET',
+			credentials: 'same-origin'
+		})
+			.then(function (response) {
+				console.debug("getPolicyModelTypeJsonSchema response received: ", response.status);
+				if (response.ok) {
+					return response.json();
+				} else {
+					console.error("getPolicyModelTypeJsonSchema query failed");
+					return "";
+				}
+			})
+			.catch(function (error) {
+				console.error("getPolicyModelTypeJsonSchema error received", error);
+				return "";
+			});
+	}
 }
