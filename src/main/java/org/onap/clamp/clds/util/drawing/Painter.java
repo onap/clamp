@@ -48,7 +48,7 @@ public class Painter {
     /**
      * Constructor to create instance of Painter.
      *
-     * @param svgGraphics2D   svg graphics
+     * @param svgGraphics2D svg graphics
      * @param documentBuilder document builder
      */
     public Painter(SVGGraphics2D svgGraphics2D, DocumentBuilder documentBuilder) {
@@ -57,7 +57,8 @@ public class Painter {
         this.canvasSize = DEFAULT_CANVAS_SIZE;
     }
 
-    DocumentBuilder doPaint(String collector, Set<MicroServicePolicy> microServices, Set<OperationalPolicy> policies) {
+    DocumentBuilder doPaint(String collector, Set<MicroServicePolicy> microServices,
+        Set<OperationalPolicy> policies) {
         int numOfRectangles = 2 + microServices.size();
         int numOfArrows = numOfRectangles + 1;
         int baseLength = (canvasSize - 2 * CIRCLE_RADIUS) / (numOfArrows + numOfRectangles);
@@ -77,23 +78,31 @@ public class Painter {
     }
 
     private void doTheActualDrawing(String collector, Set<MicroServicePolicy> microServices,
-                                    Set<OperationalPolicy> policies,
-                                    ImageBuilder ib) {
-        ib.circle("start-circle", SLIM_LINE).arrow().rectangle(collector, RectTypes.COLECTOR, collector);
+        Set<OperationalPolicy> policies, ImageBuilder ib) {
+        ib.circle("start-circle", SLIM_LINE);
+
+        if (collector != null) {
+            ib.arrow().rectangle(collector, RectTypes.COLECTOR, collector);
+        }
 
         for (MicroServicePolicy ms : microServices) {
-            ib.arrow().rectangle(ms.getName(),
-                    RectTypes.MICROSERVICE, ms.getPolicyModel().getPolicyAcronym());
+            ib.arrow().rectangle(ms.getName(), RectTypes.MICROSERVICE,
+                ms.getPolicyModel() == null ? ms.getLoopElementModel().getShortName()
+                    : ms.getPolicyModel().getPolicyAcronym());
+
         }
         for (OperationalPolicy policy : policies) {
-            ib.arrow().rectangle(policy.getName(), RectTypes.POLICY, policy.getPolicyModel().getPolicyAcronym());
+            ib.arrow().rectangle(policy.getName(), RectTypes.POLICY,
+                policy.getPolicyModel().getPolicyAcronym());
         }
         ib.arrow().circle("stop-circle", THICK_LINE);
     }
 
     private void adjustGraphics2DProperties() {
-        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+            RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
         g2d.setStroke(new BasicStroke(SLIM_LINE));
         g2d.setPaint(Color.BLACK);
     }

@@ -1,0 +1,6 @@
+{
+  "title": "Operational Policy",
+  "type": "string",
+  "format": "hidden",
+  "description": "<p>Operational Policy cannot be configured as only Open Loop is supported for this Template!</p>"
+}
