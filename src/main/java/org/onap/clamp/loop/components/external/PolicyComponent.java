@@ -81,16 +81,42 @@ public class PolicyComponent extends ExternalComponent {
     public static String createPoliciesPayloadPdpGroup(Loop loop) {
         JsonObject jsonObject = new JsonObject();
         JsonArray jsonArray = new JsonArray();
-        jsonObject.add("policies", jsonArray);
+        jsonObject.add("groups", jsonArray);
 
-        for (String policyName : PolicyComponent.listPolicyNamesPdpGroup(loop)) {
-            JsonObject policyNode = new JsonObject();
-            jsonArray.add(policyNode);
-            policyNode.addProperty("policy-id", policyName);
+        for (OperationalPolicy opPolicy : loop.getOperationalPolicies()) {
+            jsonArray.add(createPdpDeploymentPayload(opPolicy.getPdpGroup(), opPolicy.getPdpSubgroup(),
+                    opPolicy.getPolicyModel().getPolicyModelType(), opPolicy.getPolicyModel().getVersion()));
         }
+
+        for (MicroServicePolicy msPolicy : loop.getMicroServicePolicies()) {
+            jsonArray.add(createPdpDeploymentPayload(msPolicy.getPdpGroup(), msPolicy.getPdpSubgroup(),
+                    msPolicy.getPolicyModel().getPolicyModelType(), msPolicy.getPolicyModel().getVersion()));
+        }
+
         String payload = new GsonBuilder().setPrettyPrinting().create().toJson(jsonObject);
         logger.info("PdpGroup policy payload: " + payload);
-        return new GsonBuilder().setPrettyPrinting().create().toJson(jsonObject);
+        return payload;
+    }
+
+    private static JsonObject createPdpDeploymentPayload(String pdpGroup, String pdpSubGroup,
+            String policyType, String version) {
+        JsonObject pdpGroupNode = new JsonObject();
+        JsonArray subPdpArray = new JsonArray();
+        pdpGroupNode.addProperty("name", pdpGroup);
+        pdpGroupNode.add("deploymentSubgroups", subPdpArray);
+
+        JsonObject pdpSubGroupNode = new JsonObject();
+        subPdpArray.add(pdpSubGroupNode);
+        pdpSubGroupNode.addProperty("pdpType", pdpSubGroup);
+        pdpSubGroupNode.addProperty("action", "POST");
+
+        JsonArray policyArray = new JsonArray();
+        pdpSubGroupNode.add("policies", policyArray);
+        JsonObject policyNode = new JsonObject();
+        policyNode.addProperty("name", policyType);
+        policyNode.addProperty("version", version);
+        policyArray.add(policyNode);
+        return pdpGroupNode;
     }
 
     /**
