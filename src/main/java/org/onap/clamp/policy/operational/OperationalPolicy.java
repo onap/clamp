@@ -218,7 +218,7 @@ public class OperationalPolicy extends Policy implements Serializable {
         metadata.addProperty("policy-id", this.name);
 
         operationalPolicyDetails.add("properties", LegacyOperationalPolicy
-                .reworkPayloadAttributes(this.getConfigurationsJson().get("operational_policy").deepCopy()));
+                .reworkActorAttributes(this.getConfigurationsJson().get("operational_policy").deepCopy()));
 
         DumperOptions options = new DumperOptions();
         options.setIndent(2);

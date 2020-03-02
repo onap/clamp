@@ -83,6 +83,42 @@ public class LegacyOperationalPolicy {
      * @param policyJson The operational policy json config
      * @return The same object reference but modified
      */
+    public static JsonElement reworkActorAttributes(JsonElement policyJson) {
+        for (JsonElement policy : policyJson.getAsJsonObject().get("policies").getAsJsonArray()) {
+            JsonObject actor = policy.getAsJsonObject().get("actor").getAsJsonObject();
+            policy.getAsJsonObject().remove("actor");
+            String actorStr = actor.getAsJsonObject().get("actor").getAsString();
+            policy.getAsJsonObject().addProperty("actor", actorStr);
+            policy.getAsJsonObject().addProperty("recipe", getRecipe(actor));
+
+            if (actorStr.equals("CDS")) {
+                addPayloadAttributes(actor.getAsJsonObject("actor").getAsJsonObject("recipe"), policy);
+            } else {
+                addPayloadAttributes(actor, policy);
+            }
+        }
+        return policyJson;
+    }
+
+    public static void addPayloadAttributes(JsonObject jsonObject, JsonElement policy) {
+        JsonElement payloadElem = jsonObject.getAsJsonObject().get("payload");
+        String payloadString = payloadElem != null ? payloadElem.getAsString() : "";
+        if (!payloadString.isEmpty()) {
+            Map<String, String> testMap = new Yaml().load(payloadString);
+            String json = new GsonBuilder().create().toJson(testMap);
+            policy.getAsJsonObject().add("payload", new GsonBuilder().create().fromJson(json, JsonElement.class));
+        } else {
+            policy.getAsJsonObject().addProperty("payload","");
+        }
+    }
+
+    /**
+     * This method rework the payload attribute (yaml) that is normally wrapped in a
+     * string when coming from the UI.
+     *
+     * @param policyJson The operational policy json config
+     * @return The same object reference but modified
+     */
     public static JsonElement reworkPayloadAttributes(JsonElement policyJson) {
         for (JsonElement policy : policyJson.getAsJsonObject().get("policies").getAsJsonArray()) {
             JsonElement payloadElem = policy.getAsJsonObject().get("payload");
@@ -94,6 +130,10 @@ public class LegacyOperationalPolicy {
             }
         }
         return policyJson;
+    }
+
+    public static String getRecipe(JsonObject actor) {
+        return actor.getAsJsonObject().get("type").getAsString();
     }
 
     private static void replacePropertiesIfEmpty(JsonElement policy, String key, String valueIfEmpty) {
@@ -162,7 +202,7 @@ public class LegacyOperationalPolicy {
         // Policy can't support { } in the yaml
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         return (new Yaml(options)).dump(createMap(fulfillPoliciesTreeField(
-                removeAllQuotes(reworkPayloadAttributes(operationalPolicyJsonElement.getAsJsonObject().deepCopy())))));
+                removeAllQuotes(reworkActorAttributes(operationalPolicyJsonElement.getAsJsonObject().deepCopy())))));
     }
 
     /**

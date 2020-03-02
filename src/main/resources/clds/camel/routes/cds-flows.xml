@@ -1,0 +1,41 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+	<route id="get-blueprint-workflow-list">
+		<from uri="direct:get-blueprint-workflow-list" />
+		<log loggingLevel="INFO"
+			 message="Getting blueprint workflow list from inventory" />
+		<to
+				uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=invokeLog('CDS', 'Getting workflow list from CDS')" />
+		<doTry>
+			<setHeader headerName="CamelHttpMethod">
+				<constant>GET</constant>
+			</setHeader>
+			<setHeader headerName="X-ONAP-RequestID">
+				<simple>${exchangeProperty[X-ONAP-RequestID]}
+				</simple>
+			</setHeader>
+			<setHeader headerName="X-ONAP-InvocationID">
+				<simple>${exchangeProperty[X-ONAP-InvocationID]}
+				</simple>
+			</setHeader>
+			<setHeader headerName="X-ONAP-PartnerName">
+				<simple>${exchangeProperty[X-ONAP-PartnerName]}
+				</simple>
+			</setHeader>
+			<setHeader headerName="Content-Type">
+				<constant>application/json</constant>
+			</setHeader>
+			<log loggingLevel="INFO"
+				 message="Endpoint to query workflows from CDS : {{clamp.config.cds.workflow.url}}/workflows/blueprint-name/${exchangeProperty[blueprintName]/version/${exchangeProperty[blueprintName]"></log>
+			<toD uri="{{clamp.config.cds.url}}/workflows/blueprint-name/${exchangeProperty[blueprintName]/version/${exchangeProperty[blueprintName];bridgeEndpoint=true&amp;useSystemProperties=true&amp;throwExceptionOnFailure=${exchangeProperty[raiseHttpExceptionFlag]}&amp;authMethod=Basic&amp;authUsername={{clamp.config.dcae.deployment.userName}}&amp;authPassword={{clamp.config.dcae.deployment.password}}&amp;connectionTimeToLive=5000&amp;httpClient.connectTimeout=10000&amp;httpClient.socketTimeout=30000&amp;authenticationPreemptive=true&amp;connectionClose=true" />
+			<convertBodyTo type="java.lang.String" />
+			<doFinally>
+				<to uri="direct:reset-raise-http-exception-flag" />
+				<to uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=invokeReturnLog()" />
+			</doFinally>
+		</doTry>
+	</route>
+	<route id="get-blueprint-workflow-input-properties">
+
+	</route>
+
+</routes>
