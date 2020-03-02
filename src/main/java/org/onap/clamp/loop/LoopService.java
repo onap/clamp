@@ -26,8 +26,11 @@ package org.onap.clamp.loop;
 import com.google.gson.JsonObject;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.onap.clamp.clds.config.ClampProperties;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
 import org.onap.clamp.loop.template.LoopTemplatesService;
 import org.onap.clamp.loop.template.PolicyModel;
 import org.onap.clamp.loop.template.PolicyModelsService;
@@ -46,6 +49,9 @@ public class LoopService {
     private LoopsRepository loopsRepository;
 
     @Autowired
+    private ClampProperties refProperties;
+
+    @Autowired
     private MicroServicePolicyService microservicePolicyService;
 
     @Autowired
@@ -56,6 +62,9 @@ public class LoopService {
 
     @Autowired
     private LoopTemplatesService loopTemplateService;
+
+    @Autowired
+    private ToscaYamlToJsonConvertor toscaYamlToJsonConvertor;
 
     Loop saveOrUpdateLoop(Loop loop) {
         return loopsRepository.save(loop);
@@ -81,14 +90,16 @@ public class LoopService {
      * @return Loop Instance
      */
     public Loop createLoopFromTemplate(String loopName, String templateName) {
-        return loopsRepository.save(new Loop(loopName,loopTemplateService.getLoopTemplate(templateName)));
+        return loopsRepository
+            .save(new Loop(loopName, loopTemplateService.getLoopTemplate(templateName),
+                refProperties, toscaYamlToJsonConvertor));
     }
 
     /**
      * This method is used to refresh the DCAE deployment status fields.
      *
-     * @param loop          The loop instance to be modified
-     * @param deploymentId  The deployment ID as returned by DCAE
+     * @param loop The loop instance to be modified
+     * @param deploymentId The deployment ID as returned by DCAE
      * @param deploymentUrl The Deployment URL as returned by DCAE
      */
     public void updateDcaeDeploymentFields(Loop loop, String deploymentId, String deploymentUrl) {
@@ -107,7 +118,7 @@ public class LoopService {
      *
      * @param loopName The loop name
      * @param policyType The policy model type
-     * @param policyVersion The policy model  version
+     * @param policyVersion The policy model version
      * @return The loop modified
      */
     Loop addOperationalPolicy(String loopName, String policyType, String policyVersion) {
@@ -119,20 +130,24 @@ public class LoopService {
         loop.addOperationalPolicy(
                 new OperationalPolicy(Policy.generatePolicyName("OPERATIONAL", loop.getModelService().getName(),
                         loop.getModelService().getVersion(), RandomStringUtils.randomAlphanumeric(3),
-                        RandomStringUtils.randomAlphanumeric(4)), loop, null, policyModel, null, null, null));
+                        RandomStringUtils.randomAlphanumeric(4)), loop, null, policyModel, null, null, null), refProperties);
         return loopsRepository.save(loop);
     }
 
-    Loop updateAndSaveOperationalPolicies(String loopName, List<OperationalPolicy> newOperationalPolicies) {
+    Loop updateAndSaveOperationalPolicies(String loopName,
+        List<OperationalPolicy> newOperationalPolicies) {
         Loop loop = findClosedLoopByName(loopName);
-        Set<OperationalPolicy> newPolicies = operationalPolicyService.updatePolicies(loop, newOperationalPolicies);
+        Set<OperationalPolicy> newPolicies =
+            operationalPolicyService.updatePolicies(loop, newOperationalPolicies);
         loop.setOperationalPolicies(newPolicies);
         return loopsRepository.save(loop);
     }
 
-    Loop updateAndSaveMicroservicePolicies(String loopName, List<MicroServicePolicy> newMicroservicePolicies) {
+    Loop updateAndSaveMicroservicePolicies(String loopName,
+        List<MicroServicePolicy> newMicroservicePolicies) {
         Loop loop = findClosedLoopByName(loopName);
-        Set<MicroServicePolicy> newPolicies = microservicePolicyService.updatePolicies(loop, newMicroservicePolicies);
+        Set<MicroServicePolicy> newPolicies =
+            microservicePolicyService.updatePolicies(loop, newMicroservicePolicies);
         loop.setMicroServicePolicies(newPolicies);
         return loopsRepository.save(loop);
     }
@@ -143,14 +158,50 @@ public class LoopService {
         return loopsRepository.save(loop);
     }
 
-    MicroServicePolicy updateMicroservicePolicy(String loopName, MicroServicePolicy newMicroservicePolicy) {
+    MicroServicePolicy updateMicroservicePolicy(String loopName,
+        MicroServicePolicy newMicroservicePolicy) {
         Loop loop = findClosedLoopByName(loopName);
-        return microservicePolicyService.getAndUpdateMicroServicePolicy(loop, newMicroservicePolicy);
+        newMicroservicePolicy =
+            microservicePolicyService.getAndUpdateMicroServicePolicy(loop, newMicroservicePolicy);
+        if (!loop.getMicroServicePolicies().contains(newMicroservicePolicy)) {
+            loop.addMicroServicePolicy(newMicroservicePolicy, refProperties);
+            loopsRepository.save(loop);
+        }
+        return newMicroservicePolicy;
+
+    }
+
+    Loop updateMicroservicePolicyProperties(String loopName,
+        List<MicroServicePolicy> newMicroservicePolicies) {
+        Loop loop = findClosedLoopByName(loopName);
+
+        if (newMicroservicePolicies != null && !newMicroservicePolicies.isEmpty()) {
+            Set<MicroServicePolicy> updatedMicroservicePolicies = newMicroservicePolicies.stream()
+                .map(newMicroservicePolicy -> microservicePolicyService
+                    .getAndUpdateMicroServicePolicy(loop, newMicroservicePolicy))
+                .collect(Collectors.toSet());
+            MicroServicePolicy tempPolicy =
+                updatedMicroservicePolicies.stream().findFirst().orElse(null);
+            // For multiple policies for same mS config, only save what's coming from Json Editor
+            // for a given policy model type. Add remaining policies from the loop
+            if (tempPolicy != null) {
+                loop.getMicroServicePolicies().forEach(microservicePolicy -> {
+                    if (!updatedMicroservicePolicies.contains(microservicePolicy)
+                        && microservicePolicy.getPolicyModel() != null
+                        && !tempPolicy.getPolicyModel().getPolicyModelTosca().equalsIgnoreCase(
+                            microservicePolicy.getPolicyModel().getPolicyModelTosca())) {
+                        updatedMicroservicePolicies.add(microservicePolicy);
+                    }
+                });
+            }
+            loop.setMicroServicePolicies(updatedMicroservicePolicies);
+        }
+        return loopsRepository.save(loop);
     }
 
     private Loop findClosedLoopByName(String loopName) {
-        return loopsRepository.findById(loopName)
-                .orElseThrow(() -> new EntityNotFoundException("Couldn't find closed loop named: " + loopName));
+        return loopsRepository.findById(loopName).orElseThrow(
+            () -> new EntityNotFoundException("Couldn't find closed loop named: " + loopName));
     }
 
     /**
