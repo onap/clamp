@@ -1,7 +1,7 @@
 {
 	"schema": {
 		"uniqueItems": "true",
-		"format": "tabs-top",
+		"format": "tabs",
 		"type": "array",
 		"title": "Thresholds",
 		"items": {
@@ -39,7 +39,7 @@
 				"dummySignatures": {
 					"propertyOrder": 1007,
 					"uniqueItems": "true",
-					"format": "tabs-top",
+					"format": "tabs",
 					"title": "dummy Signatures",
 					"type": "array",
 					"items": {

@@ -1,7 +1,7 @@
 {
     "schema": {
         "uniqueItems": "true",
-        "format": "tabs-top",
+        "format": "tabs",
         "type": "array",
         "title": "Properties with different types",
         "items": {
@@ -14,7 +14,7 @@
                 "cpus": {
                     "propertyOrder": 1001,
                     "uniqueItems": "true",
-                    "format": "tabs-top",
+                    "format": "tabs",
                     "type": "array",
                     "items": {
                         "type": "object",
@@ -64,7 +64,7 @@
                 "version": {
                     "propertyOrder": 1008,
                     "uniqueItems": "true",
-                    "format": "tabs-top",
+                    "format": "tabs",
                     "type": "array",
                     "items": {
                         "type": "object",

@@ -1,7 +1,7 @@
 {
 	"schema": {
 		"uniqueItems": "true",
-		"format": "tabs-top",
+		"format": "tabs",
 		"type": "array",
 		"title": "TCA Policy JSON",
 		"items": {
@@ -21,7 +21,7 @@
 				"metricsPerEventName": {
 					"propertyOrder": 1002,
 					"uniqueItems": "true",
-					"format": "tabs-top",
+					"format": "tabs",
 					"title": "Contains eventName and threshold details that need to be applied to given eventName",
 					"type": "array",
 					"items": {
@@ -43,7 +43,7 @@
 							"thresholds": {
 								"propertyOrder": 1008,
 								"uniqueItems": "true",
-								"format": "tabs-top",
+								"format": "tabs",
 								"title": "Thresholds associated with eventName",
 								"type": "array",
 								"items": {

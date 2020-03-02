@@ -145,7 +145,7 @@ export default class OperationalPolicyModal extends React.Component {
 
 	render() {
 		return (
-			<ModalStyled size="xl" show={this.state.show} onHide={this.handleClose}>
+			<ModalStyled size="xl" backdrop="static" keyboard={false} show={this.state.show} onHide={this.handleClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>Operational policies</Modal.Title>
 				</Modal.Header>
