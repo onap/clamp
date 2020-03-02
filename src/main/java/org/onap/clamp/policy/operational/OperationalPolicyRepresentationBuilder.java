@@ -28,10 +28,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-
 import java.io.IOException;
 import java.util.Map.Entry;
-
 import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.onap.clamp.loop.service.Service;
@@ -47,39 +45,45 @@ public class OperationalPolicyRepresentationBuilder {
      * @param modelJson The loop model json
      * @return The json representation
      * @throws JsonSyntaxException If the schema template cannot be parsed
-     * @throws IOException         In case of issue when opening the schema template
+     * @throws IOException In case of issue when opening the schema template
      */
     public static JsonObject generateOperationalPolicySchema(Service modelJson)
-            throws JsonSyntaxException, IOException {
-        JsonObject jsonSchema = JsonUtils.GSON.fromJson(
-                ResourceFileUtil.getResourceAsString("clds/json-schema/operational_policies/operational_policy.json"),
+        throws JsonSyntaxException, IOException {
+        JsonObject jsonSchema =
+            JsonUtils.GSON.fromJson(
+                ResourceFileUtil.getResourceAsString(
+                    "clds/json-schema/operational_policies/operational_policy.json"),
                 JsonObject.class);
-        jsonSchema.get("schema").getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject()
-                .get("configurationsJson").getAsJsonObject().get("properties").getAsJsonObject()
-                .get("operational_policy").getAsJsonObject().get("properties").getAsJsonObject().get("policies")
-                .getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject().get("target")
-                .getAsJsonObject().get("anyOf").getAsJsonArray().addAll(createAnyOfArray(modelJson));
+        if (modelJson != null) {
+            jsonSchema.get("schema").getAsJsonObject().get("items").getAsJsonObject()
+                .get("properties").getAsJsonObject().get("configurationsJson").getAsJsonObject()
+                .get("properties").getAsJsonObject().get("operational_policy").getAsJsonObject()
+                .get("properties").getAsJsonObject().get("policies").getAsJsonObject().get("items")
+                .getAsJsonObject().get("properties").getAsJsonObject().get("target")
+                .getAsJsonObject().get("anyOf").getAsJsonArray()
+                .addAll(createAnyOfArray(modelJson));
 
-        // update CDS recipe and payload information to schema
-        JsonArray actors = jsonSchema.get("schema").getAsJsonObject().get("items").getAsJsonObject().get("properties")
-                .getAsJsonObject().get("configurationsJson").getAsJsonObject().get("properties").getAsJsonObject()
-                .get("operational_policy").getAsJsonObject().get("properties").getAsJsonObject().get("policies")
-                .getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject().get("actor")
-                .getAsJsonObject().get("anyOf").getAsJsonArray();
+            // update CDS recipe and payload information to schema
+            JsonArray actors = jsonSchema.get("schema").getAsJsonObject().get("items")
+                .getAsJsonObject().get("properties").getAsJsonObject().get("configurationsJson")
+                .getAsJsonObject().get("properties").getAsJsonObject().get("operational_policy")
+                .getAsJsonObject().get("properties").getAsJsonObject().get("policies")
+                .getAsJsonObject().get("items").getAsJsonObject().get("properties")
+                .getAsJsonObject().get("actor").getAsJsonObject().get("anyOf").getAsJsonArray();
 
-        for (JsonElement actor : actors) {
-            if ("CDS".equalsIgnoreCase(actor.getAsJsonObject().get("title").getAsString())) {
-                actor.getAsJsonObject().get("properties").getAsJsonObject().get("type").getAsJsonObject()
-                        .get("anyOf").getAsJsonArray()
+            for (JsonElement actor : actors) {
+                if ("CDS".equalsIgnoreCase(actor.getAsJsonObject().get("title").getAsString())) {
+                    actor.getAsJsonObject().get("properties").getAsJsonObject().get("type")
+                        .getAsJsonObject().get("anyOf").getAsJsonArray()
                         .addAll(createAnyOfArrayForCdsRecipe(modelJson.getResourceDetails()));
+                }
             }
         }
-
         return jsonSchema;
     }
 
-    private static JsonObject createSchemaProperty(String title, String type, String defaultValue, String readOnlyFlag,
-            String[] enumArray) {
+    private static JsonObject createSchemaProperty(String title, String type, String defaultValue,
+        String readOnlyFlag, String[] enumArray) {
         JsonObject property = new JsonObject();
         property.addProperty("title", title);
         property.addProperty("type", type);
@@ -105,8 +109,10 @@ public class OperationalPolicyRepresentationBuilder {
             vnfOneOfSchema.addProperty("title", "VNF" + "-" + entry.getKey());
             JsonObject properties = new JsonObject();
             properties.add("type", createSchemaProperty("Type", "string", "VNF", "True", null));
-            properties.add("resourceID", createSchemaProperty("Resource ID", "string",
-                    modelVnfs.get(entry.getKey()).getAsJsonObject().get("name").getAsString(), "True", null));
+            properties.add("resourceID",
+                createSchemaProperty("Resource ID", "string",
+                    modelVnfs.get(entry.getKey()).getAsJsonObject().get("name").getAsString(),
+                    "True", null));
 
             vnfOneOfSchema.add("properties", properties);
             vnfSchemaArray.add(vnfOneOfSchema);
@@ -122,31 +128,37 @@ public class OperationalPolicyRepresentationBuilder {
             JsonObject vfModuleOneOfSchema = new JsonObject();
             vfModuleOneOfSchema.addProperty("title", "VFMODULE" + "-" + entry.getKey());
             JsonObject properties = new JsonObject();
-            properties.add("type", createSchemaProperty("Type", "string", "VFMODULE", "True", null));
-            properties.add("resourceID",
-                    createSchemaProperty("Resource ID", "string",
-                            modelVfModules.get(entry.getKey()).getAsJsonObject().get("vfModuleModelName").getAsString(),
-                            "True", null));
-            properties.add("modelInvariantId",
-                    createSchemaProperty("Model Invariant Id (ModelInvariantUUID)", "string", modelVfModules
-                            .get(entry.getKey()).getAsJsonObject().get("vfModuleModelInvariantUUID").getAsString(),
-                            "True", null));
-            properties.add("modelVersionId",
-                    createSchemaProperty("Model Version Id (ModelUUID)", "string",
-                            modelVfModules.get(entry.getKey()).getAsJsonObject().get("vfModuleModelUUID").getAsString(),
-                            "True", null));
-            properties.add("modelName",
-                    createSchemaProperty("Model Name", "string",
-                            modelVfModules.get(entry.getKey()).getAsJsonObject().get("vfModuleModelName").getAsString(),
-                            "True", null));
-            properties.add("modelVersion", createSchemaProperty("Model Version", "string",
-                    modelVfModules.get(entry.getKey()).getAsJsonObject().get("vfModuleModelVersion").getAsString(),
-                    "True", null));
+            properties.add("type",
+                createSchemaProperty("Type", "string", "VFMODULE", "True", null));
             properties
-                    .add("modelCustomizationId",
-                            createSchemaProperty("Customization ID", "string", modelVfModules.get(entry.getKey())
-                                    .getAsJsonObject().get("vfModuleModelCustomizationUUID").getAsString(), "True",
-                                    null));
+                .add("resourceID",
+                    createSchemaProperty(
+                        "Resource ID", "string", modelVfModules.get(entry.getKey())
+                            .getAsJsonObject().get("vfModuleModelName").getAsString(),
+                        "True", null));
+            properties.add("modelInvariantId",
+                createSchemaProperty("Model Invariant Id (ModelInvariantUUID)", "string",
+                    modelVfModules.get(entry.getKey()).getAsJsonObject()
+                        .get("vfModuleModelInvariantUUID").getAsString(),
+                    "True", null));
+            properties.add("modelVersionId",
+                createSchemaProperty("Model Version Id (ModelUUID)", "string", modelVfModules
+                    .get(entry.getKey()).getAsJsonObject().get("vfModuleModelUUID").getAsString(),
+                    "True", null));
+            properties.add("modelName",
+                createSchemaProperty("Model Name", "string", modelVfModules.get(entry.getKey())
+                    .getAsJsonObject().get("vfModuleModelName").getAsString(), "True", null));
+            properties
+                .add("modelVersion",
+                    createSchemaProperty(
+                        "Model Version", "string", modelVfModules.get(entry.getKey())
+                            .getAsJsonObject().get("vfModuleModelVersion").getAsString(),
+                        "True", null));
+            properties.add("modelCustomizationId",
+                createSchemaProperty(
+                    "Customization ID", "string", modelVfModules.get(entry.getKey())
+                        .getAsJsonObject().get("vfModuleModelCustomizationUUID").getAsString(),
+                    "True", null));
 
             vfModuleOneOfSchema.add("properties", properties);
             vfModuleOneOfSchemaArray.add(vfModuleOneOfSchema);
@@ -171,16 +183,16 @@ public class OperationalPolicyRepresentationBuilder {
     private static JsonArray createAnyOfCdsRecipe(JsonObject jsonObject) {
         JsonArray schemaArray = new JsonArray();
         for (Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-            JsonObject controllerProperties = entry.getValue().getAsJsonObject()
-                    .getAsJsonObject("controllerProperties");
+            JsonObject controllerProperties =
+                entry.getValue().getAsJsonObject().getAsJsonObject("controllerProperties");
 
             if (controllerProperties != null) {
                 JsonObject workflows = controllerProperties.getAsJsonObject("workflows");
                 for (Entry<String, JsonElement> workflowsEntry : workflows.entrySet()) {
                     JsonObject obj = new JsonObject();
                     obj.addProperty("title", workflowsEntry.getKey());
-                    obj.add("properties", createPayloadProperty(workflowsEntry.getValue().getAsJsonObject(),
-                                                                controllerProperties));
+                    obj.add("properties", createPayloadProperty(
+                        workflowsEntry.getValue().getAsJsonObject(), controllerProperties));
                     schemaArray.add(obj);
                 }
 
@@ -189,7 +201,8 @@ public class OperationalPolicyRepresentationBuilder {
         return schemaArray;
     }
 
-    private static JsonObject createPayloadProperty(JsonObject workFlow, JsonObject controllerProperties) {
+    private static JsonObject createPayloadProperty(JsonObject workFlow,
+        JsonObject controllerProperties) {
         JsonObject type = new JsonObject();
         type.addProperty("title", "Payload (YAML)");
         type.addProperty("type", "string");
@@ -200,14 +213,15 @@ public class OperationalPolicyRepresentationBuilder {
         return properties;
     }
 
-    private static String createDefaultStringForPayload(JsonObject workFlow, JsonObject controllerProperties) {
+    private static String createDefaultStringForPayload(JsonObject workFlow,
+        JsonObject controllerProperties) {
         String artifactName = controllerProperties.get("sdnc_model_name").toString();
         String artifactVersion = controllerProperties.get("sdnc_model_version").toString();
         String data = workFlow.getAsJsonObject("inputs").toString();
-        StringBuilder builder = new StringBuilder("'").append("artifact_name : ").append(artifactName).append("\n")
-                .append("artifact_version : ").append(artifactVersion).append("\n")
-                .append("mode : async").append("\n")
-                .append("data : ").append("'").append("\\").append("'").append(data).append("\\").append("'").append("'");
+        StringBuilder builder = new StringBuilder("'").append("artifact_name : ")
+            .append(artifactName).append("\n").append("artifact_version : ").append(artifactVersion)
+            .append("\n").append("mode : async").append("\n").append("data : ").append("'")
+            .append("\\").append("'").append(data).append("\\").append("'").append("'");
         return builder.toString();
     }
 }

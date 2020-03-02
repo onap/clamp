@@ -27,9 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
 import java.io.IOException;
-
 import org.junit.Test;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.onap.clamp.loop.service.Service;
@@ -39,17 +37,19 @@ public class OperationalPolicyRepresentationBuilderTest {
 
     @Test
     public void testOperationalPolicyPayloadConstruction() throws IOException {
-        JsonObject jsonModel = new GsonBuilder().create()
-                .fromJson(ResourceFileUtil.getResourceAsString("tosca/model-properties.json"), JsonObject.class);
+        JsonObject jsonModel = new GsonBuilder().create().fromJson(
+            ResourceFileUtil.getResourceAsString("tosca/model-properties.json"), JsonObject.class);
         Service service = new Service(jsonModel.get("serviceDetails").getAsJsonObject(),
-                jsonModel.get("resourceDetails").getAsJsonObject(), "1.0");
+            jsonModel.get("resourceDetails").getAsJsonObject(), "1.0");
 
-        JsonObject jsonSchema = OperationalPolicyRepresentationBuilder.generateOperationalPolicySchema(service);
+        JsonObject jsonSchema =
+            OperationalPolicyRepresentationBuilder.generateOperationalPolicySchema(service);
 
         assertThat(jsonSchema).isNotNull();
 
-        JSONAssert.assertEquals(ResourceFileUtil.getResourceAsString("tosca/operational-policy-json-schema.json"),
-                new GsonBuilder().create().toJson(jsonSchema), false);
+        JSONAssert.assertEquals(
+            ResourceFileUtil.getResourceAsString("tosca/operational-policy-json-schema.json"),
+            new GsonBuilder().create().toJson(jsonSchema), false);
     }
 
 }
