@@ -46,18 +46,21 @@ public class DcaeComponentTest {
 
     private Loop createTestLoop() {
         Loop loopTest = new Loop("ControlLoopTest", "<xml></xml>");
-        loopTest.setGlobalPropertiesJson(
-                new Gson().fromJson("{\"dcaeDeployParameters\":" + "{\"policy_id\": \"name\"}}", JsonObject.class));
+        loopTest.setGlobalPropertiesJson(new Gson().fromJson(
+            "{\"dcaeDeployParameters\":" + "{\"policy_id\": \"name\"}}", JsonObject.class));
         loopTest.setLastComputedState(LoopState.DESIGN);
         loopTest.setDcaeDeploymentId("123456789");
         loopTest.setDcaeDeploymentStatusUrl("http4://localhost:8085");
 
-        MicroServicePolicy microServicePolicy = new MicroServicePolicy("configPolicyTest", new PolicyModel("policy1",
-                "tosca_definitions_version: tosca_simple_yaml_1_0_0","1.0.0"), true,
-                new Gson().fromJson("{\"configtype\":\"json\"}", JsonObject.class), null, null, null);
-        microServicePolicy.setConfigurationsJson(new Gson().fromJson("{\"param1\":\"value1\"}", JsonObject.class));
+        MicroServicePolicy microServicePolicy = new MicroServicePolicy("configPolicyTest",
+            new PolicyModel("policy1", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
+                "1.0.0"),
+            true, new Gson().fromJson("{\"configtype\":\"json\"}", JsonObject.class), null, null,
+            null);
+        microServicePolicy.setConfigurationsJson(
+            new Gson().fromJson("{\"param1\":\"value1\"}", JsonObject.class));
 
-        loopTest.addMicroServicePolicy(microServicePolicy);
+        loopTest.addMicroServicePolicy(microServicePolicy, null);
         LoopTemplate loopTemplate = new LoopTemplate("test", "yaml", "svg", 1, null);
         loopTemplate.setDcaeBlueprintId("UUID-blueprint");
         loopTest.setLoopTemplate(loopTemplate);
@@ -67,13 +70,16 @@ public class DcaeComponentTest {
 
     /**
      * Test the DcaeReponse roughly.
+     *
      * @throws IOException In case of issues
      */
     @Test
     public void convertDcaeResponseTest() throws IOException {
-        String dcaeFakeResponse = "{'requestId':'testId','operationType':'install','status':'state',"
+        String dcaeFakeResponse =
+            "{'requestId':'testId','operationType':'install','status':'state',"
                 + "'error':'errorMessage', 'links':{'self':'selfUrl','uninstall':'uninstallUrl'}}";
-        DcaeOperationStatusResponse responseObject = DcaeComponent.convertDcaeResponse(dcaeFakeResponse);
+        DcaeOperationStatusResponse responseObject =
+            DcaeComponent.convertDcaeResponse(dcaeFakeResponse);
         assertThat(responseObject.getRequestId()).isEqualTo("testId");
         assertThat(responseObject.getOperationType()).isEqualTo("install");
         assertThat(responseObject.getStatus()).isEqualTo("state");
@@ -89,7 +95,8 @@ public class DcaeComponentTest {
     public void testGetDeployPayload() throws IOException {
         Loop loop = this.createTestLoop();
         String deploymentPayload = DcaeComponent.getDeployPayload(loop);
-        String expectedPayload = "{\"serviceTypeId\":\"UUID-blueprint\",\"inputs\":{\"policy_id\":\"name\"}}";
+        String expectedPayload =
+            "{\"serviceTypeId\":\"UUID-blueprint\",\"inputs\":{\"policy_id\":\"name\"}}";
         assertThat(deploymentPayload).isEqualTo(expectedPayload);
     }
 
@@ -166,41 +173,51 @@ public class DcaeComponentTest {
 
     /**
      * Test the Converter to DcaeInventoryResponse method.
+     *
      * @throws IOException In case of failure
      * @throws ParseException In case of failure
      */
     @Test
     public void convertToDcaeInventoryResponseTest() throws IOException, ParseException {
         String dcaeFakeResponse = "{\n" + "  \"links\": {\n" + "    \"previousLink\": {\n"
-                + "      \"title\": \"string\",\n" + "      \"rel\": \"string\",\n" + "      \"uri\": \"string\",\n"
-                + "      \"uriBuilder\": {},\n" + "      \"rels\": [\n" + "        \"string\"\n" + "      ],\n"
-                + "      \"params\": {\n" + "        \"additionalProp1\": \"string\",\n"
-                + "        \"additionalProp2\": \"string\",\n" + "        \"additionalProp3\": \"string\"\n"
-                + "      },\n" + "      \"type\": \"string\"\n" + "    },\n" + "    \"nextLink\": {\n"
-                + "      \"title\": \"string\",\n" + "      \"rel\": \"string\",\n" + "      \"uri\": \"string\",\n"
-                + "      \"uriBuilder\": {},\n" + "      \"rels\": [\n" + "        \"string\"\n" + "      ],\n"
-                + "      \"params\": {\n" + "        \"additionalProp1\": \"string\",\n"
-                + "        \"additionalProp2\": \"string\",\n" + "        \"additionalProp3\": \"string\"\n"
-                + "      },\n" + "      \"type\": \"string\"\n" + "    }\n" + "  },\n" + "  \"totalCount\": 0,\n"
-                + "  \"items\": [\n" + "    {\n" + "      \"owner\": \"testOwner\",\n"
-                + "      \"application\": \"testApplication\",\n" + "      \"component\": \"testComponent\",\n"
-                + "      \"typeName\": \"testTypeName\",\n" + "      \"typeVersion\": 0,\n"
-                + "      \"blueprintTemplate\": \"testBlueprintTemplate\",\n" + "      \"serviceIds\": [\n"
-                + "        \"serviceId1\", \"serviceId2\"\n" + "      ],\n" + "      \"vnfTypes\": [\n"
-                + "        \"vnfType1\", \"vnfType2\"\n" + "      ],\n" + "      \"serviceLocations\": [\n"
-                + "        \"serviceLocation1\", \"serviceLocation2\"\n" + "      ],\n"
-                + "      \"asdcServiceId\": \"testAsdcServiceId\",\n"
-                + "      \"asdcResourceId\": \"testAsdcResourceId\",\n"
-                + "      \"asdcServiceURL\": \"testAsdcServiceURL\",\n" + "      \"typeId\": \"testTypeId\",\n"
-                + "      \"selfLink\": {\n" + "        \"title\": \"selfLinkTitle\",\n"
-                + "        \"rel\": \"selfLinkRel\",\n" + "        \"uri\": \"selfLinkUri\",\n"
-                + "        \"uriBuilder\": {},\n" + "        \"rels\": [\n" + "          \"string\"\n" + "        ],\n"
-                + "        \"params\": {\n" + "          \"additionalProp1\": \"string\",\n"
-                + "          \"additionalProp2\": \"string\",\n" + "          \"additionalProp3\": \"string\"\n"
-                + "        },\n" + "        \"type\": \"string\"\n" + "      },\n"
-                + "      \"created\": \"2020-01-22T09:38:15.436Z\",\n"
-                + "      \"deactivated\": \"2020-01-22T09:38:15.437Z\"\n" + "    }\n" + "  ]\n" + "}";
-        List<DcaeInventoryResponse> responseObject = DcaeComponent.convertToDcaeInventoryResponse(dcaeFakeResponse);
+            + "      \"title\": \"string\",\n" + "      \"rel\": \"string\",\n"
+            + "      \"uri\": \"string\",\n" + "      \"uriBuilder\": {},\n" + "      \"rels\": [\n"
+            + "        \"string\"\n" + "      ],\n" + "      \"params\": {\n"
+            + "        \"additionalProp1\": \"string\",\n"
+            + "        \"additionalProp2\": \"string\",\n"
+            + "        \"additionalProp3\": \"string\"\n" + "      },\n"
+            + "      \"type\": \"string\"\n" + "    },\n" + "    \"nextLink\": {\n"
+            + "      \"title\": \"string\",\n" + "      \"rel\": \"string\",\n"
+            + "      \"uri\": \"string\",\n" + "      \"uriBuilder\": {},\n" + "      \"rels\": [\n"
+            + "        \"string\"\n" + "      ],\n" + "      \"params\": {\n"
+            + "        \"additionalProp1\": \"string\",\n"
+            + "        \"additionalProp2\": \"string\",\n"
+            + "        \"additionalProp3\": \"string\"\n" + "      },\n"
+            + "      \"type\": \"string\"\n" + "    }\n" + "  },\n" + "  \"totalCount\": 0,\n"
+            + "  \"items\": [\n" + "    {\n" + "      \"owner\": \"testOwner\",\n"
+            + "      \"application\": \"testApplication\",\n"
+            + "      \"component\": \"testComponent\",\n"
+            + "      \"typeName\": \"testTypeName\",\n" + "      \"typeVersion\": 0,\n"
+            + "      \"blueprintTemplate\": \"testBlueprintTemplate\",\n"
+            + "      \"serviceIds\": [\n" + "        \"serviceId1\", \"serviceId2\"\n"
+            + "      ],\n" + "      \"vnfTypes\": [\n" + "        \"vnfType1\", \"vnfType2\"\n"
+            + "      ],\n" + "      \"serviceLocations\": [\n"
+            + "        \"serviceLocation1\", \"serviceLocation2\"\n" + "      ],\n"
+            + "      \"asdcServiceId\": \"testAsdcServiceId\",\n"
+            + "      \"asdcResourceId\": \"testAsdcResourceId\",\n"
+            + "      \"asdcServiceURL\": \"testAsdcServiceURL\",\n"
+            + "      \"typeId\": \"testTypeId\",\n" + "      \"selfLink\": {\n"
+            + "        \"title\": \"selfLinkTitle\",\n" + "        \"rel\": \"selfLinkRel\",\n"
+            + "        \"uri\": \"selfLinkUri\",\n" + "        \"uriBuilder\": {},\n"
+            + "        \"rels\": [\n" + "          \"string\"\n" + "        ],\n"
+            + "        \"params\": {\n" + "          \"additionalProp1\": \"string\",\n"
+            + "          \"additionalProp2\": \"string\",\n"
+            + "          \"additionalProp3\": \"string\"\n" + "        },\n"
+            + "        \"type\": \"string\"\n" + "      },\n"
+            + "      \"created\": \"2020-01-22T09:38:15.436Z\",\n"
+            + "      \"deactivated\": \"2020-01-22T09:38:15.437Z\"\n" + "    }\n" + "  ]\n" + "}";
+        List<DcaeInventoryResponse> responseObject =
+            DcaeComponent.convertToDcaeInventoryResponse(dcaeFakeResponse);
         assertThat(responseObject.get(0).getAsdcResourceId()).isEqualTo("testAsdcResourceId");
         assertThat(responseObject.get(0).getAsdcServiceId()).isEqualTo("testAsdcServiceId");
         assertThat(responseObject.get(0).getTypeName()).isEqualTo("testTypeName");

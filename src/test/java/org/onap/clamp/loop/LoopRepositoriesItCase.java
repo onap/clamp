@@ -34,6 +34,7 @@ import java.time.Instant;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.onap.clamp.clds.Application;
+import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.loop.log.LogType;
 import org.onap.clamp.loop.log.LoopLog;
 import org.onap.clamp.loop.log.LoopLogRepository;
@@ -59,7 +60,8 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(classes = Application.class)
 public class LoopRepositoriesItCase {
 
-    private Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+    private Gson gson =
+        new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
 
     @Autowired
     private LoopsRepository loopRepository;
@@ -85,40 +87,47 @@ public class LoopRepositoriesItCase {
     @Autowired
     private ServicesRepository servicesRepository;
 
+    @Autowired
+    private ClampProperties refproperties;
+
     private Service getService(String serviceDetails, String resourceDetails) {
         return new Service(serviceDetails, resourceDetails);
     }
 
-    private OperationalPolicy getOperationalPolicy(String configJson, String name, PolicyModel policyModel) {
-        return new OperationalPolicy(name, null, new Gson().fromJson(configJson, JsonObject.class), policyModel,
-                null, null, null);
+    private OperationalPolicy getOperationalPolicy(String configJson, String name,
+        PolicyModel policyModel) {
+        return new OperationalPolicy(name, null, new Gson().fromJson(configJson, JsonObject.class),
+            policyModel, null, null, null);
     }
 
-    private LoopElementModel getLoopElementModel(String yaml, String name, String policyType, String createdBy,
-                                                 PolicyModel policyModel) {
+    private LoopElementModel getLoopElementModel(String yaml, String name, String policyType,
+        String createdBy, PolicyModel policyModel) {
         LoopElementModel model = new LoopElementModel(name, policyType, yaml);
         model.addPolicyModel(policyModel);
         return model;
     }
 
     private PolicyModel getPolicyModel(String policyType, String policyModelTosca, String version,
-                                       String policyAcronym) {
+        String policyAcronym) {
         return new PolicyModel(policyType, policyModelTosca, version, policyAcronym);
     }
 
-    private LoopTemplate getLoopTemplates(String name, String blueprint, String svgRepresentation, String createdBy,
-                                          Integer maxInstancesAllowed) {
-        LoopTemplate template = new LoopTemplate(name, blueprint, svgRepresentation, maxInstancesAllowed, null);
-        template.addLoopElementModel(getLoopElementModel("yaml", "microService1", "org.onap.policy.drools", createdBy,
+    private LoopTemplate getLoopTemplates(String name, String blueprint, String svgRepresentation,
+        String createdBy, Integer maxInstancesAllowed) {
+        LoopTemplate template =
+            new LoopTemplate(name, blueprint, svgRepresentation, maxInstancesAllowed, null);
+        template.addLoopElementModel(
+            getLoopElementModel("yaml", "microService1", "org.onap.policy.drools", createdBy,
                 getPolicyModel("org.onap.policy.drools", "yaml", "1.0.0", "Drools")));
-        template.addLoopElementModel(getLoopElementModel("yaml", "oppolicy1", "org.onap.policy.drools.legacy",
-                createdBy, getPolicyModel("org.onap.policy.drools.legacy", "yaml", "1.0.0", "DroolsLegacy")));
+        template.addLoopElementModel(
+            getLoopElementModel("yaml", "oppolicy1", "org.onap.policy.drools.legacy", createdBy,
+                getPolicyModel("org.onap.policy.drools.legacy", "yaml", "1.0.0", "DroolsLegacy")));
         loopTemplateRepository.save(template);
         return template;
     }
 
-    private Loop getLoop(String name, String svgRepresentation, String blueprint, String globalPropertiesJson,
-                         String dcaeId, String dcaeUrl, String dcaeBlueprintId) {
+    private Loop getLoop(String name, String svgRepresentation, String blueprint,
+        String globalPropertiesJson, String dcaeId, String dcaeUrl, String dcaeBlueprintId) {
         Loop loop = new Loop();
         loop.setName(name);
         loop.setSvgRepresentation(svgRepresentation);
@@ -130,8 +139,8 @@ public class LoopRepositoriesItCase {
         return loop;
     }
 
-    private MicroServicePolicy getMicroServicePolicy(String name, String jsonRepresentation, String jsonProperties,
-                                                     boolean shared, PolicyModel policyModel) {
+    private MicroServicePolicy getMicroServicePolicy(String name, String jsonRepresentation,
+        String jsonProperties, boolean shared, PolicyModel policyModel) {
         MicroServicePolicy microService = new MicroServicePolicy(name, policyModel, shared,
                 gson.fromJson(jsonRepresentation, JsonObject.class), null, null, null);
         microService.setConfigurationsJson(new Gson().fromJson(jsonProperties, JsonObject.class));
@@ -153,14 +162,15 @@ public class LoopRepositoriesItCase {
                 "123456789", "https://dcaetest.org", "UUID-blueprint");
         OperationalPolicy opPolicy = this.getOperationalPolicy("{\"type\":\"GUARD\"}", "GuardOpPolicyTest",
                 getPolicyModel("org.onap.policy.drools.legacy", "yaml", "1.0.0", "DroolsLegacy"));
-        loopTest.addOperationalPolicy(opPolicy);
+        loopTest.addOperationalPolicy(opPolicy, refproperties);
         MicroServicePolicy microServicePolicy = getMicroServicePolicy("configPolicyTest", "{\"configtype\":\"json\"}",
                 "{\"param1\":\"value1\"}", true, getPolicyModel("org.onap.policy.drools", "yaml", "1.0.0", "Drools"));
-        loopTest.addMicroServicePolicy(microServicePolicy);
+        loopTest.addMicroServicePolicy(microServicePolicy, refproperties);
         LoopLog loopLog = getLoopLog(LogType.INFO, "test message", loopTest);
         loopTest.addLog(loopLog);
         Service service = getService(
-                "{\"name\": \"vLoadBalancerMS\", \"UUID\": \"63cac700-ab9a-4115-a74f-7eac85e3fce0\"}", "{\"CP\": {}}");
+            "{\"name\": \"vLoadBalancerMS\", \"UUID\": \"63cac700-ab9a-4115-a74f-7eac85e3fce0\"}",
+            "{\"CP\": {}}");
         loopTest.setModelService(service);
 
         // Attempt to save into the database the entire loop
@@ -175,45 +185,50 @@ public class LoopRepositoriesItCase {
         // objects
         loopLog.setId(((LoopLog) loopInDb.getLoopLogs().toArray()[0]).getId());
 
-        assertThat(loopInDb).isEqualToIgnoringGivenFields(loopTest, "components", "createdDate", "updatedDate",
-                "createdBy", "updatedBy");
+        assertThat(loopInDb).isEqualToIgnoringGivenFields(loopTest, "components", "createdDate",
+            "updatedDate", "createdBy", "updatedBy");
         assertThat(loopRepository.existsById(loopTest.getName())).isEqualTo(true);
         assertThat(operationalPolicyService.isExisting(opPolicy.getName())).isEqualTo(true);
-        assertThat(microServicePolicyService.isExisting(microServicePolicy.getName())).isEqualTo(true);
+        assertThat(microServicePolicyService.isExisting(microServicePolicy.getName()))
+            .isEqualTo(true);
         assertThat(loopLogRepository.existsById(loopLog.getId())).isEqualTo(true);
-        assertThat(loopTemplateRepository.existsById(loopInDb.getLoopTemplate().getName())).isEqualTo(true);
-        assertThat(loopTemplateRepository.existsById(loopInDb.getLoopTemplate().getName())).isEqualTo(true);
-        assertThat(servicesRepository.existsById(loopInDb.getModelService().getServiceUuid())).isEqualTo(true);
-        assertThat(microServiceModelsRepository.existsById(
-                loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel().getName()))
-                .isEqualTo(true);
+        assertThat(loopTemplateRepository.existsById(loopInDb.getLoopTemplate().getName()))
+            .isEqualTo(true);
+        assertThat(loopTemplateRepository.existsById(loopInDb.getLoopTemplate().getName()))
+            .isEqualTo(true);
+        assertThat(servicesRepository.existsById(loopInDb.getModelService().getServiceUuid()))
+            .isEqualTo(true);
+        assertThat(microServiceModelsRepository.existsById(loopInDb.getLoopTemplate()
+            .getLoopElementModelsUsed().first().getLoopElementModel().getName())).isEqualTo(true);
         assertThat(policyModelsRepository.existsById(new PolicyModelId(
-                loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel().getPolicyModels()
-                        .first().getPolicyModelType(),
-                loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel().getPolicyModels()
-                        .first().getVersion()))).isEqualTo(true);
+            loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel()
+                .getPolicyModels().first().getPolicyModelType(),
+            loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel()
+                .getPolicyModels().first().getVersion()))).isEqualTo(true);
 
         // Now attempt to read from database
         Loop loopInDbRetrieved = loopRepository.findById(loopTest.getName()).get();
-        assertThat(loopInDbRetrieved).isEqualToIgnoringGivenFields(loopTest, "components", "createdDate", "updatedDate",
-                "createdBy", "updatedBy");
-        assertThat(loopInDbRetrieved).isEqualToComparingOnlyGivenFields(loopInDb, "createdDate", "updatedDate",
-                "createdBy", "updatedBy");
-        assertThat((LoopLog) loopInDbRetrieved.getLoopLogs().toArray()[0]).isEqualToComparingFieldByField(loopLog);
+        assertThat(loopInDbRetrieved).isEqualToIgnoringGivenFields(loopTest, "components",
+            "createdDate", "updatedDate", "createdBy", "updatedBy");
+        assertThat(loopInDbRetrieved).isEqualToComparingOnlyGivenFields(loopInDb, "createdDate",
+            "updatedDate", "createdBy", "updatedBy");
+        assertThat((LoopLog) loopInDbRetrieved.getLoopLogs().toArray()[0])
+            .isEqualToComparingFieldByField(loopLog);
         assertThat((OperationalPolicy) loopInDbRetrieved.getOperationalPolicies().toArray()[0])
-                .isEqualToIgnoringGivenFields(opPolicy, "createdDate", "updatedDate", "createdBy", "updatedBy");
-        assertThat(((OperationalPolicy) loopInDbRetrieved.getOperationalPolicies().toArray()[0]).getCreatedDate())
-                .isNotNull();
-        assertThat(((OperationalPolicy) loopInDbRetrieved.getOperationalPolicies().toArray()[0]).getUpdatedDate())
-                .isNotNull();
-        assertThat(((OperationalPolicy) loopInDbRetrieved.getOperationalPolicies().toArray()[0]).getCreatedBy())
-                .isNotNull();
-        assertThat(((OperationalPolicy) loopInDbRetrieved.getOperationalPolicies().toArray()[0]).getUpdatedBy())
-                .isNotNull();
+            .isEqualToIgnoringGivenFields(opPolicy, "createdDate", "updatedDate", "createdBy",
+                "updatedBy");
+        assertThat(((OperationalPolicy) loopInDbRetrieved.getOperationalPolicies().toArray()[0])
+            .getCreatedDate()).isNotNull();
+        assertThat(((OperationalPolicy) loopInDbRetrieved.getOperationalPolicies().toArray()[0])
+            .getUpdatedDate()).isNotNull();
+        assertThat(((OperationalPolicy) loopInDbRetrieved.getOperationalPolicies().toArray()[0])
+            .getCreatedBy()).isNotNull();
+        assertThat(((OperationalPolicy) loopInDbRetrieved.getOperationalPolicies().toArray()[0])
+            .getUpdatedBy()).isNotNull();
 
         assertThat((MicroServicePolicy) loopInDbRetrieved.getMicroServicePolicies().toArray()[0])
-                .isEqualToIgnoringGivenFields(microServicePolicy, "createdDate", "updatedDate", "createdBy",
-                        "updatedBy");
+            .isEqualToIgnoringGivenFields(microServicePolicy, "createdDate", "updatedDate",
+                "createdBy", "updatedBy");
 
         // Attempt an update
         ((LoopLog) loopInDbRetrieved.getLoopLogs().toArray()[0]).setLogInstant(Instant.now());
@@ -222,9 +237,10 @@ public class LoopRepositoriesItCase {
         // Loop loopInDbRetrievedUpdated =
         // loopRepository.findById(loopTest.getName()).get();
         assertThat((LoopLog) loopInDbRetrievedUpdated.getLoopLogs().toArray()[0])
-                .isEqualToComparingFieldByField(loopInDbRetrieved.getLoopLogs().toArray()[0]);
+            .isEqualToComparingFieldByField(loopInDbRetrieved.getLoopLogs().toArray()[0]);
         // UpdatedDate should have been changed
-        assertThat(loopInDbRetrievedUpdated.getUpdatedDate()).isNotEqualTo(loopInDbRetrievedUpdated.getCreatedDate());
+        assertThat(loopInDbRetrievedUpdated.getUpdatedDate())
+            .isNotEqualTo(loopInDbRetrievedUpdated.getCreatedDate());
         // createdDate should have NOT been changed
         assertThat(loopInDbRetrievedUpdated.getCreatedDate()).isEqualTo(loopInDb.getCreatedDate());
         // other audit are the same
@@ -236,19 +252,21 @@ public class LoopRepositoriesItCase {
         loopRepository.delete(loopInDbRetrieved);
         assertThat(loopRepository.existsById(loopTest.getName())).isEqualTo(false);
         assertThat(operationalPolicyService.isExisting(opPolicy.getName())).isEqualTo(false);
-        assertThat(microServicePolicyService.isExisting(microServicePolicy.getName())).isEqualTo(true);
+        assertThat(microServicePolicyService.isExisting(microServicePolicy.getName()))
+            .isEqualTo(true);
         assertThat(loopLogRepository.existsById(loopLog.getId())).isEqualTo(false);
-        assertThat(loopTemplateRepository.existsById(loopInDb.getLoopTemplate().getName())).isEqualTo(true);
-        assertThat(servicesRepository.existsById(loopInDb.getModelService().getServiceUuid())).isEqualTo(true);
-        assertThat(microServiceModelsRepository.existsById(
-                loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel().getName()))
-                .isEqualTo(true);
+        assertThat(loopTemplateRepository.existsById(loopInDb.getLoopTemplate().getName()))
+            .isEqualTo(true);
+        assertThat(servicesRepository.existsById(loopInDb.getModelService().getServiceUuid()))
+            .isEqualTo(true);
+        assertThat(microServiceModelsRepository.existsById(loopInDb.getLoopTemplate()
+            .getLoopElementModelsUsed().first().getLoopElementModel().getName())).isEqualTo(true);
 
         assertThat(policyModelsRepository.existsById(new PolicyModelId(
-                loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel().getPolicyModels()
-                        .first().getPolicyModelType(),
-                loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel().getPolicyModels()
-                        .first().getVersion()))).isEqualTo(true);
+            loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel()
+                .getPolicyModels().first().getPolicyModelType(),
+            loopInDb.getLoopTemplate().getLoopElementModelsUsed().first().getLoopElementModel()
+                .getPolicyModels().first().getVersion()))).isEqualTo(true);
 
     }
 }
