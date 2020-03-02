@@ -27,6 +27,7 @@ package org.onap.clamp.clds.util.drawing;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.batik.svggen.SVGGraphics2D;
+import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.util.XmlTools;
 import org.onap.clamp.loop.Loop;
 import org.onap.clamp.loop.template.LoopElementModel;
@@ -35,18 +36,24 @@ import org.onap.clamp.loop.template.LoopTemplateLoopElementModel;
 import org.w3c.dom.Document;
 
 public class SvgLoopGenerator {
+
+    private static final String INCLUDE_VES_COLLECTOR = "svg.include.ves";
+
     /**
      * Generate the SVG images from the loop.
      *
      * @param loop The loop object, so it won't use the loop template
      * @return A String containing the SVG
      */
-    public static String getSvgImage(Loop loop) {
+    public static String getSvgImage(Loop loop, ClampProperties refProperties) {
         SVGGraphics2D svgGraphics2D = new SVGGraphics2D(XmlTools.createEmptySvgDocument());
         Document document = XmlTools.createEmptySvgDocument();
         DocumentBuilder dp = new DocumentBuilder(document, svgGraphics2D.getDOMFactory());
         Painter painter = new Painter(svgGraphics2D, dp);
-        ClampGraphBuilder cgp = new ClampGraphBuilder(painter).collector("VES");
+        ClampGraphBuilder cgp = new ClampGraphBuilder(painter);
+        if (refProperties.getStringValue(INCLUDE_VES_COLLECTOR).equalsIgnoreCase("true")) {
+            cgp.collector("VES");
+        }
         cgp.addAllMicroServices(loop.getMicroServicePolicies());
         ClampGraph cg = cgp.addAllPolicies(loop.getOperationalPolicies()).build();
         return cg.getAsSvg();
@@ -65,7 +72,8 @@ public class SvgLoopGenerator {
         Painter painter = new Painter(svgGraphics2D, dp);
         ClampGraphBuilder cgp = new ClampGraphBuilder(painter).collector("VES");
         Set<LoopElementModel> elementModelsSet = new HashSet<>();
-        for (LoopTemplateLoopElementModel elementModelLink:loopTemplate.getLoopElementModelsUsed()) {
+        for (LoopTemplateLoopElementModel elementModelLink : loopTemplate
+            .getLoopElementModelsUsed()) {
             elementModelsSet.add(elementModelLink.getLoopElementModel());
         }
         ClampGraph cg = cgp.addAllLoopElementModels(elementModelsSet).build();

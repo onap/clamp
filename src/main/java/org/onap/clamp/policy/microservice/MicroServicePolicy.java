@@ -66,7 +66,8 @@ public class MicroServicePolicy extends Policy implements Serializable {
     private static final long serialVersionUID = 6271238288583332616L;
 
     @Transient
-    private static final EELFLogger logger = EELFManager.getInstance().getLogger(MicroServicePolicy.class);
+    private static final EELFLogger logger =
+        EELFManager.getInstance().getLogger(MicroServicePolicy.class);
 
     @Expose
     @Id
@@ -102,8 +103,9 @@ public class MicroServicePolicy extends Policy implements Serializable {
 
     @Expose
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumns({@JoinColumn(name = "policy_model_type", referencedColumnName = "policy_model_type"),
-            @JoinColumn(name = "policy_model_version", referencedColumnName = "version")})
+    @JoinColumns({
+        @JoinColumn(name = "policy_model_type", referencedColumnName = "policy_model_type"),
+        @JoinColumn(name = "policy_model_version", referencedColumnName = "version")})
     private PolicyModel policyModel;
 
     public MicroServicePolicy() {
@@ -114,14 +116,21 @@ public class MicroServicePolicy extends Policy implements Serializable {
      * The constructor that creates the json representation from the policyTosca
      * using the ToscaYamlToJsonConvertor.
      *
-     * @param name        The name of the MicroService
+     * @param name The name of the MicroService
      * @param policyModel The policy model of the MicroService
-     * @param shared      The flag indicate whether the MicroService is shared
+     * @param shared The flag indicate whether the MicroService is shared
      */
-    public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared, LoopElementModel loopElementModel) {
-        this(name,policyModel,shared,JsonUtils.GSON_JPA_MODEL
-                .fromJson(new ToscaYamlToJsonConvertor().parseToscaYaml(policyModel.getPolicyModelTosca(),
-                        policyModel.getPolicyModelType()), JsonObject.class),loopElementModel);
+    public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared,
+        LoopElementModel loopElementModel) {
+        this(name, policyModel, shared,
+            policyModel != null
+                ? JsonUtils.GSON_JPA_MODEL
+                    .fromJson(
+                        new ToscaYamlToJsonConvertor().parseToscaYaml(
+                            policyModel.getPolicyModelTosca(), policyModel.getPolicyModelType()),
+                        JsonObject.class)
+                : null,
+            loopElementModel);
     }
 
     private JsonObject createJsonFromPolicyTosca() {
@@ -133,15 +142,16 @@ public class MicroServicePolicy extends Policy implements Serializable {
     /**
      * The constructor that does not make use of ToscaYamlToJsonConvertor but take
      * the jsonRepresentation instead.
-     * @param name               The name of the MicroService
-     * @param policyModel        The policy model type of the MicroService
-     * @param shared             The flag indicate whether the MicroService is
- *                           shared
+     *
+     * @param name The name of the MicroService
+     * @param policyModel The policy model type of the MicroService
+     * @param shared The flag indicate whether the MicroService is
+     *        shared
      * @param jsonRepresentation The UI representation in json format
      * @param loopElementModel The loop element model from which this instance should be created
      */
     public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared,
-                              JsonObject jsonRepresentation, LoopElementModel loopElementModel) {
+        JsonObject jsonRepresentation, LoopElementModel loopElementModel) {
         this.name = name;
         this.policyModel = policyModel;
         this.shared = shared;
@@ -289,10 +299,9 @@ public class MicroServicePolicy extends Policy implements Serializable {
     }
 
     private String getMicroServicePropertyNameFromTosca(JsonObject object) {
-        return object.getAsJsonObject("policy_types").getAsJsonObject(this.getPolicyModel().getPolicyModelType())
-                .getAsJsonObject(
-                        "properties")
-                .keySet().toArray(new String[1])[0];
+        return object.getAsJsonObject("policy_types")
+            .getAsJsonObject(this.getPolicyModel().getPolicyModelType())
+            .getAsJsonObject("properties").keySet().toArray(new String[1])[0];
     }
 
     @Override
@@ -301,7 +310,8 @@ public class MicroServicePolicy extends Policy implements Serializable {
 
         JsonObject policyPayloadResult = new JsonObject();
 
-        policyPayloadResult.add("tosca_definitions_version", toscaJson.get("tosca_definitions_version"));
+        policyPayloadResult.add("tosca_definitions_version",
+            toscaJson.get("tosca_definitions_version"));
 
         JsonObject topologyTemplateNode = new JsonObject();
         policyPayloadResult.add("topology_template", topologyTemplateNode);
@@ -323,8 +333,10 @@ public class MicroServicePolicy extends Policy implements Serializable {
 
         JsonObject policyProperties = new JsonObject();
         policyDetails.add("properties", policyProperties);
-        policyProperties.add(this.getMicroServicePropertyNameFromTosca(toscaJson), this.getConfigurationsJson());
-        String policyPayload = new GsonBuilder().setPrettyPrinting().create().toJson(policyPayloadResult);
+        policyProperties.add(this.getMicroServicePropertyNameFromTosca(toscaJson),
+            this.getConfigurationsJson());
+        String policyPayload =
+            new GsonBuilder().setPrettyPrinting().create().toJson(policyPayloadResult);
         logger.info("Micro service policy payload: " + policyPayload);
         return policyPayload;
     }
