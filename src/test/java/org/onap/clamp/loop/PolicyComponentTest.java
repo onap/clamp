@@ -262,13 +262,13 @@ public class PolicyComponentTest {
 
         MicroServicePolicy microServicePolicy = new MicroServicePolicy("configPolicyTest", policyModel1, true,
                 new Gson().fromJson("{\"configtype\":\"json\"}", JsonObject.class), null, "pdpGroup1", "pdpSubgroup1");
-        loopTest.addMicroServicePolicy(microServicePolicy);
+        loopTest.addMicroServicePolicy(microServicePolicy, null);
 
         PolicyModel policyModel2 = new PolicyModel("onap.policies.controlloop.Operational", null, "1.0.0");
         OperationalPolicy opPolicy = new OperationalPolicy("opPolicy", loopTest,
                 new Gson().fromJson("{\"configtype\":\"json\"}", JsonObject.class), policyModel2, null, "pdpGroup2",
                 "pdpSubgroup2");
-        loopTest.addOperationalPolicy(opPolicy);
+        loopTest.addOperationalPolicy(opPolicy, null);
 
         LoopTemplate loopTemplate = new LoopTemplate("test", "yaml", "svg", 1, null);
         loopTemplate.setDcaeBlueprintId("UUID-blueprint");

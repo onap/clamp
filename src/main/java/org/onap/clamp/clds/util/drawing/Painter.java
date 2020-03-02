@@ -30,6 +30,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.util.Set;
 import org.apache.batik.svggen.SVGGraphics2D;
+import org.onap.clamp.loop.template.LoopElementModel;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.onap.clamp.policy.operational.OperationalPolicy;
 
@@ -48,7 +49,7 @@ public class Painter {
     /**
      * Constructor to create instance of Painter.
      *
-     * @param svgGraphics2D   svg graphics
+     * @param svgGraphics2D svg graphics
      * @param documentBuilder document builder
      */
     public Painter(SVGGraphics2D svgGraphics2D, DocumentBuilder documentBuilder) {
@@ -57,8 +58,66 @@ public class Painter {
         this.canvasSize = DEFAULT_CANVAS_SIZE;
     }
 
-    DocumentBuilder doPaint(String collector, Set<MicroServicePolicy> microServices, Set<OperationalPolicy> policies) {
-        int numOfRectangles = 2 + microServices.size();
+    DocumentBuilder doPaint(String collector, Set<MicroServicePolicy> microServices,
+        Set<OperationalPolicy> policies) {
+
+        ImageBuilder ib = getImageBuilder(microServices.size());
+        doTheActualDrawing(collector, microServices, policies, ib);
+
+        return ib.getDocumentBuilder();
+    }
+
+    private void doTheActualDrawing(String collector, Set<MicroServicePolicy> microServices,
+        Set<OperationalPolicy> policies, ImageBuilder ib) {
+        ib.circle("start-circle", SLIM_LINE);
+
+        if (collector != null) {
+            ib.arrow().rectangle(collector, RectTypes.COLECTOR, collector);
+        }
+
+        for (MicroServicePolicy ms : microServices) {
+            ib.arrow().rectangle(ms.getName(), RectTypes.MICROSERVICE,
+                ms.getPolicyModel() == null ? ms.getLoopElementModel().getShortName()
+                    : ms.getPolicyModel().getPolicyAcronym());
+
+        }
+        for (OperationalPolicy policy : policies) {
+            ib.arrow().rectangle(policy.getName(), RectTypes.POLICY,
+                policy.getPolicyModel().getPolicyAcronym());
+        }
+        ib.arrow().circle("stop-circle", THICK_LINE);
+    }
+
+    DocumentBuilder doPaintUsingLoopElementmodel(String collector,
+        Set<LoopElementModel> microServices, Set<LoopElementModel> policies) {
+
+        ImageBuilder ib = getImageBuilder(microServices.size());
+        doTheActualDrawingUsingLoopElementmodel(collector, microServices, policies, ib);
+
+        return ib.getDocumentBuilder();
+    }
+
+    private void doTheActualDrawingUsingLoopElementmodel(String collector,
+        Set<LoopElementModel> microServices, Set<LoopElementModel> policies, ImageBuilder ib) {
+        ib.circle("start-circle", SLIM_LINE);
+
+        if (collector != null) {
+            ib.arrow().rectangle(collector, RectTypes.COLECTOR, collector);
+        }
+
+        for (LoopElementModel loopElementModel : microServices) {
+            ib.arrow().rectangle(loopElementModel.getName(), RectTypes.MICROSERVICE,
+                loopElementModel.getShortName());
+        }
+        for (LoopElementModel loopElementModel : policies) {
+            ib.arrow().rectangle(loopElementModel.getName(), RectTypes.POLICY,
+                loopElementModel.getShortName());
+        }
+        ib.arrow().circle("stop-circle", THICK_LINE);
+    }
+
+    private ImageBuilder getImageBuilder(int size) {
+        int numOfRectangles = 2 + size;
         int numOfArrows = numOfRectangles + 1;
         int baseLength = (canvasSize - 2 * CIRCLE_RADIUS) / (numOfArrows + numOfRectangles);
         if (baseLength < MINIMUM_BASE_LENGTH) {
@@ -69,31 +128,14 @@ public class Painter {
         adjustGraphics2DProperties();
 
         Point origin = new Point(1, rectHeight / 2);
-        ImageBuilder ib = new ImageBuilder(g2d, documentBuilder, origin, baseLength, rectHeight);
-
-        doTheActualDrawing(collector, microServices, policies, ib);
-
-        return ib.getDocumentBuilder();
-    }
-
-    private void doTheActualDrawing(String collector, Set<MicroServicePolicy> microServices,
-                                    Set<OperationalPolicy> policies,
-                                    ImageBuilder ib) {
-        ib.circle("start-circle", SLIM_LINE).arrow().rectangle(collector, RectTypes.COLECTOR, collector);
-
-        for (MicroServicePolicy ms : microServices) {
-            ib.arrow().rectangle(ms.getName(),
-                    RectTypes.MICROSERVICE, ms.getPolicyModel().getPolicyAcronym());
-        }
-        for (OperationalPolicy policy : policies) {
-            ib.arrow().rectangle(policy.getName(), RectTypes.POLICY, policy.getPolicyModel().getPolicyAcronym());
-        }
-        ib.arrow().circle("stop-circle", THICK_LINE);
+        return new ImageBuilder(g2d, documentBuilder, origin, baseLength, rectHeight);
     }
 
     private void adjustGraphics2DProperties() {
-        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+            RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
         g2d.setStroke(new BasicStroke(SLIM_LINE));
         g2d.setPaint(Color.BLACK);
     }

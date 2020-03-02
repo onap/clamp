@@ -104,7 +104,7 @@ export default class ConfigurationPolicyModal extends React.Component {
 
 	render() {
 		return (
-			<ModalStyled size="xl" show={this.state.show} onHide={this.handleClose}>
+			<ModalStyled backdrop="static" keyboard={false} size="xl" show={this.state.show} onHide={this.handleClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>Configuration policies</Modal.Title>
 				</Modal.Header>

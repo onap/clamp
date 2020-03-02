@@ -39,6 +39,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.SortNatural;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
 import org.onap.clamp.clds.util.drawing.SvgLoopGenerator;
 import org.onap.clamp.loop.common.AuditEntity;
 import org.onap.clamp.loop.service.Service;
@@ -74,17 +75,17 @@ public class LoopTemplate extends AuditEntity implements Serializable {
 
     @Expose
     @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
-            mappedBy = "loopTemplate",
-            orphanRemoval = true)
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER,
+        mappedBy = "loopTemplate",
+        orphanRemoval = true)
     @SortNatural
     private SortedSet<LoopTemplateLoopElementModel> loopElementModelsUsed = new TreeSet<>();
 
     @Expose
     @ManyToOne(
-            fetch = FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+        fetch = FetchType.EAGER,
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "service_uuid")
     private Service modelService;
 
@@ -232,9 +233,10 @@ public class LoopTemplate extends AuditEntity implements Serializable {
      *
      * @param loopElementModels The loopElementModel set to add
      */
-    public void addLoopElementModels(Set<LoopElementModel> loopElementModels) {
+    public void addLoopElementModels(Set<LoopElementModel> loopElementModels,
+        ToscaYamlToJsonConvertor toscaYamlToJsonConvertor) {
         for (LoopElementModel loopElementModel : loopElementModels) {
-            addLoopElementModel(loopElementModel);
+            addLoopElementModel(loopElementModel, toscaYamlToJsonConvertor);
         }
     }
 
@@ -244,8 +246,10 @@ public class LoopTemplate extends AuditEntity implements Serializable {
      *
      * @param loopElementModel The loopElementModel to add
      */
-    public void addLoopElementModel(LoopElementModel loopElementModel) {
-        this.addLoopElementModel(loopElementModel,this.loopElementModelsUsed.size());
+    public void addLoopElementModel(LoopElementModel loopElementModel,
+        ToscaYamlToJsonConvertor toscaYamlToJsonConvertor) {
+        this.addLoopElementModel(loopElementModel, this.loopElementModelsUsed.size(),
+            toscaYamlToJsonConvertor);
     }
 
     /**
@@ -253,14 +257,16 @@ public class LoopTemplate extends AuditEntity implements Serializable {
      * specified manually.
      *
      * @param loopElementModel The loopElementModel to add
-     * @param listPosition     The position in the flow
+     * @param listPosition The position in the flow
      */
-    public void addLoopElementModel(LoopElementModel loopElementModel, Integer listPosition) {
+    public void addLoopElementModel(LoopElementModel loopElementModel, Integer listPosition,
+        ToscaYamlToJsonConvertor toscaYamlToJsonConvertor) {
         LoopTemplateLoopElementModel jointEntry =
-                new LoopTemplateLoopElementModel(this, loopElementModel, listPosition);
+            new LoopTemplateLoopElementModel(this, loopElementModel, listPosition);
         this.loopElementModelsUsed.add(jointEntry);
         loopElementModel.getUsedByLoopTemplates().add(jointEntry);
-        this.setSvgRepresentation(SvgLoopGenerator.getSvgImage(this));
+        this.setSvgRepresentation(
+            SvgLoopGenerator.getSvgImage(this, null, toscaYamlToJsonConvertor));
     }
 
     /**
@@ -300,16 +306,16 @@ public class LoopTemplate extends AuditEntity implements Serializable {
     /**
      * Constructor.
      *
-     * @param name                The loop template name id
-     * @param blueprint           The blueprint containing all microservices (legacy
-     *                            case)
-     * @param svgRepresentation   The svg representation of that loop template
+     * @param name The loop template name id
+     * @param blueprint The blueprint containing all microservices (legacy
+     *        case)
+     * @param svgRepresentation The svg representation of that loop template
      * @param maxInstancesAllowed The maximum number of instances that can be
-     *                            created from that template
-     * @param service             The service associated to that loop template
+     *        created from that template
+     * @param service The service associated to that loop template
      */
     public LoopTemplate(String name, String blueprint, String svgRepresentation,
-                        Integer maxInstancesAllowed, Service service) {
+        Integer maxInstancesAllowed, Service service) {
         this.name = name;
         this.setBlueprint(blueprint);
         this.svgRepresentation = svgRepresentation;
@@ -351,17 +357,17 @@ public class LoopTemplate extends AuditEntity implements Serializable {
     /**
      * Generate the loop template name.
      *
-     * @param serviceName       The service name
-     * @param serviceVersion    The service version
-     * @param resourceName      The resource name
+     * @param serviceName The service name
+     * @param serviceVersion The service version
+     * @param resourceName The resource name
      * @param blueprintFileName The blueprint file name
      * @return The generated loop template name
      */
     public static String generateLoopTemplateName(String serviceName, String serviceVersion,
-                                                  String resourceName, String blueprintFileName) {
+        String resourceName, String blueprintFileName) {
         StringBuilder buffer = new StringBuilder("LOOP_TEMPLATE_").append(serviceName).append("_v")
-                .append(serviceVersion).append("_").append(resourceName).append("_")
-                .append(blueprintFileName.replaceAll(".yaml", ""));
+            .append(serviceVersion).append("_").append(resourceName).append("_")
+            .append(blueprintFileName.replaceAll(".yaml", ""));
         return buffer.toString().replace('.', '_').replaceAll(" ", "");
     }
 }
