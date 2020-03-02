@@ -83,7 +83,7 @@ export default class OpenLoopModal extends React.Component {
 
 	render() {
 		return (
-			<ModalStyled size="lg" show={this.state.show} onHide={this.handleClose}>
+			<ModalStyled size="lg" backdrop="static" keyboard={false} show={this.state.show} onHide={this.handleClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>Open Model</Modal.Title>
 				</Modal.Header>
