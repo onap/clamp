@@ -40,7 +40,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
 import org.onap.clamp.clds.tosca.update.UnknownComponentException;
+import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 import org.onap.clamp.loop.Loop;
 import org.onap.clamp.loop.template.LoopElementModel;
@@ -57,7 +59,8 @@ public class MicroServicePolicy extends Policy implements Serializable {
     private static final long serialVersionUID = 6271238288583332616L;
 
     @Transient
-    private static final EELFLogger logger = EELFManager.getInstance().getLogger(MicroServicePolicy.class);
+    private static final EELFLogger logger =
+        EELFManager.getInstance().getLogger(MicroServicePolicy.class);
 
     @Expose
     @Id
@@ -99,18 +102,26 @@ public class MicroServicePolicy extends Policy implements Serializable {
      * The constructor that creates the json representation from the policyTosca
      * using the ToscaYamlToJsonConvertor.
      *
-     * @param name        The name of the MicroService
+     * @param name The name of the MicroService
      * @param policyModel The policy model of the MicroService
-     * @param shared      The flag indicate whether the MicroService is shared
+     * @param shared The flag indicate whether the MicroService is shared
      */
-    public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared, LoopElementModel loopElementModel) {
+    public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared,
+        LoopElementModel loopElementModel, ToscaYamlToJsonConvertor toscaYamlToJsonConvertor,
+        Boolean useLegacyConvertor) {
         this.name = name;
         this.setPolicyModel(policyModel);
         this.shared = shared;
         try {
-            this.setJsonRepresentation(
-                    Policy.generateJsonRepresentationFromToscaModel(policyModel.getPolicyModelTosca(),
-                            policyModel.getPolicyModelType()));
+            if (Boolean.TRUE.equals(useLegacyConvertor)) {
+                this.setJsonRepresentation(policyModel != null ? JsonUtils.GSON_JPA_MODEL.fromJson(
+                    toscaYamlToJsonConvertor.parseToscaYaml(policyModel.getPolicyModelTosca(),
+                        policyModel.getPolicyModelType()),
+                    JsonObject.class) : null);
+            } else {
+                this.setJsonRepresentation(Policy.generateJsonRepresentationFromToscaModel(
+                    policyModel.getPolicyModelTosca(), policyModel.getPolicyModelType()));
+            }
         } catch (UnknownComponentException | NullPointerException | IOException e) {
             logger.error("Unable to generate the microservice policy Schema ... ", e);
             this.setJsonRepresentation(new JsonObject());
@@ -122,18 +133,18 @@ public class MicroServicePolicy extends Policy implements Serializable {
      * The constructor that does not make use of ToscaYamlToJsonConvertor but take
      * the jsonRepresentation instead.
      *
-     * @param name               The name of the MicroService
-     * @param policyModel        The policy model type of the MicroService
-     * @param shared             The flag indicate whether the MicroService is
-     *                           shared
+     * @param name The name of the MicroService
+     * @param policyModel The policy model type of the MicroService
+     * @param shared The flag indicate whether the MicroService is
+     *        shared
      * @param jsonRepresentation The UI representation in json format
-     * @param loopElementModel   The loop element model from which this instance should be created
-     * @param pdpGroup           The Pdp Group info
-     * @param pdpSubgroup        The Pdp Subgrouop info
+     * @param loopElementModel The loop element model from which this instance should be created
+     * @param pdpGroup The Pdp Group info
+     * @param pdpSubgroup The Pdp Subgrouop info
      */
     public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared,
-                              JsonObject jsonRepresentation, LoopElementModel loopElementModel, String pdpGroup,
-                              String pdpSubgroup) {
+        JsonObject jsonRepresentation, LoopElementModel loopElementModel, String pdpGroup,
+        String pdpSubgroup) {
         this.name = name;
         this.setPolicyModel(policyModel);
         this.shared = shared;
@@ -268,8 +279,7 @@ public class MicroServicePolicy extends Policy implements Serializable {
             if (other.name != null) {
                 return false;
             }
-        }
-        else if (!name.equals(other.name)) {
+        } else if (!name.equals(other.name)) {
             return false;
         }
         return true;

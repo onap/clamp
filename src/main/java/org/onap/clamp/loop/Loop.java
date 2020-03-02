@@ -53,6 +53,8 @@ import org.hibernate.annotations.SortNatural;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.onap.clamp.clds.config.ClampProperties;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
 import org.onap.clamp.clds.util.drawing.SvgLoopGenerator;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 import org.onap.clamp.loop.common.AuditEntity;
@@ -79,6 +81,11 @@ public class Loop extends AuditEntity implements Serializable {
 
     @Transient
     private static final EELFLogger logger = EELFManager.getInstance().getLogger(Loop.class);
+    @Transient
+    private static final String USE_INSTANCE_AS_SVG_ELEMENT = "svg.useInstanceAsElement";
+
+    @Transient
+    private static final String USE_LEGACY_TOSCA_CONVERTOR = "policy.useLegacyToscaConvertor";
 
     @Id
     @Expose
@@ -102,7 +109,9 @@ public class Loop extends AuditEntity implements Serializable {
     private JsonObject globalPropertiesJson;
 
     @Expose
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(
+        fetch = FetchType.EAGER,
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "service_uuid")
     private Service modelService;
 
@@ -116,22 +125,34 @@ public class Loop extends AuditEntity implements Serializable {
     private final Map<String, ExternalComponent> components = new HashMap<>();
 
     @Expose
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop", orphanRemoval = true)
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER,
+        mappedBy = "loop",
+        orphanRemoval = true)
     private Set<OperationalPolicy> operationalPolicies = new HashSet<>();
 
     @Expose
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinTable(name = "loops_to_microservicepolicies", joinColumns = @JoinColumn(name = "loop_name"),
-            inverseJoinColumns = @JoinColumn(name = "microservicepolicy_name"))
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "loops_to_microservicepolicies",
+        joinColumns = @JoinColumn(name = "loop_name"),
+        inverseJoinColumns = @JoinColumn(name = "microservicepolicy_name"))
     private Set<MicroServicePolicy> microServicePolicies = new HashSet<>();
 
     @Expose
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop", orphanRemoval = true)
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER,
+        mappedBy = "loop",
+        orphanRemoval = true)
     @SortNatural
     private SortedSet<LoopLog> loopLogs = new TreeSet<>();
 
     @Expose
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToOne(
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
+        fetch = FetchType.EAGER)
     @JoinColumn(name = "loop_template_name", nullable = false)
     private LoopTemplate loopTemplate;
 
@@ -161,29 +182,54 @@ public class Loop extends AuditEntity implements Serializable {
     /**
      * This constructor creates a loop from a loop template.
      *
-     * @param name         The loop name
+     * @param name The loop name
      * @param loopTemplate The loop template from which a new loop instance must be created
      */
-    public Loop(String name, LoopTemplate loopTemplate) {
-        this(name,"");
+    public Loop(String name, LoopTemplate loopTemplate, ClampProperties refProperties,
+        ToscaYamlToJsonConvertor toscaYamlToJsonConvertor) {
+        this(name, "");
         this.setLoopTemplate(loopTemplate);
         this.setModelService(loopTemplate.getModelService());
-        loopTemplate.getLoopElementModelsUsed().forEach(element -> {
-            if (LoopElementModel.MICRO_SERVICE_TYPE.equals(element.getLoopElementModel().getLoopElementType())) {
-                this.addMicroServicePolicy(new MicroServicePolicy(Policy.generatePolicyName("MICROSERVICE_",
-                        loopTemplate.getModelService().getName(),loopTemplate.getModelService().getVersion(),
-                        RandomStringUtils.randomAlphanumeric(3),RandomStringUtils.randomAlphanumeric(3)),
-                        element.getLoopElementModel().getPolicyModels().first(), false, element.getLoopElementModel()));
-            } else if (LoopElementModel.OPERATIONAL_POLICY_TYPE
+        if (refProperties != null && refProperties.getStringValue(USE_INSTANCE_AS_SVG_ELEMENT)
+            .equalsIgnoreCase("false")) {
+            this.setSvgRepresentation(SvgLoopGenerator.getSvgImageUsingLoopElementModels(
+                this.getLoopTemplate(), refProperties, toscaYamlToJsonConvertor));
+        } else {
+            loopTemplate.getLoopElementModelsUsed().forEach(element -> {
+                if (LoopElementModel.MICRO_SERVICE_TYPE
                     .equals(element.getLoopElementModel().getLoopElementType())) {
-                this.addOperationalPolicy(new OperationalPolicy(Policy.generatePolicyName("OPERATIONAL_",
-                        loopTemplate.getModelService().getName(),loopTemplate.getModelService().getVersion(),
-                        RandomStringUtils.randomAlphanumeric(3),RandomStringUtils.randomAlphanumeric(3)), null,
-                        new JsonObject(),
-                        element.getLoopElementModel().getPolicyModels().first(), element.getLoopElementModel(),
-                        null,null));
-            }
-        });
+                    this.addMicroServicePolicy(
+                        new MicroServicePolicy(
+                            Policy.generatePolicyName("MICROSERVICE_",
+                                loopTemplate.getModelService().getName(),
+                                loopTemplate.getModelService().getVersion(),
+                                RandomStringUtils.randomAlphanumeric(3),
+                                RandomStringUtils.randomAlphanumeric(3)),
+                            Policy.retrievePolicyModel(
+                                element.getLoopElementModel().getPolicyModels()),
+                            false, element.getLoopElementModel(), toscaYamlToJsonConvertor,
+                            Boolean
+                                .valueOf(refProperties.getStringValue(USE_LEGACY_TOSCA_CONVERTOR))),
+                        refProperties);
+                } else if (LoopElementModel.OPERATIONAL_POLICY_TYPE
+                    .equals(element.getLoopElementModel().getLoopElementType())) {
+                    this.addOperationalPolicy(new OperationalPolicy(
+                        Policy.generatePolicyName("OPERATIONAL_",
+                            loopTemplate.getModelService() != null
+                                ? loopTemplate.getModelService().getName()
+                                : null,
+                            loopTemplate.getModelService() != null
+                                ? loopTemplate.getModelService().getVersion()
+                                : null,
+                            RandomStringUtils.randomAlphanumeric(3),
+                            RandomStringUtils.randomAlphanumeric(3)),
+                        null, new JsonObject(),
+                        Policy.retrievePolicyModel(element.getLoopElementModel().getPolicyModels()),
+                        element.getLoopElementModel(), null, null), refProperties);
+                }
+            });
+        }
+
     }
 
     public String getName() {
@@ -264,10 +310,10 @@ public class Loop extends AuditEntity implements Serializable {
      *
      * @param opPolicy the operationalPolicy to add
      */
-    public void addOperationalPolicy(OperationalPolicy opPolicy) {
+    public void addOperationalPolicy(OperationalPolicy opPolicy, ClampProperties refProperties) {
         operationalPolicies.add(opPolicy);
         opPolicy.setLoop(this);
-        this.setSvgRepresentation(SvgLoopGenerator.getSvgImage(this));
+        this.setSvgRepresentation(SvgLoopGenerator.getSvgImage(this, refProperties));
     }
 
     /**
@@ -276,10 +322,11 @@ public class Loop extends AuditEntity implements Serializable {
      *
      * @param microServicePolicy the micro service to add
      */
-    public void addMicroServicePolicy(MicroServicePolicy microServicePolicy) {
+    public void addMicroServicePolicy(MicroServicePolicy microServicePolicy,
+        ClampProperties refProperties) {
         microServicePolicies.add(microServicePolicy);
         microServicePolicy.getUsedByLoops().add(this);
-        this.setSvgRepresentation(SvgLoopGenerator.getSvgImage(this));
+        this.setSvgRepresentation(SvgLoopGenerator.getSvgImage(this, refProperties));
     }
 
     public void addLog(LoopLog log) {
@@ -331,16 +378,17 @@ public class Loop extends AuditEntity implements Serializable {
     /**
      * Generate the loop name.
      *
-     * @param serviceName       The service name
-     * @param serviceVersion    The service version
-     * @param resourceName      The resource name
+     * @param serviceName The service name
+     * @param serviceVersion The service version
+     * @param resourceName The resource name
      * @param blueprintFileName The blueprint file name
      * @return The generated loop name
      */
-    public static String generateLoopName(String serviceName, String serviceVersion, String resourceName,
-                                          String blueprintFileName) {
-        StringBuilder buffer = new StringBuilder("LOOP_").append(serviceName).append("_v").append(serviceVersion)
-                .append("_").append(resourceName).append("_").append(blueprintFileName.replaceAll(".yaml", ""));
+    public static String generateLoopName(String serviceName, String serviceVersion,
+        String resourceName, String blueprintFileName) {
+        StringBuilder buffer = new StringBuilder("LOOP_").append(serviceName).append("_v")
+            .append(serviceVersion).append("_").append(resourceName).append("_")
+            .append(blueprintFileName.replaceAll(".yaml", ""));
         return buffer.toString().replace('.', '_').replaceAll(" ", "");
     }
 
