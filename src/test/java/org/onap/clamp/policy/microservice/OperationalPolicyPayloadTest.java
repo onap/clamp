@@ -50,6 +50,20 @@ public class OperationalPolicyPayloadTest {
                 .isEqualTo(ResourceFileUtil.getResourceAsString("tosca/operational-policy-payload.json"));
     }
 
+
+    @Test
+    public void testOperationalPolicyActorConstruction() throws IOException {
+        JsonObject jsonConfig = new GsonBuilder().create().fromJson(
+                ResourceFileUtil.getResourceAsString("tosca/operational-policy-actor-properties.json"), JsonObject
+                        .class);
+        OperationalPolicy policy = new OperationalPolicy("testPolicy", null, jsonConfig);
+
+        assertThat(policy.createPolicyPayloadYaml())
+                .isEqualTo(ResourceFileUtil.getResourceAsString("tosca/operational-policy-actor-payload.yaml"));
+
+        assertThat(policy.createPolicyPayload())
+                .isEqualTo(ResourceFileUtil.getResourceAsString("tosca/operational-policy-payload.json"));
+    }
     @Test
     public void testLegacyOperationalPolicyPayloadConstruction() throws IOException {
         JsonObject jsonConfig = new GsonBuilder().create().fromJson(
