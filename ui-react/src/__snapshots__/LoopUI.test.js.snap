@@ -4,6 +4,7 @@ exports[`Verify LoopUI Test the render method 1`] = `
 <styled.div
   id="main_div"
 >
+  <GlobalStyleComponent />
   <Route
     path="/uploadToscaPolicyModal"
     render={[Function]}
@@ -33,11 +34,11 @@ exports[`Verify LoopUI Test the render method 1`] = `
     render={[Function]}
   />
   <Route
-    path="/createLoop"
+    path="/openLoop"
     render={[Function]}
   />
   <Route
-    path="/openLoop"
+    path="/createLoop"
     render={[Function]}
   />
   <Route
@@ -88,7 +89,6 @@ exports[`Verify LoopUI Test the render method 1`] = `
     path="/logout"
     render={[Function]}
   />
-  <GlobalStyleComponent />
   <Alert
     closeLabel="Close alert"
     dismissible={true}
@@ -108,7 +108,7 @@ exports[`Verify LoopUI Test the render method 1`] = `
         "render": [Function],
       }
     }
-    variant="danger"
+    variant={null}
   />
   <Navbar
     collapseOnSelect={false}
@@ -158,6 +158,7 @@ exports[`Verify LoopUI Test the render method 1`] = `
       <withRouter(LoopViewSvg)
         loopCache={
           LoopCache {
+            "jsonRepresentationMap": Map {},
             "loopJsonCache": Object {},
           }
         }
@@ -165,6 +166,7 @@ exports[`Verify LoopUI Test the render method 1`] = `
       <LoopStatus
         loopCache={
           LoopCache {
+            "jsonRepresentationMap": Map {},
             "loopJsonCache": Object {},
           }
         }
@@ -172,6 +174,7 @@ exports[`Verify LoopUI Test the render method 1`] = `
       <LoopLogs
         loopCache={
           LoopCache {
+            "jsonRepresentationMap": Map {},
             "loopJsonCache": Object {},
           }
         }

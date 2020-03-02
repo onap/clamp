@@ -71,7 +71,7 @@ public class LoopControllerTestItCase {
     private void saveTestLoopToDb() {
         Loop testLoop = createTestLoop(EXAMPLE_LOOP_NAME, "blueprint", "representation");
         testLoop.setGlobalPropertiesJson(JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class));
-        LoopTemplate template =  new LoopTemplate();
+        LoopTemplate template = new LoopTemplate();
         template.setName("testTemplate");
         testLoop.setLoopTemplate(template);
         loopService.saveOrUpdateLoop(testLoop);
@@ -86,15 +86,15 @@ public class LoopControllerTestItCase {
     public void testUpdateOperationalPolicies() {
         saveTestLoopToDb();
         String policy = "[{\"name\":\"OPERATIONAL_CLholmes31_v1_0_vFW_PG_T10_k8s-holmes-rules\","
-                + "\"configurationsJson\":{\"guard_policies\":{},"
-                + "\"operational_policy\":{\"controlLoop\":{\"trigger_policy\":\"unique-policy-id-1-modifyConfig\","
-                + "\"timeout\":\"3600\",\"abatement\":\"false\","
-                + "\"controlLoopName\":\"LOOP_CLholmes31_v1_0_vFW_PG_T10_k8s-holmes-rules\"},"
-                + "\"policies\":[{\"id\":\"unique-policy-id-1-modifyConfig\",\"recipe\":\"ModifyConfig\","
-                + "\"retry\":\"2\",\"timeout\":\"1200\",\"actor\":\"APPC\",\"payload\":\"{\\\"active-streams\\\":5}\","
-                + "\"success\":\"\",\"failure\":\"\",\"failure_timeout\":\"\",\"failure_retries\":\"\","
-                + "\"failure_exception\":\"\",\"failure_guard\":\"\",\"target\":{\"type\":\"VNF\","
-                + "\"resourceID\":\"vFW_PG_T1\"}}]}}}]";
+            + "\"configurationsJson\":{\"guard_policies\":{},"
+            + "\"operational_policy\":{\"controlLoop\":{\"trigger_policy\":\"unique-policy-id-1-modifyConfig\","
+            + "\"timeout\":\"3600\",\"abatement\":\"false\","
+            + "\"controlLoopName\":\"LOOP_CLholmes31_v1_0_vFW_PG_T10_k8s-holmes-rules\"},"
+            + "\"policies\":[{\"id\":\"unique-policy-id-1-modifyConfig\",\"recipe\":\"ModifyConfig\","
+            + "\"retry\":\"2\",\"timeout\":\"1200\",\"actor\":\"APPC\",\"payload\":\"{\\\"active-streams\\\":5}\","
+            + "\"success\":\"\",\"failure\":\"\",\"failure_timeout\":\"\",\"failure_retries\":\"\","
+            + "\"failure_exception\":\"\",\"failure_guard\":\"\",\"target\":{\"type\":\"VNF\","
+            + "\"resourceID\":\"vFW_PG_T1\"}}]}}}]";
         JsonParser parser = new JsonParser();
         JsonElement ele = parser.parse(policy);
         JsonArray arr = ele.getAsJsonArray();
@@ -102,14 +102,16 @@ public class LoopControllerTestItCase {
         assertThat(loop.getOperationalPolicies()).hasSize(1);
         Set<OperationalPolicy> opSet = loop.getOperationalPolicies();
         OperationalPolicy op = opSet.iterator().next();
-        assertThat(op.getName()).isEqualTo("OPERATIONAL_CLholmes31_v1_0_vFW_PG_T10_k8s-holmes-rules");
+        assertThat(op.getName())
+            .isEqualTo("OPERATIONAL_CLholmes31_v1_0_vFW_PG_T10_k8s-holmes-rules");
     }
 
     @Test
     @Transactional
     public void testUpdateGlobalProperties() {
         saveTestLoopToDb();
-        String policy = "{\"dcaeDeployParameters\":{\"aaiEnrichmentHost\":\"aai.onap.svc.cluster.local\","
+        String policy =
+            "{\"dcaeDeployParameters\":{\"aaiEnrichmentHost\":\"aai.onap.svc.cluster.local\","
                 + "\"aaiEnrichmentPort\":\"8443\",\"enableAAIEnrichment\":\"false\",\"dmaap_host\":\"message-router"
                 + ".onap\",\"dmaap_port\":\"3904\",\"enableRedisCaching\":\"false\",\"redisHosts\":\"dcae-redis.onap"
                 + ".svc.cluster.local:6379\",\"tag_version\":\"nexus3.onap.org:10001/onap/org.onap.dcaegen2.deployments"
@@ -124,20 +126,23 @@ public class LoopControllerTestItCase {
         Loop loop = loopController.getLoop(EXAMPLE_LOOP_NAME);
         JsonObject globalPropertiesJson = loop.getGlobalPropertiesJson();
         JsonObject prop = globalPropertiesJson.getAsJsonObject("dcaeDeployParameters");
-        assertThat(prop.get("aaiEnrichmentHost").getAsString()).isEqualTo("aai.onap.svc.cluster.local");
+        assertThat(prop.get("aaiEnrichmentHost").getAsString())
+            .isEqualTo("aai.onap.svc.cluster.local");
     }
 
     @Test
     @Transactional
     public void testUpdateMicroservicePolicy() {
         saveTestLoopToDb();
-        PolicyModel policyModel = new PolicyModel("",
-                "tosca_definitions_version: tosca_simple_yaml_1_0_0","1.0.0");
+        PolicyModel policyModel =
+            new PolicyModel("", "tosca_definitions_version: tosca_simple_yaml_1_0_0", "1.0.0");
         policyModelsService.saveOrUpdatePolicyModel(policyModel);
         MicroServicePolicy policy = new MicroServicePolicy("policyName", policyModel, false,
-                JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class), null, null, null);
+            JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class), null, null, null);
         loopController.updateMicroservicePolicy(EXAMPLE_LOOP_NAME, policy);
-        assertThat(microServicePolicyService.isExisting("policyName")).isTrue();
+        assertThat(
+            microServicePolicyService.isExisting("MICROSERVICE_policyName_" + EXAMPLE_LOOP_NAME))
+                .isTrue();
     }
 
     @Test

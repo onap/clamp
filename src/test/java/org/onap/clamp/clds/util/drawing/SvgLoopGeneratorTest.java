@@ -24,10 +24,12 @@
 package org.onap.clamp.clds.util.drawing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Test;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
 import org.onap.clamp.loop.Loop;
 import org.onap.clamp.loop.template.PolicyModel;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
@@ -37,18 +39,19 @@ import org.xml.sax.SAXException;
 public class SvgLoopGeneratorTest {
     private Loop getLoop() {
         MicroServicePolicy ms1 =
-                new MicroServicePolicy("ms1", new PolicyModel("org.onap.ms1", "", "1.0.0", "short.ms1"),
-                        false,
-                        null);
+            new MicroServicePolicy("ms1", new PolicyModel("org.onap.ms1", "", "1.0.0", "short.ms1"),
+                false, null, new ToscaYamlToJsonConvertor());
         MicroServicePolicy ms2 =
-                new MicroServicePolicy("ms2", new PolicyModel("org.onap.ms2", "", "1.0.0", "short.ms2"),
-                        false, null);
-        OperationalPolicy opPolicy = new OperationalPolicy("OperationalPolicy", new Loop(), new JsonObject(),
-                new PolicyModel("org.onap.opolicy", null, "1.0.0", "short.OperationalPolicy"), null, null, null);
+            new MicroServicePolicy("ms2", new PolicyModel("org.onap.ms2", "", "1.0.0", "short.ms2"),
+                false, null, new ToscaYamlToJsonConvertor());
+        OperationalPolicy opPolicy =
+            new OperationalPolicy("OperationalPolicy", new Loop(), new JsonObject(),
+                new PolicyModel("org.onap.opolicy", null, "1.0.0", "short.OperationalPolicy"), null,
+                null, null);
         Loop loop = new Loop();
-        loop.addMicroServicePolicy(ms1);
-        loop.addMicroServicePolicy(ms2);
-        loop.addOperationalPolicy(opPolicy);
+        loop.addMicroServicePolicy(ms1, null);
+        loop.addMicroServicePolicy(ms2, null);
+        loop.addOperationalPolicy(opPolicy, null);
         return loop;
     }
 
@@ -61,7 +64,7 @@ public class SvgLoopGeneratorTest {
      */
     @Test
     public void getAsSvgTest() throws IOException, ParserConfigurationException, SAXException {
-        String xml = SvgLoopGenerator.getSvgImage(getLoop());
+        String xml = SvgLoopGenerator.getSvgImage(getLoop(), null);
         assertThat(xml).contains("data-element-id=\"VES\"");
         assertThat(xml).contains(">VES<");
         assertThat(xml).contains("data-element-id=\"ms1\"");
