@@ -102,7 +102,7 @@ export default class LoopPropertiesModal extends React.Component {
 
 	render() {
 		return (
-			<ModalStyled size="lg" show={this.state.show} onHide={this.handleClose} >
+			<ModalStyled size="lg" backdrop="static" keyboard={false} show={this.state.show} onHide={this.handleClose} >
 				<Modal.Header closeButton>
 					<Modal.Title>Model Properties</Modal.Title>
 				</Modal.Header>
