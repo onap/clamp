@@ -98,13 +98,17 @@ public class OperationalPolicy extends Policy implements Serializable {
      *                           json
      * @param policyModel        The policy model associated if any, can be null
      * @param loopElementModel   The loop element from which this instance is supposed to be created
+     * @param pdpGroup           The Pdp Group info
+     * @param pdpSubgroup        The Pdp Subgroup info
      */
     public OperationalPolicy(String name, Loop loop, JsonObject configurationsJson, PolicyModel policyModel,
-                             LoopElementModel loopElementModel) {
+                             LoopElementModel loopElementModel, String pdpGroup, String pdpSubgroup) {
         this.name = name;
         this.loop = loop;
         this.setPolicyModel(policyModel);
         this.setConfigurationsJson(configurationsJson);
+        this.setPdpGroup(pdpGroup);
+        this.setPdpSubgroup(pdpSubgroup);
         this.setLoopElementModel(loopElementModel);
         if (policyModel != null && policyModel.getPolicyModelType().contains("legacy")) {
             LegacyOperationalPolicy.preloadConfiguration(configurationsJson, loop);
@@ -252,11 +256,13 @@ public class OperationalPolicy extends Policy implements Serializable {
     public Map<String, String> createGuardPolicyPayloads() {
         Map<String, String> result = new HashMap<>();
 
-        JsonElement guardsList = this.getConfigurationsJson().get("guard_policies");
-        if (guardsList != null) {
-            for (JsonElement guardElem : guardsList.getAsJsonArray()) {
-                result.put(guardElem.getAsJsonObject().get("policy-id").getAsString(),
+        if (this.getConfigurationsJson() != null) {
+            JsonElement guardsList = this.getConfigurationsJson().get("guard_policies");
+            if (guardsList != null) {
+                for (JsonElement guardElem : guardsList.getAsJsonArray()) {
+                    result.put(guardElem.getAsJsonObject().get("policy-id").getAsString(),
                         new GsonBuilder().create().toJson(guardElem));
+                }
             }
         }
         logger.info("Guard policy payload: " + result);
