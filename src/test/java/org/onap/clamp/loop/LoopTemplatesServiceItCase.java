@@ -34,6 +34,7 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.onap.clamp.clds.Application;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
 import org.onap.clamp.loop.template.LoopElementModel;
 import org.onap.clamp.loop.template.LoopTemplate;
 import org.onap.clamp.loop.template.LoopTemplateLoopElementModel;
@@ -50,6 +51,9 @@ public class LoopTemplatesServiceItCase {
 
     @Autowired
     LoopTemplatesService loopTemplatesService;
+
+    @Autowired
+    ToscaYamlToJsonConvertor toscaYamlToJsonConvertor;
 
     private static final String POLICY_MODEL_TYPE_1 = "org.onap.test";
     private static final String VERSION = "1.0.0";
@@ -72,8 +76,10 @@ public class LoopTemplatesServiceItCase {
         String createdBy, Integer maxInstancesAllowed) {
         LoopTemplate template =
             new LoopTemplate(name, blueprint, svgRepresentation, maxInstancesAllowed, null);
-        template.addLoopElementModel(getLoopElementModel("yaml", "microService1", "MicroService",
-            createdBy, getPolicyModel(POLICY_MODEL_TYPE_1, "yaml", VERSION, "MS1", createdBy)));
+        template.addLoopElementModel(
+            getLoopElementModel("yaml", "microService1", "MicroService", createdBy,
+                getPolicyModel(POLICY_MODEL_TYPE_1, "yaml", VERSION, "MS1", createdBy)),
+            toscaYamlToJsonConvertor);
         template.setAllowedLoopType(LoopType.OPEN);
         return template;
     }
