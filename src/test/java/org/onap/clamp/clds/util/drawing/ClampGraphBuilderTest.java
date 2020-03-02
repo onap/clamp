@@ -39,6 +39,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
 import org.onap.clamp.loop.Loop;
 import org.onap.clamp.loop.template.PolicyModel;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
@@ -64,21 +65,25 @@ public class ClampGraphBuilderTest {
     @Test
     public void clampGraphBuilderCompleteChainTest() {
         String collector = "VES";
-        MicroServicePolicy ms1 = new MicroServicePolicy("ms1", new PolicyModel("org.onap.ms1", "", "1.0.0"), false,
-                null);
-        MicroServicePolicy ms2 = new MicroServicePolicy("ms2", new PolicyModel("org.onap.ms2", "", "1.0.0"), false,
-                null);
+        MicroServicePolicy ms1 =
+            new MicroServicePolicy("ms1", new PolicyModel("org.onap.ms1", "", "1.0.0"), false, null,
+                new ToscaYamlToJsonConvertor());
+        MicroServicePolicy ms2 =
+            new MicroServicePolicy("ms2", new PolicyModel("org.onap.ms2", "", "1.0.0"), false, null,
+                new ToscaYamlToJsonConvertor());
 
-        OperationalPolicy opPolicy = new OperationalPolicy("OperationalPolicy", new Loop(), new JsonObject(),
+        OperationalPolicy opPolicy =
+            new OperationalPolicy("OperationalPolicy", new Loop(), new JsonObject(),
                 new PolicyModel("org.onap.opolicy", null, "1.0.0", "opolicy1"), null, null, null);
         final Set<OperationalPolicy> opPolicies = Set.of(opPolicy);
         final Set<MicroServicePolicy> microServices = Set.of(ms1, ms2);
 
         ClampGraphBuilder clampGraphBuilder = new ClampGraphBuilder(mockPainter);
-        clampGraphBuilder.collector(collector).addMicroService(ms1).addMicroService(ms2).addPolicy(opPolicy).build();
+        clampGraphBuilder.collector(collector).addMicroService(ms1).addMicroService(ms2)
+            .addPolicy(opPolicy).build();
 
-        verify(mockPainter, times(1)).doPaint(collectorCaptor.capture(), microServicesCaptor.capture(),
-                policyCaptor.capture());
+        verify(mockPainter, times(1)).doPaint(collectorCaptor.capture(),
+            microServicesCaptor.capture(), policyCaptor.capture());
 
         Assert.assertEquals(collector, collectorCaptor.getValue());
         Assert.assertEquals(microServices, microServicesCaptor.getValue());
@@ -92,13 +97,15 @@ public class ClampGraphBuilderTest {
     public void clampGraphBuilderNoPolicyGivenTest() {
         String collector = "VES";
         MicroServicePolicy ms1 =
-                new MicroServicePolicy("ms1", new PolicyModel("org.onap.ms1", "", "1.0.0"), false, null);
+            new MicroServicePolicy("ms1", new PolicyModel("org.onap.ms1", "", "1.0.0"), false, null,
+                new ToscaYamlToJsonConvertor());
         MicroServicePolicy ms2 =
-                new MicroServicePolicy("ms2", new PolicyModel("org.onap.ms2", "", "1.0.0"), false, null);
+            new MicroServicePolicy("ms2", new PolicyModel("org.onap.ms2", "", "1.0.0"), false, null,
+                new ToscaYamlToJsonConvertor());
 
         ClampGraphBuilder clampGraphBuilder = new ClampGraphBuilder(mockPainter);
-        assertThat(clampGraphBuilder.collector(collector).addMicroService(ms1).addMicroService(ms2).build())
-                .isNotNull();
+        assertThat(clampGraphBuilder.collector(collector).addMicroService(ms1).addMicroService(ms2)
+            .build()).isNotNull();
 
     }
 }

@@ -26,7 +26,9 @@ package org.onap.clamp.clds.util.drawing;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
 import org.onap.clamp.loop.template.LoopElementModel;
+import org.onap.clamp.policy.Policy;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.onap.clamp.policy.operational.OperationalPolicy;
 
@@ -35,6 +37,10 @@ public class ClampGraphBuilder {
     private String collector;
     private Set<MicroServicePolicy> microServices = new HashSet<>();
     private Set<LoopElementModel> loopElementModels = new HashSet<>();
+
+    private Set<LoopElementModel> microserviceloopElementModels = new HashSet<>();
+    private Set<LoopElementModel> operationalloopElementModels = new HashSet<>();
+
     private final Painter painter;
 
     public ClampGraphBuilder(Painter painter) {
@@ -72,9 +78,10 @@ public class ClampGraphBuilder {
      * @param loopElementModels A set of LoopElementModels
      * @return Return the current ClampGraphBuilder
      */
-    public ClampGraphBuilder addAllLoopElementModels(Set<LoopElementModel> loopElementModels) {
+    public ClampGraphBuilder addAllLoopElementModels(Set<LoopElementModel> loopElementModels,
+        ToscaYamlToJsonConvertor toscaYamlToJsonConvertor) {
         for (LoopElementModel elem : loopElementModels) {
-            this.addLoopElementModel(elem);
+            this.addLoopElementModel(elem, toscaYamlToJsonConvertor);
         }
         return this;
     }
@@ -85,13 +92,19 @@ public class ClampGraphBuilder {
      * @param loopElementModel A LoopElementModels
      * @return Return the current ClampGraphBuilder
      */
-    public ClampGraphBuilder addLoopElementModel(LoopElementModel loopElementModel) {
+    public ClampGraphBuilder addLoopElementModel(LoopElementModel loopElementModel,
+        ToscaYamlToJsonConvertor toscaYamlToJsonConvertor) {
         if (LoopElementModel.MICRO_SERVICE_TYPE.equals(loopElementModel.getLoopElementType())) {
             microServices.add(new MicroServicePolicy(loopElementModel.getName(),
-                    loopElementModel.getPolicyModels().first(), false, loopElementModel));
-        } else if (LoopElementModel.OPERATIONAL_POLICY_TYPE.equals(loopElementModel.getLoopElementType())) {
+                Policy.retrievePolicyModel(loopElementModel.getPolicyModels()), false,
+                loopElementModel, toscaYamlToJsonConvertor));
+            microserviceloopElementModels.add(loopElementModel);
+        } else if (LoopElementModel.OPERATIONAL_POLICY_TYPE
+            .equals(loopElementModel.getLoopElementType())) {
             policies.add(new OperationalPolicy(loopElementModel.getName(), null, null,
-                    loopElementModel.getPolicyModels().first(), loopElementModel, null, null));
+                Policy.retrievePolicyModel(loopElementModel.getPolicyModels()), loopElementModel,
+                null, null));
+            operationalloopElementModels.add(loopElementModel);
         }
         return this;
     }
@@ -103,5 +116,15 @@ public class ClampGraphBuilder {
      */
     public ClampGraph build() {
         return new ClampGraph(painter.doPaint(collector, microServices, policies));
+    }
+
+    /**
+     * Build the SVG using Loop Element Models.
+     *
+     * @return Clamp graph (SVG)
+     */
+    public ClampGraph buildWithLoopElementModels() {
+        return new ClampGraph(painter.doPaintUsingLoopElementmodel(collector,
+            microserviceloopElementModels, operationalloopElementModels));
     }
 }

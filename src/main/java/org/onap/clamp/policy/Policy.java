@@ -30,9 +30,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-
 import java.io.UnsupportedEncodingException;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -44,10 +46,14 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.json.JSONObject;
+import org.onap.clamp.clds.config.ClampProperties;
+import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
+import org.onap.clamp.loop.Loop;
 import org.onap.clamp.loop.common.AuditEntity;
 import org.onap.clamp.loop.template.LoopElementModel;
 import org.onap.clamp.loop.template.PolicyModel;
+import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.yaml.snakeyaml.Yaml;
 
 @MappedSuperclass
@@ -56,10 +62,18 @@ public abstract class Policy extends AuditEntity {
 
     @Transient
     private static final EELFLogger logger = EELFManager.getInstance().getLogger(Policy.class);
+    @Transient
+    private static final String USE_POLICYID_PREFIX_SCOPE = "policyid.useprefixScope";
+    @Transient
+    private static final String POLICYID_PREFIX_SCOPE = "policyid.prefixScope";
+    @Transient
+    private static final String USE_POLICYID_CONFIG_MS_PREFIX = "policyid.useprefix";
+    @Transient
+    private static final String POLICYID_CONFIG_MS_PREFIX = "policyid.prefix";
 
     @Expose
     @Type(type = "json")
-    @Column(columnDefinition = "json", name = "json_representation", nullable = false)
+    @Column(columnDefinition = "json", name = "json_representation")
     private JsonObject jsonRepresentation;
 
     @Expose
@@ -86,22 +100,21 @@ public abstract class Policy extends AuditEntity {
 
     @Expose
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumns({@JoinColumn(name = "policy_model_type", referencedColumnName = "policy_model_type"),
-            @JoinColumn(name = "policy_model_version", referencedColumnName = "version")})
+    @JoinColumns({
+        @JoinColumn(name = "policy_model_type", referencedColumnName = "policy_model_type"),
+        @JoinColumn(name = "policy_model_version", referencedColumnName = "version")})
     private PolicyModel policyModel;
 
     private JsonObject createJsonFromPolicyTosca() {
-        Map<String, Object> map =
-                new Yaml().load(this.getPolicyModel() != null ? this.getPolicyModel().getPolicyModelTosca() : "");
+        Map<String, Object> map = new Yaml()
+            .load(this.getPolicyModel() != null ? this.getPolicyModel().getPolicyModelTosca() : "");
         JSONObject jsonObject = new JSONObject(map);
         return new Gson().fromJson(jsonObject.toString(), JsonObject.class);
     }
 
     private String getModelPropertyNameFromTosca(JsonObject object, String policyModelType) {
         return object.getAsJsonObject("policy_types").getAsJsonObject(policyModelType)
-                .getAsJsonObject(
-                        "properties")
-                .keySet().toArray(new String[1])[0];
+            .getAsJsonObject("properties").keySet().toArray(new String[1])[0];
     }
 
     /**
@@ -115,7 +128,8 @@ public abstract class Policy extends AuditEntity {
 
         JsonObject policyPayloadResult = new JsonObject();
 
-        policyPayloadResult.add("tosca_definitions_version", toscaJson.get("tosca_definitions_version"));
+        policyPayloadResult.add("tosca_definitions_version",
+            toscaJson.get("tosca_definitions_version"));
 
         JsonObject topologyTemplateNode = new JsonObject();
         policyPayloadResult.add("topology_template", topologyTemplateNode);
@@ -137,14 +151,13 @@ public abstract class Policy extends AuditEntity {
 
         JsonObject policyProperties = new JsonObject();
         policyDetails.add("properties", policyProperties);
-        policyProperties
-                .add(this.getModelPropertyNameFromTosca(toscaJson, this.getPolicyModel().getPolicyModelType()),
-                        this.getConfigurationsJson());
-        String policyPayload = new GsonBuilder().setPrettyPrinting().create().toJson(policyPayloadResult);
+        policyProperties.add(this.getModelPropertyNameFromTosca(toscaJson,
+            this.getPolicyModel().getPolicyModelType()), this.getConfigurationsJson());
+        String policyPayload =
+            new GsonBuilder().setPrettyPrinting().create().toJson(policyPayloadResult);
         logger.info("Policy payload: " + policyPayload);
         return policyPayload;
     }
-
 
     /**
      * Name getter.
@@ -269,19 +282,88 @@ public abstract class Policy extends AuditEntity {
     /**
      * Generate the policy name.
      *
-     * @param policyType        The policy type
-     * @param serviceName       The service name
-     * @param serviceVersion    The service version
-     * @param resourceName      The resource name
+     * @param policyType The policy type
+     * @param serviceName The service name
+     * @param serviceVersion The service version
+     * @param resourceName The resource name
      * @param blueprintFilename The blueprint file name
      * @return The generated policy name
      */
-    public static String generatePolicyName(String policyType, String serviceName, String serviceVersion,
-                                            String resourceName, String blueprintFilename) {
-        StringBuilder buffer = new StringBuilder(policyType).append("_").append(serviceName).append("_v")
-                .append(serviceVersion).append("_").append(resourceName).append("_")
-                .append(blueprintFilename.replaceAll(".yaml", ""));
+    public static String generatePolicyName(String policyType, String serviceName,
+        String serviceVersion, String resourceName, String blueprintFilename) {
+        StringBuilder buffer = new StringBuilder(policyType);
+        if (serviceName != null) {
+            buffer.append("_").append(serviceName);
+        }
+
+        if (serviceVersion != null) {
+            buffer.append("_v").append(serviceVersion);
+        }
+        buffer.append("_").append(resourceName).append("_")
+            .append(blueprintFilename.replaceAll(".yaml", ""));
         return buffer.toString().replace('.', '_').replaceAll(" ", "");
+    }
+
+    public static PolicyModel retrievePolicyModel(SortedSet<PolicyModel> policyModelSet) {
+        Set<String> policyModelTypeSet = new HashSet<>();
+        policyModelSet
+            .forEach(policyModel -> policyModelTypeSet.add(policyModel.getPolicyModelType()));
+        return (policyModelTypeSet.isEmpty() || policyModelTypeSet.size() > 1) ? null
+            : policyModelSet.first();
+    }
+
+    /**
+     * Generates a Microservice Policy Name
+     *
+     * @param elementModel The Loop Element Model
+     * @param policy The microservice Policy
+     * @param loop The Loop instance
+     * @param refProp Clamp application properties
+     * @return generated Microservice Policy Name
+     */
+    public static String generateMicroservicePolicyNameWithPrefix(LoopElementModel elementModel,
+        MicroServicePolicy policy, Loop loop, ClampProperties refProp) {
+        // if the policy name does not contain the loop name, it is assumed to be a policy
+        // type. Generate a policy name which includes the loop name and an index (the next
+        // policy for a type)
+        StringBuilder sb = new StringBuilder();
+
+        if (refProp != null
+            && refProp.getStringValue(USE_POLICYID_CONFIG_MS_PREFIX).equalsIgnoreCase("true")) {
+            sb.append(refProp.getStringValue(POLICYID_PREFIX_SCOPE));
+            sb.append(refProp.getStringValue(POLICYID_CONFIG_MS_PREFIX));
+        } else {
+            sb.append("MICROSERVICE_");
+        }
+
+        if (policy == null) {
+            sb.append(elementModel.getName());
+        } else if (policy.getPolicyModel() != null) {
+            sb.append(policy.getPolicyModel().getPolicyAcronym()).append("_")
+                .append(loop.getName());
+            if (policy.getConfigurationsJson() != null) {
+                updateMicroservicePolicyNameFromJson(policy.getConfigurationsJson(), sb);
+            }
+        }
+        return Policy.normalizePolicyScopeName(sb.toString());
+    }
+
+    private static void updateMicroservicePolicyNameFromJson(JsonObject configJson,
+        StringBuilder sb) {
+        JsonObject jsonObject = JsonUtils.GSON.fromJson(configJson, JsonObject.class);
+        if (jsonObject != null && jsonObject.has("name") && jsonObject.get("name") != null) {
+            sb.append("_").append(jsonObject.get("name").getAsString());
+        }
+    }
+
+    /**
+     * Replace all '-' with '_' within policy scope and name.
+     *
+     * @param inName Policy Name string
+     * @return String with replaced hyphens to underscores
+     */
+    public static String normalizePolicyScopeName(String inName) {
+        return inName.replaceAll("-", "_");
     }
 
 }
