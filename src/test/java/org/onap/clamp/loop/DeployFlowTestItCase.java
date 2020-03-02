@@ -37,6 +37,7 @@ import org.apache.camel.builder.ExchangeBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.onap.clamp.clds.Application;
+import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.loop.template.LoopTemplate;
 import org.onap.clamp.loop.template.PolicyModel;
 import org.onap.clamp.loop.template.PolicyModelsService;
@@ -62,6 +63,9 @@ public class DeployFlowTestItCase {
     @Autowired
     LoopsRepository loopsRepository;
 
+    @Autowired
+    ClampProperties refproperties;
+
     /**
      * This method tests a deployment a single blueprint.
      *
@@ -71,19 +75,19 @@ public class DeployFlowTestItCase {
     @Test
     @Transactional
     public void deployWithSingleBlueprintTest() throws JsonSyntaxException, IOException {
-        Loop loopTest = createLoop("ControlLoopTest", "<xml></xml>", "yamlcontent", "{\"testname\":\"testvalue\"}",
-                "UUID-blueprint");
+        Loop loopTest = createLoop("ControlLoopTest", "<xml></xml>", "yamlcontent",
+            "{\"testname\":\"testvalue\"}", "UUID-blueprint");
         LoopTemplate template = new LoopTemplate();
         template.setName("templateName");
         template.setBlueprint("yamlcontent");
         loopTest.setLoopTemplate(template);
         MicroServicePolicy microServicePolicy = getMicroServicePolicy("configPolicyTest", "",
-                "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
-                "{\"param1\":\"value1\"}", true);
-        loopTest.addMicroServicePolicy(microServicePolicy);
+            "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
+            "{\"param1\":\"value1\"}", true);
+        loopTest.addMicroServicePolicy(microServicePolicy, refproperties);
         loopService.saveOrUpdateLoop(loopTest);
-        Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest)
-                .build();
+        Exchange myCamelExchange =
+            ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest).build();
 
         camelContext.createProducerTemplate().send("direct:deploy-loop", myCamelExchange);
 
@@ -93,7 +97,7 @@ public class DeployFlowTestItCase {
     }
 
     /**
-     * This method tests the deployment of multiple separated  blueprints.
+     * This method tests the deployment of multiple separated blueprints.
      *
      * @throws JsonSyntaxException In case of issues
      * @throws IOException In case of issues
@@ -101,22 +105,26 @@ public class DeployFlowTestItCase {
     @Test
     @Transactional
     public void deployWithMultipleBlueprintTest() throws JsonSyntaxException, IOException {
-        Loop loopTest2 = createLoop("ControlLoopTest2", "<xml></xml>", "yamlcontent", "{\"dcaeDeployParameters\": {"
+        Loop loopTest2 = createLoop("ControlLoopTest2", "<xml></xml>", "yamlcontent",
+            "{\"dcaeDeployParameters\": {"
                 + "\"microService1\": {\"location_id\": \"\", \"policy_id\": \"TCA_ResourceInstanceName1_tca\"},"
                 + "\"microService2\": {\"location_id\": \"\", \"policy_id\": \"TCA_ResourceInstanceName2_tca\"}"
-                + "}}", "UUID-blueprint");
+                + "}}",
+            "UUID-blueprint");
         LoopTemplate template = new LoopTemplate();
         template.setName("templateName");
         loopTest2.setLoopTemplate(template);
-        MicroServicePolicy microServicePolicy1 = getMicroServicePolicy("microService1", "", "{\"configtype\":\"json\"}",
-                "tosca_definitions_version: tosca_simple_yaml_1_0_0", "{\"param1\":\"value1\"}", true);
-        MicroServicePolicy microServicePolicy2 = getMicroServicePolicy("microService2", "", "{\"configtype\":\"json\"}",
-                "tosca_definitions_version: tosca_simple_yaml_1_0_0", "{\"param1\":\"value1\"}", true);
-        loopTest2.addMicroServicePolicy(microServicePolicy1);
-        loopTest2.addMicroServicePolicy(microServicePolicy2);
+        MicroServicePolicy microServicePolicy1 = getMicroServicePolicy("microService1", "",
+            "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
+            "{\"param1\":\"value1\"}", true);
+        MicroServicePolicy microServicePolicy2 = getMicroServicePolicy("microService2", "",
+            "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
+            "{\"param1\":\"value1\"}", true);
+        loopTest2.addMicroServicePolicy(microServicePolicy1, refproperties);
+        loopTest2.addMicroServicePolicy(microServicePolicy2, refproperties);
         loopsRepository.saveAndFlush(loopTest2);
-        Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest2)
-                .build();
+        Exchange myCamelExchange =
+            ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest2).build();
 
         camelContext.createProducerTemplate().send("direct:deploy-loop", myCamelExchange);
 
@@ -139,8 +147,8 @@ public class DeployFlowTestItCase {
     @Test
     @Transactional
     public void undeployWithSingleBlueprintTest() throws JsonSyntaxException, IOException {
-        Loop loopTest = createLoop("ControlLoopTest", "<xml></xml>", "yamlcontent", "{\"testname\":\"testvalue\"}",
-                "UUID-blueprint");
+        Loop loopTest = createLoop("ControlLoopTest", "<xml></xml>", "yamlcontent",
+            "{\"testname\":\"testvalue\"}", "UUID-blueprint");
         LoopTemplate template = new LoopTemplate();
         template.setName("templateName");
         template.setBlueprint("yamlcontent");
@@ -148,12 +156,12 @@ public class DeployFlowTestItCase {
         loopTest.setDcaeDeploymentId("testDeploymentId");
         loopTest.setDcaeDeploymentStatusUrl("testUrl");
         MicroServicePolicy microServicePolicy = getMicroServicePolicy("configPolicyTest", "",
-                "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
-                "{\"param1\":\"value1\"}", true);
-        loopTest.addMicroServicePolicy(microServicePolicy);
+            "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
+            "{\"param1\":\"value1\"}", true);
+        loopTest.addMicroServicePolicy(microServicePolicy, refproperties);
         loopService.saveOrUpdateLoop(loopTest);
-        Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest)
-                .build();
+        Exchange myCamelExchange =
+            ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest).build();
 
         camelContext.createProducerTemplate().send("direct:undeploy-loop", myCamelExchange);
 
@@ -170,24 +178,26 @@ public class DeployFlowTestItCase {
     @Test
     @Transactional
     public void undeployWithMultipleBlueprintTest() throws JsonSyntaxException, IOException {
-        Loop loopTest2 = createLoop("ControlLoopTest2", "<xml></xml>", "yamlcontent", "{\"dcaeDeployParameters\": {"
+        Loop loopTest2 = createLoop("ControlLoopTest2", "<xml></xml>", "yamlcontent",
+            "{\"dcaeDeployParameters\": {"
                 + "\"microService1\": {\"location_id\": \"\", \"policy_id\": \"TCA_ResourceInstanceName1_tca\"},"
                 + "\"microService2\": {\"location_id\": \"\", \"policy_id\": \"TCA_ResourceInstanceName2_tca\"}"
-                + "}}", "UUID-blueprint");
+                + "}}",
+            "UUID-blueprint");
         LoopTemplate template = new LoopTemplate();
         template.setName("templateName");
         loopTest2.setLoopTemplate(template);
-        MicroServicePolicy microServicePolicy1 = getMicroServicePolicy("microService1", "", "{\"configtype\":\"json\"}",
-                "tosca_definitions_version: tosca_simple_yaml_1_0_0", "{\"param1\":\"value1\"}", true,
-                "testDeploymentId1", "testDeploymentStatusUrl1");
-        MicroServicePolicy microServicePolicy2 = getMicroServicePolicy("microService2", "", "{\"configtype\":\"json\"}",
-                "tosca_definitions_version: tosca_simple_yaml_1_0_0", "{\"param1\":\"value1\"}", true,
-                "testDeploymentId2", "testDeploymentStatusUrl2");
-        loopTest2.addMicroServicePolicy(microServicePolicy1);
-        loopTest2.addMicroServicePolicy(microServicePolicy2);
+        MicroServicePolicy microServicePolicy1 = getMicroServicePolicy("microService1", "",
+            "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
+            "{\"param1\":\"value1\"}", true, "testDeploymentId1", "testDeploymentStatusUrl1");
+        MicroServicePolicy microServicePolicy2 = getMicroServicePolicy("microService2", "",
+            "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
+            "{\"param1\":\"value1\"}", true, "testDeploymentId2", "testDeploymentStatusUrl2");
+        loopTest2.addMicroServicePolicy(microServicePolicy1, refproperties);
+        loopTest2.addMicroServicePolicy(microServicePolicy2, refproperties);
         loopsRepository.saveAndFlush(loopTest2);
-        Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest2)
-                .build();
+        Exchange myCamelExchange =
+            ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest2).build();
 
         camelContext.createProducerTemplate().send("direct:undeploy-loop", myCamelExchange);
 
@@ -209,26 +219,28 @@ public class DeployFlowTestItCase {
     @Test
     @Transactional
     public void getStatusWithSingleBlueprintTest() throws JsonSyntaxException, IOException {
-        Loop loopTest = createLoop("ControlLoopTest", "<xml></xml>", "yamlcontent", "{\"testname\":\"testvalue\"}",
-                "UUID-blueprint");
+        Loop loopTest = createLoop("ControlLoopTest", "<xml></xml>", "yamlcontent",
+            "{\"testname\":\"testvalue\"}", "UUID-blueprint");
         LoopTemplate template = new LoopTemplate();
         template.setName("templateName");
         template.setBlueprint("yamlcontent");
         loopTest.setLoopTemplate(template);
         MicroServicePolicy microServicePolicy = getMicroServicePolicy("configPolicyTest", "",
-                "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
-                "{\"param1\":\"value1\"}", true);
-        loopTest.addMicroServicePolicy(microServicePolicy);
+            "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
+            "{\"param1\":\"value1\"}", true);
+        loopTest.addMicroServicePolicy(microServicePolicy, refproperties);
         loopService.saveOrUpdateLoop(loopTest);
         assertThat(loopTest.getComponents().size()).isEqualTo(2);
         assertThat(loopTest.getComponent("DCAE")).isNotNull();
         assertThat(loopTest.getComponent("POLICY")).isNotNull();
-        Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest)
-                .build();
+        Exchange myCamelExchange =
+            ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest).build();
 
-        camelContext.createProducerTemplate().send("direct:update-dcae-status-for-loop", myCamelExchange);
+        camelContext.createProducerTemplate().send("direct:update-dcae-status-for-loop",
+            myCamelExchange);
 
-        assertThat(loopTest.getComponent("DCAE").getState().getStateName()).isEqualTo("BLUEPRINT_DEPLOYED");
+        assertThat(loopTest.getComponent("DCAE").getState().getStateName())
+            .isEqualTo("BLUEPRINT_DEPLOYED");
 
         Loop loopAfterTest = loopService.getLoop("ControlLoopTest");
         assertThat(loopAfterTest.getComponents().size()).isEqualTo(2);
@@ -245,29 +257,30 @@ public class DeployFlowTestItCase {
     @Test
     @Transactional
     public void getStatusWithMultipleBlueprintTest() throws JsonSyntaxException, IOException {
-        Loop loopTest = createLoop("ControlLoopTest", "<xml></xml>", "yamlcontent", "{\"testname\":\"testvalue\"}",
-                "UUID-blueprint");
+        Loop loopTest = createLoop("ControlLoopTest", "<xml></xml>", "yamlcontent",
+            "{\"testname\":\"testvalue\"}", "UUID-blueprint");
         LoopTemplate template = new LoopTemplate();
         template.setName("templateName");
         loopTest.setLoopTemplate(template);
         MicroServicePolicy microServicePolicy = getMicroServicePolicy("configPolicyTest", "",
-                "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
-                "{\"param1\":\"value1\"}", true);
+            "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
+            "{\"param1\":\"value1\"}", true);
         MicroServicePolicy microServicePolicy2 = getMicroServicePolicy("configPolicyTest2", "",
-                "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
-                "{\"param1\":\"value1\"}", true);
-        loopTest.addMicroServicePolicy(microServicePolicy);
-        loopTest.addMicroServicePolicy(microServicePolicy2);
+            "{\"configtype\":\"json\"}", "tosca_definitions_version: tosca_simple_yaml_1_0_0",
+            "{\"param1\":\"value1\"}", true);
+        loopTest.addMicroServicePolicy(microServicePolicy, refproperties);
+        loopTest.addMicroServicePolicy(microServicePolicy2, refproperties);
         loopService.saveOrUpdateLoop(loopTest);
         assertThat(loopTest.getComponents().size()).isEqualTo(3);
         assertThat(loopTest.getComponent("DCAE")).isNull();
         assertThat(loopTest.getComponent("DCAE_configPolicyTest")).isNotNull();
         assertThat(loopTest.getComponent("DCAE_configPolicyTest2")).isNotNull();
         assertThat(loopTest.getComponent("POLICY")).isNotNull();
-        Exchange myCamelExchange = ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest)
-                .build();
+        Exchange myCamelExchange =
+            ExchangeBuilder.anExchange(camelContext).withProperty("loopObject", loopTest).build();
 
-        camelContext.createProducerTemplate().send("direct:update-dcae-status-for-loop", myCamelExchange);
+        camelContext.createProducerTemplate().send("direct:update-dcae-status-for-loop",
+            myCamelExchange);
 
         assertThat(loopTest.getComponent("DCAE_configPolicyTest").getState().getStateName())
             .isEqualTo("BLUEPRINT_DEPLOYED");
@@ -282,32 +295,32 @@ public class DeployFlowTestItCase {
         assertThat(loopTest.getComponent("DCAE_configPolicyTest2")).isNotNull();
     }
 
-    private Loop createLoop(String name, String svgRepresentation, String blueprint, String globalPropertiesJson,
-            String dcaeBlueprintId) throws JsonSyntaxException, IOException {
+    private Loop createLoop(String name, String svgRepresentation, String blueprint,
+        String globalPropertiesJson, String dcaeBlueprintId)
+        throws JsonSyntaxException, IOException {
         Loop loop = new Loop(name, svgRepresentation);
         loop.setGlobalPropertiesJson(new Gson().fromJson(globalPropertiesJson, JsonObject.class));
         loop.setLastComputedState(LoopState.DESIGN);
         return loop;
     }
 
-    private MicroServicePolicy getMicroServicePolicy(String name, String modelType, String jsonRepresentation,
-            String policyTosca, String jsonProperties, boolean shared) {
+    private MicroServicePolicy getMicroServicePolicy(String name, String modelType,
+        String jsonRepresentation, String policyTosca, String jsonProperties, boolean shared) {
 
-        PolicyModel policyModel = new PolicyModel(modelType, policyTosca,"1.0.0");
+        PolicyModel policyModel = new PolicyModel(modelType, policyTosca, "1.0.0");
         policyModelsService.saveOrUpdatePolicyModel(policyModel);
-        MicroServicePolicy microService = new MicroServicePolicy(name, policyModel,
-                shared,
-                gson.fromJson(jsonRepresentation, JsonObject.class), null);
+        MicroServicePolicy microService = new MicroServicePolicy(name, policyModel, shared,
+            gson.fromJson(jsonRepresentation, JsonObject.class), null);
 
         microService.setConfigurationsJson(new Gson().fromJson(jsonProperties, JsonObject.class));
         return microService;
     }
 
-    private MicroServicePolicy getMicroServicePolicy(String name, String modelType, String jsonRepresentation,
-            String policyTosca, String jsonProperties, boolean shared, String deploymengId,
-            String deploymentStatusUrl) {
-        MicroServicePolicy microService = getMicroServicePolicy(name, modelType, jsonRepresentation, policyTosca,
-                jsonProperties, shared);
+    private MicroServicePolicy getMicroServicePolicy(String name, String modelType,
+        String jsonRepresentation, String policyTosca, String jsonProperties, boolean shared,
+        String deploymengId, String deploymentStatusUrl) {
+        MicroServicePolicy microService = getMicroServicePolicy(name, modelType, jsonRepresentation,
+            policyTosca, jsonProperties, shared);
 
         microService.setDcaeDeploymentId(deploymengId);
         microService.setDcaeDeploymentStatusUrl(deploymentStatusUrl);

@@ -23,9 +23,11 @@
 
 export default class LoopCache {
 	loopJsonCache;
+	jsonRepresentationMap;
 
 	constructor(loopJson) {
 		this.loopJsonCache=loopJson;
+		this.jsonRepresentationMap = new Map([])
 	}
 
 	updateMicroServiceProperties(name, newMsProperties) {
@@ -34,6 +36,19 @@ export default class LoopCache {
 					this.loopJsonCache["microServicePolicies"][policy]["configurationsJson"] = newMsProperties;
 				}
 			}
+	}
+	
+	updateMicroServicePropertiesByPolicyModelType(modelType, newMsProperties) {
+		var existingMSProperty = false;
+		for (var policy in this.loopJsonCache["microServicePolicies"]) {
+			if (this.loopJsonCache["microServicePolicies"][policy]["modelType"] === modelType 
+					&& this.loopJsonCache["microServicePolicies"][policy]["name"].indexOf(newMsProperties["name"]) >= 0) {
+				this.loopJsonCache["microServicePolicies"][policy]["configurationsJson"] = newMsProperties;
+				existingMSProperty = true;
+				break;
+			}
+		}
+		return existingMSProperty;
 	}
 
 	updateGlobalProperties(newGlobalProperties) {
@@ -122,6 +137,28 @@ export default class LoopCache {
 		}
 		return null;
 	}
+	
+	getMicroServiceByModelType(policyModelType, name) {
+		var msProperties = this.getMicroServicePolicies();
+		var matchingMicroservices = [];
+		for (var policy in msProperties) {
+			if (msProperties[policy]["policyModel"] && msProperties[policy]["policyModel"]["policyModelType"] === policyModelType && msProperties[policy]["name"].indexOf(name) >= 0) {
+				matchingMicroservices.push(msProperties[policy]);
+			}
+		}
+		return matchingMicroservices;
+	}
+	
+	getMicroServicePropertiesForModelType(policyModelType, name) {
+		var msConfig = this.getMicroServiceByModelType(policyModelType, name);
+		var msConfigArray = [];
+		if (msConfig !== [] && msConfig !== null) {
+			for(var config in msConfig) {
+				msConfigArray.push(msConfig[config]["configurationsJson"])
+			}
+		}
+		return msConfigArray;
+	}
 
 	getMicroServiceJsonRepresentationForName(name) {
 		var msConfig = this.getMicroServiceForName(name);
@@ -149,5 +186,43 @@ export default class LoopCache {
 
 	getComponentStates() {
 		return this.loopJsonCache.components;
+	}
+	
+	getLoopElementModelsUsed() {
+		return this.loopJsonCache["loopTemplate"]["loopElementModelsUsed"];
+	}
+	
+	getLoopElementModelNameForPolicyName(policyName) {
+		var msConfig = this.getMicroServiceForName(policyName);
+		if(msConfig != null) {
+			return msConfig["loopElementModel"]["name"];
+			 
+		}
+		return null;
+	}
+	
+	getPolicyModelVariants(policyName) {
+		var loopElementModelsUsed = this.getLoopElementModelsUsed()
+		var policyModels = null;
+		for (var i=0; i< loopElementModelsUsed.length ; i++) {
+			var loopElementModel = loopElementModelsUsed[i]["loopElementModel"];
+			if(loopElementModel["name"] === this.getLoopElementModelNameForPolicyName(policyName)) {
+				policyModels = loopElementModel["policyModels"];
+				break;
+			}
+		}
+		return policyModels;
+	}
+	
+	updateJsonRepresentationMap(policyModelType, jsonRepresentation) {
+		this.jsonRepresentationMap.set(policyModelType, jsonRepresentation);
+	}
+	
+	getJsonRepresentationFromMap(policyModelType) {
+		if(this.jsonRepresentationMap.has(policyModelType)) {
+			return this.jsonRepresentationMap.get(policyModelType);
+		} else {
+			return null;
+		}
 	}
 }
