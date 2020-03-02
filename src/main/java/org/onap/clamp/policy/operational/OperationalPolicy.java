@@ -68,7 +68,8 @@ public class OperationalPolicy extends Policy implements Serializable {
     private static final long serialVersionUID = 6117076450841538255L;
 
     @Transient
-    private static final EELFLogger logger = EELFManager.getInstance().getLogger(OperationalPolicy.class);
+    private static final EELFLogger logger =
+        EELFManager.getInstance().getLogger(OperationalPolicy.class);
 
     @Id
     @Expose
@@ -81,8 +82,9 @@ public class OperationalPolicy extends Policy implements Serializable {
 
     @Expose
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumns({@JoinColumn(name = "policy_model_type", referencedColumnName = "policy_model_type"),
-            @JoinColumn(name = "policy_model_version", referencedColumnName = "version")})
+    @JoinColumns({
+        @JoinColumn(name = "policy_model_type", referencedColumnName = "policy_model_type"),
+        @JoinColumn(name = "policy_model_version", referencedColumnName = "version")})
     private PolicyModel policyModel;
 
     public OperationalPolicy() {
@@ -92,15 +94,15 @@ public class OperationalPolicy extends Policy implements Serializable {
     /**
      * The constructor.
      *
-     * @param name               The name of the operational policy
-     * @param loop               The loop that uses this operational policy
+     * @param name The name of the operational policy
+     * @param loop The loop that uses this operational policy
      * @param configurationsJson The operational policy property in the format of
-     *                           json
-     * @param policyModel        The policy model associated if any, can be null
-     * @param loopElementModel   The loop element from which this instance is supposed to be created
+     *        json
+     * @param policyModel The policy model associated if any, can be null
+     * @param loopElementModel The loop element from which this instance is supposed to be created
      */
-    public OperationalPolicy(String name, Loop loop, JsonObject configurationsJson, PolicyModel policyModel,
-                             LoopElementModel loopElementModel) {
+    public OperationalPolicy(String name, Loop loop, JsonObject configurationsJson,
+        PolicyModel policyModel, LoopElementModel loopElementModel) {
         this.name = name;
         this.loop = loop;
         this.setPolicyModel(policyModel);
@@ -110,8 +112,8 @@ public class OperationalPolicy extends Policy implements Serializable {
             LegacyOperationalPolicy.preloadConfiguration(configurationsJson, loop);
         }
         try {
-            this.setJsonRepresentation(
-                    OperationalPolicyRepresentationBuilder.generateOperationalPolicySchema(loop.getModelService()));
+            this.setJsonRepresentation(OperationalPolicyRepresentationBuilder
+                .generateOperationalPolicySchema(loop.getModelService()));
         } catch (JsonSyntaxException | IOException | NullPointerException e) {
             logger.error("Unable to generate the operational policy Schema ... ", e);
             this.setJsonRepresentation(new JsonObject());
@@ -217,8 +219,8 @@ public class OperationalPolicy extends Policy implements Serializable {
         operationalPolicyDetails.add("metadata", metadata);
         metadata.addProperty("policy-id", this.name);
 
-        operationalPolicyDetails.add("properties", LegacyOperationalPolicy
-                .reworkPayloadAttributes(this.getConfigurationsJson().get("operational_policy").deepCopy()));
+        operationalPolicyDetails.add("properties", LegacyOperationalPolicy.reworkPayloadAttributes(
+            this.getConfigurationsJson().get("operational_policy").deepCopy()));
 
         DumperOptions options = new DumperOptions();
         options.setIndent(2);
@@ -235,10 +237,10 @@ public class OperationalPolicy extends Policy implements Serializable {
         JsonObject payload = new JsonObject();
         payload.addProperty("policy-id", this.getName());
         payload.addProperty("content",
-                URLEncoder.encode(
-                        LegacyOperationalPolicy
-                                .createPolicyPayloadYamlLegacy(this.getConfigurationsJson().get("operational_policy")),
-                        StandardCharsets.UTF_8.toString()));
+            URLEncoder.encode(
+                LegacyOperationalPolicy.createPolicyPayloadYamlLegacy(
+                    this.getConfigurationsJson().get("operational_policy")),
+                StandardCharsets.UTF_8.toString()));
         String opPayload = new GsonBuilder().setPrettyPrinting().create().toJson(payload);
         logger.info("Operational policy payload: " + opPayload);
         return opPayload;
@@ -256,7 +258,7 @@ public class OperationalPolicy extends Policy implements Serializable {
         if (guardsList != null) {
             for (JsonElement guardElem : guardsList.getAsJsonArray()) {
                 result.put(guardElem.getAsJsonObject().get("policy-id").getAsString(),
-                        new GsonBuilder().create().toJson(guardElem));
+                    new GsonBuilder().create().toJson(guardElem));
             }
         }
         logger.info("Guard policy payload: " + result);
@@ -268,8 +270,8 @@ public class OperationalPolicy extends Policy implements Serializable {
      */
     public void updateJsonRepresentation() {
         try {
-            this.setJsonRepresentation(
-                    OperationalPolicyRepresentationBuilder.generateOperationalPolicySchema(loop.getModelService()));
+            this.setJsonRepresentation(OperationalPolicyRepresentationBuilder
+                .generateOperationalPolicySchema(loop.getModelService()));
         } catch (JsonSyntaxException | IOException | NullPointerException e) {
             logger.error("Unable to generate the operational policy Schema ... ", e);
             this.setJsonRepresentation(new JsonObject());
