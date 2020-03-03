@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d2922eef_ea54299f",
+        "filename": "src/test/java/org/onap/clamp/loop/PolicyComponentTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-03-03T09:25:23Z",
+      "side": 1,
+      "message": "Put that in a file please",
+      "revId": "74a5ae6a603efbcde3011580d1239265751e7fb9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
