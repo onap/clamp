@@ -30,6 +30,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
@@ -47,8 +48,9 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.json.JSONObject;
-import org.onap.clamp.clds.tosca.ToscaYamlToJsonConvertor;
-import org.onap.clamp.clds.util.JsonUtils;
+import org.onap.clamp.clds.tosca.update.TemplateManagement;
+import org.onap.clamp.clds.tosca.update.UnknownComponentException;
+import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
 import org.onap.clamp.loop.Loop;
 import org.onap.clamp.loop.template.LoopElementModel;
@@ -119,9 +121,17 @@ public class MicroServicePolicy extends Policy implements Serializable {
      * @param shared      The flag indicate whether the MicroService is shared
      */
     public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared, LoopElementModel loopElementModel) {
-        this(name,policyModel,shared,JsonUtils.GSON_JPA_MODEL
-                .fromJson(new ToscaYamlToJsonConvertor().parseToscaYaml(policyModel.getPolicyModelTosca(),
-                        policyModel.getPolicyModelType()), JsonObject.class),loopElementModel);
+        this.name = name;
+        this.policyModel = policyModel;
+        this.shared = shared;
+        try {
+            this.setJsonRepresentation(new TemplateManagement(policyModel.getPolicyModelTosca(),
+                    ResourceFileUtil.getResourceAsString("clds/tosca_update/templates.properties"))
+                    .launchTranslation(policyModel.getPolicyModelType()));
+        } catch (UnknownComponentException | IOException e) {
+            logger.error("Exception caught during the Micro Service creation", e);
+        }
+        this.setLoopElementModel(loopElementModel);
     }
 
     private JsonObject createJsonFromPolicyTosca() {
@@ -133,12 +143,13 @@ public class MicroServicePolicy extends Policy implements Serializable {
     /**
      * The constructor that does not make use of ToscaYamlToJsonConvertor but take
      * the jsonRepresentation instead.
+     *
      * @param name               The name of the MicroService
      * @param policyModel        The policy model type of the MicroService
      * @param shared             The flag indicate whether the MicroService is
- *                           shared
+     *                           shared
      * @param jsonRepresentation The UI representation in json format
-     * @param loopElementModel The loop element model from which this instance should be created
+     * @param loopElementModel   The loop element model from which this instance should be created
      */
     public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared,
                               JsonObject jsonRepresentation, LoopElementModel loopElementModel) {
@@ -282,7 +293,8 @@ public class MicroServicePolicy extends Policy implements Serializable {
             if (other.name != null) {
                 return false;
             }
-        } else if (!name.equals(other.name)) {
+        }
+        else if (!name.equals(other.name)) {
             return false;
         }
         return true;

@@ -104,19 +104,24 @@ export default class PolicyModal extends React.Component {
 			return;
 		}
 
-		JSONEditor.defaults.options.theme = 'bootstrap4';
-		//JSONEditor.defaults.options.iconlib = 'bootstrap2';
-		JSONEditor.defaults.options.object_layout = 'grid';
-		JSONEditor.defaults.options.disable_properties = true;
-		JSONEditor.defaults.options.disable_edit_json = false;
-		JSONEditor.defaults.options.disable_array_reorder = true;
-		JSONEditor.defaults.options.disable_array_delete_last_row = true;
-		JSONEditor.defaults.options.disable_array_delete_all_rows = false;
-		JSONEditor.defaults.options.show_errors = 'always';
-
 		this.setState({
 			jsonEditor: new JSONEditor(document.getElementById("editor"),
-				{ schema: toscaModel.schema, startval: editorData })
+				{   schema: toscaModel,
+				    startval: editorData,
+				    theme: 'bootstrap4',
+                    object_layout: 'grid',
+                    disable_properties: true,
+                    disable_edit_json: false,
+                    disable_array_reorder: true,
+                    disable_array_delete_last_row: true,
+                    disable_array_delete_all_rows: false,
+                    no_additional_properties: true,
+                    show_errors: 'always',
+                    display_required_only: false,
+                    show_opt_in: true,
+                    prompt_before_delete: true,
+                    required_by_default: true
+				})
 		})
 	}
 
