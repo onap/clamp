@@ -45,14 +45,16 @@ public class ParserToJson {
      * @param nameComponent name components
      * @return return
      */
-    public JsonObject getJsonProcess(String nameComponent) {
-        JsonObject glob = this.getGeneralField(matchComponent(nameComponent));
-        if (templates.get("object").hasFields("required")) {
-            glob.add("required", this.getRequirements(nameComponent));
+    public JsonObject getJsonProcess(String nameComponent, String typeComponent) {
+        JsonObject glob = new JsonObject();
+
+        if (typeComponent.equals("object")) {
+            glob = this.getFieldAsObject(matchComponent(nameComponent));
         }
-        if (templates.get("object").hasFields("properties")) {
-            glob.add("properties", this.deploy(nameComponent));
+        else {
+            /*glob = this.getFieldAsArray(matchComponent(nameComponent));*/
         }
+
         return glob;
     }
 
@@ -62,7 +64,7 @@ public class ParserToJson {
      * @param component the compo
      * @return a json object
      */
-    public JsonObject getGeneralField(Component component) {
+    public JsonObject getFieldAsObject(Component component) {
 
         JsonObject globalFields = new JsonObject();
         if (templates.get("object").hasFields("title")) {
@@ -75,6 +77,12 @@ public class ParserToJson {
             if (component.getDescription() != null) {
                 globalFields.addProperty("description", component.getDescription());
             }
+        }
+        if (templates.get("object").hasFields("required")) {
+            globalFields.add("required", this.getRequirements(component.getName()));
+        }
+        if (templates.get("object").hasFields("properties")) {
+            globalFields.add("properties", this.deploy(component.getName()));
         }
         return globalFields;
     }
@@ -124,7 +132,7 @@ public class ParserToJson {
         for (Entry<String, Property> property : toParse.getProperties().entrySet()) {
             if (matchComponent((String) property.getValue().getItems().get("type")) != null) {
                 jsonSchema.add(property.getValue().getName(),
-                        this.getJsonProcess((String) property.getValue().getItems().get("type")));
+                        this.getJsonProcess((String) property.getValue().getItems().get("type"), "object"));
             }
             else {
                 jsonSchema.add(property.getValue().getName(), this.complexParse(property.getValue()));
@@ -166,8 +174,11 @@ public class ParserToJson {
             switch (propertyField) {
                 case "type":
                     if (currentPropertyTemplate.hasFields(propertyField)) {
-                        switch ((String) property.getItems().get(propertyField)) {
+                        String fieldtype = (String) property.getItems().get(propertyField);
+                        switch (fieldtype.toLowerCase()) {
                             case "list":
+                                propertiesInJson.addProperty("type", "array");
+                                break;
                             case "map":
                                 propertiesInJson.addProperty("type", "object");
                                 break;
@@ -205,16 +216,18 @@ public class ParserToJson {
                             currentPropertyTemplate);
                     break;
                 case "entry_schema":
-                    if (matchComponent(this.extractSpecificFieldFromMap(property, "entry_schema")) != null) {
-                        ParserToJson child = new ParserToJson(components, templates);
-                        JsonObject componentAsProperty =
-                                child.getJsonProcess(this.extractSpecificFieldFromMap(property, "entry_schema"));
-                        JsonObject propertiesContainer = new JsonObject();
-                        propertiesContainer
-                                .add(this.extractSpecificFieldFromMap(property, "entry_schema"), componentAsProperty);
-                        if (currentPropertyTemplate.hasFields("properties")) {
-                            propertiesInJson.add("properties", propertiesContainer);
-                        }
+                    String typeToParse = (String) property.getItems().get("type");
+                    switch (typeToParse.toLowerCase()) {
+                        case "list":
+                        case "map":
+                            if (matchComponent(extractSpecificFieldFromMap(property, "entry_schema")) != null) {
+                                propertiesInJson.add("items",
+                                        this.getJsonProcess(extractSpecificFieldFromMap(property, "entry_schema"),
+                                                "object"));
+                            }
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 default://Each classical field : type, description, default..
