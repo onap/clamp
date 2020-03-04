@@ -32,6 +32,25 @@ import org.onap.clamp.clds.util.ResourceFileUtil;
 public class TemplateManagementTest extends TestCase {
 
     /**
+     * Test the launch translation wit operational policies.
+     *
+     * @throws IOException               In case of failure
+     * @throws UnknownComponentException In case of failure
+     */
+    public void testLaunchTranslationTca() throws IOException, UnknownComponentException {
+        TemplateManagement templateManagement =
+                new TemplateManagement(
+                        ResourceFileUtil.getResourceAsString("http-cache/example/policy/api/v1/policytypes/onap"
+                                + ".policies.monitoring.cdap.tca.hi.lo.app/versions/1.0.0&#63;"
+                                + "connectionTimeToLive=5000/.file"),
+                        ResourceFileUtil.getResourceAsString("clds/tosca_update/templates.properties"));
+        assertNull(templateManagement.getParseToJson());
+        String componentName = "onap.policies.monitoring.cdap.tca.hi.lo.app";
+        templateManagement.launchTranslation(componentName);
+        assertNotNull(templateManagement.getParseToJson());
+    }
+
+    /**
      * Test the launch translation.
      *
      * @throws IOException               In case of failure
