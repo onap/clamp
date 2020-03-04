@@ -155,7 +155,7 @@ public class TemplateManagement {
         if (parserToJson.matchComponent(componentName) == null) {
             throw new UnknownComponentException(componentName);
         }
-        return parserToJson.getJsonProcess(componentName);
+        return parserToJson.getJsonProcess(componentName,"object");
     }
 
     /**
