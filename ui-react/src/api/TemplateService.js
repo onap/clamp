@@ -38,12 +38,29 @@ export default class TemplateService {
 			});
 	}
 
-  static getBlueprintMicroServiceTemplates() {
-    return fetch('restservices/clds/v2/templates', { method: 'GET', credentials: 'same-origin', })
+	static getTemplates() {
+    		return fetch('/restservices/clds/v2/templates', { method: 'GET', credentials: 'same-origin' })
+    			.then(function (response) {
+    				console.debug("GetTemplates response received: ", response.status);
+    				if (response.ok) {
+    					return response.json();
+    				} else {
+    					console.error("GetTemplates query failed");
+    					return {};
+    				}
+    			})
+    			.catch(function (error) {
+    				console.error("GetTemplates error received", error);
+    				return {};
+    			});
+    	}
+
+  static getBlueprintMicroServiceTemplates(templateName) {
+    return fetch('/restservices/clds/v2/templates/' + templateName + ' /svgRepresentation', { method: 'GET', credentials: 'same-origin', })
       .then(function (response) {
         console.debug("getBlueprintMicroServiceTemplates response received: ", response.status);
         if (response.ok) {
-          return response.json();
+          return response.text();
         } else {
           console.error("getBlueprintMicroServiceTemplates query failed");
           return {};
@@ -54,4 +71,5 @@ export default class TemplateService {
         return {};
       });
   }
+
 }
