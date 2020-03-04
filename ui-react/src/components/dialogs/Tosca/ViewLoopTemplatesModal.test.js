@@ -28,8 +28,7 @@ import { mount } from 'enzyme';
 describe('Verify ViewLoopTemplatesModal', () => {
 	beforeEach(() => {
 		fetch.resetMocks();
-		}
-	);
+	})
 
 	it('Test API Successful', () => {
 		fetch.mockImplementationOnce(() => {

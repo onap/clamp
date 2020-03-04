@@ -34,6 +34,14 @@ import TemplateService from '../../../api/TemplateService';
 const ModalStyled = styled(Modal)`
 	background-color: transparent;
 `
+const LoopViewSvgDivStyled = styled.div`
+	overflow: hidden;
+	background-color: ${props => (props.theme.loopViewerBackgroundColor)};
+	border-color: ${props => (props.theme.loopViewerHeaderColor)};
+	margin-left: auto;
+	margin-right:auto;
+	text-align: center;
+`
 
 export default class CreateLoopModal extends React.Component {
 	constructor(props, context) {
@@ -44,8 +52,10 @@ export default class CreateLoopModal extends React.Component {
 		this.handleModelName = this.handleModelName.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 		this.handleDropdownListChange = this.handleDropdownListChange.bind(this);
+
 		this.state = {
 			show: true,
+			content: '',
 			chosenTemplateName: '',
 			modelName: '',
 			templateNames: []
@@ -63,6 +73,15 @@ export default class CreateLoopModal extends React.Component {
 
 	handleDropdownListChange(e) {
 		this.setState({ chosenTemplateName: e.value });
+		console.log('chosen template name is: ' + this.state.chosenTemplateName)
+		console.log(e.value)
+		TemplateService.getBlueprintMicroServiceTemplates(e.value).then(svgXml => {
+            if (svgXml.length !== 0) {
+            	this.setState({ content: svgXml })
+            } else {
+            	this.setState({ content: 'Error1' })
+            }
+	    })
 	}
 
 	getTemplateNames() {
@@ -72,6 +91,8 @@ export default class CreateLoopModal extends React.Component {
 		});
 	}
 
+
+
 	handleCreate() {
 		if (!this.state.modelName) {
 			alert("A model name is required");
@@ -79,7 +100,9 @@ export default class CreateLoopModal extends React.Component {
 		}
 		console.info("Create Model " + this.state.modelName + ", Template " + this.state.chosenTemplateName + " is chosen");
 		this.setState({ show: false });
+		console.log(this.state.show)
 		LoopService.createLoop("LOOP_" + this.state.modelName, this.state.chosenTemplateName).then(text => {
+
 			console.debug("CreateLoop response received: ", text);
 			try {
 				this.props.history.push('/');
@@ -110,10 +133,18 @@ export default class CreateLoopModal extends React.Component {
 				<Modal.Body>
 					<Form.Group as={Row} controlId="formPlaintextEmail">
 						<Form.Label column sm="2">Template Name</Form.Label>
-						<Col sm="10">
-							<Select onChange={this.handleDropdownListChange} options={this.state.templateNames} />
-						</Col>
+                        <Col sm="10">
+							<Select
+							onChange={this.handleDropdownListChange}
+							options={this.state.templateNames} />
+                        </Col>
 					</Form.Group>
+
+                    <Form.Group controlId="formPlaintextEmail">
+                         <LoopViewSvgDivStyled dangerouslySetInnerHTML={{ __html: this.state.content }}   value={this.state.content} >
+                         </LoopViewSvgDivStyled>
+                    </Form.Group>
+
 					<Form.Group controlId="formPlaintextEmail">
 						<Form.Label column sm="2">Model Name:</Form.Label>
 						<input type="text" style={{width: '50%'}}
