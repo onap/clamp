@@ -29,7 +29,7 @@ import java.util.Map.Entry;
 import org.yaml.snakeyaml.Yaml;
 
 public class Extractor {
-    private LinkedHashMap<String, Component> allItems;
+    private LinkedHashMap<String, ToscaElement> allItems;
     private String source;
     private String nativeComponent;
 
@@ -38,12 +38,12 @@ public class Extractor {
 
         this.source = toParse;
         this.nativeComponent = nativeComponent;
-        allItems = new LinkedHashMap<String, Component>();
+        allItems = new LinkedHashMap<String, ToscaElement>();
         getAllAsMaps();
 
     }
 
-    public LinkedHashMap<String, Component> getAllItems() {
+    public LinkedHashMap<String, ToscaElement> getAllItems() {
         return allItems;
     }
 
@@ -90,12 +90,12 @@ public class Extractor {
         //Component creations, from the file maps
         for (Entry<String, Object> itemToParse : allMaps.entrySet()) {
             LinkedHashMap<String, Object> componentBody = (LinkedHashMap<String, Object>) itemToParse.getValue();
-            Component component = new Component(itemToParse.getKey(), (String) componentBody.get("derived_from"),
+            ToscaElement toscaElement = new ToscaElement(itemToParse.getKey(), (String) componentBody.get("derived_from"),
                     (String) componentBody.get("description"));
             //If policy, version and type_version :
             if (componentBody.get("type_version") != null) {
-                component.setVersion((String) componentBody.get("type_version"));
-                component.setTypeVersion((String) componentBody.get("type_version"));
+                toscaElement.setVersion((String) componentBody.get("type_version"));
+                toscaElement.setTypeVersion((String) componentBody.get("type_version"));
             }
             //Properties creation, from the map
             if (componentBody.get("properties") != null) {
@@ -104,10 +104,10 @@ public class Extractor {
                 for (Entry<String, Object> itemToProperty : properties.entrySet()) {
                     Property property = new Property(itemToProperty.getKey(),
                             (LinkedHashMap<String, Object>) itemToProperty.getValue());
-                    component.addProperties(property);
+                    toscaElement.addProperties(property);
                 }
             }
-            this.allItems.put(component.getName(), component);
+            this.allItems.put(toscaElement.getName(), toscaElement);
         }
     }
 }

@@ -44,7 +44,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.json.JSONObject;
-import org.onap.clamp.clds.tosca.update.TemplateManagement;
+import org.onap.clamp.clds.tosca.update.ToscaTemplateManager;
 import org.onap.clamp.clds.tosca.update.UnknownComponentException;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
@@ -300,7 +300,7 @@ public abstract class Policy extends AuditEntity {
     public static JsonObject generateJsonRepresentationFromToscaModel(String policyToscaModel,
                                                                       String policyModelType)
             throws IOException, UnknownComponentException {
-        return new TemplateManagement(policyToscaModel,ResourceFileUtil.getResourceAsString(
+        return new ToscaTemplateManager(policyToscaModel,ResourceFileUtil.getResourceAsString(
                 "clds/tosca_update/defaultToscaTypes.yaml"),
                 ResourceFileUtil.getResourceAsString("clds/tosca_update/templates.json"))
                 .launchTranslation(policyModelType);

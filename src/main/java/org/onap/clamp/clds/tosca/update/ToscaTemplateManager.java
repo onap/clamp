@@ -32,11 +32,11 @@ import java.util.List;
 import java.util.Map;
 import org.onap.clamp.clds.util.JsonUtils;
 
-public class TemplateManagement {
+public class ToscaTemplateManager {
 
     private LinkedHashMap<String, Template> templates;
-    private LinkedHashMap<String, Component> components;
-    private ParserToJson parserToJson;
+    private LinkedHashMap<String, ToscaElement> components;
+    private ToscaParserToJson toscaParserToJson;
     private Extractor extractor;
 
     /**
@@ -46,7 +46,7 @@ public class TemplateManagement {
      * @param templateProperties template properties as string
      * @throws IOException in case of failure
      */
-    public TemplateManagement(String yamlContent, String nativeComponent, String templateProperties)
+    public ToscaTemplateManager(String yamlContent, String nativeComponent, String templateProperties)
             throws IOException {
         if (yamlContent != null && !yamlContent.isEmpty()) {
             this.extractor = new Extractor(yamlContent, nativeComponent);
@@ -59,20 +59,20 @@ public class TemplateManagement {
     }
 
     //GETTERS & SETTERS
-    public LinkedHashMap<String, Component> getComponents() {
+    public LinkedHashMap<String, ToscaElement> getComponents() {
         return components;
     }
 
-    public void setComponents(LinkedHashMap<String, Component> components) {
+    public void setComponents(LinkedHashMap<String, ToscaElement> components) {
         this.components = components;
     }
 
-    public ParserToJson getParseToJson() {
-        return parserToJson;
+    public ToscaParserToJson getParseToJson() {
+        return toscaParserToJson;
     }
 
-    public void setParseToJson(ParserToJson parserToJson) {
-        this.parserToJson = parserToJson;
+    public void setParseToJson(ToscaParserToJson toscaParserToJson) {
+        this.toscaParserToJson = toscaParserToJson;
     }
 
     public LinkedHashMap<String, Template> getTemplates() {
@@ -152,11 +152,11 @@ public class TemplateManagement {
      * @return an json object
      */
     public JsonObject launchTranslation(String componentName) throws UnknownComponentException {
-        this.parserToJson = new ParserToJson(components, templates);
-        if (parserToJson.matchComponent(componentName) == null) {
+        this.toscaParserToJson = new ToscaParserToJson(components, templates);
+        if (toscaParserToJson.matchComponent(componentName) == null) {
             throw new UnknownComponentException(componentName);
         }
-        return parserToJson.getJsonProcess(componentName, "object");
+        return toscaParserToJson.getJsonProcess(componentName, "object");
     }
 
     /**
