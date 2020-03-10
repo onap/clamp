@@ -16,6 +16,24 @@
       "revId": "f354f4cc58fab1daee0a968b658f84421aa91933",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16356826_2a2b357d",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/ParserToJson.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-03-10T10:16:30Z",
+      "side": 1,
+      "message": "This must be reworked in the next PR reworking that part",
+      "parentUuid": "2ec32c23_28c21cb4",
+      "revId": "f354f4cc58fab1daee0a968b658f84421aa91933",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
