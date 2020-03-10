@@ -1,3 +1,4 @@
+
 /*-
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
@@ -23,24 +24,23 @@
 
 package org.onap.clamp.clds.tosca.update;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import junit.framework.TestCase;
+import com.google.gson.JsonObject;
+import org.onap.clamp.tosca.DictionaryService;
 
-public class TemplateTest extends TestCase {
+public class MetadataParser {
 
     /**
-     * Test check failed.
+     * This method is used to start the processing of the metadata field.
+     *
+     * @param property          The property metadata as Json Object
+     * @param dictionaryService the Dictionary service, if null nothing will be done
+     * @return The jsonObject structure that must be added to the json schema
      */
-    public void testCheckFields() {
-        Template toTest = new Template("toTest");
-        List<TemplateField> templateFields = new ArrayList<>(Arrays.asList(new TemplateField("type"), new TemplateField("description"),new TemplateField(
-                "enum")));
-        toTest.setTemplateFields(templateFields);
-        Template reference = new Template("toTest");
-        reference.setTemplateFields(templateFields);
-        assertTrue(toTest.checkFields(reference));
+    public static JsonObject processAllMetadataElement(Property property, DictionaryService dictionaryService) {
+        if (dictionaryService != null) {
+            return null;
+        } else {
+            return null;
+        }
     }
-
 }
