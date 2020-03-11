@@ -271,6 +271,18 @@ public class Loop extends AuditEntity implements Serializable {
     }
 
     /**
+     * This method removes an operational policy to the loop.
+     * It re-computes the Svg as well.
+     *
+     * @param opPolicy the operationalPolicy to add
+     */
+    public void removeOperationalPolicy(OperationalPolicy opPolicy) {
+        operationalPolicies.remove(opPolicy);
+        opPolicy.setLoop(this);
+        this.setSvgRepresentation(SvgLoopGenerator.getSvgImage(this));
+    }
+
+    /**
      * This method adds an micro service policy to the loop.
      * It re-computes the Svg as well.
      *
