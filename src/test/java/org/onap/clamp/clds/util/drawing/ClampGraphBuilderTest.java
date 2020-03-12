@@ -29,7 +29,6 @@ package org.onap.clamp.clds.util.drawing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
 import com.google.gson.JsonObject;
 import java.util.Set;
 import org.junit.Assert;
@@ -39,7 +38,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.onap.clamp.loop.Loop;
 import org.onap.clamp.loop.template.PolicyModel;
 import org.onap.clamp.policy.microservice.MicroServicePolicy;
 import org.onap.clamp.policy.operational.OperationalPolicy;
@@ -65,11 +63,11 @@ public class ClampGraphBuilderTest {
     public void clampGraphBuilderCompleteChainTest() {
         String collector = "VES";
         MicroServicePolicy ms1 = new MicroServicePolicy("ms1", new PolicyModel("org.onap.ms1", "", "1.0.0"), false,
-                null);
+                null,null,null,null);
         MicroServicePolicy ms2 = new MicroServicePolicy("ms2", new PolicyModel("org.onap.ms2", "", "1.0.0"), false,
-                null);
+                null,null,null,null);
 
-        OperationalPolicy opPolicy = new OperationalPolicy("OperationalPolicy", new Loop(), new JsonObject(),
+        OperationalPolicy opPolicy = new OperationalPolicy("OperationalPolicy", new JsonObject(),new JsonObject(),
                 new PolicyModel("org.onap.opolicy", null, "1.0.0", "opolicy1"), null, null, null);
         final Set<OperationalPolicy> opPolicies = Set.of(opPolicy);
         final Set<MicroServicePolicy> microServices = Set.of(ms1, ms2);
@@ -92,9 +90,9 @@ public class ClampGraphBuilderTest {
     public void clampGraphBuilderNoPolicyGivenTest() {
         String collector = "VES";
         MicroServicePolicy ms1 =
-                new MicroServicePolicy("ms1", new PolicyModel("org.onap.ms1", "", "1.0.0"), false, null);
+                new MicroServicePolicy("ms1", new PolicyModel("org.onap.ms1", "", "1.0.0"), false, null,null,null,null);
         MicroServicePolicy ms2 =
-                new MicroServicePolicy("ms2", new PolicyModel("org.onap.ms2", "", "1.0.0"), false, null);
+                new MicroServicePolicy("ms2", new PolicyModel("org.onap.ms2", "", "1.0.0"), false, null,null,null,null);
 
         ClampGraphBuilder clampGraphBuilder = new ClampGraphBuilder(mockPainter);
         assertThat(clampGraphBuilder.collector(collector).addMicroService(ms1).addMicroService(ms2).build())
