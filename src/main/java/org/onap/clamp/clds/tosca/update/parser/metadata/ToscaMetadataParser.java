@@ -1,11 +1,10 @@
-
 /*-
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
  * ================================================================================
  * Copyright (C) 2020 AT&T Intellectual Property. All rights
  *                             reserved.
- * ================================================================================
+  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,25 +21,11 @@
  *
  */
 
-package org.onap.clamp.clds.tosca.update;
+package org.onap.clamp.clds.tosca.update.parser.metadata;
 
 import com.google.gson.JsonObject;
-import org.onap.clamp.tosca.DictionaryService;
+import org.onap.clamp.clds.tosca.update.elements.ToscaElementProperty;
 
-public class MetadataParser {
-
-    /**
-     * This method is used to start the processing of the metadata field.
-     *
-     * @param property          The property metadata as Json Object
-     * @param dictionaryService the Dictionary service, if null nothing will be done
-     * @return The jsonObject structure that must be added to the json schema
-     */
-    public static JsonObject processAllMetadataElement(Property property, DictionaryService dictionaryService) {
-        if (dictionaryService != null) {
-            return null;
-        } else {
-            return null;
-        }
-    }
+public interface ToscaMetadataParser {
+    JsonObject processAllMetadataElement(ToscaElementProperty toscaElementProperty);
 }
