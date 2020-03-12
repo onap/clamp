@@ -21,28 +21,20 @@
  *
  */
 
-package org.onap.clamp.clds.tosca.update;
+package org.onap.clamp.clds.tosca.update.parser;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import org.onap.clamp.clds.tosca.update.elements.ToscaElementProperty;
+import org.onap.clamp.clds.tosca.update.elements.ToscaElement;
 import org.yaml.snakeyaml.Yaml;
 
-public class ToscaItemsParser {
-    private LinkedHashMap<String, ToscaElement> allItemsFound;
-
+public class ToscaElementParser {
     /**
      * Constructor.
      *
-     * @param toscaYaml               The tosca to parse
-     * @param toscaNativeDataTypeYaml THe name of the policy type to search
      */
-    public ToscaItemsParser(String toscaYaml, String toscaNativeDataTypeYaml) {
-        this.allItemsFound = searchAllToscaElements(toscaYaml, toscaNativeDataTypeYaml);
-    }
-
-    public LinkedHashMap<String, ToscaElement> getAllItemsFound() {
-        return allItemsFound;
+    private ToscaElementParser() {
     }
 
     private static LinkedHashMap<String, Object> searchAllDataTypesAndPolicyTypes(String toscaYaml) {
@@ -65,10 +57,12 @@ public class ToscaItemsParser {
      * Yaml Parse gets raw policies and datatypes, in different sections : necessary to extract
      * all entities and put them at the same level.
      *
-     * @return a map
+     * @param toscaYaml the tosca model content
+     * @param nativeToscaYaml the tosca native datatype content
+     * @return a map of Tosca Element containing all tosca elements found (policy types and datatypes)
      */
-    private static LinkedHashMap<String, ToscaElement> searchAllToscaElements(String toscaYaml,
-                                                                              String nativeToscaYaml) {
+    public static LinkedHashMap<String, ToscaElement> searchAllToscaElements(String toscaYaml,
+                                                                             String nativeToscaYaml) {
         LinkedHashMap<String, Object> allItemsFound = searchAllDataTypesAndPolicyTypes(toscaYaml);
         allItemsFound.putAll(searchAllNativeToscaDataTypes(nativeToscaYaml));
         return parseAllItemsFound(allItemsFound);
@@ -97,9 +91,9 @@ public class ToscaItemsParser {
                 LinkedHashMap<String, Object> properties =
                         (LinkedHashMap<String, Object>) componentBody.get("properties");
                 for (Entry<String, Object> itemToProperty : properties.entrySet()) {
-                    Property property = new Property(itemToProperty.getKey(),
+                    ToscaElementProperty toscaElementProperty = new ToscaElementProperty(itemToProperty.getKey(),
                             (LinkedHashMap<String, Object>) itemToProperty.getValue());
-                    toscaElement.addProperties(property);
+                    toscaElement.addProperties(toscaElementProperty);
                 }
             }
             allItemsFound.put(toscaElement.getName(), toscaElement);
