@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a4b1ee4b_3eea51d7",
+        "filename": "ui-react/src/api/TemplateMenuService.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-03-12T22:17:50Z",
+      "side": 1,
+      "message": "This class has been split into different classes, you have to update that PR",
+      "revId": "dbd26c221d5b76e19b51175d2d69d75f3d9ab67d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
