@@ -1,5 +1,4 @@
 {
-	"schema": {
 		"uniqueItems": "true",
 		"format": "tabs",
 		"type": "array",
@@ -756,5 +755,4 @@
 				}
 			}
 		}
-	}
 }
