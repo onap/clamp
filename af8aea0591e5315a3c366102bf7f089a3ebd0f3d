@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5611f97f_4b56d4e3",
+        "filename": "src/main/java/org/onap/clamp/loop/Loop.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-03-13T14:45:40Z",
+      "side": 1,
+      "message": "This is not useful i believe :-)",
+      "revId": "af8aea0591e5315a3c366102bf7f089a3ebd0f3d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
