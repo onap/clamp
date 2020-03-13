@@ -52,14 +52,14 @@ public class OperationalPolicyRepresentationBuilder {
         JsonObject jsonSchema = JsonUtils.GSON.fromJson(
                 ResourceFileUtil.getResourceAsString("clds/json-schema/operational_policies/operational_policy.json"),
                 JsonObject.class);
-        jsonSchema.get("schema").getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject()
+        jsonSchema.get("items").getAsJsonObject().get("properties").getAsJsonObject()
                 .get("configurationsJson").getAsJsonObject().get("properties").getAsJsonObject()
                 .get("operational_policy").getAsJsonObject().get("properties").getAsJsonObject().get("policies")
                 .getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject().get("target")
                 .getAsJsonObject().get("anyOf").getAsJsonArray().addAll(createAnyOfArray(modelJson));
 
         // update CDS recipe and payload information to schema
-        JsonArray actors = jsonSchema.get("schema").getAsJsonObject().get("items").getAsJsonObject().get("properties")
+        JsonArray actors = jsonSchema.get("items").getAsJsonObject().get("properties")
                 .getAsJsonObject().get("configurationsJson").getAsJsonObject().get("properties").getAsJsonObject()
                 .get("operational_policy").getAsJsonObject().get("properties").getAsJsonObject().get("policies")
                 .getAsJsonObject().get("items").getAsJsonObject().get("properties").getAsJsonObject().get("actor")
