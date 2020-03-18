@@ -162,8 +162,8 @@ export default class ModifyLoopModal extends React.Component {
 
 	handleAdd() {
 		LoopService.addOperationalPolicyType(this.state.loopCache.getLoopName(),this.state.selectedRowData.policyModelType,this.state.selectedRowData.version);
-		this.handleClose();
 		this.props.loadLoopFunction(this.state.loopCache.getLoopName());
+		this.handleClose();
 	}
 
 	handleRemove() {
