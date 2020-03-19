@@ -1,0 +1,162 @@
+{
+  "title": "onap.policies.controlloop.operational.common.Apex",
+  "type": "object",
+  "description": "Operational policies for Apex PDP",
+  "required": [
+    "id",
+    "timeout",
+    "abatement",
+    "trigger",
+    "operations",
+    "engineServiceParameters",
+    "eventInputParameters",
+    "eventOutputParameters"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique control loop id."
+    },
+    "timeout": {
+      "type": "integer",
+      "description": "Overall timeout for executing all the operations. This timeout should equal or exceed the total\ntimeout for each operation listed.\n"
+    },
+    "abatement": {
+      "type": "boolean",
+      "description": "Whether an abatement event message will be expected for the control loop from DCAE.",
+      "default": false
+    },
+    "trigger": {
+      "type": "string",
+      "description": "Initial operation to execute upon receiving an Onset event message for the Control Loop."
+    },
+    "operations": {
+      "type": "array",
+      "description": "List of operations to be performed when Control Loop is triggered.",
+      "items": {
+        "title": "onap.datatype.controlloop.Operation",
+        "type": "object",
+        "description": "An operation supported by an actor",
+        "required": [
+          "id",
+          "operation",
+          "timeout",
+          "retries"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the operation"
+          },
+          "description": {
+            "type": "string",
+            "description": "A user-friendly description of the intent for the operation"
+          },
+          "operation": {
+            "title": "onap.datatype.controlloop.Actor",
+            "type": "object",
+            "description": "An actor/operation/target definition",
+            "required": [
+              "actor",
+              "operation",
+              "target"
+            ],
+            "properties": {
+              "actor": {
+                "type": "string",
+                "description": "The actor performing the operation."
+              },
+              "operation": {
+                "type": "string",
+                "description": "The operation the actor is performing."
+              },
+              "target": {
+                "title": "onap.datatype.controlloop.Target",
+                "type": "object",
+                "description": "Definition for a entity in A&AI to perform a control loop operation on",
+                "required": [
+                  "targetType"
+                ],
+                "properties": {
+                  "targetType": {
+                    "type": "string",
+                    "description": "Category for the target type",
+                    "enum": [
+                      "VNF",
+                      "VM",
+                      "VFMODULE",
+                      "PNF"
+                    ]
+                  },
+                  "entityIds": {
+                    "type": "object",
+                    "description": "Map of values that identify the resource. If none are provided, it is assumed that the\nentity that generated the ONSET event will be the target.\n"
+                  }
+                }
+              },
+              "payload": {
+                "type": "object",
+                "description": "Name/value pairs of payload information passed by Policy to the actor"
+              }
+            }
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "The amount of time for the actor to perform the operation."
+          },
+          "retries": {
+            "type": "integer",
+            "description": "The number of retries the actor should attempt to perform the operation.",
+            "default": 0
+          },
+          "success": {
+            "type": "string",
+            "description": "Points to the operation to invoke on success. A value of \"final_success\" indicates and end to the operation.",
+            "default": "final_success"
+          },
+          "failure": {
+            "type": "string",
+            "description": "Points to the operation to invoke on Actor operation failure.",
+            "default": "final_failure"
+          },
+          "failure_timeout": {
+            "type": "string",
+            "description": "Points to the operation to invoke when the time out for the operation occurs.",
+            "default": "final_failure_timeout"
+          },
+          "failure_retries": {
+            "type": "string",
+            "description": "Points to the operation to invoke when the current operation has exceeded its max retries.",
+            "default": "final_failure_retries"
+          },
+          "failure_exception": {
+            "type": "string",
+            "description": "Points to the operation to invoke when the current operation causes an exception.",
+            "default": "final_failure_exception"
+          },
+          "failure_guard": {
+            "type": "string",
+            "description": "Points to the operation to invoke when the current operation is blocked due to guard policy enforcement.",
+            "default": "final_failure_guard"
+          }
+        }
+      }
+    },
+    "engineServiceParameters": {
+      "type": "string",
+      "description": "The engine parameters like name, instanceCount, policy implementation, parameters etc."
+    },
+    "eventInputParameters": {
+      "type": "string",
+      "description": "The event input parameters."
+    },
+    "eventOutputParameters": {
+      "type": "string",
+      "description": "The event output parameters."
+    },
+    "javaProperties": {
+      "type": "string",
+      "description": "Name/value pairs of properties to be set for APEX if needed."
+    }
+  }
+}

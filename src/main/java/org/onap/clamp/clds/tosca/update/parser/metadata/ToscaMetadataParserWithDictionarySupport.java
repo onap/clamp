@@ -33,6 +33,8 @@ import org.json.JSONArray;
 import org.onap.clamp.clds.tosca.JsonEditorSchemaConstants;
 import org.onap.clamp.clds.tosca.ToscaSchemaConstants;
 import org.onap.clamp.clds.tosca.update.elements.ToscaElementProperty;
+import org.onap.clamp.clds.tosca.update.execution.ToscaMetadataExecutor;
+import org.onap.clamp.loop.service.Service;
 import org.onap.clamp.tosca.DictionaryElement;
 import org.onap.clamp.tosca.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ToscaMetadataParserWithDictionarySupport implements ToscaMetadataParser {
+
+    @Autowired
+    private ToscaMetadataExecutor toscaMetadataExecutor;
 
     @Autowired
     private DictionaryService dictionaryService;
@@ -50,9 +55,10 @@ public class ToscaMetadataParserWithDictionarySupport implements ToscaMetadataPa
      * @param toscaElementProperty The property metadata as Json Object
      * @return The jsonObject structure that must be added to the json schema
      */
-    public JsonObject processAllMetadataElement(ToscaElementProperty toscaElementProperty) {
+    public JsonObject processAllMetadataElement(ToscaElementProperty toscaElementProperty, Service serviceModel) {
         if (dictionaryService != null) {
-            return parseMetadataPossibleValues(toscaElementProperty.getItems(), dictionaryService);
+            return parseMetadataPossibleValues(toscaElementProperty.getItems(), dictionaryService, serviceModel,
+                    toscaMetadataExecutor);
         }
         else {
             return null;
@@ -60,7 +66,8 @@ public class ToscaMetadataParserWithDictionarySupport implements ToscaMetadataPa
     }
 
     private static JsonObject parseMetadataPossibleValues(LinkedHashMap<String, Object> childNodeMap,
-                                                          DictionaryService dictionaryService) {
+                                                          DictionaryService dictionaryService, Service serviceModel,
+                                                          ToscaMetadataExecutor toscaMetadataExecutor) {
         JsonObject childObject = new JsonObject();
         if (childNodeMap.containsKey(ToscaSchemaConstants.METADATA)
                 && childNodeMap.get(ToscaSchemaConstants.METADATA) != null) {
@@ -72,24 +79,28 @@ public class ToscaMetadataParserWithDictionarySupport implements ToscaMetadataPa
                             .equalsIgnoreCase(ToscaSchemaConstants.METADATA_CLAMP_POSSIBLE_VALUES)) {
                         JSONArray validValuesArray = new JSONArray();
                         if (constraint.getValue() instanceof ArrayList<?>) {
-                            boolean processDictionary = ((ArrayList<?>) constraint.getValue())
-                                    .stream().anyMatch(value -> (value instanceof String
-                                            && ((String) value).contains(ToscaSchemaConstants.DICTIONARY)));
-                            if (processDictionary) {
-                                ((ArrayList<?>) constraint.getValue()).stream().forEach(value -> {
-                                    if ((value instanceof String && ((String) value)
-                                            .contains(ToscaSchemaConstants.DICTIONARY))) {
+                            ((ArrayList<?>) constraint.getValue()).stream().filter(value -> (value instanceof String
+                                    && ((String) value).contains(ToscaSchemaConstants.DICTIONARY)))
+                                    .forEach(value -> {
                                         processDictionaryElements((String) value, childObject, dictionaryService);
-                                    }
-
-                                });
-                            }
+                                    });
+                            ((ArrayList<?>) constraint.getValue()).stream().filter(value -> (value instanceof String
+                                    && ((String) value).contains("ClampExecution:")))
+                                    .forEach(value -> {
+                                        executeClampProcess((String) value, childObject, serviceModel,
+                                                toscaMetadataExecutor);
+                                    });
                         }
                     }
                 });
             }
         }
         return childObject;
+    }
+
+    private static void executeClampProcess(String processInfo, JsonObject childObject, Service serviceModel,
+                                            ToscaMetadataExecutor toscaMetadataExecutor) {
+        toscaMetadataExecutor.executeTheProcess(processInfo, childObject, serviceModel);
     }
 
     private static void processDictionaryElements(String dictionaryReference, JsonObject childObject,
