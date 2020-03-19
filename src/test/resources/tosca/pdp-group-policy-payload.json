@@ -4,11 +4,11 @@
       "name": "pdpGroup2",
       "deploymentSubgroups": [
         {
-          "pdpType": "pdpSubgroup2",
+          "pdpType": "opPolicy",
           "action": "POST",
           "policies": [
             {
-              "name": "onap.policies.controlloop.Operational",
+              "name": "configPolicyTest",
               "version": "1.0.0"
             }
           ]
@@ -23,7 +23,7 @@
           "action": "POST",
           "policies": [
             {
-              "name": "onap.policies.monitoring.test",
+              "name": "configPolicyTest",
               "version": "1.0.0"
             }
           ]
