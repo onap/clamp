@@ -123,7 +123,8 @@ public class OperationalPolicy extends Policy implements Serializable {
     public OperationalPolicy(Loop loop, Service service, LoopElementModel loopElementModel,
                              ToscaConverterWithDictionarySupport toscaConverter) {
         this(Policy.generatePolicyName("OPERATIONAL", service.getName(), service.getVersion(),
-                RandomStringUtils.randomAlphanumeric(3), RandomStringUtils.randomAlphanumeric(3)), new JsonObject(),
+                loopElementModel.getPolicyModels().first().getPolicyAcronym() + '_'
+                        + loopElementModel.getPolicyModels().first().getVersion(), RandomStringUtils.randomAlphanumeric(3)), new JsonObject(),
                 new JsonObject(), loopElementModel.getPolicyModels().first(), loopElementModel, null, null);
         this.setLoop(loop);
         this.updateJsonRepresentation(toscaConverter, service);
