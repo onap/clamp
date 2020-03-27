@@ -6,7 +6,7 @@ services:
     depends_on:
       - clamp-backend
     ports:
-      - "443:443"
+      - "8442:8442"
   db:
     image: mariadb:10.4.7
     volumes:
