@@ -178,13 +178,18 @@
                               "qschema":{
                                  "filters":[
                                     {
+                                       "plugin":"datetimepicker",
                                        "operators":[
                                           "equals"
                                        ],
                                        "minLength":1,
-                                       "id":"alarmCondition",
-                                       "label":"alarmCondition",
-                                       "type":"string"
+                                       "id":"timeEpoch",
+                                       "label":"timeEpoch",
+                                       "type":"datetime",
+                                       "input_event":"dp.change",
+                                       "validation":{
+                                          "format":"YYYY/MM/DD HH:mm:ss"
+                                       }
                                     }
                                  ]
                               },
