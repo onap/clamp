@@ -3,6 +3,7 @@
 exports[`Verify OpenLoopModal Test the render method 1`] = `
 <Styled(Bootstrap(Modal))
   backdrop="static"
+  keyboard={false}
   onHide={[Function]}
   show={true}
   size="xl"
