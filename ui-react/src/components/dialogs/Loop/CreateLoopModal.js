@@ -118,7 +118,7 @@ export default class CreateLoopModal extends React.Component {
 
 	render() {
 		return (
-			<ModalStyled size="xl" show={this.state.show} onHide={this.handleClose} backdrop="static">
+			<ModalStyled size="xl" show={this.state.show} onHide={this.handleClose} backdrop="static" keyboard={false} >
 				<Modal.Header closeButton>
 					<Modal.Title>Create Model</Modal.Title>
 				</Modal.Header>
