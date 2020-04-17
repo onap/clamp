@@ -167,6 +167,19 @@ public class LoopController {
     public MicroServicePolicy updateMicroservicePolicy(String loopName, MicroServicePolicy newMicroservicePolicy) {
         return loopService.updateMicroservicePolicy(loopName, newMicroservicePolicy);
     }
+    
+    /**
+     * Update list of MicroService policy properties.
+     *
+     * @param loopName The loop name
+     * @param microservicePoliciesJson JsonArray of MicroService policy properties
+     */
+    public Loop updateMicroservicePolicyProperties(String loopName,
+        JsonArray microservicePoliciesJson) {
+        List<MicroServicePolicy> newMicroservicePolicies =
+            JsonUtils.GSON.fromJson(microservicePoliciesJson, MICROSERVICE_POLICY_TYPE);
+        return loopService.updateMicroservicePolicyProperties(loopName, newMicroservicePolicies);
+    }
 
     /**
      * Get the SVG representation of the loop.

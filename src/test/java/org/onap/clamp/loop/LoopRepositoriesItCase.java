@@ -236,7 +236,7 @@ public class LoopRepositoriesItCase {
         loopRepository.delete(loopInDbRetrieved);
         assertThat(loopRepository.existsById(loopTest.getName())).isEqualTo(false);
         assertThat(operationalPolicyService.isExisting(opPolicy.getName())).isEqualTo(false);
-        assertThat(microServicePolicyService.isExisting(microServicePolicy.getName())).isEqualTo(true);
+        assertThat(microServicePolicyService.isExisting(microServicePolicy.getName())).isEqualTo(false);
         assertThat(loopLogRepository.existsById(loopLog.getId())).isEqualTo(false);
         assertThat(loopTemplateRepository.existsById(loopInDb.getLoopTemplate().getName())).isEqualTo(true);
         assertThat(servicesRepository.existsById(loopInDb.getModelService().getServiceUuid())).isEqualTo(true);
