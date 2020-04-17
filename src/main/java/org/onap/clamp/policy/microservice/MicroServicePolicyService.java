@@ -26,8 +26,11 @@ package org.onap.clamp.policy.microservice;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.tosca.update.ToscaConverterWithDictionarySupport;
 import org.onap.clamp.loop.Loop;
+import org.onap.clamp.loop.template.PolicyModelsService;
+import org.onap.clamp.policy.Policy;
 import org.onap.clamp.policy.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,16 +39,23 @@ import org.springframework.stereotype.Service;
 public class MicroServicePolicyService implements PolicyService<MicroServicePolicy> {
 
     private final MicroServicePolicyRepository microServiceRepository;
+    private PolicyModelsService policyModelsService;
+    private final ClampProperties refProperties;
 
     @Autowired
-    public MicroServicePolicyService(MicroServicePolicyRepository microServiceRepository) {
+    public MicroServicePolicyService(MicroServicePolicyRepository microServiceRepository,
+        ClampProperties refProperties, PolicyModelsService policyModelsService) {
         this.microServiceRepository = microServiceRepository;
+        this.refProperties = refProperties;
+        this.policyModelsService = policyModelsService;
     }
 
     @Override
-    public Set<MicroServicePolicy> updatePolicies(Loop loop, List<MicroServicePolicy> newMicroservicePolicies) {
-        return newMicroservicePolicies.stream().map(policy -> getAndUpdateMicroServicePolicy(loop, policy))
-                .collect(Collectors.toSet());
+    public Set<MicroServicePolicy> updatePolicies(Loop loop,
+        List<MicroServicePolicy> newMicroservicePolicies) {
+        return newMicroservicePolicies.stream()
+            .map(policy -> getAndUpdateMicroServicePolicy(loop, policy))
+            .collect(Collectors.toSet());
     }
 
     @Override
@@ -64,14 +74,13 @@ public class MicroServicePolicyService implements PolicyService<MicroServicePoli
         return microServiceRepository.save(
                 microServiceRepository
                         .findById(policy.getName()).map(p -> updateMicroservicePolicyProperties(p, policy, loop))
-                        .orElse(new MicroServicePolicy(policy.getName(), policy.getPolicyModel(),
-                                policy.getShared(), policy.getJsonRepresentation(), null, policy.getPdpGroup(),
-                                policy.getPdpSubgroup())));
+                        .orElse(createMicroservicePolicy(policy, loop, refProperties)));
     }
 
     private MicroServicePolicy updateMicroservicePolicyProperties(MicroServicePolicy oldPolicy,
-                                                                  MicroServicePolicy newPolicy, Loop loop) {
+        MicroServicePolicy newPolicy, Loop loop) {
         oldPolicy.setConfigurationsJson(newPolicy.getConfigurationsJson());
+        oldPolicy.setJsonRepresentation(newPolicy.getJsonRepresentation());
         if (!oldPolicy.getUsedByLoops().contains(loop)) {
             oldPolicy.getUsedByLoops().add(loop);
         }
@@ -80,31 +89,46 @@ public class MicroServicePolicyService implements PolicyService<MicroServicePoli
         return oldPolicy;
     }
 
+    private MicroServicePolicy createMicroservicePolicy(MicroServicePolicy policy, Loop loop,
+        ClampProperties refProperties) {
+
+        policy.setPolicyModel(policy.getPolicyModel() == null
+            ? policyModelsService.getPolicyModelByType(policy.getName())
+            : policy.getPolicyModel());
+
+        MicroServicePolicy newPolicy = new MicroServicePolicy(
+            Policy.generateMicroservicePolicyNameWithPrefix(policy, loop, refProperties),
+            policy.getPolicyModel(), policy.getShared(), policy.getJsonRepresentation(), null,
+            policy.getPdpGroup(), policy.getPdpSubgroup());
+        newPolicy.setConfigurationsJson(policy.getConfigurationsJson());
+        newPolicy.getUsedByLoops().add(loop);
+        return newPolicy;
+
+    }
+
     /**
      * Update the MicroService policy deployment related parameters.
      *
      * @param microServicePolicy The micro service policy
-     * @param deploymentId       The deployment ID as returned by DCAE
-     * @param deploymentUrl      The Deployment URL as returned by DCAE
+     * @param deploymentId The deployment ID as returned by DCAE
+     * @param deploymentUrl The Deployment URL as returned by DCAE
      */
-    public void updateDcaeDeploymentFields(MicroServicePolicy microServicePolicy, String deploymentId,
-                                           String deploymentUrl) {
+    public void updateDcaeDeploymentFields(MicroServicePolicy microServicePolicy,
+        String deploymentId, String deploymentUrl) {
         microServicePolicy.setDcaeDeploymentId(deploymentId);
         microServicePolicy.setDcaeDeploymentStatusUrl(deploymentUrl);
         microServiceRepository.saveAndFlush(microServicePolicy);
     }
 
-
     /**
      * Api to refresh the MicroService Policy UI window.
      *
      * @param microServicePolicy The micro Service policy object
-     * @param toscaConverter     The tosca converter required to convert the tosca model to json schema
-     * @param loop               As a microservice object can belong to multiple loops, we need it here
+     * @param toscaConverter The tosca converter required to convert the tosca model to json schema
+     * @param loop As a microservice object can belong to multiple loops, we need it here
      */
     public void refreshMicroServicePolicyJsonRepresentation(MicroServicePolicy microServicePolicy,
-                                                            ToscaConverterWithDictionarySupport toscaConverter,
-                                                            Loop loop) {
+        ToscaConverterWithDictionarySupport toscaConverter, Loop loop) {
         microServicePolicy.updateJsonRepresentation(toscaConverter, loop.getModelService());
         this.microServiceRepository.saveAndFlush(microServicePolicy);
 
