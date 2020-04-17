@@ -117,6 +117,7 @@ export default class ManageDictionaries extends React.Component {
 		this.addDictionary = this.addDictionary.bind(this);
 		this.deleteDictionary = this.deleteDictionary.bind(this);
 		this.fileSelectedHandler = this.fileSelectedHandler.bind(this);
+		this.readOnly = props.readOnly !== undefined ? props.readOnly : false;
 		this.state = {
 			show: true,
 			selectedFile: '',
@@ -292,7 +293,7 @@ export default class ManageDictionaries extends React.Component {
     fileSelectedHandler = (event) => {
         const text = this;
         var dictionaryElements = [];
-        if (event.target.files[0].type === 'text/csv' ) {
+        if (event.target.files[0].type === 'text/csv' || event.target.files[0].type === 'application/vnd.ms-excel') {
             if (event.target.files && event.target.files[0]) {
                 let reader = new FileReader();
                 reader.onload = function(e) {
@@ -376,7 +377,7 @@ export default class ManageDictionaries extends React.Component {
     
     render() {
         return (
-            <ModalStyled size="xl" show={this.state.show} onHide={this.handleClose} backdrop="static" keyboard={false} >
+            <ModalStyled size="xl" show={this.state.show} onHide={this.handleClose} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Manage Dictionaries</Modal.Title>
                 </Modal.Header>
@@ -390,7 +391,7 @@ export default class ManageDictionaries extends React.Component {
                         options={{
                             headerStyle: rowHeaderStyle,
                         }}
-                        editable={{
+                        editable={!this.readOnly ? {
                             onRowAdd: newData =>
                             new Promise((resolve, reject) => {
                                 setTimeout(() => {
@@ -449,7 +450,7 @@ export default class ManageDictionaries extends React.Component {
                     resolve()
                 }, 1000)
                 })
-                        }}
+                        } : undefined }
                         />:""
                     }
                     {this.state.dictNameFlag? <MaterialTable
@@ -462,7 +463,7 @@ export default class ManageDictionaries extends React.Component {
                             exportFileName: this.state.exportFilename,
                             headerStyle:{backgroundColor:'white',  fontSize: '15pt', text: 'bold', border: '1px solid black'}
                         }}
-                        components={{
+                        components={!this.readOnly ? {
                             Toolbar: props => (
                                 <div>
                                     <MTableToolbar {...props} />
@@ -478,8 +479,8 @@ export default class ManageDictionaries extends React.Component {
                                 <input type="file" ref={(fileUpload) => {this.fileUpload = fileUpload;}} style={{ visibility: 'hidden'}} onChange={this.fileSelectedHandler} />
                                 </div>
                             )
-                        }}
-                        editable={{
+                        } : undefined }
+                        editable={!this.readOnly ? {
                             onRowAdd: newData =>
                             new Promise((resolve, reject) => {
                                 setTimeout(() => {
@@ -542,7 +543,7 @@ export default class ManageDictionaries extends React.Component {
                     resolve()
                 }, 1000)
                 })
-                        }}
+                        } : undefined }
                         />:""
                     }
                     {this.state.dictNameFlag?<button onClick={this.clickHandler} style={{marginTop: '25px'}}>Go Back to Dictionaries List</button>:""}
