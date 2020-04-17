@@ -706,6 +706,12 @@
 							uri="bean:org.onap.clamp.loop.log.LoopLogService?method=addLog('GET STATUS request successfully executed','INFO',${exchangeProperty[loopObject]})" />
 						<to
 							uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+						<setHeader headerName="CamelHttpResponseCode">
+							<constant>200</constant>
+						</setHeader>
+						<setBody>
+							<simple>${exchangeProperty[loopObject]}</simple>
+						</setBody>
 					</doTry>
 					<doCatch>
 						<exception>java.lang.Exception</exception>
@@ -725,11 +731,6 @@
 							<simple>GET STATUS request FAILED</simple>
 						</setBody>
 					</doCatch>
-					<doFinally>
-						<setBody>
-							<simple>${exchangeProperty[loopObject]}</simple>
-						</setBody>
-					</doFinally>
 				</doTry>
 			</route>
 		</get>
