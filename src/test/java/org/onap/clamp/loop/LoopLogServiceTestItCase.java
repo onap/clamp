@@ -37,6 +37,7 @@ import org.onap.clamp.clds.util.JsonUtils;
 import org.onap.clamp.loop.log.LogType;
 import org.onap.clamp.loop.log.LoopLog;
 import org.onap.clamp.loop.log.LoopLogService;
+import org.onap.clamp.loop.template.LoopTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -64,6 +65,9 @@ public class LoopLogServiceTestItCase {
     private void saveTestLoopToDb() {
         Loop testLoop = new Loop(EXAMPLE_LOOP_NAME, SVG_REPRESENTATION);
         testLoop.setGlobalPropertiesJson(JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class));
+        LoopTemplate template = new LoopTemplate();
+        template.setName("testTemplate");
+        testLoop.setLoopTemplate(template);
         loopService.saveOrUpdateLoop(testLoop);
     }
 
@@ -83,8 +87,6 @@ public class LoopLogServiceTestItCase {
     @Transactional
     public void testLoopLog() {
         LoopLog log = new LoopLog();
-        Long id = Long.valueOf(100);
-        log.setId(id);
         log.setLogComponent(CLAMP_COMPONENT);
         log.setLogType(LogType.INFO);
         log.setMessage(SAMPLE_LOG_MESSAGE);
@@ -93,7 +95,6 @@ public class LoopLogServiceTestItCase {
         assertThat(log.getMessage()).isEqualTo(SAMPLE_LOG_MESSAGE);
         assertThat(log.getLogType()).isEqualTo(LogType.INFO);
         assertThat(log.getLogComponent()).isEqualTo(CLAMP_COMPONENT);
-        assertThat(log.getId()).isEqualTo(id);
         assertThat(log.getLoop()).isEqualTo(testLoop);
     }
 }

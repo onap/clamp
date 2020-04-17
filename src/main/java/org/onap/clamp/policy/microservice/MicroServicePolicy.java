@@ -96,18 +96,18 @@ public class MicroServicePolicy extends Policy implements Serializable {
      * The constructor that does not make use of ToscaYamlToJsonConvertor but take
      * the jsonRepresentation instead.
      *
-     * @param name               The name of the MicroService
-     * @param policyModel        The policy model type of the MicroService
-     * @param shared             The flag indicate whether the MicroService is
-     *                           shared
+     * @param name The name of the MicroService
+     * @param policyModel The policy model type of the MicroService
+     * @param shared The flag indicate whether the MicroService is
+     *        shared
      * @param jsonRepresentation The UI representation in json format
-     * @param loopElementModel   The loop element model from which this instance should be created
-     * @param pdpGroup           The Pdp Group info
-     * @param pdpSubgroup        The Pdp Subgroup info
+     * @param loopElementModel The loop element model from which this instance should be created
+     * @param pdpGroup The Pdp Group info
+     * @param pdpSubgroup The Pdp Subgroup info
      */
     public MicroServicePolicy(String name, PolicyModel policyModel, Boolean shared,
-                              JsonObject jsonRepresentation, LoopElementModel loopElementModel, String pdpGroup,
-                              String pdpSubgroup) {
+        JsonObject jsonRepresentation, LoopElementModel loopElementModel, String pdpGroup,
+        String pdpSubgroup) {
         this.name = name;
         this.setPolicyModel(policyModel);
         this.shared = shared;
@@ -120,18 +120,21 @@ public class MicroServicePolicy extends Policy implements Serializable {
     /**
      * Constructor with tosca converter.
      *
-     * @param loop             The loop instance
-     * @param service          The service model object
-     * @param loopElementModel The loop element model from which this microservice instance is created
-     * @param toscaConverter   The tosca converter that will used to convert the tosca policy model
+     * @param loop The loop instance
+     * @param service The service model object
+     * @param loopElementModel The loop element model from which this microservice instance is
+     *        created
+     * @param toscaConverter The tosca converter that will used to convert the tosca policy model
      */
     public MicroServicePolicy(Loop loop, Service service, LoopElementModel loopElementModel,
-                              ToscaConverterWithDictionarySupport toscaConverter) {
-        this(Policy.generatePolicyName("MICROSERVICE", service.getName(), service.getVersion(),
+        ToscaConverterWithDictionarySupport toscaConverter) {
+        this(
+            Policy.generatePolicyName("MICROSERVICE", service.getName(), service.getVersion(),
                 loopElementModel.getPolicyModels().first().getPolicyAcronym() + '_'
-                        + loopElementModel.getPolicyModels().first().getVersion(),
+                    + loopElementModel.getPolicyModels().first().getVersion(),
                 RandomStringUtils.randomAlphanumeric(3)),
-                loopElementModel.getPolicyModels().first(), false, new JsonObject(), loopElementModel, null, null);
+            loopElementModel.getPolicyModels().first(), false, new JsonObject(), loopElementModel,
+            null, null);
         this.updateJsonRepresentation(toscaConverter, service);
     }
 
@@ -151,10 +154,11 @@ public class MicroServicePolicy extends Policy implements Serializable {
     }
 
     @Override
-    public void updateJsonRepresentation(ToscaConverterWithDictionarySupport toscaConverter, Service serviceModel) {
-        this.setJsonRepresentation(
-                toscaConverter.convertToscaToJsonSchemaObject(this.getPolicyModel().getPolicyModelTosca(),
-                        this.getPolicyModel().getPolicyModelType(), serviceModel));
+    public void updateJsonRepresentation(ToscaConverterWithDictionarySupport toscaConverter,
+        Service serviceModel) {
+        this.setJsonRepresentation(toscaConverter.convertToscaToJsonSchemaObject(
+            this.getPolicyModel().getPolicyModelTosca(), this.getPolicyModel().getPolicyModelType(),
+            serviceModel));
     }
 
     @Override
@@ -272,8 +276,7 @@ public class MicroServicePolicy extends Policy implements Serializable {
             if (other.name != null) {
                 return false;
             }
-        }
-        else if (!name.equals(other.name)) {
+        } else if (!name.equals(other.name)) {
             return false;
         }
         return true;
