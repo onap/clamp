@@ -25,6 +25,7 @@
 package org.onap.clamp.loop;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -140,12 +141,17 @@ public class LoopControllerTestItCase {
     public void testUpdateMicroservicePolicy() {
         saveTestLoopToDb();
         PolicyModel policyModel = new PolicyModel("testPolicyModel",
-                "tosca_definitions_version: tosca_simple_yaml_1_0_0", "1.0.0");
+                "tosca_definitions_version: tosca_simple_yaml_1_0_0", "1.0.0", "policyName");
         policyModelsService.saveOrUpdatePolicyModel(policyModel);
         MicroServicePolicy policy = new MicroServicePolicy("policyName", policyModel, false,
                 JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class), null, null, null);
         loopController.updateMicroservicePolicy(EXAMPLE_LOOP_NAME, policy);
-        assertThat(microServicePolicyService.isExisting("policyName")).isTrue();
+        policy.setName("MICROSERVICE_policyName_" + EXAMPLE_LOOP_NAME);
+        Loop loop = loopController.getLoop(EXAMPLE_LOOP_NAME);
+        MicroServicePolicy updatedPolicy =
+            loop.getMicroServicePolicies().stream().findFirst().orElse(null);
+        assertNotNull(updatedPolicy);
+        assertThat(updatedPolicy.getName()).isEqualTo(policy.getName());
     }
 
     @Test

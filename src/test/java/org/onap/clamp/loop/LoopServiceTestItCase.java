@@ -126,7 +126,7 @@ public class LoopServiceTestItCase {
         // given
         saveTestLoopToDb();
         PolicyModel policyModel = new PolicyModel("org.policies.policyModel1",
-                "tosca_definitions_version: tosca_simple_yaml_1_0_0", "1.0.0", "policyModel1");
+                "tosca_definitions_version: tosca_simple_yaml_1_0_0", "1.0.0", "policyName");
         policyModelsService.saveOrUpdatePolicyModel(policyModel);
         MicroServicePolicy microServicePolicy = new MicroServicePolicy("policyName", policyModel,
                 false, JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class), null, null, null);
@@ -134,7 +134,8 @@ public class LoopServiceTestItCase {
         // when
         Loop actualLoop = loopService.updateAndSaveMicroservicePolicies(EXAMPLE_LOOP_NAME,
                 Lists.newArrayList(microServicePolicy));
-
+        // Update generated name for policy assertion
+        microServicePolicy.setName("MICROSERVICE_policyName_" + EXAMPLE_LOOP_NAME);
         // then
         assertThat(actualLoop).isNotNull();
         assertThat(actualLoop.getName()).isEqualTo(EXAMPLE_LOOP_NAME);
@@ -164,13 +165,14 @@ public class LoopServiceTestItCase {
         loopService.updateAndSaveMicroservicePolicies(EXAMPLE_LOOP_NAME, Lists.newArrayList(firstMicroServicePolicy));
         MicroServicePolicy secondMicroServicePolicy = new MicroServicePolicy("secondPolicyName", policyModel2, false,
                 JsonUtils.GSON.fromJson(EXAMPLE_JSON, JsonObject.class), null, null, null);
-
+        // Update generated name for policy assertion
+        firstMicroServicePolicy.setName("MICROSERVICE_firstPolicyName_" + EXAMPLE_LOOP_NAME);
         // when
         firstMicroServicePolicy
                 .setConfigurationsJson(JsonUtils.GSON.fromJson("{\"name1\":\"value1\"}", JsonObject.class));
         Loop actualLoop = loopService.updateAndSaveMicroservicePolicies(EXAMPLE_LOOP_NAME,
                 Lists.newArrayList(firstMicroServicePolicy, secondMicroServicePolicy));
-
+        secondMicroServicePolicy.setName("MICROSERVICE_secondPolicyName_" + EXAMPLE_LOOP_NAME);
         // then
         assertThat(actualLoop).isNotNull();
         assertThat(actualLoop.getName()).isEqualTo(EXAMPLE_LOOP_NAME);
@@ -213,6 +215,8 @@ public class LoopServiceTestItCase {
         Loop actualLoop = loopService.updateAndSaveMicroservicePolicies(EXAMPLE_LOOP_NAME,
                 Lists.newArrayList(secondMicroServicePolicy));
 
+        secondMicroServicePolicy.setName("MICROSERVICE_secondPolicyName_" + EXAMPLE_LOOP_NAME);
+        
         // then
         assertThat(actualLoop).isNotNull();
         assertThat(actualLoop.getName()).isEqualTo(EXAMPLE_LOOP_NAME);
@@ -335,7 +339,7 @@ public class LoopServiceTestItCase {
         loopService.deleteLoop(EXAMPLE_LOOP_NAME);
         // Verify it's well deleted and has been cascaded, except for Microservice
         assertThat(loopsRepository.findById(EXAMPLE_LOOP_NAME).orElse(null)).isNull();
-        assertThat(microServicePolicyService.isExisting("microPolicy")).isTrue();
+        assertThat(microServicePolicyService.isExisting("MICROSERVICE_microPolicy_"+ EXAMPLE_LOOP_NAME)).isTrue();
         assertThat(operationalPolicyService.isExisting("opPolicy")).isFalse();
         assertThat(loopLogService.isExisting(((LoopLog) loop.getLoopLogs().toArray()[0]).getId())).isFalse();
     }

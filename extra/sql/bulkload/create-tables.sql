@@ -29,12 +29,6 @@
         primary key (dictionary_name, dictionary_element_short_name)
     ) engine=InnoDB;
 
-    create table hibernate_sequence (
-       next_val bigint
-    ) engine=InnoDB;
-
-    insert into hibernate_sequence values ( 1 );
-
     create table loop_element_models (
        name varchar(255) not null,
         created_by varchar(255),
@@ -49,7 +43,7 @@
     ) engine=InnoDB;
 
     create table loop_logs (
-       id bigint not null,
+       id bigint not null auto_increment,
         log_component varchar(255) not null,
         log_instant datetime(6) not null,
         log_type varchar(255) not null,

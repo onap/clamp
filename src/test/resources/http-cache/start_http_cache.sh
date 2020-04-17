@@ -47,6 +47,6 @@ esac
 done
 
 echo 'Installing requests packages for Python'
-pip install requests
+pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org requests
 echo 'Executing the Http proxy in Cache mode only'
 python -u third_party_proxy.py --port 8080 --root /usr/src/http-cache-app/data-cache $python_proxyaddress

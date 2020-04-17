@@ -183,9 +183,9 @@
 			</route>
 		</post>
 		<post uri="/v2/loop/updateMicroservicePolicy/{loopName}"
-			type="org.onap.clamp.policy.microservice.MicroServicePolicy"
+			type="com.google.gson.JsonArray"
 			consumes="application/json"
-			outType="org.onap.clamp.policy.microservice.MicroServicePolicy"
+			outType="org.onap.clamp.loop.Loop"
 			produces="application/json">
 			<route>
 				<removeHeaders pattern="*" excludePattern="loopName" />
@@ -200,7 +200,7 @@
 
 					<to uri="direct:load-loop" />
 					<to
-						uri="bean:org.onap.clamp.loop.LoopController?method=updateMicroservicePolicy(${header.loopName},${exchangeProperty[MicroServicePolicyObject]})" />
+						uri="bean:org.onap.clamp.loop.LoopController?method=updateMicroservicePolicyProperties(${header.loopName},${exchangeProperty[MicroServicePolicyObject]})" />
 					<to
 						uri="bean:org.onap.clamp.loop.log.LoopLogService?method=addLog('Micro Service policies UPDATED','INFO',${exchangeProperty[loopObject]})" />
 					<to
@@ -1097,7 +1097,7 @@
 					<to
 						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','read')" />
 					<to
-						uri="bean:org.onap.clamp.loop.template.PolicyModelsService?method=getPolicyModelByType(${header.policyModelType},${header.policyModelVersion})" />
+						uri="bean:org.onap.clamp.loop.template.PolicyModelsService?method=getPolicyModel(${header.policyModelType},${header.policyModelVersion})" />
 					<to
 						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
 					<doCatch>
@@ -1114,6 +1114,39 @@
 						</setHeader>
 						<setBody>
 							<simple>GET Policy model FAILED</simple>
+						</setBody>
+					</doCatch>
+				</doTry>
+			</route>
+		</get>
+		<get uri="/v2/policyToscaModels/jsonSchema/{policyModelType}"
+			outType="java.lang.String" produces="application/json">
+			<route>
+				<removeHeaders pattern="*"
+					excludePattern="policyModelType" />
+				<doTry>
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=startLog(*, 'GET Tosca Policy Model Json Schema by Name')" />
+					<to
+						uri="bean:org.onap.clamp.authorization.AuthorizationController?method=authorize(*,'tosca','','read')" />
+					<to
+						uri="bean:org.onap.clamp.loop.template.PolicyModelsService?method=getPolicyModelJsonSchema(${header.policyModelType})" />
+					<to
+						uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=endLog()" />
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+						<handled>
+							<constant>true</constant>
+						</handled>
+						<to
+								uri="bean:org.onap.clamp.flow.log.FlowLogOperation?method=errorLog()" />
+						<log loggingLevel="ERROR"
+							 message="GET Policy Model JSON Schema Request failed for type: ${header.policyModelType}, ${exception.stacktrace}" />
+						<setHeader headerName="CamelHttpResponseCode">
+							<constant>500</constant>
+						</setHeader>
+						<setBody>
+							<simple>GET Policy model JSON Schema FAILED</simple>
 						</setBody>
 					</doCatch>
 				</doTry>
