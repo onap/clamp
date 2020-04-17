@@ -214,6 +214,42 @@ export default class LoopUI extends React.Component {
 		return this.state.loopCache;
 
 	}
+	
+	renderGlobalStyle() {
+		return (
+			<GlobalClampStyle />
+		);
+	};
+	
+	renderRoutes() {
+		return(
+			<React.Fragment>
+				<Route path="/uploadToscaPolicyModal" render={(routeProps) => (<UploadToscaPolicyModal {...routeProps} />)} />
+				<Route path="/viewToscaPolicyModal" render={(routeProps) => (<ViewToscaPolicyModal {...routeProps} />)} />
+				<Route path="/ViewLoopTemplatesModal" render={(routeProps) => (<ViewLoopTemplatesModal {...routeProps} />)} />
+				<Route path="/ManageDictionaries" render={(routeProps) => (<ManageDictionaries {...routeProps} />)} />
+				<Route path="/operationalPolicyModal"
+					render={(routeProps) => (<OperationalPolicyModal {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
+				<Route path="/policyModal/:policyInstanceType/:policyName" render={(routeProps) => (<PolicyModal {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop}/>)} />
+				<Route path="/configurationPolicyModal/:policyName" render={(routeProps) => (<ConfigurationPolicyModal {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop}/>)} />
+				<Route path="/createLoop" render={(routeProps) => (<CreateLoopModal {...routeProps} loadLoopFunction={this.loadLoop} />)} />
+				<Route path="/openLoop" render={(routeProps) => (<OpenLoopModal {...routeProps} loadLoopFunction={this.loadLoop} />)} />
+				<Route path="/loopProperties" render={(routeProps) => (<LoopPropertiesModal {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop}/>)} />
+				<Route path="/modifyLoop" render={(routeProps) => (<ModifyLoopModal {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop}/>)} />
+	
+				<Route path="/userInfo" render={(routeProps) => (<UserInfoModal {...routeProps} />)} />
+				<Route path="/closeLoop" render={this.closeLoop} />
+				<Route path="/submit" render={(routeProps) => (<PerformAction {...routeProps} loopAction="submit" loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
+				<Route path="/stop" render={(routeProps) => (<PerformAction {...routeProps} loopAction="stop" loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
+				<Route path="/restart" render={(routeProps) => (<PerformAction {...routeProps} loopAction="restart" loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
+				<Route path="/delete" render={(routeProps) => (<PerformAction {...routeProps} loopAction="delete" loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
+				<Route path="/undeploy" render={(routeProps) => (<PerformAction {...routeProps} loopAction="undeploy" loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
+				<Route path="/deploy" render={(routeProps) => (<DeployLoopModal {...routeProps} loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
+				<Route path="/refreshStatus" render={(routeProps) => (<RefreshStatus {...routeProps} loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
+				<Route path="/logout" render={this.logout} />
+			</React.Fragment>
+		);
+	}
 
 	renderLoopViewer() {
 		return (
@@ -264,30 +300,8 @@ export default class LoopUI extends React.Component {
 	render() {
 		return (
 				<StyledMainDiv id="main_div">
-				<Route path="/uploadToscaPolicyModal" render={(routeProps) => (<UploadToscaPolicyModal {...routeProps} />)} />
-				<Route path="/viewToscaPolicyModal" render={(routeProps) => (<ViewToscaPolicyModal {...routeProps} />)} />
-				<Route path="/ViewLoopTemplatesModal" render={(routeProps) => (<ViewLoopTemplatesModal {...routeProps} />)} />
-				<Route path="/ManageDictionaries" render={(routeProps) => (<ManageDictionaries {...routeProps} />)} />
-				<Route path="/operationalPolicyModal"
-					render={(routeProps) => (<OperationalPolicyModal {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
-				<Route path="/policyModal/:policyInstanceType/:policyName" render={(routeProps) => (<PolicyModal {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop}/>)} />
-				<Route path="/configurationPolicyModal/:policyName" render={(routeProps) => (<ConfigurationPolicyModal {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop}/>)} />
-				<Route path="/createLoop" render={(routeProps) => (<CreateLoopModal {...routeProps} loadLoopFunction={this.loadLoop} />)} />
-				<Route path="/openLoop" render={(routeProps) => (<OpenLoopModal {...routeProps} loadLoopFunction={this.loadLoop} />)} />
-				<Route path="/loopProperties" render={(routeProps) => (<LoopPropertiesModal {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop}/>)} />
-				<Route path="/modifyLoop" render={(routeProps) => (<ModifyLoopModal {...routeProps} loopCache={this.getLoopCache()} loadLoopFunction={this.loadLoop}/>)} />
-
-				<Route path="/userInfo" render={(routeProps) => (<UserInfoModal {...routeProps} />)} />
-				<Route path="/closeLoop" render={this.closeLoop} />
-				<Route path="/submit" render={(routeProps) => (<PerformAction {...routeProps} loopAction="submit" loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
-				<Route path="/stop" render={(routeProps) => (<PerformAction {...routeProps} loopAction="stop" loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
-				<Route path="/restart" render={(routeProps) => (<PerformAction {...routeProps} loopAction="restart" loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
-				<Route path="/delete" render={(routeProps) => (<PerformAction {...routeProps} loopAction="delete" loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
-				<Route path="/undeploy" render={(routeProps) => (<PerformAction {...routeProps} loopAction="undeploy" loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
-				<Route path="/deploy" render={(routeProps) => (<DeployLoopModal {...routeProps} loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
-				<Route path="/refreshStatus" render={(routeProps) => (<RefreshStatus {...routeProps} loopCache={this.getLoopCache()} updateLoopFunction={this.updateLoopCache} showSucAlert={this.showSucAlert} showFailAlert={this.showFailAlert}/>)} />
-				<Route path="/logout" render={this.logout} />
-				<GlobalClampStyle />
+					{this.renderGlobalStyle()}
+					{this.renderRoutes()}
 					{this.renderAlertBar()}
 					{this.renderNavBar()}
 					{this.renderLoopViewer()}

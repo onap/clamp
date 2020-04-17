@@ -23,6 +23,8 @@
 
 package org.onap.clamp.loop;
 
+import com.att.eelf.configuration.EELFLogger;
+import com.att.eelf.configuration.EELFManager;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
@@ -50,6 +52,7 @@ import org.hibernate.annotations.SortNatural;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.onap.clamp.clds.config.ClampProperties;
 import org.onap.clamp.clds.tosca.update.ToscaConverterWithDictionarySupport;
 import org.onap.clamp.clds.util.drawing.SvgLoopGenerator;
 import org.onap.clamp.dao.model.jsontype.StringJsonUserType;
@@ -75,6 +78,11 @@ public class Loop extends AuditEntity implements Serializable {
      */
     private static final long serialVersionUID = -286522707701388642L;
 
+    @Transient
+    private static final EELFLogger logger = EELFManager.getInstance().getLogger(Loop.class);
+    @Transient
+    private static final String USE_INSTANCE_AS_SVG_ELEMENT = "svg.useInstanceAsElement";
+
     @Id
     @Expose
     @Column(nullable = false, name = "name", unique = true)
@@ -97,7 +105,9 @@ public class Loop extends AuditEntity implements Serializable {
     private JsonObject globalPropertiesJson;
 
     @Expose
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(
+        fetch = FetchType.EAGER,
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "service_uuid")
     private Service modelService;
 
@@ -111,22 +121,34 @@ public class Loop extends AuditEntity implements Serializable {
     private final Map<String, ExternalComponent> components = new HashMap<>();
 
     @Expose
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop", orphanRemoval = true)
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER,
+        mappedBy = "loop",
+        orphanRemoval = true)
     private Set<OperationalPolicy> operationalPolicies = new HashSet<>();
 
     @Expose
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinTable(name = "loops_to_microservicepolicies", joinColumns = @JoinColumn(name = "loop_name"),
-            inverseJoinColumns = @JoinColumn(name = "microservicepolicy_name"))
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "loops_to_microservicepolicies",
+        joinColumns = @JoinColumn(name = "loop_name"),
+        inverseJoinColumns = @JoinColumn(name = "microservicepolicy_name"))
     private Set<MicroServicePolicy> microServicePolicies = new HashSet<>();
 
     @Expose
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loop", orphanRemoval = true)
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER,
+        mappedBy = "loop",
+        orphanRemoval = true)
     @SortNatural
     private SortedSet<LoopLog> loopLogs = new TreeSet<>();
 
     @Expose
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToOne(
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
+        fetch = FetchType.EAGER)
     @JoinColumn(name = "loop_template_name", nullable = false)
     private LoopTemplate loopTemplate;
 
@@ -156,24 +178,32 @@ public class Loop extends AuditEntity implements Serializable {
     /**
      * This constructor creates a loop from a loop template.
      *
-     * @param name         The loop name
+     * @param name The loop name
      * @param loopTemplate The loop template from which a new loop instance must be created
      */
-    public Loop(String name, LoopTemplate loopTemplate, ToscaConverterWithDictionarySupport toscaConverter) {
+    public Loop(String name, LoopTemplate loopTemplate,
+        ToscaConverterWithDictionarySupport toscaConverter, ClampProperties refProp) {
         this(name, "");
         this.setLoopTemplate(loopTemplate);
         this.setModelService(loopTemplate.getModelService());
-        loopTemplate.getLoopElementModelsUsed().forEach(element -> {
-            if (LoopElementModel.MICRO_SERVICE_TYPE.equals(element.getLoopElementModel().getLoopElementType())) {
-                this.addMicroServicePolicy((MicroServicePolicy) element.getLoopElementModel()
-                        .createPolicyInstance(this, toscaConverter));
-            }
-            else if (LoopElementModel.OPERATIONAL_POLICY_TYPE
+        if (refProp != null
+            && refProp.getStringValue(USE_INSTANCE_AS_SVG_ELEMENT).equalsIgnoreCase("false")) {
+            this.setSvgRepresentation(SvgLoopGenerator
+                .getSvgImageUsingLoopElementModels(this.getLoopTemplate(), refProp));
+        } else {
+            loopTemplate.getLoopElementModelsUsed().forEach(element -> {
+                if (LoopElementModel.MICRO_SERVICE_TYPE
                     .equals(element.getLoopElementModel().getLoopElementType())) {
-                this.addOperationalPolicy((OperationalPolicy) element.getLoopElementModel()
+                    this.addMicroServicePolicy((MicroServicePolicy) element.getLoopElementModel()
                         .createPolicyInstance(this, toscaConverter));
-            }
-        });
+                } else if (LoopElementModel.OPERATIONAL_POLICY_TYPE
+                    .equals(element.getLoopElementModel().getLoopElementType())) {
+                    this.addOperationalPolicy((OperationalPolicy) element.getLoopElementModel()
+                        .createPolicyInstance(this, toscaConverter));
+                }
+            });
+        }
+
         this.setGlobalPropertiesJson(DcaeDeployParameters.getDcaeDeploymentParametersInJson(this));
     }
 
@@ -363,16 +393,17 @@ public class Loop extends AuditEntity implements Serializable {
     /**
      * Generate the loop name.
      *
-     * @param serviceName       The service name
-     * @param serviceVersion    The service version
-     * @param resourceName      The resource name
+     * @param serviceName The service name
+     * @param serviceVersion The service version
+     * @param resourceName The resource name
      * @param blueprintFileName The blueprint file name
      * @return The generated loop name
      */
-    public static String generateLoopName(String serviceName, String serviceVersion, String resourceName,
-                                          String blueprintFileName) {
-        StringBuilder buffer = new StringBuilder("LOOP_").append(serviceName).append("_v").append(serviceVersion)
-                .append("_").append(resourceName).append("_").append(blueprintFileName.replaceAll(".yaml", ""));
+    public static String generateLoopName(String serviceName, String serviceVersion,
+        String resourceName, String blueprintFileName) {
+        StringBuilder buffer = new StringBuilder("LOOP_").append(serviceName).append("_v")
+            .append(serviceVersion).append("_").append(resourceName).append("_")
+            .append(blueprintFileName.replaceAll(".yaml", ""));
         return buffer.toString().replace('.', '_').replaceAll(" ", "");
     }
 
@@ -400,8 +431,7 @@ public class Loop extends AuditEntity implements Serializable {
             if (other.name != null) {
                 return false;
             }
-        }
-        else if (!name.equals(other.name)) {
+        } else if (!name.equals(other.name)) {
             return false;
         }
         return true;

@@ -41,12 +41,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class PolicyModelsService {
     private final PolicyModelsRepository policyModelsRepository;
     private ToscaYamlToJsonConvertor toscaYamlToJsonConvertor;
+    private LoopElementModelsRepository loopElementModelsRepository;
 
     @Autowired
     public PolicyModelsService(PolicyModelsRepository policyModelrepo,
-        ToscaYamlToJsonConvertor convertor) {
+        ToscaYamlToJsonConvertor convertor, LoopElementModelsRepository loopElementModelsRepo) {
         policyModelsRepository = policyModelrepo;
         toscaYamlToJsonConvertor = convertor;
+        loopElementModelsRepository = loopElementModelsRepo;
     }
 
     /**
@@ -86,7 +88,26 @@ public class PolicyModelsService {
                 : ((ArrayList<PolicyModel>) models).get(0).getVersion()),
             toscaYamlToJsonConvertor.getValueFromMetadata(jsonObject,
                 ToscaSchemaConstants.METADATA_ACRONYM));
+        createLoopElementDbRecord(newPolicyModel, jsonObject);
         return saveOrUpdatePolicyModel(newPolicyModel);
+    }
+
+    private void createLoopElementDbRecord(PolicyModel newPolicyModel, JsonObject jsonObject) {
+        String loopElementName = toscaYamlToJsonConvertor.getValueFromMetadata(jsonObject,
+            ToscaSchemaConstants.METADATA_ELEMENT_NAME);
+        if (loopElementName == null) {
+            // If element_name not present in tosca yaml, fallback to acronym
+            loopElementName = newPolicyModel.getPolicyAcronym();
+        }
+        if (loopElementName != null) {
+            LoopElementModel loopElementModel =
+                loopElementModelsRepository.findById(loopElementName).orElse(null);
+            if (loopElementModel != null) {
+                loopElementModel.addPolicyModel(newPolicyModel);
+                newPolicyModel.getUsedByElementModels().add(loopElementModel);
+                loopElementModelsRepository.save(loopElementModel);
+            }
+        }
     }
 
     /**
@@ -100,7 +121,7 @@ public class PolicyModelsService {
     public PolicyModel updatePolicyModelTosca(String policyModelType, String policyModelVersion,
         String policyModelTosca) {
         JsonObject jsonObject = toscaYamlToJsonConvertor.validateAndConvertToJson(policyModelTosca);
-        PolicyModel thePolicyModel = getPolicyModelByType(policyModelType, policyModelVersion);
+        PolicyModel thePolicyModel = getPolicyModel(policyModelType, policyModelVersion);
         thePolicyModel.setPolicyAcronym(toscaYamlToJsonConvertor.getValueFromMetadata(jsonObject,
             ToscaSchemaConstants.METADATA_ACRONYM));
         thePolicyModel.setPolicyModelTosca(policyModelTosca);
@@ -123,8 +144,9 @@ public class PolicyModelsService {
         return policyModelsRepository.findByPolicyModelType(type);
     }
 
-    public PolicyModel getPolicyModelByType(String type, String version) {
-        return policyModelsRepository.findById(new PolicyModelId(type, version)).orElse(null);
+    public PolicyModel getPolicyModelByType(String type) {
+        return policyModelsRepository.findByPolicyModelType(type).stream().sorted().findFirst()
+            .orElse(null);
     }
 
     /**
@@ -137,6 +159,20 @@ public class PolicyModelsService {
     public String getPolicyModelTosca(String type, String version) {
         return policyModelsRepository.findById(new PolicyModelId(type, version))
             .orElse(new PolicyModel()).getPolicyModelTosca();
+    }
+    
+    /**
+     * Retrieves the Tosca model Json Schema string.
+     *
+     * @param type The PolicyModelType
+     * @return The Tosca model Json Schema string
+     */
+    public String getPolicyModelJsonSchema(String type) {
+        PolicyModel policyModel = getPolicyModelByType(type);
+        return policyModel != null
+            ? toscaYamlToJsonConvertor.parseToscaYaml(policyModel.getPolicyModelTosca(),
+                policyModel.getPolicyModelType())
+            : null;
     }
 
     /**
