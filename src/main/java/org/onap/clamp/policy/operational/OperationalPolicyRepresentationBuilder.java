@@ -216,7 +216,7 @@ public class OperationalPolicyRepresentationBuilder {
         payload.addProperty("title", "Payload (YAML)");
         payload.addProperty("type", "object");
         payload.add("properties", createInputPropertiesForPayload(workFlow,
-                                                                  controllerProperties));
+                                                                  controllerProperties, true));
         JsonObject properties = new JsonObject();
         properties.add("recipe", createRecipeForCdsWorkflow(workFlowName));
         properties.add("payload", payload);

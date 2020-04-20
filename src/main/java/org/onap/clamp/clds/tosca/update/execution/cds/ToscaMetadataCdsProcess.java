@@ -116,7 +116,7 @@ public class ToscaMetadataCdsProcess extends ToscaMetadataProcess {
                     obj.addProperty("title", workflowsEntry.getKey());
                     obj.add("properties",
                             createInputPropertiesForPayload(workflowsEntry.getValue().getAsJsonObject(),
-                                                            controllerProperties));
+                                                            controllerProperties, false));
                     schemaAnyOf.add(obj);
                 }
             }
@@ -164,10 +164,12 @@ public class ToscaMetadataCdsProcess extends ToscaMetadataProcess {
      * @param workFlow cds work flows to update payload
      * @param controllerProperties cds properties to get blueprint name and
      *                            version
+     * @param isLegacy flag to indicate legacy policy or generic policy
      * @return returns the properties of payload
      */
     public static JsonObject createInputPropertiesForPayload(JsonObject workFlow,
-                                                             JsonObject controllerProperties) {
+                                                             JsonObject controllerProperties,
+                                                             boolean isLegacy) {
         String artifactName = controllerProperties.get("sdnc_model_name").getAsString();
         String artifactVersion = controllerProperties.get("sdnc_model_version").getAsString();
         JsonObject inputs = workFlow.getAsJsonObject("inputs");
@@ -178,37 +180,59 @@ public class ToscaMetadataCdsProcess extends ToscaMetadataProcess {
                 "artifact version", artifactVersion));
         jsonObject.add("mode", createCdsInputProperty(
                 "mode", "string", "async", null));
-        jsonObject.add("data", createDataProperty(inputs));
-
+        jsonObject.add("data", createDataProperty(inputs, isLegacy));
         return jsonObject;
     }
 
-    private static JsonObject createDataProperty(JsonObject inputs) {
+    private static JsonObject createDataProperty(JsonObject inputs,
+                                                 boolean isLegacy) {
         JsonObject data = new JsonObject();
         data.addProperty("title", "data");
-        data.add(PROPERTIES, addDataFields(inputs));
+        if (isLegacy) {
+            JsonObject dataObj = new JsonObject();
+            addDataFields(inputs, dataObj);
+            data.add(PROPERTIES, dataObj);
+        } else {
+            data.addProperty("type", "string");
+            data.addProperty("format", "textarea");
+            JsonObject defaultValue = new JsonObject();
+            addDefaultValueForData(inputs, defaultValue);
+            data.addProperty("default",
+                             defaultValue.toString());
+        }
         return data;
     }
 
-    private static JsonObject addDataFields(JsonObject inputs) {
-        JsonObject jsonObject = new JsonObject();
+    private static void addDefaultValueForData(JsonObject inputs,
+                                               JsonObject defaultValue) {
         Set<Map.Entry<String, JsonElement>> entrySet = inputs.entrySet();
         for (Map.Entry<String, JsonElement> entry : entrySet) {
             String key = entry.getKey();
             JsonObject inputProperty = inputs.getAsJsonObject(key);
             if (inputProperty.get(TYPE) == null) {
-                jsonObject.add(entry.getKey(),
-                               createAnyOfJsonObject(key,
-                                                     addDataFields(entry.getValue().getAsJsonObject())));
+                addDefaultValueForData(entry.getValue().getAsJsonObject(), defaultValue);
             } else {
-                jsonObject.add(entry.getKey(),
-                               createCdsInputProperty(key,
-                                                      inputProperty.get("type").getAsString(),
-                                                      null,
-                                                      entry.getValue().getAsJsonObject()));
+                defaultValue.addProperty(entry.getKey(), "");
             }
         }
-        return jsonObject;
+    }
+
+    private static void addDataFields(JsonObject inputs,
+                                      JsonObject dataObj) {
+        Set<Map.Entry<String, JsonElement>> entrySet = inputs.entrySet();
+        for (Map.Entry<String, JsonElement> entry : entrySet) {
+            String key = entry.getKey();
+            JsonObject inputProperty = inputs.getAsJsonObject(key);
+            if (inputProperty.get(TYPE) == null) {
+                addDataFields(entry.getValue().getAsJsonObject(), dataObj);
+            } else {
+                dataObj.add(entry.getKey(),
+                            createCdsInputProperty(key,
+                                                   inputProperty.get("type").getAsString(),
+                                                   null,
+                                                   entry.getValue().getAsJsonObject()));
+            }
+        }
     }
 
     private static JsonObject createCdsInputProperty(String title,
@@ -222,8 +246,10 @@ public class ToscaMetadataCdsProcess extends ToscaMetadataProcess {
             property.addProperty(TYPE, "array");
             if (cdsProperty.get(PROPERTIES) != null) {
                 JsonObject listProperties = new JsonObject();
-                listProperties.add(PROPERTIES,
-                                   addDataFields(cdsProperty.get(PROPERTIES).getAsJsonObject()));
+                JsonObject dataObject = new JsonObject();
+                addDataFields(cdsProperty.get(PROPERTIES).getAsJsonObject(),
+                              dataObject);
+                listProperties.add(PROPERTIES, dataObject);
                 property.add("items", listProperties);
             }
         } else {

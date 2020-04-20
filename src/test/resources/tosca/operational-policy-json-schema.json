@@ -281,39 +281,33 @@
                                   "data": {
                                     "title": "data",
                                     "properties": {
-                                      "resource-assignment-properties": {
-                                        "title": "resource-assignment-properties",
-                                        "type": "object",
-                                        "properties": {
-                                          "request-id": {
-                                            "title": "request-id",
-                                            "type": "string"
-                                          },
-                                          "service-instance-id": {
-                                            "title": "service-instance-id",
-                                            "type": "string"
-                                          },
-                                          "vnf-id": {
-                                            "title": "vnf-id",
-                                            "type": "string"
-                                          },
-                                          "action-name": {
-                                            "title": "action-name",
-                                            "type": "string"
-                                          },
-                                          "scope-type": {
-                                            "title": "scope-type",
-                                            "type": "string"
-                                          },
-                                          "hostname": {
-                                            "title": "hostname",
-                                            "type": "string"
-                                          },
-                                          "vnf_name": {
-                                            "title": "vnf_name",
-                                            "type": "string"
-                                          }
-                                        }
+                                      "request-id": {
+                                        "title": "request-id",
+                                        "type": "string"
+                                      },
+                                      "service-instance-id": {
+                                        "title": "service-instance-id",
+                                        "type": "string"
+                                      },
+                                      "vnf-id": {
+                                        "title": "vnf-id",
+                                        "type": "string"
+                                      },
+                                      "action-name": {
+                                        "title": "action-name",
+                                        "type": "string"
+                                      },
+                                      "scope-type": {
+                                        "title": "scope-type",
+                                        "type": "string"
+                                      },
+                                      "hostname": {
+                                        "title": "hostname",
+                                        "type": "string"
+                                      },
+                                      "vnf_name": {
+                                        "title": "vnf_name",
+                                        "type": "string"
                                       }
                                     }
                                   }
@@ -357,39 +351,33 @@
                                   "data": {
                                     "title": "data",
                                     "properties": {
-                                      "resource-assignment-properties": {
-                                        "title": "resource-assignment-properties",
-                                        "type": "object",
-                                        "properties": {
-                                          "request-id": {
-                                            "title": "request-id",
-                                            "type": "string"
-                                          },
-                                          "service-instance-id": {
-                                            "title": "service-instance-id",
-                                            "type": "string"
-                                          },
-                                          "vnf-id": {
-                                            "title": "vnf-id",
-                                            "type": "string"
-                                          },
-                                          "action-name": {
-                                            "title": "action-name",
-                                            "type": "string"
-                                          },
-                                          "scope-type": {
-                                            "title": "scope-type",
-                                            "type": "string"
-                                          },
-                                          "hostname": {
-                                            "title": "hostname",
-                                            "type": "string"
-                                          },
-                                          "vnf_name": {
-                                            "title": "vnf_name",
-                                            "type": "string"
-                                          }
-                                        }
+                                      "request-id": {
+                                        "title": "request-id",
+                                        "type": "string"
+                                      },
+                                      "service-instance-id": {
+                                        "title": "service-instance-id",
+                                        "type": "string"
+                                      },
+                                      "vnf-id": {
+                                        "title": "vnf-id",
+                                        "type": "string"
+                                      },
+                                      "action-name": {
+                                        "title": "action-name",
+                                        "type": "string"
+                                      },
+                                      "scope-type": {
+                                        "title": "scope-type",
+                                        "type": "string"
+                                      },
+                                      "hostname": {
+                                        "title": "hostname",
+                                        "type": "string"
+                                      },
+                                      "vnf_name": {
+                                        "title": "vnf_name",
+                                        "type": "string"
                                       }
                                     }
                                   }
@@ -433,39 +421,33 @@
                                   "data": {
                                     "title": "data",
                                     "properties": {
-                                      "resource-assignment-properties": {
-                                        "title": "resource-assignment-properties",
-                                        "type": "object",
-                                        "properties": {
-                                          "request-id": {
-                                            "title": "request-id",
-                                            "type": "string"
-                                          },
-                                          "service-instance-id": {
-                                            "title": "service-instance-id",
-                                            "type": "string"
-                                          },
-                                          "vnf-id": {
-                                            "title": "vnf-id",
-                                            "type": "string"
-                                          },
-                                          "action-name": {
-                                            "title": "action-name",
-                                            "type": "string"
-                                          },
-                                          "scope-type": {
-                                            "title": "scope-type",
-                                            "type": "string"
-                                          },
-                                          "hostname": {
-                                            "title": "hostname",
-                                            "type": "string"
-                                          },
-                                          "vnf_name": {
-                                            "title": "vnf_name",
-                                            "type": "string"
-                                          }
-                                        }
+                                      "request-id": {
+                                        "title": "request-id",
+                                        "type": "string"
+                                      },
+                                      "service-instance-id": {
+                                        "title": "service-instance-id",
+                                        "type": "string"
+                                      },
+                                      "vnf-id": {
+                                        "title": "vnf-id",
+                                        "type": "string"
+                                      },
+                                      "action-name": {
+                                        "title": "action-name",
+                                        "type": "string"
+                                      },
+                                      "scope-type": {
+                                        "title": "scope-type",
+                                        "type": "string"
+                                      },
+                                      "hostname": {
+                                        "title": "hostname",
+                                        "type": "string"
+                                      },
+                                      "vnf_name": {
+                                        "title": "vnf_name",
+                                        "type": "string"
                                       }
                                     }
                                   }
@@ -509,39 +491,33 @@
                                   "data": {
                                     "title": "data",
                                     "properties": {
-                                      "resource-assignment-properties": {
-                                        "title": "resource-assignment-properties",
-                                        "type": "object",
-                                        "properties": {
-                                          "request-id": {
-                                            "title": "request-id",
-                                            "type": "string"
-                                          },
-                                          "service-instance-id": {
-                                            "title": "service-instance-id",
-                                            "type": "string"
-                                          },
-                                          "vnf-id": {
-                                            "title": "vnf-id",
-                                            "type": "string"
-                                          },
-                                          "action-name": {
-                                            "title": "action-name",
-                                            "type": "string"
-                                          },
-                                          "scope-type": {
-                                            "title": "scope-type",
-                                            "type": "string"
-                                          },
-                                          "hostname": {
-                                            "title": "hostname",
-                                            "type": "string"
-                                          },
-                                          "vnf_name": {
-                                            "title": "vnf_name",
-                                            "type": "string"
-                                          }
-                                        }
+                                      "request-id": {
+                                        "title": "request-id",
+                                        "type": "string"
+                                      },
+                                      "service-instance-id": {
+                                        "title": "service-instance-id",
+                                        "type": "string"
+                                      },
+                                      "vnf-id": {
+                                        "title": "vnf-id",
+                                        "type": "string"
+                                      },
+                                      "action-name": {
+                                        "title": "action-name",
+                                        "type": "string"
+                                      },
+                                      "scope-type": {
+                                        "title": "scope-type",
+                                        "type": "string"
+                                      },
+                                      "hostname": {
+                                        "title": "hostname",
+                                        "type": "string"
+                                      },
+                                      "vnf_name": {
+                                        "title": "vnf_name",
+                                        "type": "string"
                                       }
                                     }
                                   }
@@ -585,39 +561,33 @@
                                   "data": {
                                     "title": "data",
                                     "properties": {
-                                      "resource-assignment-properties": {
-                                        "title": "resource-assignment-properties",
-                                        "type": "object",
-                                        "properties": {
-                                          "request-id": {
-                                            "title": "request-id",
-                                            "type": "string"
-                                          },
-                                          "service-instance-id": {
-                                            "title": "service-instance-id",
-                                            "type": "string"
-                                          },
-                                          "vnf-id": {
-                                            "title": "vnf-id",
-                                            "type": "string"
-                                          },
-                                          "action-name": {
-                                            "title": "action-name",
-                                            "type": "string"
-                                          },
-                                          "scope-type": {
-                                            "title": "scope-type",
-                                            "type": "string"
-                                          },
-                                          "hostname": {
-                                            "title": "hostname",
-                                            "type": "string"
-                                          },
-                                          "vnf_name": {
-                                            "title": "vnf_name",
-                                            "type": "string"
-                                          }
-                                        }
+                                      "request-id": {
+                                        "title": "request-id",
+                                        "type": "string"
+                                      },
+                                      "service-instance-id": {
+                                        "title": "service-instance-id",
+                                        "type": "string"
+                                      },
+                                      "vnf-id": {
+                                        "title": "vnf-id",
+                                        "type": "string"
+                                      },
+                                      "action-name": {
+                                        "title": "action-name",
+                                        "type": "string"
+                                      },
+                                      "scope-type": {
+                                        "title": "scope-type",
+                                        "type": "string"
+                                      },
+                                      "hostname": {
+                                        "title": "hostname",
+                                        "type": "string"
+                                      },
+                                      "vnf_name": {
+                                        "title": "vnf_name",
+                                        "type": "string"
                                       }
                                     }
                                   }
@@ -661,39 +631,33 @@
                                   "data": {
                                     "title": "data",
                                     "properties": {
-                                      "resource-assignment-properties": {
-                                        "title": "resource-assignment-properties",
-                                        "type": "object",
-                                        "properties": {
-                                          "request-id": {
-                                            "title": "request-id",
-                                            "type": "string"
-                                          },
-                                          "service-instance-id": {
-                                            "title": "service-instance-id",
-                                            "type": "string"
-                                          },
-                                          "vnf-id": {
-                                            "title": "vnf-id",
-                                            "type": "string"
-                                          },
-                                          "action-name": {
-                                            "title": "action-name",
-                                            "type": "string"
-                                          },
-                                          "scope-type": {
-                                            "title": "scope-type",
-                                            "type": "string"
-                                          },
-                                          "hostname": {
-                                            "title": "hostname",
-                                            "type": "string"
-                                          },
-                                          "vnf_name": {
-                                            "title": "vnf_name",
-                                            "type": "string"
-                                          }
-                                        }
+                                      "request-id": {
+                                        "title": "request-id",
+                                        "type": "string"
+                                      },
+                                      "service-instance-id": {
+                                        "title": "service-instance-id",
+                                        "type": "string"
+                                      },
+                                      "vnf-id": {
+                                        "title": "vnf-id",
+                                        "type": "string"
+                                      },
+                                      "action-name": {
+                                        "title": "action-name",
+                                        "type": "string"
+                                      },
+                                      "scope-type": {
+                                        "title": "scope-type",
+                                        "type": "string"
+                                      },
+                                      "hostname": {
+                                        "title": "hostname",
+                                        "type": "string"
+                                      },
+                                      "vnf_name": {
+                                        "title": "vnf_name",
+                                        "type": "string"
                                       }
                                     }
                                   }
