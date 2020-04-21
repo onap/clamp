@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "598ca424_12dd211c",
+        "filename": "src/main/java/org/onap/clamp/clds/tosca/update/execution/cds/ToscaMetadataCdsProcess.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-04-21T10:06:43Z",
+      "side": 1,
+      "message": "Do not put legacy parameter here, this class should not know anything about legacy op policy",
+      "revId": "c54cf2943efc614f1f4d2f3d00e1c8d4e03e5692",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
