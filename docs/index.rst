@@ -113,7 +113,7 @@ There are one datasource for Clamp. By default, it will try to connect to the lo
 .. code-block:: json
 
     {
-        "spring.datasource.cldsdb.url": "jdbc:mariadb:sequential://clampdb.{{ include "common.namespace" . }}:3306/cldsdb4?autoReconnect=true&connectTimeout=10000&socketTimeout=10000&retriesAllDown=3",
+        "spring.datasource.db.url": "jdbc:mariadb:sequential://clampdb.{{ include "common.namespace" . }}:3306/cldsdb4?autoReconnect=true&connectTimeout=10000&socketTimeout=10000&retriesAllDown=3",
         "clamp.config.files.sdcController": "file:/opt/clamp/sdc-controllers-config.json",
         "clamp.config.dcae.inventory.url": "https://inventory.{{ include "common.namespace" . }}:8080",
         "clamp.config.dcae.dispatcher.url": "https4://deployment-handler.{{ include "common.namespace" . }}:8443",
