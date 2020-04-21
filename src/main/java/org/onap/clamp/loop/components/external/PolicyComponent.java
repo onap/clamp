@@ -167,7 +167,6 @@ public class PolicyComponent extends ExternalComponent {
         List<String> policyNamesList = new ArrayList<>();
         for (OperationalPolicy opPolicy : loop.getOperationalPolicies()) {
             policyNamesList.add(opPolicy.getName());
-            policyNamesList.addAll(opPolicy.createGuardPolicyPayloads().keySet());
         }
         for (MicroServicePolicy microServicePolicy : loop.getMicroServicePolicies()) {
             policyNamesList.add(microServicePolicy.getName());
@@ -198,7 +197,7 @@ public class PolicyComponent extends ExternalComponent {
 
     /**
      * This is a method that expect the results of the queries getPolicy and
-     * getPolicyDeployed for a unique policy (op,guard, config, etc ...). It
+     * getPolicyDeployed for a unique policy (op, config, etc ...). It
      * re-computes the global policy state for each policy results given. Therefore
      * this method is called multiple times from the camel route and must be reset
      * for a new global policy state retrieval. The state to compute the global
