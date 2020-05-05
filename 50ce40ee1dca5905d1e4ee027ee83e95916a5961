@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "81cd6c51_717145f8",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilder.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3339
+      },
+      "writtenOn": "2020-05-05T16:38:07Z",
+      "side": 1,
+      "message": "This is a different case when we want to use case where mS loop element instead of an instance as there we may or may not create the specific policy. Like for multiple variants, user may choose to create one or more type of policy. For open loop, there wont be even operational policy created but will be used to display an element in SVG with a msg.",
+      "parentUuid": "73c52df5_2e87690c",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "176f25db_559b4162",
         "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilder.java",
         "patchSetId": 9
@@ -30,6 +48,24 @@
       "writtenOn": "2020-05-05T15:33:53Z",
       "side": 1,
       "message": "Again not sure why we need a new method for that ?",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71337ac1_6cc5db21",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilder.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3339
+      },
+      "writtenOn": "2020-05-05T16:38:07Z",
+      "side": 1,
+      "message": "Same response as above.",
+      "parentUuid": "176f25db_559b4162",
       "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -70,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "ed50232d_951f2c0e",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/SvgLoopGenerator.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 3339
+      },
+      "writtenOn": "2020-05-05T16:38:07Z",
+      "side": 1,
+      "message": "there could be a Control Loop where VES is not used so I think its okay to make this part of Loop Template.",
+      "parentUuid": "1da0fd61_073c7e2f",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1de00d42_0df31257",
         "filename": "src/main/java/org/onap/clamp/policy/Policy.java",
         "patchSetId": 9
@@ -87,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "4e2aff86_66b9d324",
+        "filename": "src/main/java/org/onap/clamp/policy/Policy.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 3339
+      },
+      "writtenOn": "2020-05-05T16:38:07Z",
+      "side": 1,
+      "message": "yep, dead code. Need to remove",
+      "parentUuid": "1de00d42_0df31257",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e54bca1a_2c303afd",
         "filename": "src/main/java/org/onap/clamp/policy/Policy.java",
         "patchSetId": 9
@@ -98,6 +170,24 @@
       "writtenOn": "2020-05-05T15:33:53Z",
       "side": 1,
       "message": "This is a specific method for microservice policies, this has nothing to do in the parent Policy class",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1f51fa8_71440abf",
+        "filename": "src/main/java/org/onap/clamp/policy/Policy.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 3339
+      },
+      "writtenOn": "2020-05-05T16:38:07Z",
+      "side": 1,
+      "message": "We can move it to MicroservicePolicy.java",
+      "parentUuid": "e54bca1a_2c303afd",
       "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -132,6 +222,24 @@
       "writtenOn": "2020-05-05T15:33:53Z",
       "side": 1,
       "message": "For this one, may be we could add the replacement for the . to a _ as well + blank space by nothing here (see line 304) and then recall this method by generatePolicyName",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16689ab3_6e620d0d",
+        "filename": "src/main/java/org/onap/clamp/policy/Policy.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 3339
+      },
+      "writtenOn": "2020-05-05T16:38:07Z",
+      "side": 1,
+      "message": "Sure make sense",
+      "parentUuid": "26ec59f0_0e1e4afe",
       "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
