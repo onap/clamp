@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73c52df5_2e87690c",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilder.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-05-05T15:33:53Z",
+      "side": 1,
+      "message": "I don\u0027t see the need to create specialized elementmodels set, this breaks the code genericity.",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "176f25db_559b4162",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/ClampGraphBuilder.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-05-05T15:33:53Z",
+      "side": 1,
+      "message": "Again not sure why we need a new method for that ?",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "660c7b87_31603790",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/SvgLoopGenerator.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-05-05T15:33:53Z",
+      "side": 1,
+      "message": "Same comment as ClampGraphBuilder, I\u0027m not sure to see why we need a different code to generate the Svg",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1da0fd61_073c7e2f",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/SvgLoopGenerator.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-05-05T15:33:53Z",
+      "side": 1,
+      "message": "We could have a clamp that never add the VES compo in the SVG ? there is no other way to know that ? May be we could add an attibute in the loop template ?",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1de00d42_0df31257",
+        "filename": "src/main/java/org/onap/clamp/policy/Policy.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-05-05T15:33:53Z",
+      "side": 1,
+      "message": "Who uses that method ? it seems to be a dead code",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e54bca1a_2c303afd",
+        "filename": "src/main/java/org/onap/clamp/policy/Policy.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-05-05T15:33:53Z",
+      "side": 1,
+      "message": "This is a specific method for microservice policies, this has nothing to do in the parent Policy class",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53d62c56_bc991850",
+        "filename": "src/main/java/org/onap/clamp/policy/Policy.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-05-05T15:33:53Z",
+      "side": 1,
+      "message": "This is a specific method for microservice policies, this has nothing to do in the parent Policy class",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26ec59f0_0e1e4afe",
+        "filename": "src/main/java/org/onap/clamp/policy/Policy.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-05-05T15:33:53Z",
+      "side": 1,
+      "message": "For this one, may be we could add the replacement for the . to a _ as well + blank space by nothing here (see line 304) and then recall this method by generatePolicyName",
+      "revId": "50ce40ee1dca5905d1e4ee027ee83e95916a5961",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
