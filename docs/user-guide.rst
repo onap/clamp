@@ -94,6 +94,13 @@ To configure operational policies, user has to click the corresponding operation
 
 |clamp-op-policy-box-policy|
 
+In Frankfurt release, Clamp adds CDS as one of the actor option. Clamp queries CDS to fetch the corresponding operations and payload in case needed.
+
+After receiving the reply from CDS, the operational policy window will be updated accordingly, including the operation and payload parameters in the UI. 
+
+Example of the payload and operation attribute look like:
+
+|clamp-cds-operation|
 
 
 Micro-service policy properties
@@ -151,3 +158,4 @@ Once deployed on DCAE the status of DCAE goes to *MICROSERVICE_INSTALLED_SUCCESS
 .. |clamp-policy-submitted| image:: images/user-guide/policy-submitted.png
 .. |clamp-deploy-params| image:: images/user-guide/deploy-params.png
 .. |blueprint-node| image:: images/user-guide/blueprint_node_type.png
+.. |clamp-cds-operation| image:: images/user-guide/clamp-cds-operation.png
