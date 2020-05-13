@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "18469d1b_761bcc8f",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/Painter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3339
+      },
+      "writtenOn": "2020-05-13T18:38:04Z",
+      "side": 1,
+      "message": "Do we still need Set of Microservices and Operational Policies here? I think we can use Loop Element information whcih is available as part of the LoopTemplate used to create the Loop. So we could pass on the set of the loop Elements here and use its loop_element_type to add shapes based on that type.",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 36
+      },
+      "revId": "a1038c3f4558404cc3a186847dc43102142585b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b32f1ce0_8f0d93af",
+        "filename": "src/main/java/org/onap/clamp/clds/util/drawing/Painter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3339
+      },
+      "writtenOn": "2020-05-13T18:38:04Z",
+      "side": 1,
+      "message": "Same comment as above.",
+      "revId": "a1038c3f4558404cc3a186847dc43102142585b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
