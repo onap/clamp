@@ -580,6 +580,18 @@
 			<version>2.0.4</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.github.docker-java</groupId>
+			<artifactId>docker-java-core</artifactId>
+			<version>3.2.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.docker-java</groupId>
+			<artifactId>docker-java</artifactId>
+			<version>3.2.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
