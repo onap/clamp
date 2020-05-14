@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -37,7 +38,18 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.BuildImageResultCallback;
+import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.api.model.AccessMode;
+import com.github.dockerjava.api.model.Bind;
+import com.github.dockerjava.api.model.BuildResponseItem;
+import com.github.dockerjava.api.model.Volume;
+import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.netty.NettyDockerCmdExecFactory;
 import org.apache.commons.io.FileUtils;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,6 +75,8 @@ public class HttpsItCase {
     private String httpsPort;
     @Value("${server.http-to-https-redirection.port}")
     private String httpPort;
+    // timeout in seconds
+    private static final int TIMEOUT_S = 400;
 
     /**
      * Setup the variable before tests execution.
@@ -133,6 +147,48 @@ public class HttpsItCase {
         assertThat(httpsEntity.getBody()).contains("swagger");
         FileUtils.writeStringToFile(new File("docs/swagger/swagger.json"), httpsEntity.getBody(),
                 Charset.defaultCharset());
+    }
+
+    @Test
+    public void testRobot() throws Exception {
+        File robotFolder = new File(getClass().getClassLoader().getResource("robotframework").getFile());
+        Volume testsVolume = new Volume("/opt/robotframework/tests");
+        DockerClient client = DockerClientBuilder
+                .getInstance()
+                .withDockerCmdExecFactory(new NettyDockerCmdExecFactory())
+                .build();
+
+
+
+        BuildImageResultCallback callback = new BuildImageResultCallback() {
+            @Override
+            public void onNext(BuildResponseItem item) {
+                System.out.println("XXX ITEM " + item);
+                super.onNext(item);
+            }
+        };
+
+        String imageId = client.buildImageCmd(robotFolder).exec(callback).awaitImageId();
+        CreateContainerResponse createContainerResponse = client.createContainerCmd(imageId)
+                .withVolumes(testsVolume)
+                .withBinds(
+                        new Bind(robotFolder.getAbsolutePath() + "/tests/", testsVolume, AccessMode.rw))
+                .withEnv("CLAMP_PORT=" + httpsPort)
+                .withStopTimeout(TIMEOUT_S)
+                .withNetworkMode("host")
+                .exec();
+        String id = createContainerResponse.getId();
+        client.startContainerCmd(id).exec();
+        InspectContainerResponse exec;
+
+        int tries = 0;
+        do {
+            Thread.sleep(1000);
+            exec = client.inspectContainerCmd(id).exec();
+            tries++;
+        } while (exec.getState().getRunning() && tries < TIMEOUT_S);
+        Assert.assertEquals(exec.getState().getError(), 0L, Objects.requireNonNull(exec.getState().getExitCodeLong()).longValue());
+        client.stopContainerCmd(id);
     }
 
     /**
