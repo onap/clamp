@@ -23,13 +23,14 @@
 
 package org.onap.clamp.clds.it;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.att.eelf.configuration.EELFLogger;
+import com.att.eelf.configuration.EELFManager;
+
 
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
-
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -51,6 +52,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Test HTTP and HTTPS settings + redirection of HTTP to HTTPS.
  */
@@ -63,6 +66,9 @@ public class HttpsItCase {
     private String httpsPort;
     @Value("${server.http-to-https-redirection.port}")
     private String httpPort;
+    // timeout in seconds
+    private static final int TIMEOUT_S = 400;
+    protected static final EELFLogger logger = EELFManager.getInstance().getLogger(HttpsItCase.class);
 
     /**
      * Setup the variable before tests execution.
@@ -75,13 +81,11 @@ public class HttpsItCase {
             X509TrustManager tm = new X509TrustManager() {
 
                 @Override
-                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType)
-                        throws java.security.cert.CertificateException {
+                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
                 }
 
                 @Override
-                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType)
-                        throws java.security.cert.CertificateException {
+                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
                 }
 
                 @Override
