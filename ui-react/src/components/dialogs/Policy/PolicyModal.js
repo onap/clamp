@@ -66,6 +66,9 @@ export default class PolicyModal extends React.Component {
 		this.createJsonEditor = this.createJsonEditor.bind(this);
 		this.handleRefresh = this.handleRefresh.bind(this);
 		this.disableAlert =  this.disableAlert.bind(this);
+		this.renderPdpGroupDropDown = this.renderPdpGroupDropDown.bind(this);
+		this.renderOpenLoopMessage = this.renderOpenLoopMessage.bind(this);
+		this.renderModalTitle = this.renderModalTitle.bind(this);
 	}
 
 	handleSave() {
@@ -254,11 +257,65 @@ export default class PolicyModal extends React.Component {
 		this.setState ({ showSucAlert: false, showFailAlert: false });
 	}
 
+	renderPdpGroupDropDown() {
+		if(this.state.policyInstanceType !== 'OPERATIONAL-POLICY' && this.state.loopCache.isOpenLoopTemplate()) {
+			return (
+				<Form.Group as={Row} controlId="formPlaintextEmail">
+					<Form.Label column sm="2">Pdp Group Info</Form.Label>
+					<Col sm="3">
+						<Select value={{ label: this.state.chosenPdpGroup, value: this.state.chosenPdpGroup }} onChange={this.handlePdpGroupChange} options={this.state.pdpGroupList} />
+					</Col>
+					<Col sm="3">
+						<Select value={{ label: this.state.chosenPdpSubgroup, value: this.state.chosenPdpSubgroup }} onChange={this.handlePdpSubgroupChange} options={this.state.pdpSubgroupList} />
+					</Col>
+				</Form.Group>
+			);
+		}
+	}
+
+    renderOpenLoopMessage() {
+    	if(this.state.policyInstanceType === 'OPERATIONAL-POLICY' && this.state.loopCache.isOpenLoopTemplate()) {
+    		return (
+   				"Operational Policy cannot be configured as only Open Loop is supported for this Template!"
+   			);
+   		}
+    }
+
+	renderModalTitle() {
+		return (
+				<Modal.Title>Edit the policy</Modal.Title>
+		);
+	}
+
+	renderButton() {
+		if(this.state.policyInstanceType === 'OPERATIONAL-POLICY' && this.state.loopCache.isOpenLoopTemplate()) {
+			return (
+				<Button variant="secondary" onClick={this.handleClose}>
+				Close
+				</Button>
+			);
+		} else {
+			return (
+				<>
+					<Button variant="secondary" onClick={this.handleClose}>
+					Close
+					</Button>
+					<Button variant="primary" disabled={this.readOnly} onClick={this.handleSave}>
+					Save Changes
+					</Button>
+					<Button variant="primary" disabled={this.readOnly} onClick={this.handleRefresh}>
+					Refresh
+					</Button>
+				</>
+			);
+		}
+	}
+
 	render() {
 		return (
-			<ModalStyled size="xl" show={this.state.show} onHide={this.handleClose } backdrop="static">
+			<ModalStyled size="xl" backdrop="static" keyboard={false} show={this.state.show} onHide={this.handleClose}>
 				<Modal.Header closeButton>
-					<Modal.Title>Edit the policy</Modal.Title>
+					{this.renderModalTitle()}
 				</Modal.Header>
 				<Alert variant="success" show={this.state.showSucAlert} onClose={this.disableAlert} dismissible>
 					{this.state.showMessage}
@@ -267,30 +324,14 @@ export default class PolicyModal extends React.Component {
 					{this.state.showMessage}
 				</Alert>
 				<Modal.Body>
+					{this.renderOpenLoopMessage()}
 					<div id="editor" />
-					<Form.Group as={Row} controlId="formPlaintextEmail">
-						<Form.Label column sm="2">Pdp Group Info</Form.Label>
-						<Col sm="3">
-							<Select value={{ label: this.state.chosenPdpGroup, value: this.state.chosenPdpGroup }} onChange={this.handlePdpGroupChange} options={this.state.pdpGroupList} />
-						</Col>
-						<Col sm="3">
-							<Select value={{ label: this.state.chosenPdpSubgroup, value: this.state.chosenPdpSubgroup }} onChange={this.handlePdpSubgroupChange} options={this.state.pdpSubgroupList} />
-						</Col>
-					</Form.Group>
+					{this.renderPdpGroupDropDown()}
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant="secondary" onClick={this.handleClose}>
-						Close
-					</Button>
-					<Button variant="primary" onClick={this.handleSave}>
-						Save Changes
-					</Button>
-					<Button variant="primary" onClick={this.handleRefresh}>
-						Refresh
-					</Button>
+					{this.renderButton()}
 				</Modal.Footer>
 			</ModalStyled>
-
 		);
 	}
 }

@@ -68,6 +68,7 @@ export const GlobalClampStyle = createGlobalStyle`
 		font-size: ${props => props.theme.fontSize};
 		font-weight: bold;
 	}
+
 `
 
 export const DefaultClampTheme = {
