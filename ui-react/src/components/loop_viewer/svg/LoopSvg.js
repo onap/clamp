@@ -26,6 +26,7 @@ import LoopCache from '../../../api/LoopCache';
 import { withRouter } from "react-router-dom";
 import LoopService from '../../../api/LoopService';
 import LoopComponentConverter from './LoopComponentConverter';
+import Testos from "./SvgGenerator";
 
 const LoopViewSvgDivStyled = styled.svg`
 	display: flex;
@@ -98,11 +99,20 @@ class LoopViewSvg extends React.Component {
 		this.props.history.push(this.state.componentModalMapping.get(elementName));
 	}
 
+    renderTest() {
+        return (
+                <Testos loopCache= {this.state.loopCache}/>
+        );
+    }
+
 	render() {
 		return (
+            <>
+			{this.renderTest()}
 			<LoopViewSvgDivStyled dangerouslySetInnerHTML={{ __html: this.state.svgContent }} onClick={this.handleSvgClick}>
 
 			</LoopViewSvgDivStyled>
+			</>
 		);
 	}
 }
