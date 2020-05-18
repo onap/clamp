@@ -30,6 +30,8 @@ import Col from 'react-bootstrap/Col';
 import FormCheck from 'react-bootstrap/FormCheck'
 import styled from 'styled-components';
 import LoopService from '../../../api/LoopService';
+import SvgGenerator from '../../loop_viewer/svg/SvgGenerator';
+import LoopCache from '../../../api/LoopCache';
 
 const ModalStyled = styled(Modal)`
 	background-color: transparent;
@@ -66,7 +68,7 @@ export default class OpenLoopModal extends React.Component {
 			show: true,
 			chosenLoopName: '',
 			loopNames: [],
-			content:''
+			loopCacheOpened: new LoopCache({})
 		};
 	}
 
@@ -80,13 +82,12 @@ export default class OpenLoopModal extends React.Component {
 	}
 
 	handleDropdownListChange(e) {
-		this.setState({ chosenLoopName: e.value });
-		LoopService.getSvg(e.value).then(svgXml => {
-			if (svgXml.length !== 0) {
-				this.setState({ content: svgXml })
-			} else {
-				this.setState({ content: 'Error1' })
-			}
+
+        LoopService.getLoop(e.value).then(loop => {
+            this.setState({
+                chosenLoopName: e.value,
+                loopCacheOpened: new LoopCache(loop)
+             });
 		});
 	}
 
@@ -95,9 +96,7 @@ export default class OpenLoopModal extends React.Component {
 		    if (Object.entries(loopNames).length !== 0) {
 		        const loopOptions = loopNames.filter(loopName => loopName!=='undefined').map((loopName) => { return { label: loopName, value: loopName } });
             	this.setState({ loopNames: loopOptions })
-
 		    }
-
 		});
 	}
 
@@ -124,9 +123,7 @@ export default class OpenLoopModal extends React.Component {
 					<Form.Group as={Row} style={{alignItems: 'center'}} controlId="formSvgPreview">
 						<Form.Label column sm="2">Model Preview:</Form.Label>
 						<Col sm="10">
-                         				<LoopViewSvgDivStyled dangerouslySetInnerHTML={{ __html: this.state.content }}
-								value={this.state.content} >
-							</LoopViewSvgDivStyled>
+						    <SvgGenerator loopCache={this.state.loopCacheOpened} clickable={false} generatedFrom={SvgGenerator.GENERATED_FROM_INSTANCE}/>
 						</Col>
 					</Form.Group>
 					{this.showReadOnly === true ?
