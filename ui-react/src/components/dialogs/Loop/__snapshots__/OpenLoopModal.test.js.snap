@@ -95,7 +95,7 @@ exports[`Verify OpenLoopModal Test the render method 1`] = `
           "render": [Function],
         }
       }
-      controlId="formBasicChecbox"
+      controlId="formBasicCheckbox"
     >
       <FormCheck
         disabled={false}
