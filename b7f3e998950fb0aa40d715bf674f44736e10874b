@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "769eb3a7_6abb0265",
+        "filename": "ui-react-lib/checkLibIndex.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-06-02T16:42:59Z",
+      "side": 1,
+      "message": "Please move that file to the script folder located in src/main/script.\nThose are the scripts called from maven",
+      "revId": "b7f3e998950fb0aa40d715bf674f44736e10874b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
