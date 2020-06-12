@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f12043ba_e8a6f99d",
+        "filename": "ui-react/src/components/dialogs/ManageDictionaries/ManageDictionaries.test.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-06-12T09:02:53Z",
+      "side": 1,
+      "message": "Could we move the CsvToJson test outside of that test class, this one is supposed to be in a dedicated test class for CsvToJson util.\nNewcomers could think that the CsvToJson class is not tested :-)",
+      "revId": "bbc57f72d9c99e81435964acd8e60ae339069b14",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
