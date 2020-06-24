@@ -42,7 +42,7 @@ CLAMP uses the API's exposed by the following ONAP components:
 
 Delivery
 --------
-CLAMP component is composed of a UI layer and a backend layer and packaged into a single container (single jar).
+CLAMP component is composed of an UI layer and a backend layer and packaged into a single container (single jar).
 CLAMP also requires a database instance with 1 DB, it uses MariaDB.
 CLAMP also uses an ELK stack (Elastic Search, Logstash and Kibana) for the Dashboard.
 
