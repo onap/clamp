@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "39cc1d18_0ff49bdf",
+        "filename": "src/test/java/org/onap/clamp/clds/it/HttpsItCase.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-06-29T15:38:24Z",
+      "side": 1,
+      "message": "Here i think it would be better to have a new test class to handle only the robot framework.\nOtherwise we are mixing different tests",
+      "revId": "c51c38b62ae1941af2eeeb0da652108613ea6700",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
