@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f32b78b0_d9504915",
+        "filename": "src/test/java/org/onap/clamp/clds/it/RobotItCase.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-02T06:52:21Z",
+      "side": 1,
+      "message": "Rename that method to executeRobotTests",
+      "revId": "2e6de4d759d6414f2add35cb2f893333a1a3b425",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
