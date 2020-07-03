@@ -27,7 +27,6 @@ package org.onap.clamp.clds;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -36,8 +35,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
-
 import org.apache.catalina.connector.Connector;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.onap.clamp.clds.util.ClampVersioning;
 import org.onap.clamp.clds.util.ResourceFileUtil;
 import org.onap.clamp.util.PassDecoder;
@@ -46,7 +45,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -115,7 +113,7 @@ public class Application extends SpringBootServletInitializer {
                 + ClampVersioning.getCldsVersionFromProps() + ")" + System.getProperty("line.separator")
                 + getSslExpirationDate());
         ServletRegistrationBean registration = new ServletRegistrationBean(new ClampServlet(), "/restservices/clds/*");
-        registration.setName("CamelServlet");
+        registration.setName("CamelServlet" + RandomStringUtils.randomNumeric(2));
         return registration;
     }
 
