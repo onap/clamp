@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63fa5c1b_b3b2cc91",
+        "filename": "ui-react/src/LoopUI.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-08T09:13:55Z",
+      "side": 1,
+      "message": "As the count is a lock, i think it\u0027s probably better to not give it to other classes, instead it\u0027s may be better to create another method that would be given in argument.\nThat method would test if the lock is free (\u003d\u003d\u003d0) and return a boolean that we could evaluate if the different tests.\n\nAlso that would mask the way we know how the lock is free.\nMorevover, if we want to change it, we do not need to check all the UI code everywhere, only the methods defined here would have to be changed",
+      "revId": "506c072857e96e27a036d9eb2223968d85613e1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4850d7b7_464e4f93",
+        "filename": "ui-react/src/LoopUI.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-08T09:13:55Z",
+      "side": 1,
+      "message": "This is risky, because setState can be asynchronous.\nProbably safer to replace that by a lambda\nthis.setState((state,props) \u003d\u003e ({ busyLoadingCount: ++state.busyLoadingCount }));",
+      "revId": "506c072857e96e27a036d9eb2223968d85613e1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb8f8724_be5b5d86",
+        "filename": "ui-react/src/LoopUI.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-08T09:13:55Z",
+      "side": 1,
+      "message": "Same comment than for line 259",
+      "revId": "506c072857e96e27a036d9eb2223968d85613e1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9206bc57_acaa14ca",
+        "filename": "ui-react/src/LoopUI.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-08T09:13:55Z",
+      "side": 1,
+      "message": "Here call your new method to check if the lock is busy",
+      "revId": "506c072857e96e27a036d9eb2223968d85613e1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51ccf16d_0bb31936",
+        "filename": "ui-react/src/components/dialogs/PerformActions.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-08T09:13:55Z",
+      "side": 1,
+      "message": "This variable is useless just put the window confirm directly in the test line 51",
+      "revId": "506c072857e96e27a036d9eb2223968d85613e1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1034a205_db502857",
+        "filename": "ui-react/src/components/dialogs/PerformActions.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-08T09:13:55Z",
+      "side": 1,
+      "message": "This call should be moved in a finally block",
+      "revId": "506c072857e96e27a036d9eb2223968d85613e1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e3e3377_8d13063d",
+        "filename": "ui-react/src/components/dialogs/PerformActions.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-08T09:13:55Z",
+      "side": 1,
+      "message": "This method should be moved in a finally block",
+      "revId": "506c072857e96e27a036d9eb2223968d85613e1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
