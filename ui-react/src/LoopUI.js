@@ -130,6 +130,7 @@ export default class LoopUI extends React.Component {
 		this.setBusyLoading = this.setBusyLoading.bind(this);
 		this.clearBusyLoading = this.clearBusyLoading.bind(this);
 		this.isBusyLoading = this.isBusyLoading.bind(this);
+		this.renderSvg = this.renderSvg.bind(this);
 	}
 
 	componentWillMount() {
@@ -198,10 +199,15 @@ export default class LoopUI extends React.Component {
 		);
 	}
 
+	renderSvg() {
+		return (
+			<SvgGenerator loopCache={this.state.loopCache} clickable={true} generatedFrom={SvgGenerator.GENERATED_FROM_INSTANCE}/>
+		)
+	}
 	renderLoopViewBody() {
 		return (
 			<LoopViewBodyDivStyled>
-				<SvgGenerator loopCache={this.state.loopCache} clickable={true} generatedFrom={SvgGenerator.GENERATED_FROM_INSTANCE} isBusyLoading={this.isBusyLoading}/>
+				{this.renderSvg()}
 				<LoopStatus loopCache={this.state.loopCache}/>
 				<LoopLogs loopCache={this.state.loopCache} />
 			</LoopViewBodyDivStyled>
