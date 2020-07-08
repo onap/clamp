@@ -86,39 +86,6 @@ exports[`Verify OpenLoopModal Test the render method 1`] = `
         />
       </Col>
     </FormGroup>
-    <FormGroup
-      as={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "defaultProps": Object {
-            "noGutters": false,
-          },
-          "render": [Function],
-        }
-      }
-      controlId="formBasicCheckbox"
-    >
-      <FormCheck
-        disabled={false}
-        inline={false}
-        isInvalid={false}
-        isValid={false}
-        title=""
-        type="checkbox"
-      >
-        <FormCheckLabel>
-          Read Only Mode:
-        </FormCheckLabel>
-        <Styled(FormCheckInput)
-          style={
-            Object {
-              "marginLeft": "3.5em",
-            }
-          }
-          type="checkbox"
-        />
-      </FormCheck>
-    </FormGroup>
   </ModalBody>
   <ModalFooter>
     <Button
