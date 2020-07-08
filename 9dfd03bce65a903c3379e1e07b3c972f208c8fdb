@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "93d15c9b_996901ca",
+        "filename": "ui-react/src/utils/OnapUtils.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-08T14:43:21Z",
+      "side": 1,
+      "message": "You can use the for...of statement here, instead of using that old for\nIN that case you do not need to specify the [] each time",
+      "revId": "9dfd03bce65a903c3379e1e07b3c972f208c8fdb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
