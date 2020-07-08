@@ -120,6 +120,7 @@ export default class LoopUI extends React.Component {
 		this.showSucAlert =  this.showSucAlert.bind(this);
 		this.showFailAlert =  this.showFailAlert.bind(this);
 		this.disableAlert =  this.disableAlert.bind(this);
+		this.renderSvg = this.renderSvg.bind(this);
 	}
 
 	componentWillMount() {
@@ -188,10 +189,15 @@ export default class LoopUI extends React.Component {
 		);
 	}
 
+	renderSvg() {
+		return (
+			<SvgGenerator loopCache={this.state.loopCache} clickable={true} generatedFrom={SvgGenerator.GENERATED_FROM_INSTANCE}/>
+		)
+	}
 	renderLoopViewBody() {
 		return (
 			<LoopViewBodyDivStyled>
-				<SvgGenerator loopCache={this.state.loopCache} clickable={true} generatedFrom={SvgGenerator.GENERATED_FROM_INSTANCE}/>
+				{this.renderSvg()}
 				<LoopStatus loopCache={this.state.loopCache}/>
 				<LoopLogs loopCache={this.state.loopCache} />
 			</LoopViewBodyDivStyled>
@@ -225,7 +231,7 @@ export default class LoopUI extends React.Component {
 	showFailAlert(message) {
 		this.setState ({ showFailAlert: true, showMessage:message });
 	}
- 
+
 	disableAlert() {
 		this.setState ({ showSucAlert: false, showFailAlert: false });
 	}
