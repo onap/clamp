@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "672c2642_a614d80c",
+        "filename": "ui-react/src/components/dialogs/ManageDictionaries/ManageDictionaries.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-10T08:58:17Z",
+      "side": 1,
+      "message": "Give the flag subDictFlag to disabled attribute (as you have done line 98)\nSO that we can remove that useless if",
+      "revId": "b281e1382c730c3c48d86c20dc8fc1826a29d461",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
