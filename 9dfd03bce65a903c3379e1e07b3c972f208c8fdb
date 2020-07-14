@@ -16,6 +16,24 @@
       "revId": "9dfd03bce65a903c3379e1e07b3c972f208c8fdb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d12ea76f_13204b51",
+        "filename": "ui-react/src/utils/OnapUtils.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2020-07-14T11:42:11Z",
+      "side": 1,
+      "message": "Since code works as is and is more efficient than proposed code change, leaving unchanged",
+      "parentUuid": "93d15c9b_996901ca",
+      "revId": "9dfd03bce65a903c3379e1e07b3c972f208c8fdb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
