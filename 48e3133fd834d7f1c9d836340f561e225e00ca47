@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "52e2c9e8_0acbd4ae",
+        "filename": "ui-react/src/components/dialogs/Loop/CreateLoopModal.test.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-07-15T10:52:43Z",
+      "side": 1,
+      "message": "Could you please remove the Tab here. Thanks!",
+      "revId": "48e3133fd834d7f1c9d836340f561e225e00ca47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d63371cf_59fa64d4",
+        "filename": "ui-react/src/components/dialogs/Loop/CreateLoopModal.test.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-07-15T10:52:43Z",
+      "side": 1,
+      "message": "Could you please remove the Tab here. Thanks!",
+      "revId": "48e3133fd834d7f1c9d836340f561e225e00ca47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59443d02_52dd5106",
+        "filename": "ui-react/src/components/dialogs/Tosca/ViewLoopTemplatesModal.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 9
+      },
+      "writtenOn": "2020-07-15T10:52:43Z",
+      "side": 1,
+      "message": "line 95 and 97 seems to be the same, please remove one",
+      "revId": "48e3133fd834d7f1c9d836340f561e225e00ca47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
