@@ -69,6 +69,10 @@ exports[`Verify OnapClamp Test the render method 1`] = `
       render={[Function]}
     />
     <Route
+      path="/importLoop"
+      render={[Function]}
+    />
+    <Route
       path="/userInfo"
       render={[Function]}
     />
