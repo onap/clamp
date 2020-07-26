@@ -42,6 +42,7 @@ import OpenLoopModal from './components/dialogs/Loop/OpenLoopModal';
 import ModifyLoopModal from './components/dialogs/Loop/ModifyLoopModal';
 import PolicyModal from './components/dialogs/Policy/PolicyModal';
 import LoopPropertiesModal from './components/dialogs/Loop/LoopPropertiesModal';
+import ImportPolicyJsonModal from './components/dialogs/Loop/ImportPolicyJsonModal';
 import UserInfoModal from './components/dialogs/UserInfoModal';
 import LoopService from './api/LoopService';
 import UploadToscaPolicyModal from './components/dialogs/Tosca/UploadToscaPolicyModal';
@@ -123,6 +124,7 @@ export default class LoopUI extends React.Component {
 		this.getUser = this.getUser.bind(this);
 		this.updateLoopCache = this.updateLoopCache.bind(this);
 		this.loadLoop = this.loadLoop.bind(this);
+        this.getLoopCache = this.getLoopCache.bind(this);
 		this.closeLoop = this.closeLoop.bind(this);
 		this.showSucAlert =  this.showSucAlert.bind(this);
 		this.showFailAlert =  this.showFailAlert.bind(this);
@@ -321,6 +323,13 @@ export default class LoopUI extends React.Component {
 					loopCache={this.getLoopCache()}
 					loadLoopFunction={this.loadLoop}/>)}
 				/>
+                <Route path="/importLoop" render={(routeProps) => (<ImportPolicyJsonModal {...routeProps}
+                    importCL={true}
+                    loopCache={this.getLoopCache()}
+                    getLoopCacheFunction={this.getLoopCache}
+                    showFailAlert={this.showFailAlert}
+                    loadLoopFunction={this.loadLoop}/>)}
+                />              
 
 				<Route path="/userInfo" render={(routeProps) => (<UserInfoModal {...routeProps} />)} />
 				<Route path="/closeLoop" render={this.closeLoop} />

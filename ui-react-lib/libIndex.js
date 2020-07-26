@@ -28,6 +28,7 @@ export { default as LoopActionService } from './src/api/LoopActionService';
 export { default as LoopCache }  from './src/api/LoopCache';
 export { default as LoopLogs } from './src/components/loop_viewer/logs/LoopLogs';
 export { default as LoopPropertiesModal } from './src/components/dialogs/Loop/LoopPropertiesModal';
+export { default as ImportPolicyJsonModal } from './src/components/dialogs/Loop/ImportPolicyJsonModal';
 export { default as LoopService } from './src/api/LoopService';
 export { default as LoopStatus } from './src/components/loop_viewer/status/LoopStatus';
 export { default as LoopUI } from './src/LoopUI';
