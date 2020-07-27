@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fb1e7470_5859f903",
+        "filename": "ui-react/src/components/dialogs/Loop/ImportPolicyJsonModal.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-27T12:39:46Z",
+      "side": 1,
+      "message": "This license header is not good, please put the correct one",
+      "revId": "719ee04a745b43bccb96934bb3edb0df8809b5b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8efb5615_7fe52be7",
+        "filename": "ui-react/src/components/dialogs/Loop/ImportPolicyJsonModal.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-27T12:39:46Z",
+      "side": 1,
+      "message": "There is no test on this class, we need to add Jest test case for this one.",
+      "revId": "719ee04a745b43bccb96934bb3edb0df8809b5b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd009d4f_8c551bb6",
+        "filename": "ui-react/src/components/dialogs/Loop/ImportPolicyJsonModal.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-27T12:39:46Z",
+      "side": 1,
+      "message": "naming convention issue, i think we try to keep camel case everywhere",
+      "revId": "719ee04a745b43bccb96934bb3edb0df8809b5b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a90267fa_74631ec4",
+        "filename": "ui-react/src/components/dialogs/Loop/ImportPolicyJsonModal.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-27T12:39:46Z",
+      "side": 1,
+      "message": "Reformat this code, we have dangling spaces and inconsistency in the indentation",
+      "revId": "719ee04a745b43bccb96934bb3edb0df8809b5b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d547c5f3_a26472cf",
+        "filename": "ui-react/src/components/dialogs/Loop/ImportPolicyJsonModal.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-27T12:39:46Z",
+      "side": 1,
+      "message": "If we move the logic to the backend, this code is useless (see my next comment)",
+      "revId": "719ee04a745b43bccb96934bb3edb0df8809b5b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6af28f9f_85deb6a8",
+        "filename": "ui-react/src/components/dialogs/Loop/ImportPolicyJsonModal.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 23
+      },
+      "writtenOn": "2020-07-27T12:39:46Z",
+      "side": 1,
+      "message": "Any specific reason to have that code in the frontend instead of the backend ?\nI think it could be better to have it in a new backend endpoint so that it would be available to CLI users.",
+      "revId": "719ee04a745b43bccb96934bb3edb0df8809b5b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
