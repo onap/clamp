@@ -28,16 +28,13 @@ import static org.junit.Assert.assertTrue;
 
 import com.att.eelf.configuration.EELFLogger;
 import com.att.eelf.configuration.EELFManager;
-
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +53,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @RunWith(MockitoJUnitRunner.class)
 public class LoggingUtilsTest {
 
-    private static final EELFLogger logger = EELFManager.getInstance().getLogger(LoggingUtilsTest.class);
+    private static final EELFLogger logger =
+        EELFManager.getInstance().getLogger(LoggingUtilsTest.class);
 
     private static final String SERVICE_NAME = "LogginUtilsTest: Test Entering method";
 
@@ -87,10 +85,10 @@ public class LoggingUtilsTest {
         util.entering(request, SERVICE_NAME);
 
         // then
-        String[] keys = { OnapLogConstants.Mdcs.PARTNER_NAME, OnapLogConstants.Mdcs.ENTRY_TIMESTAMP,
-                            OnapLogConstants.Mdcs.REQUEST_ID, OnapLogConstants.Mdcs.INVOCATION_ID,
-                            OnapLogConstants.Mdcs.CLIENT_IP_ADDRESS, OnapLogConstants.Mdcs.SERVER_FQDN,
-                            OnapLogConstants.Mdcs.INSTANCE_UUID, OnapLogConstants.Mdcs.SERVICE_NAME };
+        String[] keys = {OnapLogConstants.Mdcs.PARTNER_NAME, OnapLogConstants.Mdcs.ENTRY_TIMESTAMP,
+            OnapLogConstants.Mdcs.REQUEST_ID, OnapLogConstants.Mdcs.INVOCATION_ID,
+            OnapLogConstants.Mdcs.CLIENT_IP_ADDRESS, OnapLogConstants.Mdcs.SERVER_FQDN,
+            OnapLogConstants.Mdcs.INSTANCE_UUID, OnapLogConstants.Mdcs.SERVICE_NAME};
         Map<String, String> mdc = MDC.getMDCAdapter().getCopyOfContextMap();
 
         assertTrue(checkMapKeys(mdc, keys));
@@ -101,7 +99,7 @@ public class LoggingUtilsTest {
     public void testExistingLoggingUtils() {
         // given
         MDC.put(OnapLogConstants.Mdcs.ENTRY_TIMESTAMP,
-                ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+            ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
 
         // when
         util.exiting("200", SERVICE_NAME, Level.INFO, OnapLogConstants.ResponseStatus.COMPLETED);
@@ -123,8 +121,9 @@ public class LoggingUtilsTest {
 
         // then
         assertNotNull(secureConnection);
-        String[] keys = { OnapLogConstants.Mdcs.TARGET_ENTITY, OnapLogConstants.Mdcs.TARGET_SERVICE_NAME,
-                            OnapLogConstants.Mdcs.INVOCATIONID_OUT, OnapLogConstants.Mdcs.INVOKE_TIMESTAMP };
+        String[] keys =
+            {OnapLogConstants.Mdcs.TARGET_ENTITY, OnapLogConstants.Mdcs.TARGET_SERVICE_NAME,
+                OnapLogConstants.Mdcs.INVOCATIONID_OUT, OnapLogConstants.Mdcs.INVOKE_TIMESTAMP};
         Map<String, String> mdc = MDC.getMDCAdapter().getCopyOfContextMap();
 
         assertTrue(checkMapKeys(mdc, keys));
