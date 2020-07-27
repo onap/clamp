@@ -914,7 +914,7 @@
 							<includes>
 								<include>**/*ItCase.java</include>
 							</includes>
-							<forkCount>1C</forkCount>
+							<forkCount>2</forkCount>
 							<reuseForks>false</reuseForks>
 							<useSystemClassLoader>false</useSystemClassLoader>
 							<argLine>${failsafeArgLine}</argLine>
