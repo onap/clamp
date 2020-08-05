@@ -1,4 +1,5 @@
 # UUID                                                                	Group Name
 #
+122d9ed909271df246d60e2ad00d4f901781cc49                              	saml/onap-gerrit-clamp-committers
 daebbf523be390041a1a9c0e340a6d833aae5043                              	GitHub Replication
 ldap:cn=onap-gerrit-clamp-committers,ou=Groups,dc=freestandards,dc=org	ldap/onap-gerrit-clamp-committers
