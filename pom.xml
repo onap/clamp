@@ -36,7 +36,13 @@
 		<version>2.1.0</version>
 	</parent>
 
-	<description>
+    <packaging>pom</packaging>
+    <modules>
+        <module>models</module>
+        <module>clamp-main</module>
+    </modules>
+
+    <description>
 	       This is the MAVEN project that builds everything for ONAP CLAMP.
 	       Docker engine is normally requires to perfom all possible tasks (including integration tests)
 
@@ -542,21 +548,21 @@
 
 		<testResources>
 			<testResource>
-				<directory>src/main/resources</directory>
+				<directory>clamp-main/src/main/resources</directory>
 				<filtering>true</filtering>
 				<excludes>
 					<exclude>clds/aaf/**</exclude>
 				</excludes>
 			</testResource>
 			<testResource>
-				<directory>src/main/resources</directory>
+				<directory>clamp-main/src/main/resources</directory>
 				<filtering>false</filtering>
 				<includes>
 					<include>clds/aaf/**</include>
 				</includes>
 			</testResource>
 			<testResource>
-				<directory>src/test/resources</directory>
+				<directory>clamp-main/src/test/resources</directory>
 				<excludes>
 					<exclude>**/*.jks</exclude>
 					<exclude>**/*.csar</exclude>
@@ -564,7 +570,7 @@
 				<filtering>true</filtering>
 			</testResource>
 			<testResource>
-				<directory>src/test/resources/https</directory>
+				<directory>clamp-main/src/test/resources/https</directory>
 				<includes>
 					<include>**.jks</include>
 				</includes>
@@ -572,7 +578,7 @@
 				<targetPath>https</targetPath>
 			</testResource>
 			<testResource>
-				<directory>src/test/resources/example/sdc</directory>
+				<directory>clamp-main/src/test/resources/example/sdc</directory>
 				<includes>
 					<include>**.csar</include>
 				</includes>
@@ -584,14 +590,14 @@
 			<!-- For AAF folder maven should not try to filter Keystores/Truststores ... Otherwise
 				they will be broken and unreadable -->
 			<resource>
-				<directory>src/main/resources</directory>
+				<directory>clamp-main/src/main/resources</directory>
 				<filtering>true</filtering>
 				<excludes>
 					<exclude>clds/aaf/**</exclude>
 				</excludes>
 			</resource>
 			<resource>
-				<directory>src/main/resources</directory>
+				<directory>clamp-main/src/main/resources</directory>
 				<filtering>false</filtering>
 				<includes>
 					<include>clds/aaf/**</include>
@@ -720,7 +726,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<sourceDirectory>${project.basedir}/src/main/resources/asciidoc</sourceDirectory>
+					<sourceDirectory>clamp-main/src/main/resources/asciidoc</sourceDirectory>
 					<sourceDocumentName>swagger.adoc</sourceDocumentName>
 					<attributes>
 						<doctype>book</doctype>
