@@ -29,8 +29,12 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+<<<<<<< HEAD   (848989 [CLAMP] TOSCA Defined Control Loop PoC Initial Checkin)
 
 import org.onap.clamp.clds.util.ResourceFileUtil;
+=======
+import org.onap.clamp.clds.util.ResourceFileUtils;
+>>>>>>> CHANGE (68af81 Revert lib required by AAF)
 import org.onap.clamp.util.PassDecoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
