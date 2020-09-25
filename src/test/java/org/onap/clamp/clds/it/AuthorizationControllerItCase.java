@@ -32,6 +32,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collection;
 import org.apache.camel.Exchange;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -109,6 +110,12 @@ public class AuthorizationControllerItCase {
             }
         });
 
+    }
+
+    @AfterClass
+
+    public static void afterCleanup() {
+        sc.setAuthentication(null);
     }
 
     @Test
