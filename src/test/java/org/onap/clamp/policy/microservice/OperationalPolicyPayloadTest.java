@@ -1,3 +1,4 @@
+<<<<<<< HEAD   (848989 [CLAMP] TOSCA Defined Control Loop PoC Initial Checkin)
 /*-
  * ============LICENSE_START=======================================================
  * ONAP CLAMP
@@ -60,3 +61,5 @@ public class OperationalPolicyPayloadTest {
                 .isEqualTo(ResourceFileUtil.getResourceAsString("tosca/operational-policy-payload-legacy.yaml"));
     }
 }
+=======
+>>>>>>> CHANGE (f01d3e Remove legacy operational Policy)
