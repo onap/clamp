@@ -1,3 +1,5 @@
+> **Attention: Unsupported Code**: CLAMP has been moved to the policy framework at https://gerrit.onap.org/r/admin/repos/policy/clamp and is mirrored in github at https://github.com/onap/policy-clamp. The repository has been marked read-only. The code in this repository is held for archive purposes only.
+
 # Summary
 
 CLAMP is a platform for designing and managing control loops. It is used to design a closed loop, configure it with specific parameters for a particular network service, then deploying and undeploying it.  Once deployed, the user can also update the loop with new parameters during runtime, as well as suspending and restarting it.
